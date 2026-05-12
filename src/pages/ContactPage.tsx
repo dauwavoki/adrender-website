@@ -34,7 +34,7 @@ export function ContactPage() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition focus:border-[#6366f1]/50 focus:ring-4 focus:ring-[#6366f1]/15"
+                className="focus-ring-brand w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
             <div>
@@ -49,7 +49,7 @@ export function ContactPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition focus:border-[#6366f1]/50 focus:ring-4 focus:ring-[#6366f1]/15"
+                className="focus-ring-brand w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
             <div>
@@ -63,13 +63,10 @@ export function ContactPage() {
                 rows={5}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full resize-y rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition focus:border-[#6366f1]/50 focus:ring-4 focus:ring-[#6366f1]/15"
+                className="focus-ring-brand w-full resize-y rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[#6366f1] py-3.5 text-sm font-semibold text-white transition hover:bg-[#818cf8]"
-            >
+            <button type="submit" className="btn-cta w-full rounded-xl py-3.5 text-sm font-semibold">
               Submit
             </button>
           </form>

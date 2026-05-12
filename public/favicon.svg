@@ -1,5 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="favicon-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="50%" stop-color="#7B4FD4" />
+      <stop offset="100%" stop-color="#FF6B2B" />
+    </linearGradient>
+  </defs>
   <rect width="32" height="32" rx="8" fill="#0A0A0F" />
-  <path d="M8 22V10l4.5 6L17 10v12" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M20 10h6v12h-6" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path
+    d="M8 22V10l4.5 6L17 10v12"
+    stroke="url(#favicon-stroke)"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path d="M20 10h6v12h-6" stroke="url(#favicon-stroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 </svg>

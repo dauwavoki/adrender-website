@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+:root {
+  --accent-cyan: #00e5ff;
+  --accent-purple: #7b4fd4;
+  --accent-orange: #ff6b2b;
+}
+
 @theme {
   --color-bg-base: #0a0a0f;
   --color-bg-elevated: #12121a;
@@ -7,8 +13,7 @@
   --color-border-subtle: rgba(255, 255, 255, 0.06);
   --color-border-strong: rgba(255, 255, 255, 0.1);
   --color-text-muted: #8b8b9a;
-  --color-accent: #6366f1;
-  --color-accent-hover: #818cf8;
+  --color-accent: var(--accent-purple);
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-heading: 'Syne', ui-sans-serif, system-ui, sans-serif;
 }
@@ -29,8 +34,90 @@
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    background-color: color-mix(in srgb, var(--accent-cyan) 35%, transparent);
     color: #fff;
+  }
+}
+
+@layer components {
+  /* Primary CTA: cyan → purple; hover: purple → orange */
+  .btn-cta {
+    color: #fff;
+    background-image: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    transition:
+      background-image 0.2s ease,
+      box-shadow 0.2s ease,
+      filter 0.2s ease;
+  }
+
+  .btn-cta:hover {
+    background-image: linear-gradient(90deg, var(--accent-purple), var(--accent-orange));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 0 24px -4px color-mix(in srgb, var(--accent-cyan) 25%, transparent);
+  }
+
+  /* Outline / secondary — gradient hint on hover */
+  .btn-outline-accent {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .btn-outline-accent:hover {
+    border-color: color-mix(in srgb, var(--accent-cyan) 45%, transparent);
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-purple) 20%, transparent);
+  }
+
+  .text-section-label {
+    color: var(--accent-cyan);
+  }
+
+  .text-gradient-accent {
+    background-image: linear-gradient(
+      90deg,
+      var(--accent-cyan),
+      var(--accent-purple),
+      var(--accent-orange)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .focus-ring-brand:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--accent-cyan) 55%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-cyan) 18%, transparent);
+  }
+
+  .nav-logo-glow {
+    filter: drop-shadow(0 0 8px #00e5ff40);
+  }
+
+  .pricing-popular-ring {
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-cyan),
+      var(--accent-purple) 50%,
+      var(--accent-orange)
+    );
+    box-shadow: 0 0 40px -12px color-mix(in srgb, var(--accent-cyan) 22%, transparent);
+  }
+
+  .toggle-thumb-gradient {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  }
+
+  .badge-gradient {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-orange));
   }
 }
 

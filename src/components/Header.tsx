@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { BrandLogoLink } from './BrandLogoLink'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `text-sm font-medium transition-colors ${
-    isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
+    isActive ? 'text-[var(--accent-cyan)]' : 'text-zinc-400 hover:text-[var(--accent-cyan)]'
   }`
 
 export function Header() {
@@ -14,22 +15,20 @@ export function Header() {
       <div className="relative mx-auto max-w-6xl px-4 py-4 md:px-6">
         <div className="flex items-center">
           <div className="flex min-w-0 flex-1 items-center">
-            <Link to="/" className="font-heading text-lg font-bold tracking-tight text-white">
-              Ad<span className="text-[#6366f1]">Render</span>
-            </Link>
+            <BrandLogoLink variant="nav" />
           </div>
 
           <nav
             className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-8 md:flex"
             aria-label="Primary"
           >
-            <a href="/#features" className="text-sm font-medium text-zinc-400 transition-colors hover:text-white">
+            <a href="/#features" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Features
             </a>
-            <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-white">
+            <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Pricing
             </a>
-            <a href="/#about" className="text-sm font-medium text-zinc-400 transition-colors hover:text-white">
+            <a href="/#about" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               About
             </a>
             <NavLink to="/contact" className={navLinkClass}>
@@ -40,13 +39,13 @@ export function Header() {
           <div className="flex flex-1 items-center justify-end gap-3">
             <a
               href="/#waitlist"
-              className="hidden rounded-lg bg-[#6366f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06)] transition hover:bg-[#818cf8] md:inline-flex"
+              className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
             >
-              Get Early Access
+              Start Free
             </a>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-300 md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-300 transition hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_25%,transparent)] md:hidden"
               aria-expanded={open}
               aria-label="Menu"
               onClick={() => setOpen((v) => !v)}
@@ -64,21 +63,21 @@ export function Header() {
         >
           <a
             href="/#features"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
             onClick={() => setOpen(false)}
           >
             Features
           </a>
           <a
             href="/#pricing"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
             onClick={() => setOpen(false)}
           >
             Pricing
           </a>
           <a
             href="/#about"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
             onClick={() => setOpen(false)}
           >
             About
@@ -88,10 +87,10 @@ export function Header() {
           </NavLink>
           <a
             href="/#waitlist"
-            className="mt-2 rounded-lg bg-[#6366f1] px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#818cf8]"
+            className="btn-cta mt-2 rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
             onClick={() => setOpen(false)}
           >
-            Get Early Access
+            Start Free
           </a>
         </nav>
       </div>
