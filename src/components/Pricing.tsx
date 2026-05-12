@@ -113,6 +113,13 @@ export function Pricing() {
               <span className="text-gradient-accent font-semibold">(20% off)</span>
             </span>
           </div>
+          <p className="mx-auto mt-5 max-w-lg text-center text-xs leading-relaxed text-zinc-500 md:text-sm">
+            Beta subscribers lock in current pricing for 6 months. Subscribe now at{' '}
+            <a href="https://adrender.app" className="text-[var(--accent-cyan)] underline decoration-[var(--accent-cyan)]/40 underline-offset-2 transition hover:decoration-[var(--accent-cyan)]">
+              adrender.app
+            </a>{' '}
+            — Shopify App Store listing coming soon.
+          </p>
         </ScrollReveal>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">

@@ -19,7 +19,9 @@ export function ContactPage() {
       <div className="mx-auto max-w-lg">
         <ScrollReveal>
           <h1 className="text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">Contact</h1>
-          <p className="mt-3 text-center text-zinc-500">Questions about beta access, Shopify setup, or partnerships — send a note.</p>
+          <p className="mt-3 text-center text-zinc-500">
+            Questions about beta access, catalog sync, Shopify, or partnerships — send a note.
+          </p>
         </ScrollReveal>
 
         <ScrollReveal>

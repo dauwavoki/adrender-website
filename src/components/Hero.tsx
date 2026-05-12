@@ -31,8 +31,8 @@ export function Hero() {
             Ship More Ads Before Lunch Than Your Agency Does All Week.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
-            AdRender generates brand-perfect static ads from your Shopify store using 100M+ real winning templates — no designer, no
-            delays, no excuses.
+            AdRender generates brand-perfect static ads using 100M+ real winning templates — no designer, no delays, no excuses. Got a
+            Shopify store? Sync your products in one click.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a href="#waitlist" className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold">
