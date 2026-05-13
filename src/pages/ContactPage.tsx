@@ -73,6 +73,21 @@ export function ContactPage() {
             </button>
           </form>
         </ScrollReveal>
+
+        <div className="mt-12 border-t border-white/[0.08] pt-10 text-center">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-600">Business Address</p>
+          <address className="not-italic text-[13px] leading-relaxed text-[#737373]">
+            ADRENDER LLC
+            <br />
+            1065 SW 8th Street, Suite 2325
+            <br />
+            Miami, FL 33130
+            <br />
+            <a href="mailto:info@adrender.app" className="text-[#737373] transition hover:text-zinc-500">
+              info@adrender.app
+            </a>
+          </address>
+        </div>
       </div>
     </div>
   )
