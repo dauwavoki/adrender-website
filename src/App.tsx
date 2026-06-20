@@ -3,13 +3,15 @@ import { Layout } from './components/Layout'
 import { ContactPage } from './pages/ContactPage'
 import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
+import { PrivacyPage } from './pages/PrivacyPage'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public standalone page — no Layout chrome */}
+        {/* Public standalone pages — no Layout chrome */}
         <Route path="terms" element={<TermsPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
 
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
