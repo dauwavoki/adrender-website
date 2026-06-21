@@ -59,7 +59,7 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
         </li>
       </ul>
       <a
-        href="/#waitlist"
+        href="https://app.adrender.app"
         className={`mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
           tier.popular ? 'btn-cta' : 'btn-outline-accent'
         }`}

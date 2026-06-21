@@ -38,7 +38,13 @@ export function Header() {
 
           <div className="flex flex-1 items-center justify-end gap-3">
             <a
-              href="/#waitlist"
+              href="https://app.adrender.app"
+              className="hidden text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)] md:inline-flex"
+            >
+              Sign In
+            </a>
+            <a
+              href="https://app.adrender.app"
               className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
             >
               Start Free
@@ -86,7 +92,14 @@ export function Header() {
             Contact
           </NavLink>
           <a
-            href="/#waitlist"
+            href="https://app.adrender.app"
+            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
+            onClick={() => setOpen(false)}
+          >
+            Sign In
+          </a>
+          <a
+            href="https://app.adrender.app"
             className="btn-cta mt-2 rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
             onClick={() => setOpen(false)}
           >

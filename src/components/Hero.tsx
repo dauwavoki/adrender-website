@@ -35,7 +35,7 @@ export function Hero() {
             Shopify store? Sync your products in one click.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="#waitlist" className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold">
+            <a href="https://app.adrender.app" className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold">
               Start Free
             </a>
           </div>
