@@ -41,10 +41,17 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Product video placeholder — ~40% shorter than 16:9 (aspect 80/27 vs 16:9) */}
         <div className="mx-auto mt-16 max-w-4xl">
-          <div className="flex aspect-[80/27] items-center justify-center rounded-xl border border-white/[0.12] bg-[#0e0e14]">
-            <p className="px-6 text-center text-sm font-medium tracking-wide text-zinc-500">Product video coming soon</p>
+          <div className="overflow-hidden rounded-xl border border-white/[0.12] shadow-[0_0_60px_-20px_rgba(0,229,255,0.15)]">
+            <div className="relative aspect-video">
+              <iframe
+                src="https://www.youtube.com/embed/5Tpv1pwhBws"
+                title="AdRender product demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full"
+              />
+            </div>
           </div>
         </div>
       </div>

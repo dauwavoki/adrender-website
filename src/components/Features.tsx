@@ -1,4 +1,27 @@
+import { useState, useEffect } from 'react'
+import frame1 from '../assets/Frame 1.png'
+import frame2 from '../assets/Frame 2.png'
+import frame3 from '../assets/Frame 3.png'
+import frame4 from '../assets/Frame 4.png'
+import frame5 from '../assets/Frame 5.png'
+import frame6 from '../assets/Frame 6.png'
+import frame7 from '../assets/Frame 7.png'
+import frame8 from '../assets/Frame 8.png'
+import frame9 from '../assets/Frame 9.png'
+import image12 from '../assets/image 12.png'
+import image13 from '../assets/image 13.png'
+import {
+  LayoutTemplate,
+  Sparkles,
+  FileText,
+  FolderKanban,
+} from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
+
+const carouselImages = [
+  frame1, frame2, frame3, frame4, frame5,
+  frame6, frame7, frame8, frame9, image12, image13,
+]
 
 const features = [
   {
@@ -49,28 +72,51 @@ const iconSurfaces = [
   'border-[#00E5FF]/22 bg-[#00E5FF]/08 text-[#00E5FF]',
 ] as const
 
-const featurePreviews: { title: string; description: string }[] = [
-  {
-    title: 'Ad Template Browser',
-    description:
-      'Browse 100M+ real winning ads from every niche. Filter by industry, format, and platform. Start from what\'s actually working — not what an AI guesses might work.',
-  },
-  {
-    title: 'Brand AI Setup',
-    description:
-      'Upload your website, Shopify store, or brand documents. AdRender reads your colors, voice, tone, and audience automatically — no style guide needed. Every ad inherits your brand from day one.',
-  },
-  {
-    title: 'Ad Content Generator',
-    description:
-      'Your brand knowledge becomes ad copy. AdRender matches your voice to the template of your choice and generates ready-to-run static ads — on brand, every time.',
-  },
-  {
-    title: 'Smart Queue & Folders',
-    description:
-      'Render multiple ads simultaneously. Our smart queue stages completed ads directly into your organized folders — so your workspace stays clean even when you\'re running 40 renders at once.',
-  },
-]
+function Carousel() {
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (paused) return
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % carouselImages.length)
+    }, 3500)
+    return () => clearInterval(timer)
+  }, [paused])
+
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0e0e14] aspect-video"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {carouselImages.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          alt={`AdRender screenshot ${i + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            i === current ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+      <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
+        {carouselImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              i === current
+                ? 'bg-cyan-400 scale-125'
+                : 'bg-white/20 hover:bg-white/40'
+            }`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function Features() {
   return (
@@ -100,16 +146,46 @@ export function Features() {
         </div>
 
         <ScrollReveal>
-          <div className="mt-16 grid gap-4 sm:grid-cols-2">
-            {featurePreviews.map((item) => (
+          <div className="mt-16">
+            <Carousel />
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                icon: LayoutTemplate,
+                title: 'Ad Template Browser',
+                description:
+                  'Browse 100M+ real winning ads from every niche. Filter by industry, format, and platform. Start from what\'s actually working — not what an AI guesses might work.',
+              },
+              {
+                icon: Sparkles,
+                title: 'Brand AI Setup',
+                description:
+                  'Upload your website, Shopify store, or brand documents. AdRender reads your colors, voice, tone, and audience automatically — no style guide needed. Every ad inherits your brand from day one.',
+              },
+              {
+                icon: FileText,
+                title: 'Ad Content Generator',
+                description:
+                  'Your brand knowledge becomes ad copy. AdRender matches your voice to the template of your choice and generates ready-to-run static ads — on brand, every time.',
+              },
+              {
+                icon: FolderKanban,
+                title: 'Smart Queue & Folders',
+                description:
+                  'Render multiple ads simultaneously. Our smart queue stages completed ads directly into your organized folders — so your workspace stays clean even when you\'re running 40 renders at once.',
+              },
+            ].map(({ icon: Icon, title, description }) => (
               <div
-                key={item.title}
-                className="flex min-h-[260px] flex-col justify-end rounded-2xl border border-white/[0.08] bg-[#0e0e14] p-5 transition hover:border-[color:color-mix(in_srgb,var(--accent-purple)_22%,transparent)] md:min-h-[280px] md:p-6"
+                key={title}
+                className="flex flex-col gap-3 rounded-2xl border border-white/[0.08] bg-[#0e0e14] p-6 transition hover:border-white/[0.15]"
               >
-                <div>
-                  <p className="font-heading text-base font-semibold text-white">{item.title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-zinc-500">{item.description}</p>
-                </div>
+                <Icon className="w-5 h-5 text-cyan-400" />
+                <p className="font-semibold text-white text-base">{title}</p>
+                <p className="text-sm text-zinc-500 leading-relaxed">{description}</p>
               </div>
             ))}
           </div>
