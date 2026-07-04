@@ -25,6 +25,18 @@ export function Footer() {
             </a>
           </div>
           <div className="flex flex-col gap-2">
+            <span className="font-medium text-zinc-300">Compare</span>
+            <Link to="/vs-adcreative" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs AdCreative.ai
+            </Link>
+            <Link to="/vs-canva" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Canva
+            </Link>
+            <Link to="/vs-predis" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Predis
+            </Link>
+          </div>
+          <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Company</span>
             <a href="/#about" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
               About
