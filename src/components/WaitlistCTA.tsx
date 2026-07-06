@@ -1,13 +1,30 @@
 import { useState, type FormEvent } from 'react'
 import { ScrollReveal } from './ScrollReveal'
 
+const MARKETING_CONTACT_URL =
+  'https://oxxsgplmsqajhvjveact.supabase.co/functions/v1/marketing-contact'
+
+type Status = 'idle' | 'submitting' | 'success' | 'error'
+
 export function WaitlistCTA() {
   const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault()
-    console.log('waitlist:', email.trim())
-    setEmail('')
+    setStatus('submitting')
+    try {
+      const res = await fetch(MARKETING_CONTACT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'waitlist', email: email.trim() }),
+      })
+      if (!res.ok) throw new Error(`Request failed (${res.status})`)
+      setStatus('success')
+      setEmail('')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -45,10 +62,24 @@ export function WaitlistCTA() {
               onChange={(e) => setEmail(e.target.value)}
               className="focus-ring-brand min-h-12 flex-1 rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 text-white outline-none transition placeholder:text-zinc-600"
             />
-            <button type="submit" className="btn-cta min-h-12 rounded-xl px-6 text-sm font-semibold">
-              Notify Me
+            <button
+              type="submit"
+              disabled={status === 'submitting'}
+              className="btn-cta min-h-12 rounded-xl px-6 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {status === 'submitting' ? 'Submitting…' : 'Notify Me'}
             </button>
           </form>
+          {status === 'success' && (
+            <p className="mt-4 text-sm font-medium text-emerald-400" role="status">
+              You&apos;re on the list! We&apos;ll be in touch.
+            </p>
+          )}
+          {status === 'error' && (
+            <p className="mt-4 text-sm font-medium text-red-400" role="alert">
+              Something went wrong — please try again.
+            </p>
+          )}
         </div>
       </ScrollReveal>
     </section>

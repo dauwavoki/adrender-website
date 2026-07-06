@@ -45,10 +45,12 @@ export function Hero() {
           <div className="overflow-hidden rounded-xl border border-white/[0.12] shadow-[0_0_60px_-20px_rgba(0,229,255,0.15)]">
             <div className="relative aspect-video">
               <iframe
-                src="https://www.youtube.com/embed/5Tpv1pwhBws"
+                src="https://www.youtube-nocookie.com/embed/5Tpv1pwhBws"
                 title="AdRender product demo"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="encrypted-media; picture-in-picture; fullscreen"
                 allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                loading="lazy"
                 className="absolute inset-0 h-full w-full"
               />
             </div>

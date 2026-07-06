@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adrender.app/sitemap.xml

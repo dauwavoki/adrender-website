@@ -15,6 +15,8 @@ import {
   Sparkles,
   FileText,
   FolderKanban,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 
@@ -75,6 +77,9 @@ const iconSurfaces = [
 function Carousel() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
+  // Incremented on manual navigation so the auto-play interval restarts
+  // instead of immediately advancing past the manually selected slide.
+  const [timerKey, setTimerKey] = useState(0)
 
   useEffect(() => {
     if (paused) return
@@ -82,7 +87,17 @@ function Carousel() {
       setCurrent((prev) => (prev + 1) % carouselImages.length)
     }, 3500)
     return () => clearInterval(timer)
-  }, [paused])
+  }, [paused, timerKey])
+
+  function goPrev() {
+    setCurrent((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
+    setTimerKey((k) => k + 1)
+  }
+
+  function goNext() {
+    setCurrent((prev) => (prev + 1) % carouselImages.length)
+    setTimerKey((k) => k + 1)
+  }
 
   return (
     <div
@@ -100,6 +115,20 @@ function Carousel() {
           }`}
         />
       ))}
+      <button
+        onClick={goPrev}
+        className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 hover:bg-black/70 p-2 text-white z-10 transition"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={goNext}
+        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 hover:bg-black/70 p-2 text-white z-10 transition"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
       <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
         {carouselImages.map((_, i) => (
           <button

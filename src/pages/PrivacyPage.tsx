@@ -298,13 +298,15 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">7. Cookies and Tracking</h2>
             <p className="mb-3">
-              We use cookies and similar technologies to maintain your login session, remember preferences, and collect
-              usage analytics. We use session cookies (deleted when you close your browser) and persistent cookies
-              (retained across sessions for authentication and preferences).
+              This marketing site (adrender.app) does not set cookies and does not run analytics that track individual
+              users. The AdRender application (app.adrender.app) uses session cookies for authentication and may
+              collect usage analytics to improve the product. For full details on data collected within the
+              application, see Section 2 (Information We Collect) above.
             </p>
             <p>
               We do not use third-party advertising cookies or sell cookie data to advertisers. You may disable cookies
-              through your browser settings; however, disabling session cookies will prevent you from staying logged in.
+              through your browser settings; however, disabling session cookies will prevent you from staying logged in
+              to the application.
             </p>
           </section>
 

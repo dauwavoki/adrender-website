@@ -1,17 +1,39 @@
 import { useState, type FormEvent } from 'react'
 import { ScrollReveal } from '../components/ScrollReveal'
 
+const MARKETING_CONTACT_URL =
+  'https://oxxsgplmsqajhvjveact.supabase.co/functions/v1/marketing-contact'
+
+type Status = 'idle' | 'submitting' | 'success' | 'error'
+
 export function ContactPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault()
-    console.log('contact:', { name: name.trim(), email: email.trim(), message: message.trim() })
-    setName('')
-    setEmail('')
-    setMessage('')
+    setStatus('submitting')
+    try {
+      const res = await fetch(MARKETING_CONTACT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'contact',
+          email: email.trim(),
+          name: name.trim(),
+          message: message.trim(),
+        }),
+      })
+      if (!res.ok) throw new Error(`Request failed (${res.status})`)
+      setStatus('success')
+      setName('')
+      setEmail('')
+      setMessage('')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -68,9 +90,23 @@ export function ContactPage() {
                 className="focus-ring-brand w-full resize-y rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
-            <button type="submit" className="btn-cta w-full rounded-xl py-3.5 text-sm font-semibold">
-              Submit
+            <button
+              type="submit"
+              disabled={status === 'submitting'}
+              className="btn-cta w-full rounded-xl py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {status === 'submitting' ? 'Sending…' : 'Submit'}
             </button>
+            {status === 'success' && (
+              <p className="text-center text-sm font-medium text-emerald-400" role="status">
+                Message sent! We&apos;ll get back to you within 24 hours.
+              </p>
+            )}
+            {status === 'error' && (
+              <p className="text-center text-sm font-medium text-red-400" role="alert">
+                Something went wrong — please try again.
+              </p>
+            )}
           </form>
         </ScrollReveal>
 
