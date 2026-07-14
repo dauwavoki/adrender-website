@@ -1,8 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { ScrollReveal } from '../components/ScrollReveal'
+import { PageMeta } from '../components/PageMeta'
 
 const MARKETING_CONTACT_URL =
   'https://oxxsgplmsqajhvjveact.supabase.co/functions/v1/marketing-contact'
+
+const TITLE = 'Contact AdRender — Beta, Shopify & Partnerships'
+const DESCRIPTION =
+  'Questions about beta access, catalog sync, Shopify, or partnerships? Contact the AdRender team — we typically reply within 24 hours.'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -38,6 +43,7 @@ export function ContactPage() {
 
   return (
     <div className="px-4 py-20 md:px-6 md:py-28">
+      <PageMeta title={TITLE} description={DESCRIPTION} path="/contact" />
       <div className="mx-auto max-w-lg">
         <ScrollReveal>
           <h1 className="text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">Contact</h1>

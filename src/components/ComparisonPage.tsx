@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { Check, X, ArrowRight, ExternalLink, type LucideIcon } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
+import { PageMeta } from './PageMeta'
 
 export type ComparisonRow = {
   label: string
@@ -20,8 +20,11 @@ export type ComparisonPageProps = {
   subheadline: string
   rows: ComparisonRow[]
   cards: ComparisonCard[]
-  /** Optional per-page browser title */
-  documentTitle?: string
+  /** Browser / OG title */
+  documentTitle: string
+  metaDescription: string
+  /** Canonical path, e.g. `/vs-adcreative` */
+  path: string
 }
 
 const APP_URL = 'https://app.adrender.app'
@@ -56,17 +59,13 @@ export function ComparisonPage({
   rows,
   cards,
   documentTitle,
+  metaDescription,
+  path,
 }: ComparisonPageProps) {
-  useEffect(() => {
-    const previous = document.title
-    document.title = documentTitle ?? `AdRender vs ${competitor} — AI Ad Generator`
-    return () => {
-      document.title = previous
-    }
-  }, [competitor, documentTitle])
-
   return (
     <div className="px-4 py-20 md:px-6 md:py-28">
+      <PageMeta title={documentTitle} description={metaDescription} path={path} />
+
       {/* 1. HERO */}
       <section className="mx-auto max-w-4xl text-center">
         <ScrollReveal>
