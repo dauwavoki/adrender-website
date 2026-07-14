@@ -31,6 +31,9 @@ export function Header() {
             <a href="/#about" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               About
             </a>
+            <NavLink to="/blog" className={navLinkClass}>
+              Blog
+            </NavLink>
             <NavLink to="/contact" className={navLinkClass}>
               Contact
             </NavLink>
@@ -88,6 +91,9 @@ export function Header() {
           >
             About
           </a>
+          <NavLink to="/blog" className={navLinkClass} onClick={() => setOpen(false)}>
+            Blog
+          </NavLink>
           <NavLink to="/contact" className={navLinkClass} onClick={() => setOpen(false)}>
             Contact
           </NavLink>

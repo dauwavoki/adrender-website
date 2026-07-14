@@ -45,6 +45,12 @@ export function Footer() {
               Contact
             </Link>
           </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-medium text-zinc-300">Blog</span>
+            <Link to="/blog" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              All posts
+            </Link>
+          </div>
         </div>
       </div>
       <div className="border-t border-white/[0.04] py-6 text-center text-xs text-zinc-600">

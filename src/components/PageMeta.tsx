@@ -10,14 +10,61 @@ type PageMetaProps = {
 
 const SITE_ORIGIN = 'https://adrender.app'
 
-/** Client-side head tags via react-helmet-async (updates after hydration; not SSR). */
+function keepOne(nodes: Element[], predicate: (el: Element) => boolean) {
+  const matches = nodes.filter(predicate)
+  const keep = matches.at(-1) ?? nodes.at(-1)
+  nodes.forEach((el) => {
+    if (el !== keep) el.remove()
+  })
+}
+
+/**
+ * Per-route head tags. React 19 + react-helmet-async hoist new tags into <head>
+ * alongside the static index.html fallbacks — so we actively dedupe after apply.
+ */
 export function PageMeta({ title, description, path, ogType = 'website' }: PageMetaProps) {
   const url = path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${path.startsWith('/') ? path : `/${path}`}`
 
-  // Strip static index.html fallbacks so Helmet owns a single description/og/canonical set.
   useLayoutEffect(() => {
-    document.querySelectorAll('[data-static-fallback]').forEach((el) => el.remove())
-  }, [])
+    const head = document.head
+    head.querySelectorAll('[data-static-fallback]').forEach((el) => el.remove())
+
+    const titles = [...head.querySelectorAll('title')]
+    keepOne(titles, (el) => el.textContent === title)
+
+    keepOne(
+      [...head.querySelectorAll('meta[name="description"]')],
+      (el) => el.getAttribute('content') === description,
+    )
+    keepOne(
+      [...head.querySelectorAll('link[rel="canonical"]')],
+      (el) => el.getAttribute('href') === url,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[property="og:type"]')],
+      (el) => el.getAttribute('content') === ogType,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[property="og:url"]')],
+      (el) => el.getAttribute('content') === url,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[property="og:title"]')],
+      (el) => el.getAttribute('content') === title,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[property="og:description"]')],
+      (el) => el.getAttribute('content') === description,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[name="twitter:title"]')],
+      (el) => el.getAttribute('content') === title,
+    )
+    keepOne(
+      [...head.querySelectorAll('meta[name="twitter:description"]')],
+      (el) => el.getAttribute('content') === description,
+    )
+  }, [title, description, url, ogType])
 
   return (
     <Helmet>
@@ -28,6 +75,8 @@ export function PageMeta({ title, description, path, ogType = 'website' }: PageM
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
     </Helmet>
   )
 }

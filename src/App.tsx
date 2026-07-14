@@ -1,5 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { BlogIndexPage } from './pages/BlogIndexPage'
+import { BlogPostPage } from './pages/BlogPostPage'
 import { ContactPage } from './pages/ContactPage'
 import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
@@ -18,6 +20,8 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="blog" element={<BlogIndexPage />} />
+          <Route path="blog/:slug" element={<BlogPostPage />} />
           {/* Explicit paths preserve /vs-adcreative URLs (RR doesn't support vs-:slug). */}
           {comparisons.map((c) => (
             <Route key={c.slug} path={`vs-${c.slug}`} element={<VsPage slug={c.slug} />} />
