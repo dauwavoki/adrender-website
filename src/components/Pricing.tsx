@@ -20,6 +20,37 @@ function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: n
   )
 }
 
+function FeatureList({ tier }: { tier: Tier }) {
+  return (
+    <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-white/[0.06] pt-6 text-sm text-zinc-400">
+      <li className="flex justify-between gap-2">
+        <span>Tokens</span>
+        <span className="font-medium text-zinc-200">{formatTokens(tier.tokens)}</span>
+      </li>
+      <li className="flex justify-between gap-2">
+        <span>Brands</span>
+        <span className="font-medium text-zinc-200">{tier.brands}</span>
+      </li>
+      <li className="flex justify-between gap-2">
+        <span>Seats</span>
+        <span className="font-medium text-zinc-200">{tier.seats}</span>
+      </li>
+      <li className="flex justify-between gap-2">
+        <span>Workspaces</span>
+        <span className="font-medium text-zinc-200">{tier.workspaces}</span>
+      </li>
+      <li className="flex justify-between gap-2">
+        <span>Concurrent renders</span>
+        <span className="font-medium text-zinc-200">{tier.concurrent}</span>
+      </li>
+      <li className="flex justify-between gap-2">
+        <span>Shopify sync</span>
+        <span className="font-medium text-zinc-200">{tier.shopify ? 'Yes' : 'No'}</span>
+      </li>
+    </ul>
+  )
+}
+
 function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
   const inner = (
     <>
@@ -29,6 +60,7 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
         </span>
       )}
       <h3 className="font-heading text-lg font-bold text-white">{tier.name}</h3>
+      {tier.tagline && <p className="mt-1 text-sm text-zinc-500">{tier.tagline}</p>}
       <div className="mt-4 min-h-[3.5rem]">
         {tier.annual === null && billing === 'annual' ? (
           <p className="font-heading text-3xl font-bold text-zinc-500">—</p>
@@ -36,32 +68,7 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
           <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
         )}
       </div>
-      <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-white/[0.06] pt-6 text-sm text-zinc-400">
-        <li className="flex justify-between gap-2">
-          <span>Tokens</span>
-          <span className="font-medium text-zinc-200">{formatTokens(tier.tokens)}</span>
-        </li>
-        <li className="flex justify-between gap-2">
-          <span>Brands</span>
-          <span className="font-medium text-zinc-200">{tier.brands}</span>
-        </li>
-        <li className="flex justify-between gap-2">
-          <span>Seats</span>
-          <span className="font-medium text-zinc-200">{tier.seats}</span>
-        </li>
-        <li className="flex justify-between gap-2">
-          <span>Workspaces</span>
-          <span className="font-medium text-zinc-200">{tier.workspaces}</span>
-        </li>
-        <li className="flex justify-between gap-2">
-          <span>Concurrent renders</span>
-          <span className="font-medium text-zinc-200">{tier.concurrent}</span>
-        </li>
-        <li className="flex justify-between gap-2">
-          <span>Shopify sync</span>
-          <span className="font-medium text-zinc-200">{tier.shopify ? 'Yes' : 'No'}</span>
-        </li>
-      </ul>
+      <FeatureList tier={tier} />
       <a
         href="https://app.adrender.app"
         className={`mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
@@ -84,8 +91,72 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
   return <article className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#12121a] p-6">{inner}</article>
 }
 
+function FreeTierBanner({ tier, billing }: { tier: Tier; billing: Billing }) {
+  return (
+    <article className="relative overflow-hidden rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)] bg-gradient-to-br from-[#0e1a22] via-[#12121a] to-[#16121f] px-6 py-8 sm:px-10">
+      <div
+        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(0,229,255,0.18), transparent 70%)' }}
+        aria-hidden
+      />
+      <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <div className="max-w-md">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-cyan)]">Free plan</p>
+          <h3 className="mt-2 font-heading text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            {tier.tagline ?? 'Try it out for free'}
+          </h3>
+          <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+            No card required. Spin up ads and see if AdRender fits your workflow.
+          </p>
+          <div className="mt-5">
+            {billing === 'annual' ? (
+              <p className="font-heading text-3xl font-bold text-zinc-500">—</p>
+            ) : (
+              <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
+            )}
+          </div>
+          <a
+            href="https://app.adrender.app"
+            className="btn-cta mt-6 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold"
+          >
+            Start Free
+          </a>
+        </div>
+        <ul className="grid w-full max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-sm text-zinc-400 sm:gap-x-8">
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Tokens</span>
+            <span className="font-medium text-zinc-200">{formatTokens(tier.tokens)}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Brands</span>
+            <span className="font-medium text-zinc-200">{tier.brands}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Seats</span>
+            <span className="font-medium text-zinc-200">{tier.seats}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Workspaces</span>
+            <span className="font-medium text-zinc-200">{tier.workspaces}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Renders</span>
+            <span className="font-medium text-zinc-200">{tier.concurrent}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
+            <span>Shopify</span>
+            <span className="font-medium text-zinc-200">{tier.shopify ? 'Yes' : 'No'}</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+  )
+}
+
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
+  const freeTier = tiers.filter((t) => t.id === 'free')
+  const paidTiers = tiers.filter((t) => t.id !== 'free')
 
   return (
     <section id="pricing" className="scroll-mt-28 px-4 py-24 md:px-6 md:py-28">
@@ -126,12 +197,20 @@ export function Pricing() {
           </p>
         </ScrollReveal>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {tiers.map((tier) => (
+        <div className="mt-14 space-y-6">
+          {freeTier.map((tier) => (
             <ScrollReveal key={tier.id}>
-              <TierCard tier={tier} billing={billing} />
+              <FreeTierBanner tier={tier} billing={billing} />
             </ScrollReveal>
           ))}
+
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {paidTiers.map((tier) => (
+              <ScrollReveal key={tier.id}>
+                <TierCard tier={tier} billing={billing} />
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

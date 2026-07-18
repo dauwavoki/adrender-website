@@ -3,6 +3,8 @@ export type Billing = 'monthly' | 'annual'
 export type Tier = {
   id: string
   name: string
+  /** Short line under the plan name — matches app copy */
+  tagline?: string
   monthly: number
   /** null = no annual plan shown */
   annual: number | null
@@ -16,11 +18,36 @@ export type Tier = {
 }
 
 export const tiers: Tier[] = [
-  { id: 'free', name: 'Free', monthly: 0, annual: null, tokens: 10, brands: 1, seats: 1, workspaces: 0, concurrent: 10, shopify: false },
-  { id: 'solo', name: 'Solo', monthly: 15, annual: 144, tokens: 100, brands: 2, seats: 3, workspaces: 3, concurrent: 30, shopify: false },
+  {
+    id: 'free',
+    name: 'Free',
+    tagline: 'Try it out for free',
+    monthly: 0,
+    annual: null,
+    tokens: 10,
+    brands: 1,
+    seats: 1,
+    workspaces: 0,
+    concurrent: 10,
+    shopify: false,
+  },
+  {
+    id: 'solo',
+    name: 'Solo',
+    tagline: 'For solo founders',
+    monthly: 15,
+    annual: 144,
+    tokens: 100,
+    brands: 3,
+    seats: 3,
+    workspaces: 3,
+    concurrent: 30,
+    shopify: false,
+  },
   {
     id: 'growth',
     name: 'Growth',
+    tagline: 'For growing DTC brands',
     monthly: 35,
     annual: 336,
     tokens: 400,
@@ -29,12 +56,25 @@ export const tiers: Tier[] = [
     workspaces: 5,
     concurrent: 40,
     shopify: true,
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    tagline: 'For performance marketers',
+    monthly: 79,
+    annual: 760,
+    tokens: 1500,
+    brands: 50,
+    seats: 20,
+    workspaces: 20,
+    concurrent: 50,
+    shopify: true,
     popular: true,
   },
-  { id: 'pro', name: 'Pro', monthly: 79, annual: 760, tokens: 1500, brands: 50, seats: 20, workspaces: 20, concurrent: 50, shopify: true },
   {
     id: 'agency',
     name: 'Agency',
+    tagline: 'For agencies and teams',
     monthly: 199,
     annual: 1920,
     tokens: 4000,
