@@ -50,6 +50,10 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
           <span className="font-medium text-zinc-200">{tier.seats}</span>
         </li>
         <li className="flex justify-between gap-2">
+          <span>Workspaces</span>
+          <span className="font-medium text-zinc-200">{tier.workspaces}</span>
+        </li>
+        <li className="flex justify-between gap-2">
           <span>Concurrent renders</span>
           <span className="font-medium text-zinc-200">{tier.concurrent}</span>
         </li>
