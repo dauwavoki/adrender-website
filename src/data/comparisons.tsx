@@ -41,7 +41,7 @@ export const comparisons: ComparisonConfig[] = [
     metaDescription:
       'Compare AdRender vs AdCreative.ai: half the price, no billing traps, Shopify-native sync, and ads from 100M+ real templates. Free to start, no watermarks.',
     rows: [
-      { label: 'Starting price', adrender: '$0 free / $15 paid', competitor: '$39/mo (10 credits only)' },
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$39/mo (10 credits only)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: 'Trial only — card required' },
       { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
@@ -82,7 +82,7 @@ export const comparisons: ComparisonConfig[] = [
     metaDescription:
       'AdRender vs Canva: AI generates on-brand ads from real winning templates—not a design editor. Shopify sync, auto copy, ready in minutes. Free to start.',
     rows: [
-      { label: 'Starting price', adrender: '$0 free / $15 paid', competitor: '$15/mo (Canva Pro)' },
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$15/mo (Canva Pro)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
       { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
@@ -123,7 +123,7 @@ export const comparisons: ComparisonConfig[] = [
     metaDescription:
       'AdRender vs Predis: built for paid ads, not social posts. Real ad templates, Shopify sync, brand auto-setup, no prompt required. Free to start, no watermarks.',
     rows: [
-      { label: 'Starting price', adrender: '$0 free / $15 paid', competitor: '$32/mo' },
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$32/mo' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
       { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Manual import only' },
