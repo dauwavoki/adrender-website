@@ -8,6 +8,7 @@ import { SITE_ORIGIN, ROOT, getAllRoutes, getBlogPostsMeta, getComparisonSlugs }
  */
 function metaForRoute(route) {
   if (route === '/') return { changefreq: 'weekly', priority: '1.0' }
+  if (route === '/affiliates') return { changefreq: 'monthly', priority: '0.7' }
   if (route === '/contact') return { changefreq: 'monthly', priority: '0.5' }
   if (route === '/blog') return { changefreq: 'weekly', priority: '0.7' }
   if (route.startsWith('/blog/')) {

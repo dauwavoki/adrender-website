@@ -56,5 +56,5 @@ export function getBlogPostsMeta() {
 export function getAllRoutes() {
   const comparisonPaths = getComparisonSlugs().map((s) => `/vs-${s}`)
   const blogPaths = getBlogPostsMeta().map((p) => `/blog/${p.slug}`)
-  return ['/', '/contact', ...comparisonPaths, '/blog', ...blogPaths]
+  return ['/', '/affiliates', '/contact', ...comparisonPaths, '/blog', ...blogPaths]
 }

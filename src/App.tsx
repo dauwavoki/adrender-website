@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { AffiliatesPage } from './pages/AffiliatesPage'
 import { BlogIndexPage } from './pages/BlogIndexPage'
 import { BlogPostPage } from './pages/BlogPostPage'
 import { ContactPage } from './pages/ContactPage'
@@ -19,6 +20,7 @@ export default function App() {
 
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="affiliates" element={<AffiliatesPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="blog" element={<BlogIndexPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />

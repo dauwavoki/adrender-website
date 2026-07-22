@@ -34,6 +34,9 @@ export function Header() {
             <NavLink to="/blog" className={navLinkClass}>
               Blog
             </NavLink>
+            <NavLink to="/affiliates" className={navLinkClass}>
+              Affiliates
+            </NavLink>
             <NavLink to="/contact" className={navLinkClass}>
               Contact
             </NavLink>
@@ -93,6 +96,9 @@ export function Header() {
           </a>
           <NavLink to="/blog" className={navLinkClass} onClick={() => setOpen(false)}>
             Blog
+          </NavLink>
+          <NavLink to="/affiliates" className={navLinkClass} onClick={() => setOpen(false)}>
+            Affiliates
           </NavLink>
           <NavLink to="/contact" className={navLinkClass} onClick={() => setOpen(false)}>
             Contact
