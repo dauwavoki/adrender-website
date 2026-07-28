@@ -1,8 +1,18 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import type { Components } from 'react-markdown'
 import { PageMeta } from '../components/PageMeta'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { blogPostPath, formatPostDate, getPostBySlug } from '../data/blog'
+
+const markdownComponents: Components = {
+  table: ({ children }) => (
+    <div className="blog-table-wrap">
+      <table>{children}</table>
+    </div>
+  ),
+}
 
 export function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -36,7 +46,9 @@ export function BlogPostPage() {
 
         <ScrollReveal>
           <div className="blog-prose mt-10">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+              {post.content}
+            </ReactMarkdown>
           </div>
         </ScrollReveal>
 
