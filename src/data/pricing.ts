@@ -8,12 +8,8 @@ export type Tier = {
   monthly: number
   /** null = no annual plan shown */
   annual: number | null
-  tokens: number | string
-  brands: number | string
-  seats: number | string
-  workspaces: number | string
-  concurrent: number | string
-  shopify: boolean
+  /** Feature bullets copied verbatim from in-app pricing */
+  features: string[]
   popular?: boolean
 }
 
@@ -24,12 +20,14 @@ export const tiers: Tier[] = [
     tagline: 'Try it out for free',
     monthly: 0,
     annual: null,
-    tokens: 10,
-    brands: 1,
-    seats: 1,
-    workspaces: 0,
-    concurrent: 10,
-    shopify: false,
+    features: [
+      '10 tokens/mo',
+      '1 brands',
+      'Team workspaces: No',
+      'Concurrent renders: 10',
+      'Shopify sync: No',
+      'No watermarks',
+    ],
   },
   {
     id: 'solo',
@@ -37,12 +35,14 @@ export const tiers: Tier[] = [
     tagline: 'For solo founders',
     monthly: 19,
     annual: 182,
-    tokens: 100,
-    brands: 3,
-    seats: 3,
-    workspaces: 3,
-    concurrent: 30,
-    shopify: false,
+    features: [
+      '100 tokens/mo',
+      '3 brands',
+      'Team workspaces: Yes',
+      'Concurrent renders: 30',
+      'Shopify sync: No',
+      'No watermarks',
+    ],
   },
   {
     id: 'growth',
@@ -50,12 +50,14 @@ export const tiers: Tier[] = [
     tagline: 'For growing DTC brands',
     monthly: 39,
     annual: 374,
-    tokens: 300,
-    brands: 10,
-    seats: 5,
-    workspaces: 5,
-    concurrent: 40,
-    shopify: true,
+    features: [
+      '300 tokens/mo',
+      '10 brands',
+      'Team workspaces: Yes',
+      'Concurrent renders: 40',
+      'Shopify sync: Yes',
+      'No watermarks',
+    ],
   },
   {
     id: 'pro',
@@ -63,12 +65,14 @@ export const tiers: Tier[] = [
     tagline: 'For performance marketers',
     monthly: 79,
     annual: 760,
-    tokens: 800,
-    brands: 50,
-    seats: 20,
-    workspaces: 20,
-    concurrent: 50,
-    shopify: true,
+    features: [
+      '800 tokens/mo',
+      '50 brands',
+      'Team workspaces: Yes',
+      'Concurrent renders: 50',
+      'Shopify sync: Yes',
+      'No watermarks',
+    ],
     popular: true,
   },
   {
@@ -77,16 +81,13 @@ export const tiers: Tier[] = [
     tagline: 'For agencies and teams',
     monthly: 199,
     annual: 1920,
-    tokens: 2500,
-    brands: 'Unlimited',
-    seats: 'Unlimited',
-    workspaces: 'Unlimited',
-    concurrent: 'Unlimited',
-    shopify: true,
+    features: [
+      '2,500 tokens/mo',
+      'Unlimited brands',
+      'Team workspaces: Yes',
+      'Concurrent renders: Unlimited',
+      'Shopify sync: Yes',
+      'No watermarks',
+    ],
   },
 ]
-
-export function formatTokens(n: number | string) {
-  if (typeof n === 'string') return n
-  return n.toLocaleString('en-US')
-}

@@ -1,9 +1,9 @@
 import { Hero } from '../components/Hero'
 import { Features } from '../components/Features'
-import { SocialProof } from '../components/SocialProof'
+import { SavingsCard } from '../components/SavingsCard'
 import { Pricing } from '../components/Pricing'
+import { FaqSection } from '../components/FaqSection'
 import { AboutSection } from '../components/AboutSection'
-import { WaitlistCTA } from '../components/WaitlistCTA'
 import { PageMeta } from '../components/PageMeta'
 
 const TITLE = 'AdRender — AI Ad Generator for Shopify | 100M+ Real Templates'
@@ -16,10 +16,10 @@ export function HomePage() {
       <PageMeta title={TITLE} description={DESCRIPTION} path="/" />
       <Hero />
       <Features />
-      <SocialProof />
+      <SavingsCard />
       <Pricing />
+      <FaqSection />
       <AboutSection />
-      <WaitlistCTA />
     </>
   )
 }

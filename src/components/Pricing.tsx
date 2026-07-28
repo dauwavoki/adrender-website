@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
-import { formatTokens, tiers } from '../data/pricing'
+import { tiers } from '../data/pricing'
+import { getAppUrl } from '../lib/appUrl'
 
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
@@ -23,35 +24,16 @@ function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: n
 function FeatureList({ tier }: { tier: Tier }) {
   return (
     <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-white/[0.06] pt-6 text-sm text-zinc-400">
-      <li className="flex justify-between gap-2">
-        <span>Tokens</span>
-        <span className="font-medium text-zinc-200">{formatTokens(tier.tokens)}</span>
-      </li>
-      <li className="flex justify-between gap-2">
-        <span>Brands</span>
-        <span className="font-medium text-zinc-200">{tier.brands}</span>
-      </li>
-      <li className="flex justify-between gap-2">
-        <span>Seats</span>
-        <span className="font-medium text-zinc-200">{tier.seats}</span>
-      </li>
-      <li className="flex justify-between gap-2">
-        <span>Workspaces</span>
-        <span className="font-medium text-zinc-200">{tier.workspaces}</span>
-      </li>
-      <li className="flex justify-between gap-2">
-        <span>Concurrent renders</span>
-        <span className="font-medium text-zinc-200">{tier.concurrent}</span>
-      </li>
-      <li className="flex justify-between gap-2">
-        <span>Shopify sync</span>
-        <span className="font-medium text-zinc-200">{tier.shopify ? 'Yes' : 'No'}</span>
-      </li>
+      {tier.features.map((feature) => (
+        <li key={feature} className="font-medium text-zinc-200">
+          {feature}
+        </li>
+      ))}
     </ul>
   )
 }
 
-function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
+function TierCard({ tier, billing, appUrl }: { tier: Tier; billing: Billing; appUrl: string }) {
   const inner = (
     <>
       {tier.popular && (
@@ -70,7 +52,7 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
       </div>
       <FeatureList tier={tier} />
       <a
-        href="https://app.adrender.app"
+        href={appUrl}
         className={`mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
           tier.popular ? 'btn-cta' : 'btn-outline-accent'
         }`}
@@ -91,7 +73,7 @@ function TierCard({ tier, billing }: { tier: Tier; billing: Billing }) {
   return <article className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#12121a] p-6">{inner}</article>
 }
 
-function FreeTierBanner({ tier, billing }: { tier: Tier; billing: Billing }) {
+function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billing; appUrl: string }) {
   return (
     <article className="relative overflow-hidden rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)] bg-gradient-to-br from-[#0e1a22] via-[#12121a] to-[#16121f] px-6 py-8 sm:px-10">
       <div
@@ -116,37 +98,18 @@ function FreeTierBanner({ tier, billing }: { tier: Tier; billing: Billing }) {
             )}
           </div>
           <a
-            href="https://app.adrender.app"
+            href={appUrl}
             className="btn-cta mt-6 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold"
           >
             Start Free
           </a>
         </div>
-        <ul className="grid w-full max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-sm text-zinc-400 sm:gap-x-8">
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Tokens</span>
-            <span className="font-medium text-zinc-200">{formatTokens(tier.tokens)}</span>
-          </li>
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Brands</span>
-            <span className="font-medium text-zinc-200">{tier.brands}</span>
-          </li>
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Seats</span>
-            <span className="font-medium text-zinc-200">{tier.seats}</span>
-          </li>
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Workspaces</span>
-            <span className="font-medium text-zinc-200">{tier.workspaces}</span>
-          </li>
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Renders</span>
-            <span className="font-medium text-zinc-200">{tier.concurrent}</span>
-          </li>
-          <li className="flex justify-between gap-2 border-b border-white/[0.06] pb-2">
-            <span>Shopify</span>
-            <span className="font-medium text-zinc-200">{tier.shopify ? 'Yes' : 'No'}</span>
-          </li>
+        <ul className="grid w-full max-w-sm grid-cols-1 gap-y-3 text-sm sm:grid-cols-2 sm:gap-x-8">
+          {tier.features.map((feature) => (
+            <li key={feature} className="border-b border-white/[0.06] pb-2 font-medium text-zinc-200">
+              {feature}
+            </li>
+          ))}
         </ul>
       </div>
     </article>
@@ -155,6 +118,7 @@ function FreeTierBanner({ tier, billing }: { tier: Tier; billing: Billing }) {
 
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
+  const appUrl = useMemo(() => getAppUrl(), [])
   const freeTier = tiers.filter((t) => t.id === 'free')
   const paidTiers = tiers.filter((t) => t.id !== 'free')
 
@@ -166,7 +130,7 @@ export function Pricing() {
           <h2 className="mt-3 text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             Simple pricing. Serious output.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Switch billing anytime. Beta pricing honored for your first six months.</p>
+          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Switch billing anytime.</p>
 
           <div className="mx-auto mt-10 flex items-center justify-center gap-3">
             <span className={`text-sm font-medium ${billing === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>Monthly</span>
@@ -188,26 +152,19 @@ export function Pricing() {
               <span className="text-gradient-accent font-semibold">(20% off)</span>
             </span>
           </div>
-          <p className="mx-auto mt-5 max-w-lg text-center text-xs leading-relaxed text-zinc-500 md:text-sm">
-            Beta subscribers lock in current pricing for 6 months. Subscribe now at{' '}
-            <a href="https://adrender.app" className="text-[var(--accent-cyan)] underline decoration-[var(--accent-cyan)]/40 underline-offset-2 transition hover:decoration-[var(--accent-cyan)]">
-              adrender.app
-            </a>{' '}
-            — Shopify App Store listing coming soon.
-          </p>
         </ScrollReveal>
 
         <div className="mt-14 space-y-6">
           {freeTier.map((tier) => (
             <ScrollReveal key={tier.id}>
-              <FreeTierBanner tier={tier} billing={billing} />
+              <FreeTierBanner tier={tier} billing={billing} appUrl={appUrl} />
             </ScrollReveal>
           ))}
 
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {paidTiers.map((tier) => (
               <ScrollReveal key={tier.id}>
-                <TierCard tier={tier} billing={billing} />
+                <TierCard tier={tier} billing={billing} appUrl={appUrl} />
               </ScrollReveal>
             ))}
           </div>

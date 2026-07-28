@@ -1,4 +1,10 @@
+import { useMemo } from 'react'
+import { HowItWorks } from './HowItWorks'
+import { getAppUrl } from '../lib/appUrl'
+
 export function Hero() {
+  const appUrl = useMemo(() => getAppUrl(), [])
+
   return (
     <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-24 pt-16 md:px-6 md:pb-32 md:pt-24">
       {/* Grid + subtle motion */}
@@ -31,17 +37,22 @@ export function Hero() {
             Ship More Ads Before Lunch Than Your Agency Does All Week.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
-            AdRender generates brand-perfect static ads using 100M+ real winning templates — no designer, no delays, no excuses. Got a
-            Shopify store? Sync your products in one click.
+            AdRender generates brand-perfect static ads using 100M+ real winning templates — no designer, no delays,
+            no excuses. Running on Shopify? Sync your catalog when you&apos;re ready to scale.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="https://app.adrender.app" className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold">
+            <a
+              href={appUrl}
+              className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold"
+            >
               Start Free
             </a>
           </div>
         </div>
 
-        <div className="mx-auto mt-16 max-w-4xl">
+        <HowItWorks />
+
+        <div className="mx-auto mt-4 max-w-4xl md:mt-8">
           <div className="overflow-hidden rounded-xl border border-white/[0.12] shadow-[0_0_60px_-20px_rgba(0,229,255,0.15)]">
             <div className="relative aspect-video">
               <iframe

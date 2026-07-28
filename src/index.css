@@ -197,6 +197,31 @@
     padding-left: 1em;
     color: #71717a;
   }
+
+  .blog-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    margin: 1.5em 0;
+  }
+
+  .blog-prose th,
+  .blog-prose td {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.65em 0.85em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .blog-prose th {
+    background: rgba(255, 255, 255, 0.04);
+    color: #e4e4e7;
+    font-weight: 600;
+  }
+
+  .blog-prose td {
+    color: #a1a1aa;
+  }
 }
 
 @layer utilities {
@@ -244,6 +269,18 @@
     }
     50% {
       transform: translate(2%, -1%) scale(1.03);
+    }
+  }
+
+  @keyframes how-arrow-pulse {
+    0%,
+    100% {
+      opacity: 0.45;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(4px);
     }
   }
 }

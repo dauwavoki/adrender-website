@@ -20,8 +20,8 @@ export function Footer() {
             <a href="/#pricing" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
               Pricing
             </a>
-            <a href="/#waitlist" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              App Store
+            <a href="/#faq" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              FAQ
             </a>
           </div>
           <div className="flex flex-col gap-2">
