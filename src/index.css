@@ -222,7 +222,7 @@
     padding: 0.8em 1em;
     text-align: left;
     vertical-align: top;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .blog-prose .blog-table-wrap tr:last-child td {
