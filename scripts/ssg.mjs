@@ -1,5 +1,5 @@
 /**
- * Post-build static site generation via Vite SSR (no headless browser).
+ * Post-build static site generation via a production Vite SSR bundle.
  *
  * Why not vite-react-ssg: it peers on react-router-dom@^6 and imports
  * `react-router-dom/server.js`, which React Router v7 no longer exports.
@@ -7,11 +7,20 @@
  * Why not react-helmet-async context: on React 19 it becomes a no-op for SSR
  * collection. We use React 19 native <title>/<meta>/<link> in PageMeta, then
  * hoist those tags from the renderToString body into each page's <head>.
+ *
+ * Why a production SSR build (not vite.ssrLoadModule): the Vite *dev* SSR
+ * transform resolves imported images to `/src/assets/...` URLs. Those paths
+ * do not exist in `dist/` and 404 in production. A real SSR build rewrites
+ * imports to the same hashed `/assets/<name>-<hash>.ext` URLs as the client
+ * build, so prerendered <img src> matches files that were actually emitted.
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { createServer } from 'vite'
+import { pathToFileURL } from 'node:url'
+import { build } from 'vite'
 import { ROOT, getAllRoutes } from './site-urls.mjs'
+
+const SERVER_OUT = path.join(ROOT, 'dist/server')
 
 /** @param {string} route */
 function htmlOutPath(route) {
@@ -71,18 +80,23 @@ export async function ssg() {
     throw new Error('dist/index.html missing — run vite build first')
   }
 
-  const template = fs.readFileSync(templatePath, 'utf8')
-  const all = getAllRoutes()
-
-  const vite = await createServer({
-    root: ROOT,
-    server: { middlewareMode: true },
-    appType: 'custom',
+  // Production SSR bundle: asset imports → hashed /assets/... URLs (same as client).
+  await build({
+    configFile: path.join(ROOT, 'vite.config.ts'),
+    build: {
+      ssr: path.join(ROOT, 'src/entry-server.tsx'),
+      outDir: SERVER_OUT,
+      emptyOutDir: true,
+      copyPublicDir: false,
+    },
     logLevel: 'error',
   })
 
+  const template = fs.readFileSync(templatePath, 'utf8')
+  const all = getAllRoutes()
+
   try {
-    const mod = await vite.ssrLoadModule('/src/entry-server.tsx')
+    const mod = await import(pathToFileURL(path.join(SERVER_OUT, 'entry-server.js')).href)
     /** @type {(url: string) => string} */
     const render = mod.render
 
@@ -98,7 +112,8 @@ export async function ssg() {
 
     console.log(`[ssg] Done — ${all.length} routes`)
   } finally {
-    await vite.close()
+    // SSR bundle is only needed at build time; keep the deploy artifact client-only.
+    fs.rmSync(SERVER_OUT, { recursive: true, force: true })
   }
 }
 
