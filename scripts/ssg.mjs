@@ -72,8 +72,7 @@ export async function ssg() {
   }
 
   const template = fs.readFileSync(templatePath, 'utf8')
-  const routes = getAllRoutes()
-  const all = [...new Set([...routes, '/terms', '/privacy'])]
+  const all = getAllRoutes()
 
   const vite = await createServer({
     root: ROOT,

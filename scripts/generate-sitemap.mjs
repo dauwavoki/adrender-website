@@ -10,6 +10,7 @@ function metaForRoute(route) {
   if (route === '/') return { changefreq: 'weekly', priority: '1.0' }
   if (route === '/affiliates') return { changefreq: 'monthly', priority: '0.7' }
   if (route === '/contact') return { changefreq: 'monthly', priority: '0.5' }
+  if (route === '/terms' || route === '/privacy') return { changefreq: 'yearly', priority: '0.3' }
   if (route === '/blog') return { changefreq: 'weekly', priority: '0.7' }
   if (route.startsWith('/blog/')) {
     const slug = route.slice('/blog/'.length)

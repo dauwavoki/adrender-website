@@ -1,6 +1,13 @@
+import { PageMeta } from '../components/PageMeta'
+
+const TITLE = 'Terms and Conditions — AdRender'
+const DESCRIPTION =
+  'Terms governing use of AdRender — accounts, subscriptions, acceptable use, intellectual property, and liability for our AI ad generation service.'
+
 export function TermsPage() {
   return (
     <div className="min-h-dvh bg-[#0a0a0f] text-zinc-300">
+      <PageMeta title={TITLE} description={DESCRIPTION} path="/terms" />
       {/* Minimal standalone header */}
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4 md:px-6">
