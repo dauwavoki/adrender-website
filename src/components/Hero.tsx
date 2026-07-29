@@ -40,13 +40,14 @@ export function Hero() {
             AdRender generates brand-perfect static ads using 100M+ real winning templates — no designer, no delays,
             no excuses. Running on Shopify? Sync your catalog when you&apos;re ready to scale.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-3">
             <a
               href={appUrl}
               className="btn-cta inline-flex items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Start Free
             </a>
+            <p className="text-sm text-zinc-500">No Credit Card Required</p>
           </div>
         </div>
 
