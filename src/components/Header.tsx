@@ -30,9 +30,9 @@ export function Header() {
             <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Pricing
             </a>
-            <a href="/#about" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
+            <NavLink to="/about" className={navLinkClass}>
               About
-            </a>
+            </NavLink>
             <NavLink to="/blog" className={navLinkClass}>
               Blog
             </NavLink>
@@ -89,13 +89,9 @@ export function Header() {
           >
             Pricing
           </a>
-          <a
-            href="/#about"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-            onClick={() => setOpen(false)}
-          >
+          <NavLink to="/about" className={navLinkClass} onClick={() => setOpen(false)}>
             About
-          </a>
+          </NavLink>
           <NavLink to="/blog" className={navLinkClass} onClick={() => setOpen(false)}>
             Blog
           </NavLink>

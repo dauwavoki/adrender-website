@@ -58,6 +58,7 @@ export function getAllRoutes() {
   const blogPaths = getBlogPostsMeta().map((p) => `/blog/${p.slug}`)
   return [
     '/',
+    '/about',
     '/affiliates',
     '/contact',
     '/terms',
