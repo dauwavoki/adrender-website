@@ -1,4 +1,4 @@
-const APP_BASE = 'https://app.adrender.app'
+export const APP_BASE = 'https://app.adrender.app'
 
 /**
  * Start Free / app deep links. Forwards `?ref=` from the current page when present

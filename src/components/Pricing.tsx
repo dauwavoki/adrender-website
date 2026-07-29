@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
-import { getAppUrl } from '../lib/appUrl'
+import { useAppUrl } from '../hooks/useAppUrl'
 
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
@@ -118,7 +118,7 @@ function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billin
 
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
-  const appUrl = useMemo(() => getAppUrl(), [])
+  const appUrl = useAppUrl()
   const freeTier = tiers.filter((t) => t.id === 'free')
   const paidTiers = tiers.filter((t) => t.id !== 'free')
 

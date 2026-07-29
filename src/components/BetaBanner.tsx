@@ -1,8 +1,7 @@
-import { useMemo } from 'react'
-import { getAppUrl } from '../lib/appUrl'
+import { useAppUrl } from '../hooks/useAppUrl'
 
 export function BetaBanner() {
-  const appUrl = useMemo(() => getAppUrl(), [])
+  const appUrl = useAppUrl()
 
   return (
     <div className="border-b border-white/[0.1] bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-purple)] px-4 py-3 text-center text-sm font-bold text-white shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]">

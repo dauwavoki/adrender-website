@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
 import { HowItWorks } from './HowItWorks'
-import { getAppUrl } from '../lib/appUrl'
+import { useAppUrl } from '../hooks/useAppUrl'
 
 export function Hero() {
-  const appUrl = useMemo(() => getAppUrl(), [])
+  const appUrl = useAppUrl()
 
   return (
     <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-24 pt-16 md:px-6 md:pb-32 md:pt-24">

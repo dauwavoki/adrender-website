@@ -1,5 +1,5 @@
 /**
- * Shared route discovery for sitemap + prerender.
+ * Shared route discovery for sitemap + SSG.
  * Sources of truth: static routes, src/data/comparisons.tsx slugs, src/content/blog/*.md
  */
 import fs from 'node:fs'

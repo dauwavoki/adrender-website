@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogoLink'
-import { getAppUrl } from '../lib/appUrl'
+import { useAppUrl } from '../hooks/useAppUrl'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `text-sm font-medium transition-colors ${
@@ -10,7 +10,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 
 export function Header() {
   const [open, setOpen] = useState(false)
-  const appUrl = useMemo(() => getAppUrl(), [])
+  const appUrl = useAppUrl()
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/85 backdrop-blur-md">
