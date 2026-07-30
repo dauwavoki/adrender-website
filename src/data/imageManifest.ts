@@ -31,7 +31,7 @@ export type ImageManifestEntry = {
   aspect: string
 }
 
-/** Source of truth for placeholder slots — replace SVGs in /public/placeholders/ with final assets. */
+/** Source of truth for landing image slots — files live in /public/placeholders/img-XX.png. */
 export const IMAGE_MANIFEST: ImageManifestEntry[] = [
   { id: '01', label: 'Hero: Templates tab', where: 'Homepage §2 Interactive App Preview', width: 1440, height: 900, aspect: '16:10' },
   { id: '02', label: 'Hero: Saved Templates tab', where: 'Homepage §2 Interactive App Preview', width: 1440, height: 900, aspect: '16:10' },
@@ -58,7 +58,7 @@ export const IMAGE_MANIFEST: ImageManifestEntry[] = [
 ]
 
 export function placeholderSrc(id: PlaceholderId): string {
-  return `/placeholders/img-${id}.svg`
+  return `/placeholders/img-${id}.png`
 }
 
 export function getManifestEntry(id: PlaceholderId): ImageManifestEntry {

@@ -10,8 +10,8 @@ type PlaceholderImageProps = {
 }
 
 /**
- * Documented placeholder slot. Swap `/public/placeholders/img-XX.svg` with final
- * assets later — keep the same filename (or update placeholderSrc).
+ * Documented landing-image slot. Files live at `/public/placeholders/img-XX.png`
+ * (see IMAGE_MANIFEST.md / imageManifest.ts).
  */
 export function PlaceholderImage({
   id,
