@@ -79,47 +79,45 @@ function hasClickedHeroTab(): boolean {
 function TabExploreCue() {
   return (
     <div
-      className="pointer-events-none absolute left-[11rem] top-[9.75rem] z-20 hidden select-none sm:left-[13.5rem] md:left-[15.5rem] md:block lg:left-[16rem]"
+      className="pointer-events-none absolute -left-1 top-[8.5rem] z-30 hidden w-[7.5rem] select-none md:block lg:-left-2 lg:w-32"
       aria-hidden
     >
-      <div className="tab-cue-bob flex items-start gap-1.5">
+      <div className="tab-cue-bob flex flex-col items-end gap-0.5">
+        <span className="font-hand text-right text-[1.4rem] leading-none tracking-wide text-[#00e5ff] drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)]">
+          click to explore
+        </span>
         <svg
-          width="72"
-          height="64"
-          viewBox="0 0 72 64"
+          width="88"
+          height="56"
+          viewBox="0 0 88 56"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="mt-1 shrink-0 text-[#00e5ff]/85 drop-shadow-[0_0_8px_rgba(0,229,255,0.25)]"
+          className="mr-1 text-[#00e5ff] drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)]"
         >
-          {/* Loose hand-drawn curve pointing left toward the tabs */}
+          {/* Loose hand-drawn curve pointing right into the tab column */}
           <path
-            d="M58.5 11.5c-9.2 1.8-18.4 2.2-26.8 6.4-7.6 3.8-14.2 11.2-18.6 19.8-2.1 4.1-3.4 8.6-3.8 13.2"
+            d="M8 10c12.5 2.5 24 4 36 10 10.5 5.2 19 14.5 24.5 24"
             stroke="currentColor"
-            strokeWidth="2.15"
+            strokeWidth="2.25"
             strokeLinecap="round"
             strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
           />
-          {/* Slight second stroke for ink roughness */}
           <path
-            d="M57.2 13.1c-8.6 1.4-17.1 2.5-24.9 6.1-6.9 3.2-12.8 9.8-16.8 17.4"
+            d="M9.5 12c11 2 22.5 3.8 33.5 9.2 9.5 4.7 17 12.8 22 21.5"
             stroke="currentColor"
-            strokeWidth="1.05"
+            strokeWidth="1.1"
             strokeLinecap="round"
             opacity="0.35"
           />
           {/* Sketchy arrowhead */}
           <path
-            d="M14.2 43.5c-1.8 2.6-3.9 5.1-5.2 8.1M14.2 43.5c3.4 1.1 6.4 3.2 9.1 5.4"
+            d="M58 40c3.5 2.2 7.2 4.8 9.5 8.2M58 40c-1.2 3.8-1.8 7.4-1.5 11"
             stroke="currentColor"
-            strokeWidth="2.15"
+            strokeWidth="2.25"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </svg>
-        <span className="font-hand -mt-0.5 max-w-[6.5rem] text-[1.35rem] leading-tight tracking-wide text-[#00e5ff]/90">
-          click to explore
-        </span>
       </div>
     </div>
   )
@@ -161,10 +159,11 @@ export function AppPreview() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl">
-        {showCue ? <TabExploreCue /> : null}
+      <div className="relative mx-auto max-w-6xl md:px-8 lg:px-10">
+        <div className="relative">
+          {showCue ? <TabExploreCue /> : null}
 
-        <div className="overflow-hidden rounded-t-2xl border border-b-0 border-white/[0.12] bg-[#0c0c12] shadow-[0_-20px_80px_-30px_rgba(123,79,212,0.35)]">
+          <div className="overflow-hidden rounded-t-2xl border border-b-0 border-white/[0.12] bg-[#0c0c12] shadow-[0_-20px_80px_-30px_rgba(123,79,212,0.35)]">
           <div className="flex items-center gap-2 border-b border-white/[0.06] bg-[#0a0a0f] px-4 py-2.5">
             <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -289,6 +288,7 @@ export function AppPreview() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>
