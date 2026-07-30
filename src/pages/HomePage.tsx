@@ -1,25 +1,33 @@
 import { Hero } from '../components/Hero'
-import { Features } from '../components/Features'
-import { SavingsCard } from '../components/SavingsCard'
+import { AppPreview } from '../components/AppPreview'
+import { ProblemBottleneckFix } from '../components/ProblemBottleneckFix'
+import { FounderStory } from '../components/FounderStory'
+import { FeatureCards } from '../components/FeatureCards'
+import { CostTable } from '../components/CostTable'
+import { ProofRow } from '../components/ProofRow'
 import { Pricing } from '../components/Pricing'
 import { FaqSection } from '../components/FaqSection'
-import { AboutSection } from '../components/AboutSection'
+import { ClosingCta } from '../components/ClosingCta'
 import { PageMeta } from '../components/PageMeta'
 
 const TITLE = 'AdRender — AI Ad Generator for Shopify | 100M+ Real Templates'
 const DESCRIPTION =
-  'Generate hundreds of on-brand static ads in minutes. Connect your Shopify store, browse real winning ad templates, and let AI build your ads automatically. No designer needed. Free to start.'
+  'Generate hundreds of on-brand static ads in minutes. Connect your Shopify store, browse proven ad structures from 100M+ real ads, and ship creatives without a designer. Free to start.'
 
 export function HomePage() {
   return (
     <>
       <PageMeta title={TITLE} description={DESCRIPTION} path="/" />
       <Hero />
-      <Features />
-      <SavingsCard />
+      <AppPreview />
+      <ProblemBottleneckFix />
+      <FounderStory />
+      <FeatureCards />
+      <CostTable />
+      <ProofRow />
       <Pricing />
       <FaqSection />
-      <AboutSection />
+      <ClosingCta />
     </>
   )
 }
