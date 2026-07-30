@@ -56,6 +56,74 @@ const TABS: Tab[] = [
 ]
 
 const DEFAULT_TAB = TABS[0]
+const TAB_HINT_STORAGE_KEY = 'adrender_hero_tab_clicked'
+const TAB_HINT_AUTO_DISMISS_MS = 18_000
+
+function markHeroTabClicked() {
+  try {
+    localStorage.setItem(TAB_HINT_STORAGE_KEY, '1')
+  } catch {
+    // private mode / blocked storage — ignore
+  }
+}
+
+function hasClickedHeroTab(): boolean {
+  try {
+    return localStorage.getItem(TAB_HINT_STORAGE_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+/** Sketchy curved arrow + label pointing at the sidebar tabs. md+ only. */
+function TabExploreCue() {
+  return (
+    <div
+      className="pointer-events-none absolute left-[11rem] top-[9.75rem] z-20 hidden select-none sm:left-[13.5rem] md:left-[15.5rem] md:block lg:left-[16rem]"
+      aria-hidden
+    >
+      <div className="tab-cue-bob flex items-start gap-1.5">
+        <svg
+          width="72"
+          height="64"
+          viewBox="0 0 72 64"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="mt-1 shrink-0 text-[#00e5ff]/85 drop-shadow-[0_0_8px_rgba(0,229,255,0.25)]"
+        >
+          {/* Loose hand-drawn curve pointing left toward the tabs */}
+          <path
+            d="M58.5 11.5c-9.2 1.8-18.4 2.2-26.8 6.4-7.6 3.8-14.2 11.2-18.6 19.8-2.1 4.1-3.4 8.6-3.8 13.2"
+            stroke="currentColor"
+            strokeWidth="2.15"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+          {/* Slight second stroke for ink roughness */}
+          <path
+            d="M57.2 13.1c-8.6 1.4-17.1 2.5-24.9 6.1-6.9 3.2-12.8 9.8-16.8 17.4"
+            stroke="currentColor"
+            strokeWidth="1.05"
+            strokeLinecap="round"
+            opacity="0.35"
+          />
+          {/* Sketchy arrowhead */}
+          <path
+            d="M14.2 43.5c-1.8 2.6-3.9 5.1-5.2 8.1M14.2 43.5c3.4 1.1 6.4 3.2 9.1 5.4"
+            stroke="currentColor"
+            strokeWidth="2.15"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="font-hand -mt-0.5 max-w-[6.5rem] text-[1.35rem] leading-tight tracking-wide text-[#00e5ff]/90">
+          click to explore
+        </span>
+      </div>
+    </div>
+  )
+}
 
 /**
  * Interactive AdRender app window. Templates tab is the default active state so SSG
@@ -63,6 +131,8 @@ const DEFAULT_TAB = TABS[0]
  */
 export function AppPreview() {
   const [activeId, setActiveId] = useState<TabId>(DEFAULT_TAB.id)
+  // Start hidden to avoid flash for returning visitors during hydrate.
+  const [showCue, setShowCue] = useState(false)
 
   useEffect(() => {
     for (const tab of TABS) {
@@ -70,6 +140,19 @@ export function AppPreview() {
       img.src = placeholderSrc(tab.imageId)
     }
   }, [])
+
+  useEffect(() => {
+    if (hasClickedHeroTab()) return
+    setShowCue(true)
+    const timer = window.setTimeout(() => setShowCue(false), TAB_HINT_AUTO_DISMISS_MS)
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  function handleTabClick(tabId: TabId) {
+    setActiveId(tabId)
+    markHeroTabClicked()
+    setShowCue(false)
+  }
 
   return (
     <section className="relative px-4 md:px-6" aria-label="AdRender product preview">
@@ -79,6 +162,8 @@ export function AppPreview() {
       />
 
       <div className="relative mx-auto max-w-6xl">
+        {showCue ? <TabExploreCue /> : null}
+
         <div className="overflow-hidden rounded-t-2xl border border-b-0 border-white/[0.12] bg-[#0c0c12] shadow-[0_-20px_80px_-30px_rgba(123,79,212,0.35)]">
           <div className="flex items-center gap-2 border-b border-white/[0.06] bg-[#0a0a0f] px-4 py-2.5">
             <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
@@ -125,7 +210,7 @@ export function AppPreview() {
                     <button
                       key={tab.id}
                       type="button"
-                      onClick={() => setActiveId(tab.id)}
+                      onClick={() => handleTabClick(tab.id)}
                       aria-pressed={isActive}
                       className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] transition-colors ${
                         isActive

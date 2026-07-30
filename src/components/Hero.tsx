@@ -48,6 +48,9 @@ export function Hero() {
         <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">
           Built for Shopify stores, solo founders, and marketers spending $500–$15K/month on ads.
         </p>
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-zinc-600">
+          No learning curve — if you can click, you can create.
+        </p>
       </div>
     </section>
   )
