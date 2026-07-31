@@ -159,7 +159,23 @@ export function AppPreview() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl md:px-8 lg:px-10">
+      {/* Mobile: static product screenshot — interactive demo is too dense on small screens */}
+      <div className="relative mx-auto max-w-6xl md:hidden">
+        <div className="overflow-hidden rounded-2xl border border-white/[0.12] bg-[#0c0c12] shadow-[0_-20px_80px_-30px_rgba(123,79,212,0.35)]">
+          <img
+            src="/hero-mobile.png"
+            alt="AdRender Templates dashboard"
+            width={1024}
+            height={590}
+            decoding="async"
+            loading="eager"
+            className="h-auto w-full object-cover object-left-top"
+          />
+        </div>
+      </div>
+
+      {/* Desktop: interactive app preview with clickable sidebar tabs */}
+      <div className="relative mx-auto hidden max-w-6xl md:block md:px-8 lg:px-10">
         <div className="relative">
           {showCue ? <TabExploreCue /> : null}
 
