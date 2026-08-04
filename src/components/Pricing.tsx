@@ -85,7 +85,7 @@ function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billin
         <div className="max-w-md">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-cyan)]">Free plan</p>
           <h3 className="mt-2 font-heading text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            {tier.tagline ?? 'Try it out for free'}
+            {tier.tagline ?? 'Try it out'}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-zinc-400">
             No card required. Spin up ads and see if AdRender fits your workflow.

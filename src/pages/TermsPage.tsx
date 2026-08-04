@@ -105,7 +105,7 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">4.1 Plans</h3>
                 <p>
-                  The Service is offered in tiered subscription plans (currently Free, Solo, Growth, Pro, and Agency,
+                  The Service is offered in tiered subscription plans (currently Free, Solo, Growth, Pro, and Scale,
                   each a "Plan"). Each Plan defines limits including monthly tokens, brand slots, product limits, team
                   seats, integrations, and feature access. Current Plan definitions, prices, and limits are published
                   at{' '}

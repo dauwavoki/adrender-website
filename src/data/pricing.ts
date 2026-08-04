@@ -17,7 +17,7 @@ export const tiers: Tier[] = [
   {
     id: 'free',
     name: 'Free',
-    tagline: 'Try it out for free',
+    tagline: 'Try it out',
     monthly: 0,
     annual: null,
     features: [
@@ -62,7 +62,7 @@ export const tiers: Tier[] = [
   {
     id: 'pro',
     name: 'Pro',
-    tagline: 'For performance marketers',
+    tagline: 'For growing agencies and freelancers',
     monthly: 79,
     annual: 760,
     features: [
@@ -76,9 +76,9 @@ export const tiers: Tier[] = [
     popular: true,
   },
   {
-    id: 'agency',
-    name: 'Agency',
-    tagline: 'For agencies and teams',
+    id: 'scale',
+    name: 'Scale',
+    tagline: 'For teams running at full volume',
     monthly: 199,
     annual: 1920,
     features: [
