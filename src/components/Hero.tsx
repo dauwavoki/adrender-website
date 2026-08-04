@@ -30,11 +30,11 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-5xl text-center">
         <h1 className="font-heading text-[2.15rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl md:leading-[1.02] lg:text-[4.25rem]">
-          Ship More Ads Before Lunch Than Your Agency Does All Week.
+          Create more ads. Launch more tests. Find more winners.
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-400 sm:text-lg md:text-xl">
-          20 ads used to take three hours. Now 200 takes three minutes. AdRender generates brand-perfect static ads
-          benchmarked against 100M+ real ads that are actually running right now — not templates, not AI slop.
+          AdRender pulls from 100M+ real ads running right now and remixes the winners into your brand. Render
+          hundreds of ads in minutes.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           <a
@@ -46,8 +46,8 @@ export function Hero() {
           <p className="text-sm text-zinc-500">No credit card. No demo call. No sales rep.</p>
         </div>
         <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">
-          Built for Shopify stores, solo founders, and marketers spending $500–$15K/month on ads. No learning
-          curve — if you can click, you can create.
+          Built for anyone spending $500 to $50K+ a month on ads — whether that&apos;s your whole budget or your
+          testing budget. Shopify sync included.
         </p>
       </div>
     </section>
