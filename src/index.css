@@ -337,3 +337,22 @@
     font-family: var(--font-hand);
   }
 }
+
+/* How It Works demo — loading bar sweep (Card 1 & Card 2).
+   Kept outside @layer so Tailwind doesn't tree-shake the keyframes. */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-shimmer-fast {
+  animation: shimmer 1.5s linear infinite;
+}
