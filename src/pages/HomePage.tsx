@@ -1,5 +1,5 @@
 import { Hero } from '../components/Hero'
-import { HowItWorks } from '../components/HowItWorks'
+import { AppPreview } from '../components/AppPreview'
 import { ProblemBottleneckFix } from '../components/ProblemBottleneckFix'
 import { FounderStory } from '../components/FounderStory'
 import { FeatureCards } from '../components/FeatureCards'
@@ -19,7 +19,7 @@ export function HomePage() {
     <>
       <PageMeta title={TITLE} description={DESCRIPTION} path="/" />
       <Hero />
-      <HowItWorks />
+      <AppPreview />
       <ProblemBottleneckFix />
       <FounderStory />
       <FeatureCards />
