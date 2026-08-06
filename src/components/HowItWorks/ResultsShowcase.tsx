@@ -23,8 +23,8 @@ export function ResultsShowcase({ onWebsiteSubmit }: ResultsShowcaseProps) {
 
   return (
     <div className="space-y-5">
-      <p className="max-w-2xl text-sm leading-relaxed text-white/55">
-        Your ads, ready to launch — brand colours, products, and winning formats applied.
+      <p className="max-w-2xl text-sm leading-relaxed text-white/80">
+        Your ads, ready to launch — brand colors, products, and winning formats applied.
       </p>
 
       <TiltedCarousel items={RESULT_PLACEHOLDERS} variant="results" />
@@ -37,7 +37,7 @@ export function ResultsShowcase({ onWebsiteSubmit }: ResultsShowcaseProps) {
               <span>Try it free</span>
             </div>
             <h3 className="text-base font-bold text-white sm:text-lg">
-              Enter your brand URL — or try it live now, free.
+              Try it live now on your brand!
             </h3>
             <p className="text-xs leading-relaxed text-white/50">
               Get your first 10 ads on us. No credit card required to start.
@@ -62,7 +62,7 @@ export function ResultsShowcase({ onWebsiteSubmit }: ResultsShowcaseProps) {
               disabled={isNavigating}
               className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-[var(--accent-cyan)] bg-[var(--accent-cyan)] px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-[color-mix(in_srgb,var(--accent-cyan)_20%,transparent)] transition-all hover:opacity-90 active:scale-95 disabled:opacity-70"
             >
-              <span>{isNavigating ? 'Loading…' : 'Go'}</span>
+              <span>{isNavigating ? 'Loading…' : 'Scan'}</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </form>
