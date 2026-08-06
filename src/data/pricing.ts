@@ -22,7 +22,7 @@ export const tiers: Tier[] = [
     annual: null,
     features: [
       '10 tokens/mo',
-      '1 brands',
+      '1 Brand & Campaign',
       'Team workspaces: No',
       'Concurrent renders: 10',
       'Shopify sync: No',
@@ -37,7 +37,7 @@ export const tiers: Tier[] = [
     annual: 182,
     features: [
       '100 tokens/mo',
-      '3 brands',
+      '20 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 30',
       'Shopify sync: No',
@@ -52,7 +52,7 @@ export const tiers: Tier[] = [
     annual: 374,
     features: [
       '300 tokens/mo',
-      '10 brands',
+      '40 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 40',
       'Shopify sync: Yes',
@@ -67,7 +67,7 @@ export const tiers: Tier[] = [
     annual: 760,
     features: [
       '800 tokens/mo',
-      '50 brands',
+      '60 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 50',
       'Shopify sync: Yes',
@@ -83,7 +83,7 @@ export const tiers: Tier[] = [
     annual: 1920,
     features: [
       '2,500 tokens/mo',
-      'Unlimited brands',
+      'Unlimited Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: Unlimited',
       'Shopify sync: Yes',
