@@ -1,39 +1,22 @@
-export interface Brand {
-  id: string
+export interface DemoBrand {
   name: string
   url: string
   category: string
-  tagline: string
   logoPlaceholder: string
   swatches: string[]
   products: {
     id: string
     name: string
     placeholderLabel: string
-    statLabel: string
   }[]
-  adCount: number
+  documentCount: number
 }
 
-export interface Template {
+export interface CarouselPlaceholder {
   id: string
-  name: string
-  category: string
-  badge: string
-  placeholderLabel: string
-  description: string
-  aspectRatio: string
-}
-
-export interface FinalAd {
-  id: string
-  title: string
-  headline: string
-  ctaText: string
-  bgGradient: string
-  placeholderLabel: string
-  resolution: string
-  adSize: string
+  label: string
+  /** Tailwind gradient classes for the placeholder face */
+  tone: string
 }
 
 export type StepNumber = 1 | 2 | 3

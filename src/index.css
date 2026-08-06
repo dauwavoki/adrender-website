@@ -338,21 +338,115 @@
   }
 }
 
-/* How It Works demo — loading bar sweep (Card 1 & Card 2).
+/* How It Works — stacked showcase + tilted carousels.
    Kept outside @layer so Tailwind doesn't tree-shake the keyframes. */
-@keyframes shimmer {
+
+/* Overlapping card stack (inactive headers peek from behind/below) */
+.hiw-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.hiw-stack-card + .hiw-stack-card {
+  margin-top: -0.65rem;
+}
+
+.hiw-stack-card {
+  box-shadow:
+    0 18px 40px -24px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Card 1 URL scan shimmer (subtle pulse, not a spinner) */
+@keyframes hiw-scan-sweep {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.55;
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(120%);
+    opacity: 0;
   }
 }
 
-.animate-shimmer {
-  animation: shimmer 2s ease-in-out infinite;
+.hiw-scan-shimmer {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    color-mix(in srgb, var(--accent-cyan) 28%, transparent) 50%,
+    transparent 70%
+  );
+  animation: hiw-scan-sweep 1.6s ease-in-out infinite;
 }
 
-.animate-shimmer-fast {
-  animation: shimmer 1.5s linear infinite;
+/* Tilted continuous portrait carousel */
+.hiw-tilted-carousel {
+  --hiw-card-w: 132px;
+  --hiw-card-h: 176px;
+  --hiw-overlap: -28px;
+}
+
+@media (min-width: 640px) {
+  .hiw-tilted-carousel {
+    --hiw-card-w: 148px;
+    --hiw-card-h: 198px;
+    --hiw-overlap: -32px;
+  }
+}
+
+.hiw-tilted-stage {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.hiw-tilted-track {
+  display: flex;
+  width: max-content;
+  transform: rotateX(6deg) rotateY(-10deg) translateZ(0);
+  transform-style: preserve-3d;
+  animation: hiw-carousel-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+.hiw-tilted-track--paused {
+  animation-play-state: paused;
+}
+
+.hiw-tilted-card {
+  flex: 0 0 var(--hiw-card-w);
+  width: var(--hiw-card-w);
+  height: var(--hiw-card-h);
+  margin-right: var(--hiw-overlap);
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 14px 28px -12px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform: rotateY(14deg);
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+@keyframes hiw-carousel-scroll {
+  from {
+    transform: rotateX(6deg) rotateY(-10deg) translate3d(0, 0, 0);
+  }
+  to {
+    /* Half track = one full set of duplicated items */
+    transform: rotateX(6deg) rotateY(-10deg) translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw-tilted-track {
+    animation: none;
+  }
+
+  .hiw-scan-shimmer {
+    animation: none;
+    opacity: 0.25;
+  }
 }

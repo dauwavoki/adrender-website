@@ -1,44 +1,65 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown } from 'lucide-react'
-import { BRANDS, TEMPLATES } from '../../data/howItWorksMock'
 import { getAppUrl } from '../../lib/appUrl'
-import { BrandSelector } from './BrandSelector'
-import { FinalAdsPreview } from './FinalAdsPreview'
-import { TemplateSelector } from './TemplateSelector'
-import type { Brand, StepNumber, Template } from './types'
+import { BrandScan } from './BrandScan'
+import { ResultsShowcase } from './ResultsShowcase'
+import { TemplateShowcase } from './TemplateShowcase'
+import type { StepNumber } from './types'
+
+const STEPS: { num: StepNumber; title: string; description: string; surface: string }[] = [
+  {
+    num: 1,
+    title: 'Add your brand',
+    description: 'URL scan or campaign documents',
+    surface: 'bg-[#12121a]',
+  },
+  {
+    num: 2,
+    title: 'Find your winners',
+    description: "Browse what's working, then render at scale",
+    surface: 'bg-[#141018]',
+  },
+  {
+    num: 3,
+    title: 'See your ads',
+    description: 'Finished creatives, ready to launch',
+    surface: 'bg-[#0f1412]',
+  },
+]
 
 /**
- * Interactive How It Works demo — replaces the static app-screenshot preview
- * below the homepage hero.
+ * How It Works — fixed, non-interactive showcase.
+ * Auto-plays Card 1 → 2 → 3 on scroll-into-view.
+ * Only manual control: click a card title to jump.
  */
 export function HowItWorks() {
   const [activeStep, setActiveStep] = useState<StepNumber>(1)
-
   const [hasScrolledIntoView, setHasScrolledIntoView] = useState(false)
   const [isAutoPlayDisabled, setIsAutoPlayDisabled] = useState(false)
 
-  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(BRANDS[0])
-  const [scanStepText, setScanStepText] = useState('Scanning brand assets...')
-  const [brandLoading, setBrandLoading] = useState(false)
-  const [brandRevealed, setBrandRevealed] = useState(false)
-
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(TEMPLATES[0])
-  const [templateLoading, setTemplateLoading] = useState(false)
+  const [isScanning, setIsScanning] = useState(false)
+  const [isRevealed, setIsRevealed] = useState(false)
 
   const sectionRef = useRef<HTMLElement>(null)
-  const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const autoPlayTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const interactionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const clearAutoPlayTimers = () => {
-    if (autoPlayTimerRef.current) {
-      clearTimeout(autoPlayTimerRef.current)
-      autoPlayTimerRef.current = null
-    }
+    autoPlayTimersRef.current.forEach(clearTimeout)
+    autoPlayTimersRef.current = []
   }
 
-  const handleUserInteraction = () => {
-    clearAutoPlayTimers()
-    setIsAutoPlayDisabled(true)
+  const scheduleAutoPlay = (fn: () => void, ms: number) => {
+    const id = setTimeout(fn, ms)
+    autoPlayTimersRef.current.push(id)
+    return id
+  }
+
+  const clearInteractionTimer = () => {
+    if (interactionTimerRef.current) {
+      clearTimeout(interactionTimerRef.current)
+      interactionTimerRef.current = null
+    }
   }
 
   useEffect(() => {
@@ -56,49 +77,35 @@ export function HowItWorks() {
       observer.observe(sectionRef.current)
     }
 
-    return () => {
-      observer.disconnect()
-    }
+    return () => observer.disconnect()
   }, [hasScrolledIntoView])
 
-  // Depends only on scroll + disable flags so React Strict Mode remounts
-  // can restart cleanly (gating on a phase enum would strand the sequence
-  // after the first effect's cleanup cleared the timers).
+  // Scripted autoplay: scan → reveal → card 2 → card 3
   useEffect(() => {
-    if (!hasScrolledIntoView || isAutoPlayDisabled) {
-      return
-    }
+    if (!hasScrolledIntoView || isAutoPlayDisabled) return
 
     let cancelled = false
+    clearAutoPlayTimers()
 
     setActiveStep(1)
-    setSelectedBrand(BRANDS[0])
-    setScanStepText(`Scanning ${BRANDS[0].url}...`)
-    setBrandLoading(true)
-    setBrandRevealed(false)
+    setIsScanning(true)
+    setIsRevealed(false)
 
-    autoPlayTimerRef.current = setTimeout(() => {
+    scheduleAutoPlay(() => {
       if (cancelled) return
-      setBrandLoading(false)
-      setBrandRevealed(true)
+      setIsScanning(false)
+      setIsRevealed(true)
 
-      autoPlayTimerRef.current = setTimeout(() => {
+      scheduleAutoPlay(() => {
         if (cancelled) return
         setActiveStep(2)
-        setSelectedTemplate(TEMPLATES[0])
-        setTemplateLoading(true)
 
-        autoPlayTimerRef.current = setTimeout(() => {
+        scheduleAutoPlay(() => {
           if (cancelled) return
-          setTemplateLoading(false)
-
-          autoPlayTimerRef.current = setTimeout(() => {
-            if (cancelled) return
-            setActiveStep(3)
-          }, 1500)
-        }, 2000)
-      }, 1500)
-    }, 2000)
+          setActiveStep(3)
+        }, 4000)
+      }, 2400)
+    }, 2200)
 
     return () => {
       cancelled = true
@@ -106,68 +113,37 @@ export function HowItWorks() {
     }
   }, [hasScrolledIntoView, isAutoPlayDisabled])
 
-  const handleSelectBrand = (brand: Brand) => {
-    handleUserInteraction()
-    setSelectedBrand(brand)
-    setScanStepText(`Scanning ${brand.url}...`)
-    setBrandLoading(true)
-
-    setTimeout(() => {
-      setScanStepText(`Processing ${brand.name} brand assets & ad copies...`)
-      setTimeout(() => {
-        setBrandLoading(false)
-        setBrandRevealed(true)
-        setActiveStep(2)
-      }, 1000)
-    }, 1000)
-  }
-
-  const handleSelectTemplate = (template: Template) => {
-    handleUserInteraction()
-    setSelectedTemplate(template)
-    setTemplateLoading(true)
-
-    setTimeout(() => {
-      setTemplateLoading(false)
-      setActiveStep(3)
-    }, 2000)
-  }
+  useEffect(() => () => clearInteractionTimer(), [])
 
   const handleCardTitleClick = (stepNum: StepNumber) => {
-    handleUserInteraction()
+    // Stopping autoplay remounts the effect cleanup — keep title-click
+    // timers on a separate ref so that cleanup cannot cancel the reveal.
+    clearAutoPlayTimers()
+    clearInteractionTimer()
+    setIsAutoPlayDisabled(true)
     setActiveStep(stepNum)
 
-    if (stepNum === 1 && !brandRevealed && !brandLoading) {
-      handleSelectBrand(selectedBrand || BRANDS[0])
+    if (stepNum === 1) {
+      setIsScanning(true)
+      setIsRevealed(false)
+      interactionTimerRef.current = setTimeout(() => {
+        setIsScanning(false)
+        setIsRevealed(true)
+        interactionTimerRef.current = null
+      }, 1800)
+    } else {
+      setIsScanning(false)
+      setIsRevealed(true)
     }
   }
 
   const handleWebsiteSubmit = (url: string) => {
-    // No /signup route on this marketing site — all CTAs go to app.adrender.app.
-    // Attach ?url= for the planned prefill/auto-scan flow; the app does not
-    // consume this param yet.
-    const dest = new URL(getAppUrl())
+    // Marketing site has no /signup route — hand off to the app with ?url=
+    // for the planned prefill/auto-scan flow.
+    const dest = new URL(getAppUrl('/signup'))
     dest.searchParams.set('url', url)
     window.location.href = dest.toString()
   }
-
-  const stepsInfo = [
-    {
-      num: 1 as StepNumber,
-      title: 'Pick a brand',
-      description: 'See how it works with a demo brand',
-    },
-    {
-      num: 2 as StepNumber,
-      title: 'Choose a template',
-      description: 'Pick from real, high-performing ad formats',
-    },
-    {
-      num: 3 as StepNumber,
-      title: 'See your ads',
-      description: 'Then make it yours in seconds',
-    },
-  ]
 
   return (
     <section
@@ -180,73 +156,63 @@ export function HowItWorks() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl">
-        <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
+      <div className="relative mx-auto max-w-5xl">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
           <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            How It Works — Demo
+            How It Works
           </h2>
         </div>
 
-        <div className="space-y-4">
-          {stepsInfo.map((step) => {
+        {/* Stacked overlapping cards — inactive steps peek as header bands */}
+        <div className="hiw-stack relative">
+          {STEPS.map((step, index) => {
             const isExpanded = activeStep === step.num
+            const z = isExpanded ? 30 : 10 + index
 
             return (
               <div
                 key={step.num}
-                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                style={{ zIndex: z }}
+                className={`hiw-stack-card relative overflow-hidden rounded-2xl border shadow-2xl transition-[opacity,transform] duration-300 ${
+                  step.surface
+                } ${
                   isExpanded
-                    ? 'border-white/10 bg-[#0a0a0f] shadow-2xl ring-1 ring-white/5'
-                    : 'border-white/5 bg-[#08080c] opacity-70 hover:opacity-100'
+                    ? 'border-white/12 opacity-100'
+                    : 'border-white/[0.08] opacity-90 hover:opacity-100'
                 }`}
               >
                 <button
                   type="button"
                   onClick={() => handleCardTitleClick(step.num)}
-                  className={`group flex w-full cursor-pointer items-center justify-between gap-4 p-5 text-left sm:p-6 ${
-                    isExpanded ? 'border-b border-white/5 bg-white/5' : ''
+                  className={`group flex w-full cursor-pointer items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5 ${
+                    isExpanded ? 'border-b border-white/6' : ''
                   }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
-                        isExpanded
-                          ? 'bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] text-white shadow-lg shadow-[color-mix(in_srgb,var(--accent-cyan)_20%,transparent)]'
-                          : 'border border-white/20 text-white/40 group-hover:border-[var(--accent-cyan)] group-hover:text-[var(--accent-cyan)]'
-                      }`}
-                    >
-                      {step.num}
-                    </div>
-
-                    <div>
-                      <h3
-                        className={`text-lg font-medium transition-colors sm:text-xl ${
-                          isExpanded ? 'text-white' : 'text-white/60 group-hover:text-white'
-                        }`}
-                      >
-                        {step.title}
-                      </h3>
-                      <p
-                        className={`mt-0.5 text-xs transition-colors sm:text-sm ${
-                          isExpanded ? 'text-white/50' : 'text-white/30'
-                        }`}
-                      >
-                        {step.description}
-                      </p>
-                    </div>
+                  <div
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                      isExpanded
+                        ? 'bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] text-white shadow-lg shadow-[color-mix(in_srgb,var(--accent-cyan)_20%,transparent)]'
+                        : 'border border-white/20 text-white/40 group-hover:border-[var(--accent-cyan)] group-hover:text-[var(--accent-cyan)]'
+                    }`}
+                  >
+                    {step.num}
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <span className="hidden text-xs uppercase tracking-widest text-white/40 sm:inline">
-                      Step {step.num} of 3
-                    </span>
-                    <div
-                      className={`flex h-7 w-7 items-center justify-center rounded-lg text-white/40 transition-transform duration-300 ${
-                        isExpanded ? 'rotate-180 text-[var(--accent-cyan)]' : 'group-hover:text-white/60'
+                  <div className="min-w-0">
+                    <h3
+                      className={`text-lg font-medium transition-colors sm:text-xl ${
+                        isExpanded ? 'text-white' : 'text-white/65 group-hover:text-white'
                       }`}
                     >
-                      <ChevronDown className="h-4 w-4" />
-                    </div>
+                      {step.title}
+                    </h3>
+                    <p
+                      className={`mt-0.5 text-xs transition-colors sm:text-sm ${
+                        isExpanded ? 'text-white/45' : 'text-white/30'
+                      }`}
+                    >
+                      {step.description}
+                    </p>
                   </div>
                 </button>
 
@@ -257,37 +223,16 @@ export function HowItWorks() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="p-6 sm:p-8">
+                      <div className="px-5 pb-6 pt-1 sm:px-6 sm:pb-8">
                         {step.num === 1 && (
-                          <BrandSelector
-                            brands={BRANDS}
-                            selectedBrand={selectedBrand}
-                            isLoading={brandLoading}
-                            isRevealed={brandRevealed}
-                            onSelectBrand={handleSelectBrand}
-                            scanStepText={scanStepText}
-                          />
+                          <BrandScan isScanning={isScanning} isRevealed={isRevealed} />
                         )}
-
-                        {step.num === 2 && (
-                          <TemplateSelector
-                            templates={TEMPLATES}
-                            selectedTemplate={selectedTemplate}
-                            isLoading={templateLoading}
-                            onSelectTemplate={handleSelectTemplate}
-                          />
-                        )}
-
+                        {step.num === 2 && <TemplateShowcase isActive={activeStep === 2} />}
                         {step.num === 3 && (
-                          <FinalAdsPreview
-                            selectedBrand={selectedBrand}
-                            selectedTemplate={selectedTemplate}
-                            onUserInteraction={handleUserInteraction}
-                            onWebsiteSubmit={handleWebsiteSubmit}
-                          />
+                          <ResultsShowcase onWebsiteSubmit={handleWebsiteSubmit} />
                         )}
                       </div>
                     </motion.div>
