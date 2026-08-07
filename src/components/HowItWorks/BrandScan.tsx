@@ -61,10 +61,14 @@ export function BrandScan() {
             </div>
 
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-bg-card font-mono text-[9px] font-bold text-[var(--accent-cyan)]"
+              className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/15 bg-bg-card"
               title={`${DEMO_BRAND.name} logo`}
             >
-              {DEMO_BRAND.logoPlaceholder}
+              <img
+                src={DEMO_BRAND.logoSrc}
+                alt={`${DEMO_BRAND.name} logo`}
+                className="h-full w-full object-contain p-1"
+              />
             </div>
 
             <div className="flex flex-1 flex-wrap items-center justify-end gap-2.5">
@@ -105,16 +109,17 @@ export function BrandScan() {
             {DEMO_BRAND.products.map((prod) => (
               <div
                 key={prod.id}
-                className="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-bg-card p-2.5 text-center"
+                className="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-bg-card p-2 text-center"
               >
-                <div className="flex aspect-square flex-col items-center justify-center gap-1.5">
-                  <span className="line-clamp-2 text-[11px] font-semibold text-white/80">
-                    {prod.name}
-                  </span>
-                  <span className="rounded border border-[color:color-mix(in_srgb,var(--accent-cyan)_28%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--accent-cyan)]">
-                    {prod.placeholderLabel}
-                  </span>
+                <div className="relative aspect-square overflow-hidden rounded-md bg-white/5">
+                  <img
+                    src={prod.imageSrc}
+                    alt={prod.name}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
+                <p className="line-clamp-1 text-[11px] font-semibold text-white/80">{prod.name}</p>
                 <p className="font-mono text-[10px] font-medium text-white/55">
                   {prod.adCopyCount} ad copies created
                 </p>

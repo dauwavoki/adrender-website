@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { ArrowRight, Globe, Sparkles } from 'lucide-react'
-import { RESULT_PLACEHOLDERS } from '../../data/howItWorksMock'
+import { RESULT_ITEMS } from '../../data/howItWorksMock'
 import { TiltedCarousel } from './TiltedCarousel'
 
 interface ResultsShowcaseProps {
@@ -27,7 +27,7 @@ export function ResultsShowcase({ onWebsiteSubmit }: ResultsShowcaseProps) {
         Your ads, ready to launch — brand colors, products, and winning formats applied.
       </p>
 
-      <TiltedCarousel items={RESULT_PLACEHOLDERS} variant="results" />
+      <TiltedCarousel items={RESULT_ITEMS} />
 
       <div className="relative overflow-hidden rounded-xl border border-[color:color-mix(in_srgb,var(--accent-cyan)_28%,transparent)] bg-bg-elevated p-5 sm:p-6">
         <div className="relative z-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

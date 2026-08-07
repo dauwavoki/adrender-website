@@ -357,14 +357,60 @@
     0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Card 1 URL scan shimmer (subtle pulse, not a spinner) */
+/* Ghostly logo wash — blue / purple / yellow, very light */
+.hiw-card-tone-1 {
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 12% 0%,
+      color-mix(in srgb, var(--accent-cyan) 14%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 90% 100%,
+      color-mix(in srgb, var(--accent-purple) 8%, transparent),
+      transparent 55%
+    ),
+    #12121a;
+}
+
+.hiw-card-tone-2 {
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 88% 0%,
+      color-mix(in srgb, var(--accent-purple) 14%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 10% 100%,
+      color-mix(in srgb, var(--accent-cyan) 7%, transparent),
+      transparent 55%
+    ),
+    #141018;
+}
+
+.hiw-card-tone-3 {
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 50% 0%,
+      color-mix(in srgb, var(--accent-orange) 12%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 15% 100%,
+      color-mix(in srgb, var(--accent-purple) 8%, transparent),
+      transparent 55%
+    ),
+    #12100e;
+}
+
+/* Card 1 — always-on scanning control (stands in for app "Scan here") */
 @keyframes hiw-scan-sweep {
   0% {
     transform: translateX(-120%);
     opacity: 0;
   }
-  35% {
-    opacity: 0.55;
+  40% {
+    opacity: 0.65;
   }
   100% {
     transform: translateX(120%);
@@ -372,21 +418,57 @@
   }
 }
 
+@keyframes hiw-scan-btn-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-cyan) 35%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-cyan) 0%, transparent);
+  }
+}
+
+.hiw-scan-btn {
+  animation: hiw-scan-btn-pulse 2.4s ease-in-out infinite;
+}
+
 .hiw-scan-shimmer {
   background: linear-gradient(
     105deg,
-    transparent 30%,
-    color-mix(in srgb, var(--accent-cyan) 28%, transparent) 50%,
-    transparent 70%
+    transparent 28%,
+    color-mix(in srgb, var(--accent-cyan) 35%, transparent) 50%,
+    transparent 72%
   );
-  animation: hiw-scan-sweep 1.6s ease-in-out infinite;
+  animation: hiw-scan-sweep 2.2s ease-in-out infinite;
 }
 
-/* Tilted continuous portrait carousel */
+/* Soft edge fade — templates dissolve into the edges (no dark bars) */
 .hiw-tilted-carousel {
   --hiw-card-w: 132px;
   --hiw-card-h: 176px;
   --hiw-overlap: -28px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+/* Batch-render tile spinner (app-style loading ring) */
+@keyframes hiw-render-spin {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+
+.hiw-render-arc {
+  animation: hiw-render-spin 1.1s linear infinite;
 }
 
 @media (min-width: 640px) {
@@ -445,8 +527,13 @@
     animation: none;
   }
 
-  .hiw-scan-shimmer {
+  .hiw-scan-shimmer,
+  .hiw-scan-btn,
+  .hiw-render-arc {
     animation: none;
+  }
+
+  .hiw-scan-shimmer {
     opacity: 0.25;
   }
 }

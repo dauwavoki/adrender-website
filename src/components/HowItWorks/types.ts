@@ -2,21 +2,22 @@ export interface DemoBrand {
   name: string
   url: string
   category: string
-  logoPlaceholder: string
+  logoSrc: string
+  brandVoice: string
   swatches: string[]
   products: {
     id: string
     name: string
-    placeholderLabel: string
+    imageSrc: string
+    adCopyCount: number
   }[]
   documentCount: number
 }
 
-export interface CarouselPlaceholder {
+export interface CarouselItem {
   id: string
-  label: string
-  /** Tailwind gradient classes for the placeholder face */
-  tone: string
+  src: string
+  alt: string
 }
 
 export type StepNumber = 1 | 2 | 3

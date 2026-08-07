@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { DEMO_BRAND, TEMPLATE_PLACEHOLDERS } from '../../data/howItWorksMock'
+import { Sparkle } from 'lucide-react'
+import { TEMPLATE_ITEMS } from '../../data/howItWorksMock'
 import { TiltedCarousel } from './TiltedCarousel'
 
 interface TemplateShowcaseProps {
@@ -7,10 +8,55 @@ interface TemplateShowcaseProps {
   isActive: boolean
 }
 
-const RENDER_TILE_COUNT = 16
+/** Half prior tile size → 16 across × 2 rows */
+const RENDER_COLS = 16
+const RENDER_TILE_COUNT = RENDER_COLS * 2
 
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3)
+}
+
+function RenderTile({ active }: { active: boolean }) {
+  return (
+    <div
+      className={`hiw-render-tile flex aspect-square items-center justify-center rounded-md border transition-all duration-300 ${
+        active
+          ? 'scale-100 border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_6%,#0a0a0f)] opacity-100'
+          : 'scale-95 border-white/5 bg-white/[0.02] opacity-30'
+      }`}
+    >
+      {active && (
+        <div className="relative flex h-[58%] w-[58%] items-center justify-center">
+          <svg
+            className="hiw-render-arc absolute inset-0 h-full w-full text-[var(--accent-cyan)]"
+            viewBox="0 0 36 36"
+            aria-hidden
+          >
+            <circle
+              cx="18"
+              cy="18"
+              r="15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              className="opacity-15"
+            />
+            <circle
+              cx="18"
+              cy="18"
+              r="15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeDasharray="24 70"
+            />
+          </svg>
+          <Sparkle className="relative h-[40%] w-[40%] text-[var(--accent-cyan)]" strokeWidth={2} />
+        </div>
+      )}
+    </div>
+  )
 }
 
 /**
@@ -29,7 +75,8 @@ export function TemplateShowcase({ isActive }: TemplateShowcaseProps) {
       return
     }
 
-    const duration = 1200
+    // ~30% of prior count-up speed (was 1200ms)
+    const duration = 4000
     const start = performance.now()
     let raf = 0
 
@@ -45,14 +92,13 @@ export function TemplateShowcase({ isActive }: TemplateShowcaseProps) {
 
     raf = requestAnimationFrame(tick)
 
-    // Progressive tile reveal — independent of counter timing
     setVisibleTiles(0)
     const tileTimers: ReturnType<typeof setTimeout>[] = []
     for (let i = 0; i < RENDER_TILE_COUNT; i++) {
       tileTimers.push(
         setTimeout(() => {
           setVisibleTiles((n) => Math.max(n, i + 1))
-        }, 80 + i * 70),
+        }, 60 + i * 45),
       )
     }
 
@@ -64,21 +110,12 @@ export function TemplateShowcase({ isActive }: TemplateShowcaseProps) {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <p className="max-w-2xl text-sm leading-relaxed text-white/55">
-          Browse 100M+ real ads running right now — filter by longest-running, niche, platform, and
-          more, to see exactly what&apos;s working for your competitors.
-        </p>
+      <p className="max-w-2xl text-sm leading-relaxed text-white/80">
+        Browse 100M+ real ads running right now — filter by longest-running, niche, platform, and
+        more, to see exactly what&apos;s working for your competitors.
+      </p>
 
-        <div
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-bg-card font-mono text-[9px] font-bold text-[var(--accent-cyan)]"
-          title={`${DEMO_BRAND.name} logo`}
-        >
-          {DEMO_BRAND.logoPlaceholder}
-        </div>
-      </div>
-
-      <TiltedCarousel items={TEMPLATE_PLACEHOLDERS} variant="templates" />
+      <TiltedCarousel items={TEMPLATE_ITEMS} />
 
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-bg-elevated p-4 sm:p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
@@ -97,20 +134,10 @@ export function TemplateShowcase({ isActive }: TemplateShowcaseProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-8 gap-1.5 sm:grid-cols-8">
-          {Array.from({ length: RENDER_TILE_COUNT }, (_, i) => {
-            const shown = i < visibleTiles
-            return (
-              <div
-                key={i}
-                className={`aspect-square rounded-md border transition-all duration-300 ${
-                  shown
-                    ? 'scale-100 border-[color:color-mix(in_srgb,var(--accent-cyan)_30%,transparent)] bg-gradient-to-br from-[color:color-mix(in_srgb,var(--accent-cyan)_18%,transparent)] to-white/5 opacity-100'
-                    : 'scale-95 border-white/5 bg-white/[0.02] opacity-25'
-                }`}
-              />
-            )
-          })}
+        <div className="grid grid-cols-[repeat(8,minmax(0,1fr))] gap-1 sm:grid-cols-[repeat(16,minmax(0,1fr))] sm:gap-1.5">
+          {Array.from({ length: RENDER_TILE_COUNT }, (_, i) => (
+            <RenderTile key={i} active={i < visibleTiles} />
+          ))}
         </div>
       </div>
     </div>
