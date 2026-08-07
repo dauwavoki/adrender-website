@@ -1,0 +1,377 @@
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { getAppUrl } from '../../lib/appUrl'
+import { BrandScan } from './BrandScan'
+import { ResultsShowcase } from './ResultsShowcase'
+import { TemplateShowcase } from './TemplateShowcase'
+import type { StepNumber } from './types'
+
+const STEPS: { num: StepNumber; title: string; description: string; tone: string }[] = [
+  {
+    num: 1,
+    title: 'Add your brand',
+    description: 'URL scan or campaign documents',
+    tone: 'hiw-card-tone-1',
+  },
+  {
+    num: 2,
+    title: 'Choose winning templates',
+    description: "Browse what's working, then render at scale",
+    tone: 'hiw-card-tone-2',
+  },
+  {
+    num: 3,
+    title: 'See your ads',
+    description: 'Finished creatives, ready to launch',
+    tone: 'hiw-card-tone-3',
+  },
+]
+
+const SCROLL_ADVANCE_COOLDOWN_MS = 700
+/** How close the active card center must be to viewport center before scroll can advance */
+const CENTER_LATCH_PX = 110
+
+/** Active on top; among peeking cards below, nearer ones sit above farther ones (2 over 3). */
+function stackZ(stepNum: StepNumber, active: StepNumber) {
+  if (stepNum === active) return 30
+  if (stepNum > active) return 20 - (stepNum - active)
+  return 10 + stepNum
+}
+
+/**
+ * How It Works — fixed showcase.
+ * Card 1 starts open. Advance only via scroll from inside a latched card, or title click.
+ * Approaching from the hero is free scroll and does not skip to Card 2.
+ */
+export function HowItWorks() {
+  const [activeStep, setActiveStep] = useState<StepNumber>(1)
+
+  const sectionRef = useRef<HTMLElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const activeStepRef = useRef<StepNumber>(activeStep)
+  const sectionInViewRef = useRef(false)
+  /** True only once the active card is centered — scroll-from-above must not latch mid-flight */
+  const latchedRef = useRef(false)
+  /** After first latch, ignore advance briefly so hero-scroll momentum can't skip Card 1 */
+  const latchGraceUntilRef = useRef(0)
+  const shouldCenterRef = useRef(false)
+  const lastAdvanceAtRef = useRef(0)
+
+  activeStepRef.current = activeStep
+
+  const getCenteredScrollTop = (step: StepNumber) => {
+    const el = cardRefs.current[step - 1]
+    if (!el) return null
+    const rect = el.getBoundingClientRect()
+    return Math.max(0, window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2)
+  }
+
+  const isActiveCardNearCenter = () => {
+    const el = cardRefs.current[activeStepRef.current - 1]
+    if (!el) return false
+    const rect = el.getBoundingClientRect()
+    const cardMid = rect.top + rect.height / 2
+    const viewMid = window.innerHeight / 2
+    return Math.abs(cardMid - viewMid) <= CENTER_LATCH_PX
+  }
+
+  const scrollActiveToCenter = (behavior: ScrollBehavior = 'smooth') => {
+    const top = getCenteredScrollTop(activeStepRef.current)
+    if (top == null) return
+    window.scrollTo({ top, behavior })
+  }
+
+  const goToStep = (step: StepNumber) => {
+    if (step === activeStepRef.current) {
+      latchedRef.current = true
+      shouldCenterRef.current = true
+      scrollActiveToCenter('smooth')
+      return
+    }
+    latchedRef.current = true
+    shouldCenterRef.current = true
+    setActiveStep(step)
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        sectionInViewRef.current = entry.isIntersecting
+        if (!entry.isIntersecting) {
+          // Left the section — require a fresh latch next time
+          latchedRef.current = false
+        }
+      },
+      { threshold: 0.2 },
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Center only after a user-driven step change (scroll advance or title click)
+  useEffect(() => {
+    if (!shouldCenterRef.current) return
+
+    scrollActiveToCenter('smooth')
+    const t = setTimeout(() => scrollActiveToCenter('smooth'), 420)
+    return () => clearTimeout(t)
+  }, [activeStep])
+
+  useEffect(() => {
+    const tryAdvance = (direction: 1 | -1) => {
+      const now = Date.now()
+      if (now - lastAdvanceAtRef.current < SCROLL_ADVANCE_COOLDOWN_MS) return false
+
+      const current = activeStepRef.current
+      const next = current + direction
+      if (next < 1 || next > 3) return false
+
+      lastAdvanceAtRef.current = now
+      goToStep(next as StepNumber)
+      return true
+    }
+
+    const onWheel = (e: WheelEvent) => {
+      if (!sectionInViewRef.current) return
+
+      const step = activeStepRef.current
+
+      // Approaching from above: free scroll until Card 1 is actually centered.
+      // The wheel tick that first latches must NOT also advance to Card 2.
+      if (!latchedRef.current) {
+        if (isActiveCardNearCenter()) {
+          latchedRef.current = true
+          latchGraceUntilRef.current = Date.now() + 550
+        }
+        return
+      }
+
+      // Absorb leftover momentum from the approach scroll without advancing
+      if (Date.now() < latchGraceUntilRef.current) {
+        if (step < 3 && e.deltaY > 0) e.preventDefault()
+        return
+      }
+
+      // Latched on Card 3 — release; allow scrolling past
+      if (step >= 3) {
+        if (e.deltaY > 12) {
+          latchedRef.current = false
+        } else if (e.deltaY < -12 && isActiveCardNearCenter()) {
+          e.preventDefault()
+          tryAdvance(-1)
+        }
+        return
+      }
+
+      // Latched on Card 1/2 — further scroll advances (only from inside)
+      if (e.deltaY > 12) {
+        e.preventDefault()
+        tryAdvance(1)
+        return
+      }
+
+      if (e.deltaY < -12) {
+        if (step > 1) {
+          e.preventDefault()
+          tryAdvance(-1)
+        } else {
+          // Leave Card 1 upward
+          latchedRef.current = false
+        }
+      }
+    }
+
+    let touchStartY = 0
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0]?.clientY ?? 0
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      if (!sectionInViewRef.current) return
+
+      const step = activeStepRef.current
+      const y = e.touches[0]?.clientY ?? 0
+      const delta = touchStartY - y
+
+      if (!latchedRef.current) {
+        if (isActiveCardNearCenter()) {
+          latchedRef.current = true
+          latchGraceUntilRef.current = Date.now() + 550
+          touchStartY = y
+        }
+        return
+      }
+
+      if (Date.now() < latchGraceUntilRef.current) {
+        if (step < 3 && delta > 0) e.preventDefault()
+        return
+      }
+
+      if (step >= 3) {
+        if (delta > 24) {
+          latchedRef.current = false
+        } else if (delta < -24 && isActiveCardNearCenter()) {
+          e.preventDefault()
+          if (tryAdvance(-1)) touchStartY = y
+        }
+        return
+      }
+
+      if (delta > 24) {
+        e.preventDefault()
+        if (tryAdvance(1)) touchStartY = y
+        return
+      }
+
+      if (delta < -24) {
+        if (step > 1) {
+          e.preventDefault()
+          if (tryAdvance(-1)) touchStartY = y
+        } else {
+          latchedRef.current = false
+        }
+      }
+    }
+
+    // Clamp only after latch — never yank the page while scrolling from the hero
+    const onScroll = () => {
+      if (!latchedRef.current || !sectionInViewRef.current) return
+      const step = activeStepRef.current
+      if (step >= 3) return
+      const target = getCenteredScrollTop(step)
+      if (target == null) return
+      if (window.scrollY > target + 8) {
+        window.scrollTo({ top: target, behavior: 'auto' })
+      }
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [])
+
+  const handleCardTitleClick = (stepNum: StepNumber) => {
+    goToStep(stepNum)
+  }
+
+  const handleWebsiteSubmit = (url: string) => {
+    // Marketing site has no /signup route — hand off to the app with ?url=
+    // for the planned prefill/auto-scan flow.
+    const dest = new URL(getAppUrl('/signup'))
+    dest.searchParams.set('url', url)
+    window.location.href = dest.toString()
+  }
+
+  return (
+    <section
+      ref={sectionRef}
+      id="how-it-works"
+      className="relative scroll-mt-28 px-4 py-24 text-zinc-100 md:px-6 md:py-28"
+    >
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-[color:color-mix(in_srgb,var(--accent-cyan)_10%,transparent)] via-[color:color-mix(in_srgb,var(--accent-purple)_10%,transparent)] to-transparent blur-3xl"
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-5xl">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
+            How It Works
+          </h2>
+        </div>
+
+        <div className="hiw-stack relative">
+          {STEPS.map((step, index) => {
+            const isExpanded = activeStep === step.num
+            const z = stackZ(step.num, activeStep)
+
+            return (
+              <div
+                key={step.num}
+                ref={(el) => {
+                  cardRefs.current[index] = el
+                }}
+                style={{ zIndex: z }}
+                className={`hiw-stack-card relative overflow-hidden rounded-2xl border shadow-2xl transition-[opacity,transform,border-color] duration-300 ${
+                  step.tone
+                } ${
+                  isExpanded
+                    ? 'border-white/14 opacity-100'
+                    : 'border-white/[0.08] opacity-90 hover:opacity-100'
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleCardTitleClick(step.num)}
+                  className={`group flex w-full cursor-pointer items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5 ${
+                    isExpanded ? 'border-b border-white/6' : ''
+                  }`}
+                >
+                  <div
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                      isExpanded
+                        ? 'bg-gradient-to-br from-[var(--accent-cyan)] via-[var(--accent-purple)] to-[var(--accent-orange)] text-white shadow-lg shadow-[color-mix(in_srgb,var(--accent-cyan)_20%,transparent)]'
+                        : 'border border-white/20 text-white/40 group-hover:border-[var(--accent-cyan)] group-hover:text-[var(--accent-cyan)]'
+                    }`}
+                  >
+                    {step.num}
+                  </div>
+
+                  <div className="min-w-0">
+                    <h3
+                      className={`text-lg font-medium transition-colors sm:text-xl ${
+                        isExpanded ? 'text-white' : 'text-white/65 group-hover:text-white'
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                    <p
+                      className={`mt-0.5 text-xs transition-colors sm:text-sm ${
+                        isExpanded ? 'text-white/45' : 'text-white/30'
+                      }`}
+                    >
+                      {step.description}
+                    </p>
+                  </div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.div
+                      key={`content-${step.num}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-6 pt-1 sm:px-6 sm:pb-8">
+                        {step.num === 1 && <BrandScan />}
+                        {step.num === 2 && <TemplateShowcase isActive={activeStep === 2} />}
+                        {step.num === 3 && (
+                          <ResultsShowcase onWebsiteSubmit={handleWebsiteSubmit} />
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
