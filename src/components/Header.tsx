@@ -24,6 +24,9 @@ export function Header() {
             className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-8 md:flex"
             aria-label="Primary"
           >
+            <a href="/#how-it-works" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
+              How It Works
+            </a>
             <a href="/#features" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Features
             </a>
@@ -75,6 +78,13 @@ export function Header() {
           className={`mt-3 flex flex-col gap-1 border-t border-white/[0.06] pt-3 md:hidden ${open ? 'flex' : 'hidden'}`}
           aria-label="Mobile primary"
         >
+          <a
+            href="/#how-it-works"
+            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
+            onClick={() => setOpen(false)}
+          >
+            How It Works
+          </a>
           <a
             href="/#features"
             className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"

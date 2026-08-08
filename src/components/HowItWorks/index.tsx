@@ -30,6 +30,24 @@ const STEPS: { num: StepNumber; title: string; description: string; tone: string
 const SCROLL_ADVANCE_COOLDOWN_MS = 700
 /** How close the active card center must be to viewport center before scroll can advance */
 const CENTER_LATCH_PX = 110
+/** Matches Tailwind `md` — below this, all cards stay open for free scroll */
+const MOBILE_MQ = '(max-width: 767px)'
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(MOBILE_MQ).matches : false,
+  )
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ)
+    const onChange = () => setIsMobile(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  return isMobile
+}
 
 /** Active on top; among peeking cards below, nearer ones sit above farther ones (2 over 3). */
 function stackZ(stepNum: StepNumber, active: StepNumber) {
@@ -40,10 +58,11 @@ function stackZ(stepNum: StepNumber, active: StepNumber) {
 
 /**
  * How It Works — fixed showcase.
- * Card 1 starts open. Advance only via scroll from inside a latched card, or title click.
- * Approaching from the hero is free scroll and does not skip to Card 2.
+ * Desktop: Card 1 starts open; advance via scroll latch or title click.
+ * Mobile: all cards open with spacing for free scroll (no latch).
  */
 export function HowItWorks() {
+  const isMobile = useIsMobile()
   const [activeStep, setActiveStep] = useState<StepNumber>(1)
 
   const sectionRef = useRef<HTMLElement>(null)
@@ -94,6 +113,8 @@ export function HowItWorks() {
   }
 
   useEffect(() => {
+    if (isMobile) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -111,18 +132,23 @@ export function HowItWorks() {
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [isMobile])
 
   // Center only after a user-driven step change (scroll advance or title click)
   useEffect(() => {
-    if (!shouldCenterRef.current) return
+    if (isMobile || !shouldCenterRef.current) return
 
     scrollActiveToCenter('smooth')
     const t = setTimeout(() => scrollActiveToCenter('smooth'), 420)
     return () => clearTimeout(t)
-  }, [activeStep])
+  }, [activeStep, isMobile])
 
   useEffect(() => {
+    if (isMobile) {
+      latchedRef.current = false
+      return
+    }
+
     const tryAdvance = (direction: 1 | -1) => {
       const now = Date.now()
       if (now - lastAdvanceAtRef.current < SCROLL_ADVANCE_COOLDOWN_MS) return false
@@ -260,9 +286,10 @@ export function HowItWorks() {
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
     }
-  }, [])
+  }, [isMobile])
 
   const handleCardTitleClick = (stepNum: StepNumber) => {
+    if (isMobile) return
     goToStep(stepNum)
   }
 
@@ -294,8 +321,8 @@ export function HowItWorks() {
 
         <div className="hiw-stack relative">
           {STEPS.map((step, index) => {
-            const isExpanded = activeStep === step.num
-            const z = stackZ(step.num, activeStep)
+            const isExpanded = isMobile || activeStep === step.num
+            const z = isMobile ? 1 : stackZ(step.num, activeStep)
 
             return (
               <div
@@ -315,9 +342,9 @@ export function HowItWorks() {
                 <button
                   type="button"
                   onClick={() => handleCardTitleClick(step.num)}
-                  className={`group flex w-full cursor-pointer items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5 ${
-                    isExpanded ? 'border-b border-white/6' : ''
-                  }`}
+                  className={`group flex w-full items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5 ${
+                    isMobile ? 'cursor-default' : 'cursor-pointer'
+                  } ${isExpanded ? 'border-b border-white/6' : ''}`}
                 >
                   <div
                     className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
@@ -351,7 +378,7 @@ export function HowItWorks() {
                   {isExpanded && (
                     <motion.div
                       key={`content-${step.num}`}
-                      initial={{ height: 0, opacity: 0 }}
+                      initial={isMobile ? false : { height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -359,7 +386,9 @@ export function HowItWorks() {
                     >
                       <div className="px-5 pb-6 pt-1 sm:px-6 sm:pb-8">
                         {step.num === 1 && <BrandScan />}
-                        {step.num === 2 && <TemplateShowcase isActive={activeStep === 2} />}
+                        {step.num === 2 && (
+                          <TemplateShowcase isActive={isMobile || activeStep === 2} />
+                        )}
                         {step.num === 3 && (
                           <ResultsShowcase onWebsiteSubmit={handleWebsiteSubmit} />
                         )}

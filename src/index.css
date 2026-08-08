@@ -351,6 +351,13 @@
   margin-top: -0.65rem;
 }
 
+/* Mobile: all cards open — drop overlap and add scrollable breathing room */
+@media (max-width: 767px) {
+  .hiw-stack-card + .hiw-stack-card {
+    margin-top: 1.25rem;
+  }
+}
+
 .hiw-stack-card {
   box-shadow:
     0 18px 40px -24px rgba(0, 0, 0, 0.85),
