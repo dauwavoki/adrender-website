@@ -16,7 +16,7 @@ export function BrandScan() {
       <div className="space-y-4">
         <div>
           <label className="mb-2 block text-[11px] font-semibold uppercase tracking-widest text-white/35">
-            Brand URL
+            Example Brand URL
           </label>
 
           {/* App-style row: URL field + scanning control where "Scan here" sits */}

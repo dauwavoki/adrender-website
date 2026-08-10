@@ -27,9 +27,6 @@ const STEPS: { num: StepNumber; title: string; description: string; tone: string
   },
 ]
 
-const SCROLL_ADVANCE_COOLDOWN_MS = 700
-/** How close the active card center must be to viewport center before scroll can advance */
-const CENTER_LATCH_PX = 110
 /** Matches Tailwind `md` — below this, all cards stay open for free scroll */
 const MOBILE_MQ = '(max-width: 767px)'
 
@@ -58,23 +55,16 @@ function stackZ(stepNum: StepNumber, active: StepNumber) {
 
 /**
  * How It Works — fixed showcase.
- * Desktop: Card 1 starts open; advance via scroll latch or title click.
- * Mobile: all cards open with spacing for free scroll (no latch).
+ * Desktop: Card 1 starts open; click a card to open it and center it.
+ * Mobile: all cards open with spacing for free scroll.
  */
 export function HowItWorks() {
   const isMobile = useIsMobile()
   const [activeStep, setActiveStep] = useState<StepNumber>(1)
 
-  const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const activeStepRef = useRef<StepNumber>(activeStep)
-  const sectionInViewRef = useRef(false)
-  /** True only once the active card is centered — scroll-from-above must not latch mid-flight */
-  const latchedRef = useRef(false)
-  /** After first latch, ignore advance briefly so hero-scroll momentum can't skip Card 1 */
-  const latchGraceUntilRef = useRef(0)
   const shouldCenterRef = useRef(false)
-  const lastAdvanceAtRef = useRef(0)
 
   activeStepRef.current = activeStep
 
@@ -85,15 +75,6 @@ export function HowItWorks() {
     return Math.max(0, window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2)
   }
 
-  const isActiveCardNearCenter = () => {
-    const el = cardRefs.current[activeStepRef.current - 1]
-    if (!el) return false
-    const rect = el.getBoundingClientRect()
-    const cardMid = rect.top + rect.height / 2
-    const viewMid = window.innerHeight / 2
-    return Math.abs(cardMid - viewMid) <= CENTER_LATCH_PX
-  }
-
   const scrollActiveToCenter = (behavior: ScrollBehavior = 'smooth') => {
     const top = getCenteredScrollTop(activeStepRef.current)
     if (top == null) return
@@ -102,39 +83,15 @@ export function HowItWorks() {
 
   const goToStep = (step: StepNumber) => {
     if (step === activeStepRef.current) {
-      latchedRef.current = true
       shouldCenterRef.current = true
       scrollActiveToCenter('smooth')
       return
     }
-    latchedRef.current = true
     shouldCenterRef.current = true
     setActiveStep(step)
   }
 
-  useEffect(() => {
-    if (isMobile) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries
-        sectionInViewRef.current = entry.isIntersecting
-        if (!entry.isIntersecting) {
-          // Left the section — require a fresh latch next time
-          latchedRef.current = false
-        }
-      },
-      { threshold: 0.2 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isMobile])
-
-  // Center only after a user-driven step change (scroll advance or title click)
+  // Center after a user-driven step change (card click)
   useEffect(() => {
     if (isMobile || !shouldCenterRef.current) return
 
@@ -143,152 +100,7 @@ export function HowItWorks() {
     return () => clearTimeout(t)
   }, [activeStep, isMobile])
 
-  useEffect(() => {
-    if (isMobile) {
-      latchedRef.current = false
-      return
-    }
-
-    const tryAdvance = (direction: 1 | -1) => {
-      const now = Date.now()
-      if (now - lastAdvanceAtRef.current < SCROLL_ADVANCE_COOLDOWN_MS) return false
-
-      const current = activeStepRef.current
-      const next = current + direction
-      if (next < 1 || next > 3) return false
-
-      lastAdvanceAtRef.current = now
-      goToStep(next as StepNumber)
-      return true
-    }
-
-    const onWheel = (e: WheelEvent) => {
-      if (!sectionInViewRef.current) return
-
-      const step = activeStepRef.current
-
-      // Approaching from above: free scroll until Card 1 is actually centered.
-      // The wheel tick that first latches must NOT also advance to Card 2.
-      if (!latchedRef.current) {
-        if (isActiveCardNearCenter()) {
-          latchedRef.current = true
-          latchGraceUntilRef.current = Date.now() + 550
-        }
-        return
-      }
-
-      // Absorb leftover momentum from the approach scroll without advancing
-      if (Date.now() < latchGraceUntilRef.current) {
-        if (step < 3 && e.deltaY > 0) e.preventDefault()
-        return
-      }
-
-      // Latched on Card 3 — release; allow scrolling past
-      if (step >= 3) {
-        if (e.deltaY > 12) {
-          latchedRef.current = false
-        } else if (e.deltaY < -12 && isActiveCardNearCenter()) {
-          e.preventDefault()
-          tryAdvance(-1)
-        }
-        return
-      }
-
-      // Latched on Card 1/2 — further scroll advances (only from inside)
-      if (e.deltaY > 12) {
-        e.preventDefault()
-        tryAdvance(1)
-        return
-      }
-
-      if (e.deltaY < -12) {
-        if (step > 1) {
-          e.preventDefault()
-          tryAdvance(-1)
-        } else {
-          // Leave Card 1 upward
-          latchedRef.current = false
-        }
-      }
-    }
-
-    let touchStartY = 0
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0]?.clientY ?? 0
-    }
-    const onTouchMove = (e: TouchEvent) => {
-      if (!sectionInViewRef.current) return
-
-      const step = activeStepRef.current
-      const y = e.touches[0]?.clientY ?? 0
-      const delta = touchStartY - y
-
-      if (!latchedRef.current) {
-        if (isActiveCardNearCenter()) {
-          latchedRef.current = true
-          latchGraceUntilRef.current = Date.now() + 550
-          touchStartY = y
-        }
-        return
-      }
-
-      if (Date.now() < latchGraceUntilRef.current) {
-        if (step < 3 && delta > 0) e.preventDefault()
-        return
-      }
-
-      if (step >= 3) {
-        if (delta > 24) {
-          latchedRef.current = false
-        } else if (delta < -24 && isActiveCardNearCenter()) {
-          e.preventDefault()
-          if (tryAdvance(-1)) touchStartY = y
-        }
-        return
-      }
-
-      if (delta > 24) {
-        e.preventDefault()
-        if (tryAdvance(1)) touchStartY = y
-        return
-      }
-
-      if (delta < -24) {
-        if (step > 1) {
-          e.preventDefault()
-          if (tryAdvance(-1)) touchStartY = y
-        } else {
-          latchedRef.current = false
-        }
-      }
-    }
-
-    // Clamp only after latch — never yank the page while scrolling from the hero
-    const onScroll = () => {
-      if (!latchedRef.current || !sectionInViewRef.current) return
-      const step = activeStepRef.current
-      if (step >= 3) return
-      const target = getCenteredScrollTop(step)
-      if (target == null) return
-      if (window.scrollY > target + 8) {
-        window.scrollTo({ top: target, behavior: 'auto' })
-      }
-    }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: false })
-
-    return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
-    }
-  }, [isMobile])
-
-  const handleCardTitleClick = (stepNum: StepNumber) => {
+  const handleCardClick = (stepNum: StepNumber) => {
     if (isMobile) return
     goToStep(stepNum)
   }
@@ -303,7 +115,6 @@ export function HowItWorks() {
 
   return (
     <section
-      ref={sectionRef}
       id="how-it-works"
       className="relative scroll-mt-28 px-4 py-24 text-zinc-100 md:px-6 md:py-28"
     >
@@ -341,7 +152,7 @@ export function HowItWorks() {
               >
                 <button
                   type="button"
-                  onClick={() => handleCardTitleClick(step.num)}
+                  onClick={() => handleCardClick(step.num)}
                   className={`group flex w-full items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5 ${
                     isMobile ? 'cursor-default' : 'cursor-pointer'
                   } ${isExpanded ? 'border-b border-white/6' : ''}`}
