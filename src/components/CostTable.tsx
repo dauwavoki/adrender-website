@@ -6,7 +6,8 @@ const ROWS: { tool: string; cost: string; emphasize?: boolean }[] = [
   { tool: 'AI ad generator', cost: '$39–249' },
   { tool: 'AI writing (ChatGPT / Claude)', cost: '$20' },
   { tool: 'AI image generation', cost: '$20–30' },
-  { tool: 'Total', cost: '$143–458/mo across 5 tools', emphasize: true },
+  { tool: 'AI video generation', cost: '$29–99' },
+  { tool: 'Total', cost: '$172–557/mo across 6 tools', emphasize: true },
   { tool: 'Time for 20 ads', cost: '~3 hours', emphasize: true },
 ]
 
