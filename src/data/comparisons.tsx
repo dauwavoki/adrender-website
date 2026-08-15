@@ -43,7 +43,7 @@ export const comparisons: ComparisonConfig[] = [
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$39/mo (10 credits only)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: 'Trial only — card required' },
-      { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
+      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: 'Library only — no live ad data' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic brand kit (manual)' },
@@ -53,7 +53,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Locked behind $249/mo' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits consumed per download' },
-      { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Yes' },
+      { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Yes, prompt required' },
       { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Complex — reported as overwhelming' },
     ],
     cards: [
@@ -85,7 +85,7 @@ export const comparisons: ComparisonConfig[] = [
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$15/mo (Canva Pro)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
-      { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
+      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: 'Generic design templates — no ad performance data' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: '❌ Manual only' },
@@ -95,7 +95,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Video editing in a design tool — not ad generation from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: '❌ One at a time' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Manual — one design at a time' },
-      { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Everything is manual' },
+      { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Everything is manual' },
       { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Design skills required' },
     ],
     cards: [
@@ -127,7 +127,7 @@ export const comparisons: ComparisonConfig[] = [
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$32/mo' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
-      { label: 'Watermarks on free', adrender: '❌ Never — no watermarks on any plan', competitor: '✅ Yes' },
+      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Manual import only' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: '❌ Social post templates only' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic' },
@@ -137,7 +137,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Social video posts — not paid-ad video from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits per post' },
-      { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Text prompt required' },
+      { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Text prompt required' },
       { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Moderate' },
     ],
     cards: [
