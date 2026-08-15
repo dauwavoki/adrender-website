@@ -47,6 +47,12 @@ export function Footer() {
             <Link to="/contact" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
               Contact
             </Link>
+            <Link to="/terms" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              Terms
+            </Link>
+            <Link to="/privacy" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              Privacy
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Blog</span>
