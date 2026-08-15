@@ -5,7 +5,7 @@ const CARDS = [
     n: '1',
     title: 'The Problem',
     heading: 'Finding a winner means testing losers.',
-    body: "You don't know which ad works until you run it. That means testing many angles at ~$20 a piece and keeping the few that convert. It's the only reliable way to find a winner — and every test needs its own creative.",
+    body: "You don't know which ad wins until it's live and running. That means testing several angles, hooks, and formats before the real winner shows itself — and every test needs a finished creative, not a rough sketch. Skip the volume and you're just guessing. The only way to find what actually converts is testing enough versions that the pattern becomes obvious — and that takes real production, every time, for every angle.",
     accent: {
       bg: 'bg-[#C45A2C]',
       ghost: 'text-white/20',
@@ -16,7 +16,7 @@ const CARDS = [
     n: '2',
     title: 'The Bottleneck',
     heading: "Your testing budget isn't the limit. Your creative budget is.",
-    body: "A designer or agency runs about $150/day for a handful of static ads — or north of $1,000 for a single video. Do it yourself and the stack multiplies. For statics: Figma, template tools like Canva, AdCreative.ai, or Predis, and ChatGPT for copy — a three-hour session for the same handful. For video: add Foreplay for ad research, CapCut, Premiere Pro, an AI video generator for motion, and a separate tool for voice and sound — and more. So you test fewer angles than you should, and winners take longer to find.",
+    body: "Hiring solves the skill problem, not the speed problem — find the right designer or agency, brief them, wait for a first pass, send notes, wait again. Do it yourself and the waiting becomes stitching instead: Figma, Canva, AdCreative.ai, or Predis for statics; Foreplay, CapCut, Premiere Pro, and an AI video generator for video — and more. Either way, by the time you have enough creative to test, the window's already closing.",
     accent: {
       bg: 'bg-[#5B3FA8]',
       ghost: 'text-white/20',
@@ -27,7 +27,7 @@ const CARDS = [
     n: '3',
     title: 'The Fix',
     heading: 'Make testing cheap enough to actually do it.',
-    body: 'AdRender drops the cost of a creative — static or video — to near nothing. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. One tool instead of a stack of them. Test the angle you weren\'t sure about — because now it costs you almost nothing to find out.',
+    body: "AdRender drops the cost of a creative — static or video — to near nothing. No briefing, no back-and-forth, no six-app stack. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. One tool instead of a stack of them. Test the angle you weren't sure about — because now it costs you almost nothing to find out, and nothing to wait for.",
     accent: {
       bg: 'bg-[#2F8F5B]',
       ghost: 'text-white/20',
