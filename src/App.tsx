@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashScroll } from './components/HashScroll'
 import { Layout } from './components/Layout'
 import { AffiliatesPage } from './pages/AffiliatesPage'
 import { BlogIndexPage } from './pages/BlogIndexPage'
@@ -39,6 +40,7 @@ export function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <HashScroll />
       <AppRoutes />
     </BrowserRouter>
   )
