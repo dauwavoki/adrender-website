@@ -25,7 +25,19 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Do you support video ads?',
-    a: 'Yes. AdRender generates both static and video ads from real winning templates, converted into your brand — included from the entry tier, no $249 video gate.',
+    a: 'Yes. AdRender generates static and video ads from real winning templates, converted into your brand — included on every tier, right from Free.',
+  },
+  {
+    q: 'How long can my video ads be?',
+    a: "Video renders up to 30 seconds today, matched exactly to your reference clip's length — longer videos are coming soon.",
+  },
+  {
+    q: 'What aspect ratio do my videos come out in?',
+    a: "Whatever you upload. Output always matches your reference video's exact aspect ratio — no cropping, no distortion, no guessing what the frame will look like.",
+  },
+  {
+    q: 'Do videos cost more tokens than images?',
+    a: "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you generate, so there's no surprise mid-render.",
   },
 ]
 
