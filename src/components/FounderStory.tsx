@@ -6,7 +6,7 @@ const BODY_PARAS = [
   'And it still took me three hours to produce twenty decent ads.',
   'Three hours of switching between six tabs. Finding a proven layout in one tool. Rebuilding it in another. Generating a visual somewhere else. Writing copy in a fourth. Resizing everything by hand for every placement. Then doing it all again tomorrow.',
   "The tools weren't bad. The stitching was the problem. Every one of them solved a slice and handed you the rest.",
-  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI generation in one place. Now 200 ads takes three minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
+  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI generation in one place. Now hundreds of ads take under 10 minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
   "That's AdRender. It's the tool I needed for twenty years and nobody built.",
 ]
 

@@ -5,7 +5,7 @@ import { PlaceholderImage } from '../components/PlaceholderImage'
 import { ScrollReveal } from '../components/ScrollReveal'
 import type { PlaceholderId } from '../data/imageManifest'
 
-const TITLE = 'About AdRender — Features for Shipping Static Ads Fast'
+const TITLE = 'About AdRender — Features for Shipping Static and Video Ads Fast'
 const DESCRIPTION =
   'Proven templates from 100M+ real ads, brand intelligence, batch generation, every size automatically, Shopify sync, and team workspaces. See how AdRender replaces the six-tool creative stack.'
 
@@ -54,7 +54,7 @@ const SECTIONS: FeatureSection[] = [
     imageId: '18',
     imageLeft: true,
     paragraphs: [
-      'Choose a proven format, choose your brand, hit generate. AdRender produces a batch of on-brand static ads across every size you selected. No prompt engineering — the structure comes from the template, the styling comes from your brand, and the AI fills the gap.',
+      'Choose a proven format, choose your brand, hit generate. AdRender produces a batch of on-brand static and video ads from that template — images in every size you selected, video in the social ratios and lengths those placements need. No prompt engineering — the structure comes from the template, the styling comes from your brand, and the AI fills the gap.',
       'Behind the scenes, generation runs through a multi-provider fallback: if one AI provider is down or slow, it moves to the next automatically. You don\'t see the failure, you just get your ads.',
     ],
   },
@@ -74,8 +74,8 @@ const SECTIONS: FeatureSection[] = [
     imageId: '20',
     imageLeft: true,
     paragraphs: [
-      'One generation produces every format you need, correctly sized. Square (1080×1080), Portrait (1080×1350), Story/Reel (1080×1920), Landscape (1200×675), Feed Banner (1200×628), Pinterest Pin (1000×1500), Medium Rectangle (300×250), Half Page (300×600), Leaderboard (728×90), Wide Skyscraper (160×600), and Mobile Banner (320×50).',
-      'Filter by platform — Facebook, Instagram, LinkedIn, Google, TikTok — or select all. Choose 1K, 2K, or 4K resolution, and Standard or Pro generation quality. No resizing, no re-exporting, no cropping by hand.',
+      'One generation produces every format you need, correctly sized. For static ads: Square (1080×1080), Portrait (1080×1350), Story/Reel (1080×1920), Landscape (1200×675), Feed Banner (1200×628), Pinterest Pin (1000×1500), Medium Rectangle (300×250), Half Page (300×600), Leaderboard (728×90), Wide Skyscraper (160×600), and Mobile Banner (320×50).',
+      'For video, what matters is aspect ratio and duration — square, portrait/story, and landscape at lengths suited to feed and story placements — not the display-ad pixel grid. Filter by platform — Facebook, Instagram, LinkedIn, Google, TikTok — or select all. For images, choose 1K, 2K, or 4K resolution, and Standard or Pro generation quality. No resizing, no re-exporting, no cropping by hand.',
     ],
   },
   {
@@ -151,7 +151,7 @@ export function AboutPage() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-section-label text-xs font-semibold uppercase tracking-[0.2em]">About</p>
           <h1 className="mt-3 font-heading text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-            The system behind the three-minute batch
+            The system behind hundreds of ads in under 10 minutes
           </h1>
           <p className="mt-4 text-base text-zinc-400 md:text-lg">
             How AdRender replaces the stitched stack — and what each piece does.

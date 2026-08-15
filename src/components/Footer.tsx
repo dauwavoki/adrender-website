@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <BrandLogoLink variant="footer" />
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
-            AI-powered static ads for anyone running paid social — with optional Shopify sync when you want catalog in one click.
+            AI-powered static and video ads for anyone running paid social — with optional Shopify sync when you want catalog in one click.
           </p>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">

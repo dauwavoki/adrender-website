@@ -62,18 +62,19 @@ Most high-scaling ad accounts run a hybrid strategy:
 
 ## Where AdRender fits
 
-AdRender is purpose-built for that 30% — the static and carousel side of the
-mix. Pull in your brand once, pick from 100M+ real winning templates, and
-generate on-brand retargeting and BoFu creative in minutes instead of days.
+AdRender now covers both sides of that mix — static and video — from the same
+brand setup. Pull in your brand once, pick from 100M+ real winning templates,
+and generate on-brand static and video creative: winning formats converted into
+your brand, hundreds of ads in under 10 minutes instead of days.
 
-We don't generate video today, so pair AdRender with whatever UGC or
-video pipeline you're using for cold prospecting, and let it handle the
-fast-iterating static layer that closes the sale.
+Video is quality and reskinning, not a separate speed story. Pair stills and
+motion from the same template library so cold prospecting and retargeting stay
+on-brand without stitching a second video pipeline.
 
 |  | DIY static production | AdRender |
 |---|---|---|
 | Cost | ~$150/day for ~20 ads | Plans from $19/mo, up to 800 ads/mo on Pro ($79/mo) |
-| Turnaround | Days, with revision rounds | Minutes |
+| Turnaround | Days, with revision rounds | Hundreds of ads in under 10 minutes |
 | Template base | Designer's own reference library | 100M+ real, currently-running ads |
 
 See the full cost and time breakdown in

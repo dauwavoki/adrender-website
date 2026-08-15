@@ -50,10 +50,11 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: 'Basic' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌' },
+      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Locked behind $249/mo' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits consumed per download' },
       { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Yes' },
-      { label: 'Complexity', adrender: 'Simple — ready in 2 minutes', competitor: 'Complex — reported as overwhelming' },
+      { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Complex — reported as overwhelming' },
     ],
     cards: [
       {
@@ -63,8 +64,8 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         icon: Video,
-        title: 'Video shouldn\u2019t cost $249/month',
-        body: 'AdCreative.ai locks video behind a $249/month paywall — 6x their base price. AdRender focuses on doing static ads better than anyone. No upsell wall between you and what you need today.',
+        title: 'Video included. No $249 gate.',
+        body: 'AdCreative.ai locks video behind a $249/month paywall — 6x their base price. AdRender includes real video generation from the entry tier: winning ad templates, converted into your brand. No upsell wall between you and video.',
       },
       {
         icon: ShoppingBag,
@@ -91,21 +92,22 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: '❌ Manual copywriting' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌ Manual upload' },
+      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Video editing in a design tool — not ad generation from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: '❌ One at a time' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Manual — one design at a time' },
       { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Everything is manual' },
-      { label: 'Complexity', adrender: 'Simple — ready in 2 minutes', competitor: 'Design skills required' },
+      { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Design skills required' },
     ],
     cards: [
       {
         icon: Wand2,
         title: 'AI generates. You approve.',
-        body: 'Canva is a design tool. AdRender is a generation engine. You don\u2019t drag and drop — you scan your brand, pick a template that\u2019s working in your niche, and get 50 ads while you grab coffee.',
+        body: 'Canva is a design tool. AdRender is a generation engine. You don\u2019t drag and drop — you scan your brand, pick a template that\u2019s working in your niche, and get hundreds of ads in under 10 minutes.',
       },
       {
         icon: Clock,
-        title: '8 hours vs 8 minutes',
-        body: 'Building 10 ad variants manually in Canva takes most people half a day. AdRender generates them in minutes, with your brand colors, your logo, your product images, and AI-written copy — automatically.',
+        title: 'Half a day vs under 10 minutes',
+        body: 'Building 10 ad variants manually in Canva takes most people half a day. AdRender generates hundreds of ads in under 10 minutes, with your brand colors, your logo, your product images, and AI-written copy — automatically.',
       },
       {
         icon: LayoutTemplate,
@@ -132,16 +134,17 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: '✅ Social captions' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌ Manual' },
+      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Social video posts — not paid-ad video from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits per post' },
       { label: 'Prompt required?', adrender: '❌ Brand info applies automatically', competitor: '✅ Text prompt required' },
-      { label: 'Complexity', adrender: 'Simple — ready in 2 minutes', competitor: 'Moderate' },
+      { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Moderate' },
     ],
     cards: [
       {
         icon: Megaphone,
         title: 'Ad creation vs content scheduling',
-        body: 'Predis is a social media content tool. It schedules posts and generates captions. AdRender is purpose-built for paid advertising — static ad creative from real winning templates, built around your brand.',
+        body: 'Predis is a social media content tool. It schedules posts and generates captions. AdRender is purpose-built for paid advertising — static and video creative from real winning templates, built around your brand.',
       },
       {
         icon: MousePointerClick,

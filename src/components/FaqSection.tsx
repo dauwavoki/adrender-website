@@ -5,7 +5,7 @@ import { ScrollReveal } from './ScrollReveal'
 const FAQ: { q: string; a: string }[] = [
   {
     q: 'What is AdRender?',
-    a: 'We turn your brand and proven, real ad templates into on-brand static ads in seconds — no agency, no designer, no waiting.',
+    a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
   },
   {
     q: "What's a token, and what happens if I run out mid-render?",
@@ -25,7 +25,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Do you support video ads?',
-    a: 'Not yet — static images only today, with video planned for a future release.',
+    a: 'Yes. AdRender generates both static and video ads from real winning templates, converted into your brand — included from the entry tier, no $249 video gate.',
   },
 ]
 

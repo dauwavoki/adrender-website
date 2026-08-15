@@ -27,7 +27,7 @@ const CARDS = [
     n: '3',
     title: 'The Fix',
     heading: 'Make testing cheap enough to actually do it.',
-    body: 'AdRender drops the cost of a creative to near nothing. 200 ads in three minutes, on-brand, built on formats already proven in the wild. Test the angle you weren\'t sure about — because now it costs you almost nothing to find out.',
+    body: 'AdRender drops the cost of a creative to near nothing. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. Test the angle you weren\'t sure about — because now it costs you almost nothing to find out.',
     accent: {
       bg: 'bg-[#2F8F5B]',
       ghost: 'text-white/20',

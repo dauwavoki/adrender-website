@@ -58,7 +58,7 @@ export function CostTable() {
             <p className="font-heading text-2xl font-bold text-white md:text-3xl">
               AdRender — <span className="text-gradient-accent">$19/mo</span>. One tool.
             </p>
-            <p className="mt-3 text-lg text-zinc-300">Time for 200 ads — ~3 minutes</p>
+            <p className="mt-3 text-lg text-zinc-300">Hundreds of ads in under 10 minutes</p>
           </div>
           <p className="mt-6 text-center text-sm text-zinc-500">
             No demo call. No sales rep. No &ldquo;contact us for pricing.&rdquo; The price is right there.

@@ -54,7 +54,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: June 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: August 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -76,13 +76,13 @@ export function TermsPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">2. Description of the Service</h2>
             <p>
-              AdRender is an AI-powered platform for creating static image advertisements. The Service includes: AI
+              AdRender is an AI-powered platform for creating static image and video advertisements. The Service includes: AI
               image generation via multiple third-party model providers operating under a multi-provider fallback
-              architecture; access to a curated advertising template library sourced via Foreplay API integration;
+              architecture; AI video generation via third-party video model providers including EvoLink, Kie.ai, and
+              WaveSpeedAI; access to a curated advertising template library sourced via Foreplay API integration;
               brand management tools including brand voice, color, logo, and product asset management; Shopify store
               integration for automated product import; image text overlays and ad variations; team collaboration with
-              role-based permissions; AI-assisted customer support; and token-based metered AI generation. The Service
-              does not currently include video generation. We may add, modify, or remove features at any time, with
+              role-based permissions; AI-assisted customer support; and token-based metered AI generation. We may add, modify, or remove features at any time, with
               reasonable prior notice to paying subscribers for changes that materially reduce functionality.
             </p>
           </section>
@@ -330,7 +330,7 @@ export function TermsPage() {
                 <h3 className="mb-1.5 font-medium text-zinc-200">11.2 Generated Outputs</h3>
                 <p>
                   Subject to your payment of applicable fees and compliance with these Terms, you own the
-                  AI-generated static image outputs you create ("Generated Outputs") to the maximum extent permitted
+                  AI-generated static image and video outputs you create ("Generated Outputs") to the maximum extent permitted
                   by applicable law. You acknowledge that purely AI-generated works may have limited or no copyright
                   protection under current law and that you are responsible for assessing their legal status in your
                   jurisdiction.
