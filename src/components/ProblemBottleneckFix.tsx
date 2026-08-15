@@ -16,7 +16,7 @@ const CARDS = [
     n: '2',
     title: 'The Bottleneck',
     heading: "Your testing budget isn't the limit. Your creative budget is.",
-    body: "A designer runs $150/day for maybe 20 ads — about $3,000/month, and you wait days for each batch. Do it yourself and you're stitching Figma, an ad library, ChatGPT, and an image generator into a three-hour session for the same 20. So you test fewer angles than you should, and winners take longer to find.",
+    body: "A designer or agency runs about $150/day for a handful of static ads — or north of $1,000 for a single video. Do it yourself and the stack multiplies. For statics: Figma, template tools like Canva, AdCreative.ai, or Predis, and ChatGPT for copy — a three-hour session for the same handful. For video: add Foreplay for ad research, CapCut, Premiere Pro, an AI video generator for motion, and a separate tool for voice and sound — and more. So you test fewer angles than you should, and winners take longer to find.",
     accent: {
       bg: 'bg-[#5B3FA8]',
       ghost: 'text-white/20',
@@ -27,7 +27,7 @@ const CARDS = [
     n: '3',
     title: 'The Fix',
     heading: 'Make testing cheap enough to actually do it.',
-    body: 'AdRender drops the cost of a creative to near nothing. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. Test the angle you weren\'t sure about — because now it costs you almost nothing to find out.',
+    body: 'AdRender drops the cost of a creative — static or video — to near nothing. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. One tool instead of a stack of them. Test the angle you weren\'t sure about — because now it costs you almost nothing to find out.',
     accent: {
       bg: 'bg-[#2F8F5B]',
       ghost: 'text-white/20',
