@@ -62,7 +62,7 @@ export const tiers: Tier[] = [
   {
     id: 'pro',
     name: 'Pro',
-    tagline: 'For growing agencies and freelancers',
+    tagline: 'For agencies & freelancers',
     monthly: 99,
     annual: 950,
     features: [
