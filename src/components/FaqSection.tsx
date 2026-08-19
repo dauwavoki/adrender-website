@@ -5,7 +5,7 @@ import { ScrollReveal } from './ScrollReveal'
 const FAQ: { q: string; a: string }[] = [
   {
     q: 'What is AdRender?',
-    a: 'We turn your brand and proven, real ad templates into on-brand static ads in seconds — no agency, no designer, no waiting.',
+    a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
   },
   {
     q: "What's a token, and what happens if I run out mid-render?",
@@ -25,7 +25,19 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Do you support video ads?',
-    a: 'Not yet — static images only today, with video planned for a future release.',
+    a: 'Yes. AdRender generates static and video ads from real winning templates, converted into your brand — included on every tier, right from Free.',
+  },
+  {
+    q: 'How long can my video ads be?',
+    a: "Video renders up to 30 seconds today, matched exactly to your reference clip's length — longer videos are coming soon.",
+  },
+  {
+    q: 'What aspect ratio do my videos come out in?',
+    a: "Whatever you upload. Output always matches your reference video's exact aspect ratio — no cropping, no distortion, no guessing what the frame will look like.",
+  },
+  {
+    q: 'Do videos cost more tokens than images?',
+    a: "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you generate, so there's no surprise mid-render.",
   },
 ]
 

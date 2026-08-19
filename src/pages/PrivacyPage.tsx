@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: June 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: August 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export function PrivacyPage() {
             <p className="mb-3">We use the information we collect to:</p>
             <ul className="list-disc space-y-2 pl-5">
               <li>Create and maintain your account and provide the Service.</li>
-              <li>Generate AI-powered ad images based on your inputs and brand assets.</li>
+              <li>Generate AI-powered ad images and videos based on your inputs and brand assets.</li>
               <li>Process payments and manage your subscription and token balance.</li>
               <li>Send transactional emails (receipts, plan changes, renewal reminders, support replies).</li>
               <li>Respond to support requests and resolve disputes.</li>
@@ -197,7 +197,8 @@ export function PrivacyPage() {
                   </li>
                   <li>
                     <span className="font-medium text-zinc-200">AI model providers</span> (image generation): Fal,
-                    OpenRouter, APIYI, EvoLink, KIE.ai, and Google — United States. Your prompts, reference images,
+                    OpenRouter, APIYI, EvoLink, KIE.ai, and Google — United States. AI model providers (video
+                    generation): EvoLink, Kie.ai, and WaveSpeedAI. Your prompts, reference images,
                     and brand inputs are transmitted to these providers solely to generate your requested outputs.
                   </li>
                 </ul>

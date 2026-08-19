@@ -14,10 +14,14 @@ export interface DemoBrand {
   documentCount: number
 }
 
+export type CarouselMediaKind = 'image' | 'video'
+
 export interface CarouselItem {
   id: string
   src: string
   alt: string
+  /** Defaults to `'image'` when omitted so existing PNG items stay unchanged. */
+  kind?: CarouselMediaKind
 }
 
 export type StepNumber = 1 | 2 | 3

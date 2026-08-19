@@ -6,7 +6,7 @@ export function ProofRow() {
         <span className="mx-3 text-zinc-700" aria-hidden>
           ·
         </span>
-        <span className="text-zinc-200">3 min to 200 ads</span>
+        <span className="text-zinc-200">Hundreds of ads in under 10 minutes</span>
         <span className="mx-3 text-zinc-700" aria-hidden>
           ·
         </span>

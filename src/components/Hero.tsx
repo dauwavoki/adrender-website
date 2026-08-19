@@ -33,8 +33,8 @@ export function Hero() {
           Create more ads. Launch more tests. Find more winners.
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-400 sm:text-lg md:text-xl">
-          AdRender pulls from 100M+ real ads running right now and remixes the winners into your brand. Render
-          hundreds of ads in minutes.
+          AdRender pulls from 100M+ real image and video ads running right now and remixes the winners into your
+          brand. Hundreds of ads in under 10 minutes.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           <a

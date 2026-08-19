@@ -12,7 +12,7 @@ import { PageMeta } from '../components/PageMeta'
 
 const TITLE = 'AdRender — AI Ad Generator for Shopify | 100M+ Real Templates'
 const DESCRIPTION =
-  'Generate hundreds of on-brand static ads in minutes. Connect your Shopify store, browse proven ad structures from 100M+ real ads, and ship creatives without a designer. Free to start.'
+  'Generate hundreds of on-brand static and video ads in under 10 minutes. Connect your Shopify store, browse proven ad structures from 100M+ real ads, and ship creatives without a designer. Free to start.'
 
 export function HomePage() {
   return (

@@ -5,8 +5,9 @@ const BODY_PARAS = [
   'Twenty years of graphics and marketing. I knew every tool — Figma, Photoshop, the ad libraries, the swipe file apps, the AI image generators, ChatGPT and Claude for copy. I had the workflow dialed.',
   'And it still took me three hours to produce twenty decent ads.',
   'Three hours of switching between six tabs. Finding a proven layout in one tool. Rebuilding it in another. Generating a visual somewhere else. Writing copy in a fourth. Resizing everything by hand for every placement. Then doing it all again tomorrow.',
+  "Video was worse. Foreplay for ad research, CapCut, Premiere Pro, an AI video generator for the motion I couldn't shoot myself, a separate app for voice and sound — and more, since half of them do the same thing and I'd still end up needing another one. Eight, nine tools running at once for a handful of finished clips, and video takes real hours per piece, not minutes.",
   "The tools weren't bad. The stitching was the problem. Every one of them solved a slice and handed you the rest.",
-  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI generation in one place. Now 200 ads takes three minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
+  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI generation in one place. Now hundreds of ads take under 10 minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
   "That's AdRender. It's the tool I needed for twenty years and nobody built.",
 ]
 
