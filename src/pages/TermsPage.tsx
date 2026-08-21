@@ -78,11 +78,11 @@ export function TermsPage() {
             <p>
               AdRender is an AI-powered platform for creating static image and video advertisements. The Service includes: AI
               image generation via multiple third-party model providers operating under a multi-provider fallback
-              architecture; AI video generation via third-party video model providers including EvoLink, Kie.ai, and
-              WaveSpeedAI; access to a curated advertising template library sourced via Foreplay API integration;
-              brand management tools including brand voice, color, logo, and product asset management; Shopify store
-              integration for automated product import; image text overlays and ad variations; team collaboration with
-              role-based permissions; AI-assisted customer support; and token-based metered AI generation. We may add, modify, or remove features at any time, with
+              architecture; AI video generation via third-party video model providers; access to a curated advertising
+              template library sourced via third-party API integration; brand management tools including brand voice,
+              color, logo, and product asset management; Shopify store integration for automated product import; image
+              text overlays and ad variations; team collaboration with role-based permissions; AI-assisted customer
+              support; and token-based metered AI generation. We may add, modify, or remove features at any time, with
               reasonable prior notice to paying subscribers for changes that materially reduce functionality.
             </p>
           </section>
@@ -93,9 +93,9 @@ export function TermsPage() {
               You must provide accurate, current, and complete information when registering. You are responsible for
               maintaining the confidentiality of your credentials and for all activity that occurs under your account.
               Notify us immediately at{' '}
-              <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>{' '}
-              of any suspected unauthorized access. We are not liable for losses arising from your failure to secure
-              your account credentials.
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>,
+              or through in-app Support, of any suspected unauthorized access. We are not liable for losses arising
+              from your failure to secure your account credentials.
             </p>
           </section>
 
@@ -188,26 +188,31 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">5.3 Pricing Variability</h3>
                 <p>
-                  Token pack prices and per-generation token consumption rates may change at any time without prior
-                  notice. The price applicable to any top-up purchase or generation action is always displayed before
-                  you confirm it. You will never be charged for a generation or token pack without first seeing the
-                  applicable cost.
+                  Token pack prices and per-generation token consumption rates may change at any time{' '}
+                  <strong>without prior notice</strong>. The price applicable to any top-up purchase or generation
+                  action is always displayed before you confirm it. You will never be charged for a generation or
+                  token pack without first seeing the applicable cost. This flexibility applies specifically to token
+                  pricing and consumption rates; it does not affect the 30-day notice period for overall subscription
+                  plan price changes described in Section 4.5.
                 </p>
               </div>
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">5.4 Expiration and Rollover</h3>
                 <p>
                   Monthly allotment tokens expire at the end of each billing period and do not roll over, except that
-                  annual subscribers may carry unused allotment tokens forward up to two times their monthly cap.
-                  Balances above that ceiling are forfeited at month end. Top-up tokens expire 12 months after
-                  purchase. All tokens are forfeited upon account termination, except where required by law.
+                  annual subscribers may carry unused allotment tokens forward up to two times their monthly cap;
+                  balances above that ceiling are forfeited at month end.{' '}
+                  <strong>Top-up tokens currently do not expire.</strong> This is our current policy and, like token
+                  pricing under Section 5.3, may be changed at any time without prior notice; continued use of the
+                  Service after such a change constitutes acceptance. All tokens are forfeited upon account
+                  termination, except where required by law.
                 </p>
               </div>
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">5.5 Top-Up Refunds</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">5.5 Top-Up Purchases Are Non-Refundable</h3>
                 <p>
-                  Top-up token purchases are refundable in full only if requested within 7 days of purchase and fewer
-                  than 10% of the purchased tokens have been consumed.
+                  All top-up token purchases are final and non-refundable, regardless of how many tokens have been
+                  consumed or how much time has passed since purchase.
                 </p>
               </div>
             </div>
@@ -281,10 +286,10 @@ export function TermsPage() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-lg font-semibold text-white">8. Template Library and Foreplay Integration</h2>
+            <h2 className="mb-3 text-lg font-semibold text-white">8. Template Library</h2>
             <p>
-              Templates available through the Service are sourced via Foreplay API integration, which aggregates
-              publicly observed advertising creatives from sources including the Meta Ad Library and similar public
+              Templates available through the Service are sourced via third-party API integration, which aggregates
+              publicly observed advertising creatives from sources including public ad libraries and similar
               repositories. Templates are provided for inspirational, benchmarking, and reference purposes only and
               do not constitute a license to copy, reproduce, or redistribute original advertisements. You must not
               reproduce protected elements of third parties (trademarks, logos, copyrighted images) or imply
@@ -389,8 +394,9 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">13.1 By You</h3>
                 <p>
-                  You may close your account at any time through account settings or by contacting{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>.
+                  You may close your account at any time through account settings, by contacting{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>,
+                  or through in-app Support.
                 </p>
               </div>
               <div>
@@ -401,7 +407,17 @@ export function TermsPage() {
                 </p>
               </div>
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">13.3 Effect of Termination</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">13.3 Payment-Related Account Status</h3>
+                <p>
+                  Certain account status changes — including suspension following a failed or overdue payment, and
+                  final subscription cancellation after repeated payment failures — are determined in part by the
+                  processing and timeline of our third-party payment processor, Stripe, and are outside our direct
+                  control. We will make reasonable efforts to notify you when these changes occur, but the exact
+                  timing of payment retries, suspension, and cancellation is governed by Stripe's own processing.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">13.4 Effect of Termination</h3>
                 <p>
                   On termination your access ends, outstanding fees become due, tokens are forfeited, and we will
                   delete or de-identify your account data within 60 days, subject to legal retention requirements.
@@ -419,7 +435,7 @@ export function TermsPage() {
               governs our data practices and is incorporated into these Terms by reference. If you are protected by
               GDPR, CCPA, or equivalent privacy laws you have rights including access, correction, deletion,
               restriction, portability, and objection. Contact{' '}
-              <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>{' '}
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>{' '}
               to exercise these rights.
             </p>
           </section>
@@ -427,8 +443,8 @@ export function TermsPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">15. Third-Party Services</h2>
             <p>
-              The Service integrates with third-party services including Shopify, Foreplay, Meta, Google, and payment
-              processors. We are not responsible for their availability, content, or data handling. Your use of
+              The Service integrates with third-party services including Shopify, Meta, Google, and payment processors
+              including Stripe. We are not responsible for their availability, content, or data handling. Your use of
               third-party services is governed by their own terms.
             </p>
           </section>
@@ -486,7 +502,7 @@ export function TermsPage() {
                 <p>
                   Before filing any formal claim, the parties agree to attempt informal resolution for 60 days by
                   contacting{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>{' '}
                   with a written description of the dispute.
                 </p>
               </div>
@@ -516,7 +532,7 @@ export function TermsPage() {
                 <h3 className="mb-1.5 font-medium text-zinc-200">20.5 Opt-Out</h3>
                 <p>
                   You may opt out of arbitration by written notice to{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>{' '}
                   within 30 days of first accepting these Terms.
                 </p>
               </div>
@@ -553,10 +569,11 @@ export function TermsPage() {
               <p>Miami, Florida, United States</p>
               <p>
                 Email:{' '}
-                <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">
-                  help@adrender.app
+                <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">
+                  info@adrender.app
                 </a>
               </p>
+              <p>In-app: use the Support option inside your account</p>
             </address>
           </section>
 

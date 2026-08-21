@@ -128,9 +128,10 @@ export function PrivacyPage() {
                     details from Shopify.
                   </li>
                   <li>
-                    <span className="font-medium text-zinc-200">Foreplay API:</span> we receive advertising template
-                    metadata (brand names, ad copy, niche tags, platform data) to power the template discovery feature.
-                    This is aggregated public advertising data, not personal data about you.
+                    <span className="font-medium text-zinc-200">Advertising template data:</span> we receive advertising
+                    template metadata (brand names, ad copy, niche tags, platform data) from a third-party template
+                    data provider to power the template discovery feature. This is aggregated public advertising data,
+                    not personal data about you.
                   </li>
                 </ul>
               </div>
@@ -166,42 +167,16 @@ export function PrivacyPage() {
             <div className="space-y-4">
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">4.1 Service Providers (Sub-processors)</h3>
-                <p className="mb-3">
-                  We use the following third-party service providers to operate the Service. Each processes data only
-                  as instructed by us and under confidentiality obligations:
+                <p>
+                  We use third-party service providers to operate the Service, each processing data only as instructed
+                  by us and under confidentiality obligations. These include: database, authentication, and server-side
+                  infrastructure providers; application hosting and content delivery providers; payment processing
+                  (Stripe); transactional email delivery providers; media storage and delivery providers; advertising
+                  template data providers; and AI generation providers for image and video output. Your prompts,
+                  reference images, and brand inputs are transmitted to AI generation providers solely to produce your
+                  requested outputs. A current list of specific sub-processors is available as part of our Data
+                  Processing Addendum for qualifying business customers — see Section 6.2.
                 </p>
-                <ul className="list-disc space-y-2 pl-5">
-                  <li>
-                    <span className="font-medium text-zinc-200">Supabase</span> (database, authentication, and
-                    server-side functions) — United States
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">Vercel</span> (application hosting and edge delivery)
-                    — United States / global CDN
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">Stripe</span> (payment processing and subscription
-                    management) — United States
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">Resend</span> (transactional email delivery) — United
-                    States
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">Bunny CDN</span> (media storage and delivery for
-                    generated ads and brand assets) — European Union / global CDN
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">Foreplay</span> (advertising template data API) —
-                    United States
-                  </li>
-                  <li>
-                    <span className="font-medium text-zinc-200">AI model providers</span> (image generation): Fal,
-                    OpenRouter, APIYI, EvoLink, KIE.ai, and Google — United States. AI model providers (video
-                    generation): EvoLink, Kie.ai, and WaveSpeedAI. Your prompts, reference images,
-                    and brand inputs are transmitted to these providers solely to generate your requested outputs.
-                  </li>
-                </ul>
               </div>
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">4.2 Legal Requirements</h3>
@@ -253,8 +228,8 @@ export function PrivacyPage() {
                 <p>
                   You may access, update, or delete your account information at any time through your account settings.
                   You may also contact us at{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>{' '}
-                  to request access to, correction of, or deletion of your personal data.
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>,
+                  or through in-app Support, to request access to, correction of, or deletion of your personal data.
                 </p>
               </div>
               <div>
@@ -278,9 +253,11 @@ export function PrivacyPage() {
                   compliance with legal obligations; and your consent where applicable.
                 </p>
                 <p className="mt-3">
-                  ADRENDER LLC acts as the data controller for personal data processed through the Service. To exercise
-                  any GDPR right or to request a Data Processing Addendum for business compliance purposes, contact{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>.
+                  ADRENDER LLC acts as the data controller for personal data processed through the Service. Business
+                  customers with a genuine compliance need may contact{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>{' '}
+                  to request a Data Processing Addendum; requests are evaluated and fulfilled appropriate to the
+                  customer's actual data processing relationship with us.
                 </p>
               </div>
               <div>
@@ -297,7 +274,7 @@ export function PrivacyPage() {
                   Categories of personal information we collect: identifiers (name, email, IP address); commercial
                   information (subscription and payment records); internet or network activity (usage logs); and
                   user-generated content (brand assets, prompts, generated outputs). To submit a CCPA request, contact{' '}
-                  <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>.
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
                 </p>
               </div>
             </div>
@@ -335,7 +312,7 @@ export function PrivacyPage() {
               The Service is not directed to individuals under 18 years of age. We do not knowingly collect personal
               information from children. If we learn that we have collected personal information from a child under 18,
               we will delete it promptly. If you believe we may have collected information from a minor, contact us at{' '}
-              <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">help@adrender.app</a>.
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
             </p>
           </section>
 
@@ -352,9 +329,9 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">11. Third-Party Links</h2>
             <p>
-              The Service may contain links to third-party websites and services (including Shopify, Meta, Google, and
-              Foreplay). We are not responsible for the privacy practices of those third parties. We encourage you to
-              review their privacy policies before providing any information to them.
+              The Service may contain links to third-party websites and services (including Shopify, Meta, and Google).
+              We are not responsible for the privacy practices of those third parties. We encourage you to review their
+              privacy policies before providing any information to them.
             </p>
           </section>
 
@@ -378,15 +355,16 @@ export function PrivacyPage() {
               <p>Miami, Florida, United States</p>
               <p>
                 Email:{' '}
-                <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">
-                  help@adrender.app
+                <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">
+                  info@adrender.app
                 </a>
               </p>
+              <p>In-app: use the Support option inside your account</p>
             </address>
             <p className="mt-4 text-zinc-400">
               For GDPR-related inquiries or to request a Data Processing Addendum:{' '}
-              <a href="mailto:help@adrender.app" className="text-[#00e5ff] hover:underline">
-                help@adrender.app
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">
+                info@adrender.app
               </a>
             </p>
           </section>
