@@ -35,6 +35,21 @@ export function Footer() {
             <Link to="/vs-predis" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
               vs Predis
             </Link>
+            <Link to="/vs-adscale" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs AdScale
+            </Link>
+            <Link to="/vs-madgicx" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Madgicx
+            </Link>
+            <Link to="/vs-quickads" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Quickads
+            </Link>
+            <Link to="/vs-flair" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Flair
+            </Link>
+            <Link to="/vs-pebblely" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              vs Pebblely
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Company</span>
