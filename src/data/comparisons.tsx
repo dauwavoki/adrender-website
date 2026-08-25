@@ -1661,6 +1661,170 @@ export const comparisons: ComparisonConfig[] = [
       },
     ],
   },
+  {
+    slug: 'motionwaveads',
+    competitor: 'Motion Wave Ads',
+    competitorUrl: 'https://motionwaveads.com',
+    subheadline: 'Static and video. Real running ad templates.',
+    documentTitle: 'AdRender vs Motion Wave Ads — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Motion Wave Ads: static and video ads from real running templates, native Shopify sync, and a renewing free tier.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$29–149/mo, no free tier' },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'Static social media ads' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates from text prompts, not sourced from a live running-ad index',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual setup per project',
+      },
+      { label: 'Free tier', adrender: '✅ 10 tokens every month, no card required', competitor: '❌ Not offered' },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Prompt-based generation vs proven templates',
+        body: 'Motion Wave Ads generates static ads from text prompts — fast for a single concept, but not grounded in what\u2019s actually running and converting elsewhere. AdRender\u2019s templates come from a library of over 100 million real ads live right now.',
+      },
+      {
+        icon: Video,
+        title: 'Static and video vs static only',
+        body: 'Motion Wave Ads is focused on static social ads. AdRender covers both static and video from the same brand setup, with a renewing free tier Motion Wave Ads doesn\u2019t offer.',
+      },
+    ],
+  },
+  {
+    slug: 'whatmorestudio',
+    competitor: 'Whatmore Studio',
+    competitorUrl: 'https://www.whatmore.ai/studio',
+    subheadline: 'Full ad creative. Not just product-to-video conversion.',
+    documentTitle: 'AdRender vs Whatmore Studio — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Whatmore Studio: static and video ads from real running templates, native Shopify catalog sync, not just product-to-video conversion.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free (5 videos) / $19–99/mo paid' },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'Video only — product URLs turned into videos' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Beat-matched, trend-synced video templates, not sourced from a live ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Works from individual product URLs',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Auto-fetches captions/details per URL',
+      },
+      { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: 'Auto-captions, not full ad copy' },
+    ],
+    cards: [
+      {
+        icon: Video,
+        title: 'Video specialist vs full ad creative',
+        body: 'Whatmore Studio does one thing well: turning a product URL into a trend-synced, music-matched video. If that\u2019s specifically what you need, it\u2019s a focused tool. AdRender generates both static and video ads, with full brand setup and ad copy included.',
+      },
+      {
+        icon: ShoppingBag,
+        title: 'Catalog sync vs per-URL workflow',
+        body: 'Whatmore Studio processes one product URL at a time. AdRender syncs your entire Shopify catalog automatically.',
+      },
+    ],
+  },
+  {
+    slug: 'ugcfast',
+    competitor: 'UGCFast',
+    competitorUrl: 'https://ugcfast.ai',
+    subheadline: 'Static and video ads. Not pay-per-video UGC only.',
+    documentTitle: 'AdRender vs UGCFast — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs UGCFast: static and video ads from real running templates, native Shopify sync. UGCFast is UGC-style video only, pay-as-you-go.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: '$1 trial, then $29–99/mo, or pay-as-you-go from $15/10 videos',
+      },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'UGC-style video only, AI actors' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Persona-matched hooks/scripts, not sourced from a live running-ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Works from a single product URL',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: '$1 trial only, not a renewing free tier',
+      },
+      { label: 'Batch generation', adrender: 'Hundreds of ads per batch', competitor: 'Batch generation available on paid plans' },
+    ],
+    cards: [
+      {
+        icon: Video,
+        title: 'One video format vs full ad creative',
+        body: 'UGCFast specializes in fast-turnaround UGC-style video matched to buyer personas — a real, focused answer to creative fatigue for video specifically. AdRender generates both static and video ads from the same brand setup, across a much larger template library.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier vs a paid trial',
+        body: 'UGCFast\u2019s entry point is a $1 trial, not an ongoing free tier. AdRender\u2019s free tier renews every month, no card required.',
+      },
+    ],
+  },
+  {
+    slug: 'ezugc',
+    competitor: 'EzUGC',
+    competitorUrl: 'https://www.ezugc.ai',
+    subheadline: 'Static and video ads. Not just AI-actor UGC clips.',
+    documentTitle: 'AdRender vs EzUGC — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs EzUGC: static and video ads from real running templates, native Shopify sync. EzUGC is UGC video-focused with AI actors.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Paid plans, pricing not consistently published' },
+      {
+        label: 'Output format',
+        adrender: 'Static and video',
+        competitor: 'UGC-style video with 300+ AI actors, plus some static ads',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'AI-actor video templates, not sourced from a live running-ad index',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual setup per project',
+      },
+      { label: 'Free tier', adrender: '✅ 10 tokens every month, no card required', competitor: 'Not consistently offered' },
+    ],
+    cards: [
+      {
+        icon: Wand2,
+        title: 'Full brand setup vs per-project video generation',
+        body: 'EzUGC\u2019s core strength is its large AI actor library for UGC-style video. AdRender covers both static and video ads with automatic brand setup pulled from your URL or Shopify catalog — no manual re-entry per project.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier',
+        body: 'AdRender\u2019s free tier renews every month, no card required — a straightforward starting point compared to EzUGC\u2019s less consistently published free access.',
+      },
+    ],
+  },
 ]
 
 export function getComparisonBySlug(slug: string): ComparisonConfig | undefined {
