@@ -2,9 +2,17 @@ import { useAppUrl } from '../hooks/useAppUrl'
 
 type ClosingCtaProps = {
   className?: string
+  heading?: string
+  sub?: string
+  ctaNote?: string
 }
 
-export function ClosingCta({ className = '' }: ClosingCtaProps) {
+export function ClosingCta({
+  className = '',
+  heading = 'Stop stitching tools together.',
+  sub = 'Your brand goes in. Hundreds of ads come out. Free to start, no card required.',
+  ctaNote,
+}: ClosingCtaProps) {
   const appUrl = useAppUrl()
 
   return (
@@ -20,10 +28,10 @@ export function ClosingCta({ className = '' }: ClosingCtaProps) {
         />
         <div className="relative">
           <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Stop stitching tools together.
+            {heading}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400 md:text-lg">
-            Your brand goes in. Hundreds of ads come out. Free to start, no card required.
+            {sub}
           </p>
           <a
             href={appUrl}
@@ -31,6 +39,7 @@ export function ClosingCta({ className = '' }: ClosingCtaProps) {
           >
             Start Free
           </a>
+          {ctaNote ? <p className="mt-4 text-sm text-zinc-500">{ctaNote}</p> : null}
         </div>
       </div>
     </section>

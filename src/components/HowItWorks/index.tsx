@@ -130,6 +130,17 @@ export function HowItWorks() {
           </h2>
         </div>
 
+        {/*
+          PLACEHOLDER: intro video — insert the explainer video here when ready.
+          This slot is shared across the homepage and all /lp/ landing pages.
+        */}
+        <div
+          aria-hidden
+          dangerouslySetInnerHTML={{
+            __html: '<!-- PLACEHOLDER: intro video — insert the explainer video here when ready. Shared across homepage and all /lp/ landing pages. -->',
+          }}
+        />
+
         <div className="hiw-stack relative">
           {STEPS.map((step, index) => {
             const isExpanded = isMobile || activeStep === step.num

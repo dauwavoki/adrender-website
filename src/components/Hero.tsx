@@ -1,6 +1,26 @@
 import { useAppUrl } from '../hooks/useAppUrl'
 
-export function Hero() {
+const DEFAULT_HEADLINE = 'Create more ads. Launch more tests. Find more winners.'
+const DEFAULT_SUBHEAD =
+  'AdRender pulls from 100M+ real image and video ads running right now and remixes the winners into your brand. Hundreds of ads in under 10 minutes.'
+const DEFAULT_CTA_NOTE = 'No credit card. No demo call. No sales rep.'
+const DEFAULT_AUDIENCE =
+  "Built for anyone spending $500 to $50K+ a month on ads — whether that's your whole budget or your testing budget. Shopify sync included."
+
+type HeroProps = {
+  headline?: string
+  subhead?: string
+  ctaNote?: string
+  /** Pass `null` to hide the audience line (landing pages). */
+  audienceLine?: string | null
+}
+
+export function Hero({
+  headline = DEFAULT_HEADLINE,
+  subhead = DEFAULT_SUBHEAD,
+  ctaNote = DEFAULT_CTA_NOTE,
+  audienceLine = DEFAULT_AUDIENCE,
+}: HeroProps) {
   const appUrl = useAppUrl()
 
   return (
@@ -30,11 +50,10 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-5xl text-center">
         <h1 className="font-heading text-[2.15rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl md:leading-[1.02] lg:text-[4.25rem]">
-          Create more ads. Launch more tests. Find more winners.
+          {headline}
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-400 sm:text-lg md:text-xl">
-          AdRender pulls from 100M+ real image and video ads running right now and remixes the winners into your
-          brand. Hundreds of ads in under 10 minutes.
+          {subhead}
         </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           <a
@@ -43,12 +62,11 @@ export function Hero() {
           >
             Start Free
           </a>
-          <p className="text-sm text-zinc-500">No credit card. No demo call. No sales rep.</p>
+          <p className="text-sm text-zinc-500">{ctaNote}</p>
         </div>
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">
-          Built for anyone spending $500 to $50K+ a month on ads — whether that&apos;s your whole budget or your
-          testing budget. Shopify sync included.
-        </p>
+        {audienceLine ? (
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">{audienceLine}</p>
+        ) : null}
       </div>
     </section>
   )

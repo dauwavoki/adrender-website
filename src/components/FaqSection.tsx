@@ -74,7 +74,15 @@ function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean
   )
 }
 
-export function FaqSection() {
+type FaqSectionProps = {
+  items?: { q: string; a: string }[]
+  intro?: string
+}
+
+export function FaqSection({
+  items = FAQ,
+  intro = "Tokens, canceling, and what's included — without the fine-print fog.",
+}: FaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
@@ -85,13 +93,11 @@ export function FaqSection() {
           <h2 className="mt-3 text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             Questions, answered
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">
-            Tokens, canceling, and what&apos;s included — without the fine-print fog.
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">{intro}</p>
         </ScrollReveal>
 
         <div className="mt-12 space-y-3">
-          {FAQ.map((item, i) => (
+          {items.map((item, i) => (
             <ScrollReveal key={item.q}>
               <FaqItem
                 q={item.q}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogoLink'
+import { MoreNav } from './MoreNav'
 import { SolutionsNav } from './SolutionsNav'
 import { useAppUrl } from '../hooks/useAppUrl'
 
@@ -35,18 +36,10 @@ export function Header() {
               Pricing
             </a>
             <SolutionsNav variant="desktop" />
-            <NavLink to="/about" className={navLinkClass}>
-              About
-            </NavLink>
             <NavLink to="/blog" className={navLinkClass}>
               Blog
             </NavLink>
-            <NavLink to="/affiliates" className={navLinkClass}>
-              Affiliates
-            </NavLink>
-            <NavLink to="/contact" className={navLinkClass}>
-              Contact
-            </NavLink>
+            <MoreNav />
           </nav>
 
           <div className="flex flex-1 items-center justify-end gap-3">

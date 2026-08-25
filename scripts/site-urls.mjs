@@ -1,7 +1,8 @@
 /**
  * Shared route discovery for sitemap + SSG.
  * Sources of truth: static routes, src/data/comparisons.tsx slugs,
- * src/data/solutions.ts slugs, src/content/blog/*.md
+ * src/data/solutions.ts slugs, src/data/landingPages.ts slugs,
+ * src/content/blog/*.md
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -36,6 +37,13 @@ export function getSolutionSlugs() {
   return [...new Set(slugs)]
 }
 
+/** @returns {string[]} landing-page URL slugs (e.g. 'easiest-ad-tool') */
+export function getLandingPageSlugs() {
+  const src = fs.readFileSync(path.join(ROOT, 'src/data/landingPages.ts'), 'utf8')
+  const slugs = [...src.matchAll(/^\s*slug:\s*'([^']+)'/gm)].map((m) => m[1])
+  return [...new Set(slugs)]
+}
+
 /** @returns {{ slug: string, publishedDate: string, updatedDate?: string }[]} */
 export function getBlogPostsMeta() {
   const dir = path.join(ROOT, 'src/content/blog')
@@ -64,6 +72,7 @@ export function getBlogPostsMeta() {
 export function getAllRoutes() {
   const comparisonPaths = getComparisonSlugs().map((s) => `/vs-${s}`)
   const solutionPaths = getSolutionSlugs().map((s) => `/solutions/${s}`)
+  const landingPaths = getLandingPageSlugs().map((s) => `/lp/${s}`)
   const blogPaths = getBlogPostsMeta().map((p) => `/blog/${p.slug}`)
   return [
     '/',
@@ -75,6 +84,7 @@ export function getAllRoutes() {
     ...comparisonPaths,
     '/solutions',
     ...solutionPaths,
+    ...landingPaths,
     '/blog',
     ...blogPaths,
   ]

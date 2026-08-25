@@ -12,7 +12,9 @@ import { PrivacyPage } from './pages/PrivacyPage'
 import { VsPage } from './pages/VsPage'
 import { SolutionRoutePage } from './pages/SolutionPage'
 import { SolutionsIndexPage } from './pages/SolutionsIndexPage'
+import { LpPage } from './pages/LpPage'
 import { comparisons } from './data/comparisons'
+import { landingPages } from './data/landingPages'
 import { solutions } from './data/solutions'
 
 /** Shared route tree — used by the browser SPA and by SSG via StaticRouter. */
@@ -37,6 +39,9 @@ export function AppRoutes() {
         <Route path="solutions" element={<SolutionsIndexPage />} />
         {solutions.map((s) => (
           <Route key={s.slug} path={`solutions/${s.slug}`} element={<SolutionRoutePage slug={s.slug} />} />
+        ))}
+        {landingPages.map((p) => (
+          <Route key={p.slug} path={`lp/${p.slug}`} element={<LpPage slug={p.slug} />} />
         ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

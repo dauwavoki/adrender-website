@@ -15,9 +15,16 @@ type FounderStoryProps = {
   /** Extra paragraphs for /about (same core story). */
   extended?: boolean
   id?: string
+  heading?: string
+  paragraphs?: string[]
 }
 
-export function FounderStory({ extended = false, id }: FounderStoryProps) {
+export function FounderStory({
+  extended = false,
+  id,
+  heading = 'I spent 20 years in design. Then I got tired of my own workflow.',
+  paragraphs = BODY_PARAS,
+}: FounderStoryProps) {
   return (
     <section id={id} className="scroll-mt-28 px-4 py-24 md:px-6 md:py-28">
       <div className="mx-auto max-w-6xl">
@@ -26,10 +33,10 @@ export function FounderStory({ extended = false, id }: FounderStoryProps) {
             <div className="grid md:grid-cols-2">
               <div className="flex flex-col justify-center p-8 md:p-10 lg:p-12">
                 <h2 className="font-heading text-2xl font-bold tracking-tight text-white md:text-3xl lg:text-[2rem] lg:leading-tight">
-                  I spent 20 years in design. Then I got tired of my own workflow.
+                  {heading}
                 </h2>
                 <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-zinc-400">
-                  {BODY_PARAS.map((p) => (
+                  {paragraphs.map((p) => (
                     <p key={p.slice(0, 40)}>{p}</p>
                   ))}
                   {extended && (

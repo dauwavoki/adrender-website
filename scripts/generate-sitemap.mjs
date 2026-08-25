@@ -25,6 +25,9 @@ function metaForRoute(route) {
   if (getSolutionSlugs().some((s) => route === `/solutions/${s}`)) {
     return { changefreq: 'monthly', priority: '0.8' }
   }
+  if (route.startsWith('/lp/')) {
+    return { changefreq: 'monthly', priority: '0.8' }
+  }
   return { changefreq: 'monthly', priority: '0.5' }
 }
 
