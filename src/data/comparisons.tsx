@@ -819,6 +819,197 @@ export const comparisons: ComparisonConfig[] = [
       },
     ],
   },
+  {
+    slug: 'riffkit',
+    competitor: 'Riffkit',
+    competitorUrl: 'https://riffkit.ai',
+    subheadline: 'Static and video ads. Not just short-form UGC clips.',
+    documentTitle: 'AdRender vs Riffkit — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Riffkit: static and video ads from real running templates, Shopify sync included. Riffkit is short-form UGC video only.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'From $8 per 720p video, no monthly free tier' },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'Short-form UGC-style video only' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Riffs on trending TikTok formats',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Not applicable — per-video workflow',
+      },
+      { label: 'Pricing model', adrender: 'Flat monthly tiers', competitor: 'Pay-per-video' },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, renews monthly',
+        competitor: '❌ None',
+      },
+    ],
+    cards: [
+      {
+        icon: CircleDollarSign,
+        title: 'Per-video pricing vs a monthly allotment',
+        body: 'Riffkit charges per video, which is straightforward for occasional short-form content but adds up fast if you need volume — 50 videos means 50x the per-video cost. AdRender\u2019s monthly tiers give you a set allotment of tokens to spend across static and video ads however you want.',
+      },
+      {
+        icon: Video,
+        title: 'One format vs full ad creative',
+        body: 'Riffkit is purpose-built for short-form UGC-style TikTok content specifically. If that\u2019s your only channel, it\u2019s a focused tool for that job. AdRender generates both static and video ads, sized for whatever platform you\u2019re running on, from templates sourced from real currently-running ads — not just trending TikTok formats.',
+      },
+    ],
+  },
+  {
+    slug: 'adfuseai',
+    competitor: 'AdFuse AI',
+    competitorUrl: 'https://adfuseai.com',
+    subheadline: 'Real running ads. Not a generic template engine.',
+    documentTitle: 'AdRender vs AdFuse AI — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs AdFuse AI: real ad templates from ads running now, native Shopify sync, and a free tier that renews monthly.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$9–169/mo depending on tier' },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: '❌ Not offered',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates ad copy and visuals, not sourced from a live ad index',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual setup',
+      },
+      {
+        label: 'Video generation',
+        adrender: '✅ Included from the entry tier',
+        competitor: 'Not the focus — primarily static ad copy and visuals',
+      },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Templates sourced from real ads vs generic generation',
+        body: 'AdFuse AI generates ad copy and creative variations from your inputs, but not from a library of currently-running ads. AdRender\u2019s template library reflects over 100 million real ads live right now, so what you start from is grounded in current performance, not just AI guesswork.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier',
+        body: 'AdFuse AI has no free tier at any price point in its range. AdRender\u2019s free tier renews every month, no card required.',
+      },
+    ],
+  },
+  {
+    slug: 'solara',
+    competitor: 'Solara AI',
+    competitorUrl: 'https://solaraai.com',
+    subheadline: 'Focused ad creative. Not a full autonomous marketing agency.',
+    documentTitle: 'AdRender vs Solara AI — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Solara AI: focused ad creative from real running templates, not a full autonomous marketing agency. Shopify sync, free to start.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Custom/subscription — not publicly listed' },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: '❌ Not publicly offered',
+      },
+      {
+        label: 'Scope',
+        adrender: 'Focused: ad creative, static and video',
+        competitor:
+          'Full autonomous marketing agency: site builds, SEO, content, campaign launch, budget optimization, lead handling via AI voice agent',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates video/content as part of a broader autonomous system',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Not specifically Shopify-focused',
+      },
+      {
+        label: 'Control',
+        adrender: 'You review and approve every generated ad',
+        competitor: 'Runs autonomously across the full campaign lifecycle, with autopilot or co-pilot modes',
+      },
+      {
+        label: 'Pricing transparency',
+        adrender: 'Published tiers, visible upfront',
+        competitor: 'Not publicly listed — requires direct inquiry',
+      },
+    ],
+    cards: [
+      {
+        icon: Wand2,
+        title: 'An autonomous agency vs a creative tool you control',
+        body: 'Solara AI positions itself as a full AI marketing team — building your site, running SEO, launching campaigns, shifting ad budget, and even answering inbound leads autonomously. That\u2019s a much bigger commitment than a creative tool, and pricing isn\u2019t public — you\u2019d need to inquire directly. AdRender does one job: generate the ad creative, with transparent published pricing and full control over what gets used.',
+      },
+      {
+        icon: LayoutTemplate,
+        title: 'Real running ads vs a closed system',
+        body: 'AdRender\u2019s templates are pulled from a library of 100M+ ads that are actually running and converting right now, so you can see exactly what you\u2019re starting from. Solara\u2019s creative output is one piece of a larger autonomous system without the same visibility into a template source.',
+      },
+    ],
+  },
+  {
+    slug: 'sphere123rf',
+    competitor: 'Sphere by 123RF',
+    competitorUrl: 'https://sphere.123rf.ai',
+    subheadline: 'Self-serve and free to start. Not a demo-gated enterprise tool.',
+    documentTitle: 'AdRender vs Sphere by 123RF — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Sphere by 123RF: transparent self-serve pricing and a free tier, not a demo-gated enterprise tool. Real ad templates, Shopify sync.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'No public pricing — demo required' },
+      {
+        label: 'Access',
+        adrender: 'Sign up and start generating immediately',
+        competitor: 'Requires booking a demo to get pricing or access',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: '❌ Not publicly offered',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates from your website via an internal "creative operating system," not a live running-ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Not specifically Shopify-focused',
+      },
+      {
+        label: 'Target user',
+        adrender: 'Small businesses and solo marketers',
+        competitor: 'Marketing teams — built and priced for larger organizations',
+      },
+    ],
+    cards: [
+      {
+        icon: MousePointerClick,
+        title: 'Self-serve vs demo-gated',
+        body: 'Sphere requires booking a demo before you can see pricing or get access — a longer path aimed at marketing teams evaluating a bigger platform purchase. AdRender is fully self-serve: sign up, connect your brand, and start generating immediately, with pricing published upfront.',
+      },
+      {
+        icon: Users,
+        title: 'Built for small teams, not enterprise procurement',
+        body: 'Sphere is positioned as an "AI creative operating system for marketing teams," which shows in its access model. AdRender is built specifically for small businesses and solo marketers who need to move fast without a sales process in the way.',
+      },
+    ],
+  },
 ]
 
 export function getComparisonBySlug(slug: string): ComparisonConfig | undefined {
