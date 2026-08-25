@@ -136,7 +136,7 @@ export function ComparisonPage({
 
       {/* 3. FEATURE CALLOUT CARDS */}
       <section className="mx-auto mt-20 max-w-6xl md:mt-28">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className={`grid gap-6 ${cards.length === 2 || cards.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {cards.map(({ icon: Icon, title, body }, i) => {
             const surfaces = [
               'border-[#00E5FF]/22 bg-[#00E5FF]/08 text-[#00E5FF]',

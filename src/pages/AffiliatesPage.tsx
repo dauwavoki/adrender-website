@@ -17,7 +17,7 @@ const SITE_URL = 'https://adrender.app'
 
 const TITLE = 'AdRender Affiliate Program — Earn 50% Commission'
 const DESCRIPTION =
-  'Join the AdRender affiliate program. Sign up before August 31, 2026 for 50% of profit on every referred subscriber. Real-time dashboard, biweekly payouts, and no earnings cap.'
+  'Join the AdRender affiliate program. Sign up before October 31, 2026 for 50% of profit on every referred subscriber. Real-time dashboard, biweekly payouts, and no earnings cap.'
 
 const PERKS: { icon: LucideIcon; title: string; body: string }[] = [
   {
@@ -101,7 +101,7 @@ const FAQ: { q: string; a: string }[] = [
     a: 'Payouts run every 2 weeks. Your first payout begins after the subscriber’s first month is complete.',
   },
   {
-    q: 'What happens after August 31, 2026?',
+    q: 'What happens after October 31, 2026?',
     a: 'New campaigns will vary after that date, but no standard campaign will ever pay less than 20% commission. You can also negotiate a custom rate through our Split-Share program.',
   },
 ]
@@ -119,7 +119,7 @@ export function AffiliatesPage() {
             Earn with AdRender
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
-            Refer subscribers and earn a share of the profit — up to 50% when you join before August 31, 2026.
+            Refer subscribers and earn a share of the profit — up to 50% when you join before October 31, 2026.
           </p>
           <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-[color:color-mix(in_srgb,var(--accent-cyan)_22%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_6%,#12121a)] px-5 py-4 text-left md:px-6 md:py-5">
             <p className="text-base leading-relaxed text-zinc-300">
@@ -163,7 +163,7 @@ export function AffiliatesPage() {
               <p className="mt-4 font-heading text-5xl font-extrabold tracking-tight text-white">50%</p>
               <p className="mt-2 text-lg font-medium text-zinc-200">of profit on every referred subscriber</p>
               <p className="mt-4 text-base leading-relaxed text-zinc-400">
-                Sign up before <span className="font-medium text-zinc-200">August 31, 2026</span> to lock in the 50%
+                Sign up before <span className="font-medium text-zinc-200">October 31, 2026</span> to lock in the 50%
                 rate for your referrals.
               </p>
             </article>
@@ -171,7 +171,7 @@ export function AffiliatesPage() {
 
           <ScrollReveal>
             <article className="h-full rounded-2xl border border-white/[0.06] bg-[#12121a] p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">After August 31, 2026</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">After October 31, 2026</p>
               <p className="mt-4 font-heading text-5xl font-extrabold tracking-tight text-white">20%+</p>
               <p className="mt-2 text-lg font-medium text-zinc-200">minimum on standard campaigns</p>
               <p className="mt-4 text-base leading-relaxed text-zinc-400">
@@ -311,7 +311,7 @@ export function AffiliatesPage() {
               <a href={APP_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
                 app.adrender.app
               </a>
-              , then apply under Profile → Affiliates. Early enrollment for 50% commission closes August 31, 2026.
+              , then apply under Profile → Affiliates. Early enrollment for 50% commission closes October 31, 2026.
             </p>
             <div className="mt-8 flex justify-center">
               <a

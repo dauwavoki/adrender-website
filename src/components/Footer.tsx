@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogoLink'
+import { blogIndexPath } from '../data/blog'
 
 export function Footer() {
   return (
@@ -26,29 +27,8 @@ export function Footer() {
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Compare</span>
-            <Link to="/vs-adcreative" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs AdCreative.ai
-            </Link>
-            <Link to="/vs-canva" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Canva
-            </Link>
-            <Link to="/vs-predis" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Predis
-            </Link>
-            <Link to="/vs-adscale" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs AdScale
-            </Link>
-            <Link to="/vs-madgicx" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Madgicx
-            </Link>
-            <Link to="/vs-quickads" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Quickads
-            </Link>
-            <Link to="/vs-flair" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Flair
-            </Link>
-            <Link to="/vs-pebblely" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              vs Pebblely
+            <Link to={blogIndexPath('comparisons')} className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              Compare
             </Link>
           </div>
           <div className="flex flex-col gap-2">
@@ -71,8 +51,8 @@ export function Footer() {
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Blog</span>
-            <Link to="/blog" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-              All posts
+            <Link to={blogIndexPath('notes')} className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              Blog
             </Link>
           </div>
         </div>

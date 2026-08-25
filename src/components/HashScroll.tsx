@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom'
  * scroll position.
  */
 export function HashScroll() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, search } = useLocation()
 
   useLayoutEffect(() => {
     window.history.scrollRestoration = 'manual'
@@ -39,7 +39,7 @@ export function HashScroll() {
       cancelAnimationFrame(frame)
       html.style.removeProperty('scroll-behavior')
     }
-  }, [pathname, hash])
+  }, [pathname, hash, search])
 
   return null
 }

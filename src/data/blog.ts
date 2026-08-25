@@ -45,6 +45,16 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug)
 }
 
+export type BlogIndexTab = 'notes' | 'comparisons'
+
+export function blogIndexPath(tab: BlogIndexTab = 'notes'): string {
+  return `/blog?tab=${tab}`
+}
+
+export function parseBlogTab(raw: string | null | undefined): BlogIndexTab {
+  return raw?.toLowerCase() === 'comparisons' ? 'comparisons' : 'notes'
+}
+
 export function blogPostPath(slug: string): string {
   return `/blog/${slug}`
 }
