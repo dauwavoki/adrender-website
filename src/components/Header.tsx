@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogoLink'
+import { SolutionsNav } from './SolutionsNav'
 import { useAppUrl } from '../hooks/useAppUrl'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -21,7 +22,7 @@ export function Header() {
           </div>
 
           <nav
-            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-8 md:flex"
+            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-5 lg:flex xl:gap-8"
             aria-label="Primary"
           >
             <a href="/#how-it-works" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
@@ -33,6 +34,7 @@ export function Header() {
             <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Pricing
             </a>
+            <SolutionsNav variant="desktop" />
             <NavLink to="/about" className={navLinkClass}>
               About
             </NavLink>
@@ -50,19 +52,19 @@ export function Header() {
           <div className="flex flex-1 items-center justify-end gap-3">
             <a
               href={appUrl}
-              className="hidden text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)] md:inline-flex"
+              className="hidden text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)] lg:inline-flex"
             >
               Sign In
             </a>
             <a
               href={appUrl}
-              className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
+              className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold lg:inline-flex"
             >
               Start Free
             </a>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-300 transition hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_25%,transparent)] md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-300 transition hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_25%,transparent)] lg:hidden"
               aria-expanded={open}
               aria-label="Menu"
               onClick={() => setOpen((v) => !v)}
@@ -75,7 +77,7 @@ export function Header() {
         </div>
 
         <nav
-          className={`mt-3 flex flex-col gap-1 border-t border-white/[0.06] pt-3 md:hidden ${open ? 'flex' : 'hidden'}`}
+          className={`mt-3 flex flex-col gap-1 border-t border-white/[0.06] pt-3 lg:hidden ${open ? 'flex' : 'hidden'}`}
           aria-label="Mobile primary"
         >
           <a
@@ -99,6 +101,9 @@ export function Header() {
           >
             Pricing
           </a>
+          <div className="py-2">
+            <SolutionsNav variant="mobile" onNavigate={() => setOpen(false)} />
+          </div>
           <NavLink to="/about" className={navLinkClass} onClick={() => setOpen(false)}>
             About
           </NavLink>

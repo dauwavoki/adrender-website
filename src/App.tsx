@@ -10,7 +10,10 @@ import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { VsPage } from './pages/VsPage'
+import { SolutionRoutePage } from './pages/SolutionPage'
+import { SolutionsIndexPage } from './pages/SolutionsIndexPage'
 import { comparisons } from './data/comparisons'
+import { solutions } from './data/solutions'
 
 /** Shared route tree — used by the browser SPA and by SSG via StaticRouter. */
 export function AppRoutes() {
@@ -30,6 +33,10 @@ export function AppRoutes() {
         {/* Explicit paths preserve /vs-adcreative URLs under StaticRouter + BrowserRouter. */}
         {comparisons.map((c) => (
           <Route key={c.slug} path={`vs-${c.slug}`} element={<VsPage slug={c.slug} />} />
+        ))}
+        <Route path="solutions" element={<SolutionsIndexPage />} />
+        {solutions.map((s) => (
+          <Route key={s.slug} path={`solutions/${s.slug}`} element={<SolutionRoutePage slug={s.slug} />} />
         ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

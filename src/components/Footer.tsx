@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogoLink'
 import { blogIndexPath } from '../data/blog'
+import { solutions, solutionPath } from '../data/solutions'
 
 export function Footer() {
   return (
@@ -24,6 +25,23 @@ export function Footer() {
             <a href="/#faq" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
               FAQ
             </a>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-medium text-zinc-300">Solutions</span>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+              {solutions.map((s) => (
+                <Link
+                  key={s.slug}
+                  to={solutionPath(s.slug)}
+                  className="text-zinc-500 transition hover:text-[var(--accent-cyan)]"
+                >
+                  {s.navLabel}
+                </Link>
+              ))}
+            </div>
+            <Link to="/solutions" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              All solutions
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-medium text-zinc-300">Compare</span>

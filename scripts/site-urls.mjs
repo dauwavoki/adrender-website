@@ -1,6 +1,7 @@
 /**
  * Shared route discovery for sitemap + SSG.
- * Sources of truth: static routes, src/data/comparisons.tsx slugs, src/content/blog/*.md
+ * Sources of truth: static routes, src/data/comparisons.tsx slugs,
+ * src/data/solutions.ts slugs, src/content/blog/*.md
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -24,6 +25,13 @@ function asDateString(value) {
 export function getComparisonSlugs() {
   const src = fs.readFileSync(path.join(ROOT, 'src/data/comparisons.tsx'), 'utf8')
   // Only top-level config entries use `slug: '...'` (helper functions use parameters).
+  const slugs = [...src.matchAll(/^\s*slug:\s*'([^']+)'/gm)].map((m) => m[1])
+  return [...new Set(slugs)]
+}
+
+/** @returns {string[]} solution URL slugs (e.g. 'creative-fatigue') */
+export function getSolutionSlugs() {
+  const src = fs.readFileSync(path.join(ROOT, 'src/data/solutions.ts'), 'utf8')
   const slugs = [...src.matchAll(/^\s*slug:\s*'([^']+)'/gm)].map((m) => m[1])
   return [...new Set(slugs)]
 }
@@ -55,6 +63,7 @@ export function getBlogPostsMeta() {
  */
 export function getAllRoutes() {
   const comparisonPaths = getComparisonSlugs().map((s) => `/vs-${s}`)
+  const solutionPaths = getSolutionSlugs().map((s) => `/solutions/${s}`)
   const blogPaths = getBlogPostsMeta().map((p) => `/blog/${p.slug}`)
   return [
     '/',
@@ -64,6 +73,8 @@ export function getAllRoutes() {
     '/terms',
     '/privacy',
     ...comparisonPaths,
+    '/solutions',
+    ...solutionPaths,
     '/blog',
     ...blogPaths,
   ]

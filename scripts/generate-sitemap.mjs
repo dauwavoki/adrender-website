@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { SITE_ORIGIN, ROOT, getAllRoutes, getBlogPostsMeta, getComparisonSlugs } from './site-urls.mjs'
+import { SITE_ORIGIN, ROOT, getAllRoutes, getBlogPostsMeta, getComparisonSlugs, getSolutionSlugs } from './site-urls.mjs'
 
 /**
  * @param {string} route
@@ -20,6 +20,10 @@ function metaForRoute(route) {
   }
   if (getComparisonSlugs().some((s) => route === `/vs-${s}`)) {
     return { changefreq: 'monthly', priority: '0.9' }
+  }
+  if (route === '/solutions') return { changefreq: 'weekly', priority: '0.8' }
+  if (getSolutionSlugs().some((s) => route === `/solutions/${s}`)) {
+    return { changefreq: 'monthly', priority: '0.8' }
   }
   return { changefreq: 'monthly', priority: '0.5' }
 }
