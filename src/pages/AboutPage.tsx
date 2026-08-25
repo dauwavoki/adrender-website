@@ -7,7 +7,7 @@ import type { PlaceholderId } from '../data/imageManifest'
 
 const TITLE = 'About AdRender — Features for Shipping Static and Video Ads Fast'
 const DESCRIPTION =
-  'Proven templates from 100M+ real ads, brand intelligence, batch generation, every size automatically, Shopify sync, and team workspaces. See how AdRender replaces the six-tool creative stack.'
+  'Proven templates from 100M+ real ads, brand intelligence, batch generation, every size, Shopify sync, and team workspaces — replacing the six-tool stack.'
 
 type FeatureSection = {
   id: string

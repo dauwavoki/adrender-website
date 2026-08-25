@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { PageMeta } from '../components/PageMeta'
 import { ScrollReveal } from '../components/ScrollReveal'
@@ -13,12 +13,12 @@ const TAB_CLASS =
   'rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-cyan)]/40'
 
 export function BlogIndexPage() {
-  const [searchParams] = useSearchParams()
-  const tab = parseBlogTab(searchParams.get('tab'))
+  const { hash } = useLocation()
+  const tab = parseBlogTab(hash)
   const isNotes = tab === 'notes'
 
   return (
-    <div className="px-4 py-20 md:px-6 md:py-28">
+    <div id="comparisons" className="px-4 py-20 md:px-6 md:py-28">
       <PageMeta title={TITLE} description={DESCRIPTION} path="/blog" />
       <div className={`mx-auto ${isNotes ? 'max-w-2xl' : 'max-w-4xl'}`}>
         <ScrollReveal>

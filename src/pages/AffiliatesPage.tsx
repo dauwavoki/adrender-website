@@ -17,7 +17,7 @@ const SITE_URL = 'https://adrender.app'
 
 const TITLE = 'AdRender Affiliate Program — Earn 50% Commission'
 const DESCRIPTION =
-  'Join the AdRender affiliate program. Sign up before October 31, 2026 for 50% of profit on every referred subscriber. Real-time dashboard, biweekly payouts, and no earnings cap.'
+  'Join the AdRender affiliate program — 50% commission on referred subscribers before Oct 31, 2026. Real-time dashboard, biweekly payouts, no cap.'
 
 const PERKS: { icon: LucideIcon; title: string; body: string }[] = [
   {

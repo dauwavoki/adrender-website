@@ -1,0 +1,22 @@
+# AdRender
+
+> AdRender is an AI-powered ad creative platform for Shopify brands, solo founders, agencies, and marketing teams to create on-brand static and video ads at scale.
+
+Producing enough creative for ad testing is slow and usually requires stitching together separate research, design, copywriting, image, and video tools. AdRender reduces that production bottleneck into one flow, so teams can generate more variations without relying on a designer or agency.
+
+Key capabilities:
+
+- Generate hundreds of on-brand static and video ads in minutes.
+- Browse a library of 100M+ real ads currently running, filterable by niche, platform, and format.
+- Set up a brand automatically via website URL, Shopify sync, or uploaded brand documents and reference images.
+- Native Shopify catalog sync — products, images, and variants stay current automatically.
+- Reduce the need for multiple separate creative production tools.
+- Keep brand styling, voice, and messaging consistent across every generated ad.
+
+Built for: Shopify and DTC brands, solo founders, freelancers, agencies managing multiple client brands, and marketing teams of any size — from small businesses to larger operators running high-volume campaigns.
+
+## Links
+
+- [Website](https://adrender.app)
+- [Pricing](https://adrender.app/#pricing)
+- [Compare AdRender to alternatives](https://adrender.app/blog#comparisons)

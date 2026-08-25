@@ -580,7 +580,7 @@ export const comparisons: ComparisonConfig[] = [
     subheadline: 'Static and video. With an actual free tier.',
     documentTitle: 'AdRender vs Creatify — AI Ad Generator Comparison',
     metaDescription:
-      'AdRender vs Creatify: static and video ads from real running templates, plus a free tier that renews monthly. Creatify is video-only with no permanent free plan.',
+      'AdRender vs Creatify: static and video ads from real running templates, with a free tier that renews monthly — Creatify is video-only.',
     rows: [
       {
         label: 'Starting price',
@@ -1071,7 +1071,7 @@ export const comparisons: ComparisonConfig[] = [
     subheadline: 'Full ad creative. Not just UGC-style video.',
     documentTitle: 'AdRender vs SellReel — AI Ad Generator Comparison',
     metaDescription:
-      'AdRender vs SellReel: static and video ad creative from real running templates, plus native Shopify sync. SellReel focuses specifically on UGC and body-double video.',
+      'AdRender vs SellReel: static and video ads from real running templates, plus native Shopify sync — not just UGC and body-double video.',
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$49/mo, no free tier' },
       {

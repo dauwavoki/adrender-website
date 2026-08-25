@@ -48,11 +48,11 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 export type BlogIndexTab = 'notes' | 'comparisons'
 
 export function blogIndexPath(tab: BlogIndexTab = 'notes'): string {
-  return `/blog?tab=${tab}`
+  return tab === 'comparisons' ? '/blog#comparisons' : '/blog'
 }
 
-export function parseBlogTab(raw: string | null | undefined): BlogIndexTab {
-  return raw?.toLowerCase() === 'comparisons' ? 'comparisons' : 'notes'
+export function parseBlogTab(hash: string | null | undefined): BlogIndexTab {
+  return hash?.replace(/^#/, '').toLowerCase() === 'comparisons' ? 'comparisons' : 'notes'
 }
 
 export function blogPostPath(slug: string): string {

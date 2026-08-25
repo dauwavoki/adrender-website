@@ -10,9 +10,9 @@ import { FaqSection } from '../components/FaqSection'
 import { ClosingCta } from '../components/ClosingCta'
 import { PageMeta } from '../components/PageMeta'
 
-const TITLE = 'AdRender — AI Ad Generator for Shopify | 100M+ Real Templates'
+const TITLE = 'AdRender — AI Ad Generator | 100M+ Real Ad Templates'
 const DESCRIPTION =
-  'Generate hundreds of on-brand static and video ads in under 10 minutes. Connect your Shopify store, browse proven ad structures from 100M+ real ads, and ship creatives without a designer. Free to start.'
+  'Generate hundreds of on-brand static and video ads in minutes from 100M+ real templates. Shopify sync included. Free to start, no card required.'
 
 export function HomePage() {
   return (

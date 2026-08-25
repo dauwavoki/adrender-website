@@ -1,7 +1,7 @@
 ---
 title: "Is Canva Enough to Make Ads for Your Shopify Store in 2026?"
 slug: canva-enough-for-shopify-ads
-description: Canva is the default answer for "how do I make an ad" — here's an honest look at where it holds up for Shopify sellers and where it starts costing you more than it saves.
+description: "Canva is the default answer for making ads — here's where it holds up for Shopify sellers, and where it starts costing you more than it saves."
 publishedDate: 2026-08-23
 ---
 
