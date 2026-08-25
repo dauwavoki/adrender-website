@@ -1424,6 +1424,243 @@ export const comparisons: ComparisonConfig[] = [
       },
     ],
   },
+  {
+    slug: 'adriselab',
+    competitor: 'AdRiseLab',
+    competitorUrl: 'https://adriselab.com',
+    subheadline: 'Every platform. Not locked to Meta.',
+    documentTitle: 'AdRender vs AdRiseLab — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs AdRiseLab: real ad templates from 100M+ running ads across every platform, not just Meta. Native Shopify sync, free to start.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: '$39/mo, 5 free creatives (not a renewing free tier)',
+      },
+      {
+        label: 'Platform coverage',
+        adrender: 'Any platform',
+        competitor: 'Meta (Facebook/Instagram) only, built around Meta\u2019s Andromeda algorithm',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates from a pasted product URL plus Meta Ad Library research',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'URL-based, not full catalog sync',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Extracts product info per URL',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, renews monthly',
+        competitor: '5 free creatives total, one-time',
+      },
+    ],
+    cards: [
+      {
+        icon: Globe,
+        title: 'Every platform vs Meta-only',
+        body: 'AdRiseLab is built specifically around Meta\u2019s ad ecosystem, including direct publishing to Facebook and Instagram. If Meta is your only channel, that native integration is genuinely useful. AdRender generates ads for any platform, not tied to one ad network\u2019s algorithm.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier vs a one-time allotment',
+        body: 'AdRiseLab\u2019s free tier is 5 creatives total, not renewing. AdRender\u2019s free tier renews every month.',
+      },
+    ],
+  },
+  {
+    slug: 'veonib',
+    competitor: 'VEONIB',
+    competitorUrl: 'https://veonib.com',
+    subheadline: 'Static and video ads. Not just product-page video content.',
+    documentTitle: 'AdRender vs VEONIB — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs VEONIB: static and video ads from real running templates, not just video content from a product page. Shopify sync, free to start.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free (limited) / $11–47/mo paid' },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'Video only — product marketing videos and social content' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates storyboards/scripts from product page analysis, not a live ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Built for Shopify merchants, but works per product URL rather than full catalog sync',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Analyzes individual product pages',
+      },
+      {
+        label: 'Ad copy auto-generation',
+        adrender: '✅ Hooks, headlines, CTAs per product',
+        competitor: 'Scripts and subtitles for video specifically',
+      },
+    ],
+    cards: [
+      {
+        icon: Video,
+        title: 'Static and video vs video-only',
+        body: 'VEONIB turns product pages into marketing videos — a focused, well-built tool for that specific job. AdRender generates both static and video ads from the same brand setup, giving you formats VEONIB doesn\u2019t cover.',
+      },
+      {
+        icon: ShoppingBag,
+        title: 'Full catalog sync vs per-product workflow',
+        body: 'VEONIB works from individual product URLs. AdRender syncs your entire Shopify catalog at once.',
+      },
+    ],
+  },
+  {
+    slug: 'auxora',
+    competitor: 'Auxora',
+    competitorUrl: 'https://auxora.ai',
+    subheadline: 'Creative generation you control. Not a managed campaign service.',
+    documentTitle: 'AdRender vs Auxora — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Auxora: AI-generated ad creative you control, not a managed campaign service with human review built into the price.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: 'Free snapshot / $49.99/mo (Growth) / $249.99/mo (Pro, with dedicated PPC expert)',
+      },
+      {
+        label: 'What it actually does',
+        adrender: 'AI ad creative generation — static and video',
+        competitor: 'Full-service AI campaign management with human PPC expert review before spending',
+      },
+      {
+        label: 'Creative role',
+        adrender: 'The whole product',
+        competitor: 'One part of a broader managed-campaign offering',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates campaigns from AI strategy plus expert oversight',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Not Shopify-specific',
+      },
+      {
+        label: 'Control',
+        adrender: 'You review and approve every generated ad',
+        competitor: 'AI executes with a human expert reviewing strategy and spend decisions',
+      },
+    ],
+    cards: [
+      {
+        icon: Wand2,
+        title: 'Managed service vs self-serve tool',
+        body: 'Auxora positions itself as a substitute for a PPC agency — AI builds the campaign, a vetted human expert reviews it before money is spent. That\u2019s a meaningfully different product than a creative generator: you\u2019re paying for oversight and campaign management, not just the ad itself. AdRender is a self-serve creative tool — faster and cheaper if you already know how to run your own campaigns and just need the ad.',
+      },
+      {
+        icon: CircleDollarSign,
+        title: 'Price reflects scope',
+        body: 'Auxora\u2019s higher tiers ($249.99/mo for expert oversight) reflect the managed-service model. AdRender\u2019s pricing reflects creative generation alone, starting free.',
+      },
+    ],
+  },
+  {
+    slug: 'popjam',
+    competitor: 'POPJAM',
+    competitorUrl: 'https://popjam.io',
+    subheadline: 'Real running templates. Not synthetic-audience testing.',
+    documentTitle: 'AdRender vs POPJAM — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs POPJAM: real ad templates from 100M+ running ads, native Shopify sync. POPJAM focuses on AI persona testing before you generate volume.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free to start, no card' },
+      {
+        label: 'Core approach',
+        adrender: 'Generate from templates sourced from real running ads',
+        competitor: 'Generate ad creative, then test it against AI personas that simulate your buyers',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Not template-based — focused on pre-launch testing rather than a live ad index',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None specifically' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual setup',
+      },
+      {
+        label: 'Volume',
+        adrender: 'Hundreds of ads per batch',
+        competitor: 'Generate-and-test loop, one creative direction at a time',
+      },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Proven templates vs synthetic testing',
+        body: 'POPJAM\u2019s angle is testing your ad against AI-simulated audiences before you spend real money on it — a genuinely interesting idea for validating a single creative direction. AdRender starts from templates already proven in the real world — ads that are actually running and converting right now — rather than testing hypothetical performance.',
+      },
+      {
+        icon: Layers,
+        title: 'Volume vs validation',
+        body: 'AdRender is built for generating large batches quickly. POPJAM is built for validating fewer creatives more carefully before launch. Depending on your workflow, these can be complementary rather than competing approaches.',
+      },
+    ],
+  },
+  {
+    slug: 'buzziai',
+    competitor: 'Buzzi AI',
+    competitorUrl: 'https://www.buzzi.ai',
+    subheadline: 'Built for ads. Not general social media design.',
+    documentTitle: 'AdRender vs Buzzi AI — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Buzzi AI: focused ad creative from real running templates, not a broad social media post design and scheduling tool.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Pricing not consistently published' },
+      {
+        label: 'Scope',
+        adrender: 'Focused: ad creative, static and video',
+        competitor: 'Social media post design plus built-in scheduler',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generic brand-aligned social post designs, not sourced from running ads',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None specifically' },
+      { label: 'Language support', adrender: 'English-first', competitor: '106 languages supported' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Business analysis for brand-aligned designs',
+      },
+    ],
+    cards: [
+      {
+        icon: Megaphone,
+        title: 'Ad-specific vs general social content',
+        body: 'Buzzi AI is built for ongoing social media content — posts, designs, scheduling — with broad language support. AdRender is built specifically for paid ad creative, sourced from real running ad templates rather than general social post designs.',
+      },
+      {
+        icon: Layers,
+        title: 'If you need both',
+        body: 'Buzzi AI\u2019s scheduling and broad language support may suit ongoing organic social content. AdRender is the better fit specifically for the ads you\u2019re running paid spend behind.',
+      },
+    ],
+  },
 ]
 
 export function getComparisonBySlug(slug: string): ComparisonConfig | undefined {
