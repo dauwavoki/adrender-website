@@ -1010,6 +1010,420 @@ export const comparisons: ComparisonConfig[] = [
       },
     ],
   },
+  {
+    slug: 'mintly',
+    competitor: 'Mintly',
+    competitorUrl: 'https://usemintly.com',
+    subheadline: 'A much larger library of real running ads.',
+    documentTitle: 'AdRender vs Mintly — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Mintly: 100M+ real ad templates vs a smaller cloned-ad library, native Shopify sync, and unlimited concurrent rendering. Both free to start.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$19/mo (Starter, 100 ads)' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Clones from Meta Ad Library and TikTok Shop campaigns, a narrower set',
+      },
+      {
+        label: 'Ad volume by tier',
+        adrender: 'Scales with tier, unlimited concurrent on top tiers',
+        competitor: '100 ads (Starter) to 1,200 ads (Scale, $199/mo)',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Built for Shopify/ecommerce founders, product-photo-based workflow',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Product image upload and template selection',
+      },
+      {
+        label: 'Video generation',
+        adrender: '✅ Included from the entry tier',
+        competitor: 'Included — product videoshoots and UGC-style clips',
+      },
+      {
+        label: 'Scope',
+        adrender: 'Static and video ads, full brand setup',
+        competitor: 'Static ads, product videos, UGC-style clips, photo editing',
+      },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Scale of the template library',
+        body: 'Mintly clones winning ad structures from Meta and TikTok Shop specifically — a real, useful approach, but the pool it draws from is smaller than AdRender\u2019s index of over 100 million ads currently running across platforms and niches.',
+      },
+      {
+        icon: Layers,
+        title: 'Similar philosophy, different scale',
+        body: 'Both tools share a similar core idea — start from a proven ad structure rather than a blank canvas — which makes this a genuinely close comparison. The difference comes down to breadth: AdRender\u2019s brand setup pulls full context (colors, voice, product catalog) from a URL or Shopify sync automatically, while Mintly\u2019s workflow is built more narrowly around individual product photo uploads per ad.',
+      },
+    ],
+  },
+  {
+    slug: 'sellreel',
+    competitor: 'SellReel',
+    competitorUrl: 'https://sellreel.com',
+    subheadline: 'Full ad creative. Not just UGC-style video.',
+    documentTitle: 'AdRender vs SellReel — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs SellReel: static and video ad creative from real running templates, plus native Shopify sync. SellReel focuses specifically on UGC and body-double video.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$49/mo, no free tier' },
+      {
+        label: 'Core focus',
+        adrender: 'Static and video ads from real running templates',
+        competitor: 'UGC-style video and body-double content from one photo/recording',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Not template-based — transforms your own photo/video input',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual upload per project',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: '❌ Not offered',
+      },
+    ],
+    cards: [
+      {
+        icon: Video,
+        title: 'A specialized video technique vs a full ad workflow',
+        body: 'SellReel\u2019s body-double technology is a genuinely clever solution for camera-shy founders who want UGC-style content without appearing on camera. It\u2019s built around one specific technique. AdRender covers the full range of ad creative — static and video, sourced from real running ad templates — with automatic brand and catalog setup.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier',
+        body: 'SellReel has no free tier at $49/month. AdRender\u2019s free tier renews every month, no card required.',
+      },
+    ],
+  },
+  {
+    slug: 'admakerai',
+    competitor: 'AdMaker.ai',
+    competitorUrl: 'https://admaker.ai',
+    subheadline: 'Real running ads. Not a URL-to-ad shortcut alone.',
+    documentTitle: 'AdRender vs AdMaker.ai — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs AdMaker.ai: real ad templates from ads running now, native Shopify sync, and a free tier that renews monthly.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: 'Paid plans, free trial only (no permanent free tier)',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no card required',
+        competitor: 'Free trial only, 7-day partial refund window on unused credits',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates from a pasted URL, not a live running-ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'URL-based, not native Shopify catalog sync',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Pastes URL to generate ads directly',
+      },
+      {
+        label: 'Video generation',
+        adrender: '✅ Included from the entry tier',
+        competitor: 'Video credit-based, separate from static generation',
+      },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Real running ads vs URL-to-ad generation',
+        body: 'AdMaker.ai\u2019s core pitch is pasting a URL and getting an ad in 30 seconds — fast, but it\u2019s generating from your page content directly rather than starting from a template proven to work in your niche. AdRender\u2019s library reflects over 100 million ads that are actually running and converting right now.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A free tier that renews vs a one-time trial',
+        body: 'AdMaker.ai offers a free trial with a 7-day partial refund window, not an ongoing free tier. AdRender\u2019s free tier renews every month for as long as you use it.',
+      },
+    ],
+  },
+  {
+    slug: 'pyksel',
+    competitor: 'Pyksel',
+    competitorUrl: 'https://www.pyksel.ai',
+    subheadline: 'Built for businesses running ads. Not a creator content suite.',
+    documentTitle: 'AdRender vs Pyksel — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Pyksel: focused ad creative from real running templates, built for businesses, not an influencer content suite. Shopify sync, free to start.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: 'Subscription-based, pricing not consistently published',
+      },
+      {
+        label: 'Target user',
+        adrender: 'Small businesses and solo marketers running paid ads',
+        competitor: 'Influencers and content creators',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'General AI content generation, not ad-specific',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Character training and content tools, not brand/catalog sync',
+      },
+      {
+        label: 'Scope',
+        adrender: 'Focused: ad creative, static and video',
+        competitor: 'Broad: image and video generation, character training, content workflow for creators',
+      },
+    ],
+    cards: [
+      {
+        icon: Users,
+        title: 'Built for a different audience',
+        body: 'Pyksel is positioned as a content creation suite for influencers and creators — character training, content generation, general image and video tools. AdRender is built specifically for businesses running paid ads, with brand and product catalog sync that a creator-focused tool doesn\u2019t need or offer.',
+      },
+      {
+        icon: LayoutTemplate,
+        title: 'Ad-specific templates vs general content generation',
+        body: 'Pyksel\u2019s tools are general-purpose content creation, not built around a library of real running ads. AdRender\u2019s entire template library is sourced from over 100 million ads currently running and converting.',
+      },
+    ],
+  },
+  {
+    slug: 'hooktok',
+    competitor: 'HookTok',
+    competitorUrl: 'https://hooktok.ai',
+    subheadline: 'Static and video ads. Not just UGC-style clips.',
+    documentTitle: 'AdRender vs HookTok — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs HookTok: static and video ads from real running templates, native Shopify sync, and a renewing free tier. HookTok is UGC video only.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$39–129/mo, no free tier' },
+      { label: 'Output format', adrender: 'Static and video', competitor: 'UGC-style TikTok/Meta video only, AI avatars' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Proven ad hooks/formats for avatar-style videos specifically',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual setup per project',
+      },
+      { label: 'Free tier', adrender: '✅ 10 tokens every month, no card required', competitor: '❌ None' },
+    ],
+    cards: [
+      {
+        icon: Video,
+        title: 'One video format vs full ad creative',
+        body: 'HookTok specializes in AI avatar UGC-style video for TikTok and Meta specifically — a real, focused tool for that format. AdRender covers both static and video ads from the same brand setup, sourced from a much broader template library.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'A renewing free tier',
+        body: 'HookTok has no free tier at any price point. AdRender\u2019s free tier renews every month, no card required.',
+      },
+    ],
+  },
+  {
+    slug: 'adforge',
+    competitor: 'AdForge',
+    competitorUrl: 'https://www.adforged.ai',
+    subheadline: 'Real running ads. Not just a URL-to-ad shortcut.',
+    documentTitle: 'AdRender vs AdForge — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs AdForge: real ad templates from ads running now, native Shopify catalog sync, and unlimited concurrent rendering.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Freemium, paid plans from ~$19/mo' },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates from a pasted product URL, not a live running-ad index',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'URL-based product extraction, not full catalog sync',
+      },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Extracts product title/description/images from URL only',
+      },
+      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: 'Included — AI avatar video ads' },
+      {
+        label: 'Multi-platform export',
+        adrender: 'Sized for whatever platform you\u2019re advertising on',
+        competitor: 'Multiple aspect ratios supported',
+      },
+    ],
+    cards: [
+      {
+        icon: LayoutTemplate,
+        title: 'Real running ads vs URL extraction',
+        body: 'AdForge pulls product details from a pasted URL and generates ads from that — fast, but not grounded in what\u2019s actually converting elsewhere. AdRender\u2019s templates come from a library of over 100 million ads that are actually running and converting right now.',
+      },
+      {
+        icon: ShoppingBag,
+        title: 'Full catalog sync vs one URL at a time',
+        body: 'AdForge works one product URL at a time. AdRender syncs your entire Shopify catalog at once — every product, image, and variant.',
+      },
+    ],
+  },
+  {
+    slug: 'adsgo',
+    competitor: 'AdsGo.ai',
+    competitorUrl: 'https://www.adsgo.ai',
+    subheadline: 'Creative generation. Not campaign launch automation.',
+    documentTitle: 'AdRender vs AdsGo.ai — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs AdsGo.ai: AI-generated ad creative from real running templates, not campaign launch automation. Shopify sync, video included.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free' },
+      {
+        label: 'What it actually does',
+        adrender: 'AI ad creative generation — static and video',
+        competitor: 'Ad automation — creates, targets, and launches campaigns across Meta, Google, TikTok',
+      },
+      {
+        label: 'Creative generation',
+        adrender: '✅ Core product, from real running ad templates',
+        competitor: 'Secondary to campaign launch/targeting',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: '❌ No dedicated template library',
+      },
+      {
+        label: 'Shopify native sync',
+        adrender: '✅ Auto-imports products, images, variants',
+        competitor: 'Built for online sellers broadly, not Shopify-specific',
+      },
+      { label: 'Focus', adrender: 'Ad creative quality and volume', competitor: 'No-experience-needed campaign setup and launch' },
+    ],
+    cards: [
+      {
+        icon: Wand2,
+        title: 'Campaign launcher vs creative generator',
+        body: 'AdsGo.ai is built to help small sellers launch ad campaigns across multiple platforms without advertising experience — its focus is campaign setup and targeting, not creative depth. AdRender is built specifically to generate the ad creative itself, from real running-ad templates.',
+      },
+      {
+        icon: Layers,
+        title: 'If you need both',
+        body: 'If you want AdsGo\u2019s simplified campaign launch and AdRender\u2019s creative quality, the two can work together — generate the ad in AdRender, launch it through whichever platform or tool you prefer.',
+      },
+    ],
+  },
+  {
+    slug: 'creads',
+    competitor: 'Creads',
+    competitorUrl: 'https://www.creads.io',
+    subheadline: 'Real running ads. Transparent pricing.',
+    documentTitle: 'AdRender vs Creads — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Creads: real ad templates from 100M+ running ads, native Shopify sync, and transparent published pricing.',
+    rows: [
+      { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Pricing not publicly listed' },
+      {
+        label: 'What it actually does',
+        adrender: 'AI ad creative generation from real running templates',
+        competitor: 'Brand intelligence + competitor analysis feeding a Meta ad creative pipeline',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Generates briefs/creative from brand analysis, not a live template index',
+      },
+      { label: 'Platform coverage', adrender: 'Any platform', competitor: 'Meta-focused' },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None specifically' },
+      { label: 'Pricing transparency', adrender: 'Published tiers, visible upfront', competitor: 'Requires inquiry' },
+    ],
+    cards: [
+      {
+        icon: Layers,
+        title: 'A multi-phase intelligence pipeline vs direct generation',
+        body: 'Creads runs brand data through a multi-phase process — analysis, intelligence, brief generation, then production — aimed at Meta ad creative specifically. That depth may suit teams wanting a strategic layer before creative. AdRender goes straight from your brand and a real running-ad template to a finished ad, for any platform.',
+      },
+      {
+        icon: CircleDollarSign,
+        title: 'Published pricing vs inquiry-based',
+        body: 'Creads doesn\u2019t publish pricing — you\u2019d need to reach out directly. AdRender\u2019s pricing is visible upfront, starting free.',
+      },
+    ],
+  },
+  {
+    slug: 'nextify',
+    competitor: 'Nextify.ai',
+    competitorUrl: 'https://www.nextify.ai',
+    subheadline: 'Real running ads. Native Shopify sync.',
+    documentTitle: 'AdRender vs Nextify.ai — AI Ad Generator Comparison',
+    metaDescription:
+      'AdRender vs Nextify.ai: static and video ads from real running templates, native Shopify sync, no watermarks on paid plans.',
+    rows: [
+      {
+        label: 'Starting price',
+        adrender: '$0 free / $19 paid',
+        competitor: '$0 free (watermarked, 50 credits) / $34–39/mo paid',
+      },
+      {
+        label: 'Free tier',
+        adrender: '✅ 10 tokens every month, no watermark on paid, renews monthly',
+        competitor: 'Free tier watermarked; ~2 videos/month on free plan',
+      },
+      {
+        label: 'Real ad templates (source)',
+        adrender: '✅ 100M+ real ads currently running',
+        competitor: 'Templates for AI avatar/UGC video formats, not sourced from a live running-ad index',
+      },
+      { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
+      {
+        label: 'Brand auto-setup from URL',
+        adrender: '✅ Scans site, pulls colors/logo/voice/products',
+        competitor: 'Manual input per project',
+      },
+      {
+        label: 'Output format',
+        adrender: 'Static and video',
+        competitor: 'Primarily video — UGC, avatar, product demo, B-roll',
+      },
+    ],
+    cards: [
+      {
+        icon: ShoppingBag,
+        title: 'Full catalog sync vs manual per-project input',
+        body: 'Nextify.ai is a genuinely capable AI video ad studio with a large avatar library and multiple video formats, but it works project-by-project with manual product input. AdRender syncs your full Shopify catalog automatically and generates both static and video ads from the same brand setup.',
+      },
+      {
+        icon: ShieldCheck,
+        title: 'Free tier without watermarks',
+        body: 'Nextify\u2019s free tier includes a watermark on outputs. AdRender has no watermarks on any plan, including Free.',
+      },
+    ],
+  },
 ]
 
 export function getComparisonBySlug(slug: string): ComparisonConfig | undefined {
