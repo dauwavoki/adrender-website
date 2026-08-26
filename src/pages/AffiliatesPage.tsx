@@ -11,8 +11,9 @@ import {
 } from 'lucide-react'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { PageMeta } from '../components/PageMeta'
+import { APP_BASE } from '../lib/appUrl'
+import { useAppUrl } from '../hooks/useAppUrl'
 
-const APP_URL = 'https://app.adrender.app'
 const SITE_URL = 'https://adrender.app'
 
 const TITLE = 'AdRender Affiliate Program — Earn 50% Commission'
@@ -52,40 +53,42 @@ const PERKS: { icon: LucideIcon; title: string; body: string }[] = [
   },
 ]
 
-const STEPS = [
-  {
-    title: 'Create an account',
-    body: (
-      <>
-        Go to{' '}
-        <a href={APP_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
-          {APP_URL}
-        </a>{' '}
-        (or{' '}
-        <a href={SITE_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
-          {SITE_URL}
-        </a>
-        ) and create an account.
-      </>
-    ),
-  },
-  {
-    title: 'Apply in your profile',
-    body: 'Go to Profile → Affiliates and submit your application.',
-  },
-  {
-    title: 'Get approved and start sharing',
-    body: (
-      <>
-        Approval usually takes less than a day. Once approved, your affiliate dashboard is available inside{' '}
-        <a href={APP_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
-          app.adrender.app
-        </a>
-        . Check your spam folder for the approval email, or just log back in to confirm.
-      </>
-    ),
-  },
-]
+function getSteps(appUrl: string) {
+  return [
+    {
+      title: 'Create an account',
+      body: (
+        <>
+          Go to{' '}
+          <a href={appUrl} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
+            {APP_BASE}
+          </a>{' '}
+          (or{' '}
+          <a href={SITE_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
+            {SITE_URL}
+          </a>
+          ) and create an account.
+        </>
+      ),
+    },
+    {
+      title: 'Apply in your profile',
+      body: 'Go to Profile → Affiliates and submit your application.',
+    },
+    {
+      title: 'Get approved and start sharing',
+      body: (
+        <>
+          Approval usually takes less than a day. Once approved, your affiliate dashboard is available inside{' '}
+          <a href={appUrl} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
+            app.adrender.app
+          </a>
+          . Check your spam folder for the approval email, or just log back in to confirm.
+        </>
+      ),
+    },
+  ]
+}
 
 const FAQ: { q: string; a: string }[] = [
   {
@@ -107,6 +110,9 @@ const FAQ: { q: string; a: string }[] = [
 ]
 
 export function AffiliatesPage() {
+  const appUrl = useAppUrl()
+  const steps = getSteps(appUrl)
+
   return (
     <div className="px-4 py-20 md:px-6 md:py-28">
       <PageMeta title={TITLE} description={DESCRIPTION} path="/affiliates" />
@@ -130,7 +136,7 @@ export function AffiliatesPage() {
           </div>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={APP_URL}
+              href={appUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Sign up to become an affiliate
@@ -248,7 +254,7 @@ export function AffiliatesPage() {
         </ScrollReveal>
 
         <ol className="mt-12 space-y-6">
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <ScrollReveal key={step.title}>
               <li className="flex gap-5 rounded-2xl border border-white/[0.06] bg-[#12121a] p-6 md:p-8">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[color:color-mix(in_srgb,var(--accent-cyan)_22%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_8%,transparent)] font-heading text-sm font-bold text-[var(--accent-cyan)]">
@@ -266,7 +272,7 @@ export function AffiliatesPage() {
         <ScrollReveal>
           <div className="mt-10 flex justify-center">
             <a
-              href={APP_URL}
+              href={appUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Create your account
@@ -308,14 +314,14 @@ export function AffiliatesPage() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400">
               Create an account at{' '}
-              <a href={APP_URL} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
+              <a href={appUrl} className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline">
                 app.adrender.app
               </a>
               , then apply under Profile → Affiliates. Early enrollment for 50% commission closes October 31, 2026.
             </p>
             <div className="mt-8 flex justify-center">
               <a
-                href={APP_URL}
+                href={appUrl}
                 className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
               >
                 Sign up at app.adrender.app
