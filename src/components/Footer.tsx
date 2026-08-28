@@ -79,6 +79,20 @@ export function Footer() {
                 height={55}
               />
             </a>
+            <a
+              href="https://smollaunch.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <img
+                src="https://smollaunch.com/badges/featured.svg"
+                alt="AdRender — Featured on Smol Launch"
+                loading="lazy"
+                width={250}
+                height={60}
+              />
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">
