@@ -3,9 +3,87 @@ import { BrandLogoLink } from './BrandLogoLink'
 import { blogIndexPath } from '../data/blog'
 import { solutions, solutionPath } from '../data/solutions'
 
+function LaunchNestBadge() {
+  return (
+    <a
+      href="https://launch-nest-ai.base44.app/products/YOUR_PRODUCT_ID?ref=badge&from=adrender.app"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif",
+        display: 'inline-flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: '8px 14px',
+        borderRadius: 10,
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+        textDecoration: 'none',
+        background: '#5B5CFF',
+        boxShadow: '0 4px 14px rgba(91,92,255,0.35)',
+      }}
+    >
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <svg
+          width={16}
+          height={16}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ flexShrink: 0 }}
+        >
+          <path d="M13.5 1.5L4.5 10.5L1.5 12L4.5 13.5L13.5 22.5L16.5 19.5L9 12L16.5 4.5L13.5 1.5Z" fill="white" />
+          <circle cx="12" cy="8" r="2" fill="white" opacity={0.9} />
+        </svg>
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 700,
+            letterSpacing: '1.2px',
+            color: 'white',
+            opacity: 0.85,
+          }}
+        >
+          LAUNCHED ON
+        </span>
+      </span>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+        <span
+          style={{
+            fontSize: 16,
+            fontWeight: 700,
+            color: 'white',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          LaunchNest
+        </span>
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 700,
+            background: 'rgba(255,255,255,0.22)',
+            color: 'white',
+            padding: '2px 5px',
+            borderRadius: 4,
+            lineHeight: 1,
+            letterSpacing: '0.5px',
+          }}
+        >
+          LN
+        </span>
+      </span>
+    </a>
+  )
+}
+
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] bg-[#08080c]">
+    <>
+      <div className="flex justify-center px-4 py-6">
+        <LaunchNestBadge />
+      </div>
+      <footer className="border-t border-white/[0.06] bg-[#08080c]">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 md:flex-row md:items-start md:justify-between md:px-6">
         <div>
           <BrandLogoLink variant="footer" />
@@ -161,5 +239,6 @@ export function Footer() {
         © {new Date().getFullYear()} ADRENDER LLC. All rights reserved.
       </div>
     </footer>
+    </>
   )
 }
