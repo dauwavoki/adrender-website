@@ -64,6 +64,21 @@ export function Footer() {
                 height={56}
               />
             </a>
+            <a
+              href="https://www.productlaunchify.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Featured on Product Launchify"
+              aria-label="Featured on Product Launchify"
+              className="inline-block"
+            >
+              <img
+                src="https://www.productlaunchify.com/images/badges/powered-by-light.svg"
+                alt="Featured on Product Launchify"
+                width={231}
+                height={55}
+              />
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">
