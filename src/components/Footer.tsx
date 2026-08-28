@@ -51,6 +51,19 @@ export function Footer() {
                 className="h-[55px] w-auto"
               />
             </a>
+            <a
+              href="https://easylaunch.dev/marketing/adrender"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <img
+                src="https://easylaunch.dev/badge/easylaunch-badge-light.svg"
+                alt="Featured on EasyLaunch"
+                width={188}
+                height={56}
+              />
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">
