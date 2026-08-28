@@ -12,18 +12,33 @@ export function Footer() {
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
             AI-powered static and video ads for anyone running paid social — with optional Shopify sync when you want catalog in one click.
           </p>
-          <a
-            href="https://fazier.com/launches/adrender.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-block"
-          >
-            <img
-              src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=dark"
-              width={120}
-              alt="Fazier badge"
-            />
-          </a>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <a
+              href="https://fazier.com/launches/adrender.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <img
+                src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=dark"
+                width={120}
+                alt="Fazier badge"
+              />
+            </a>
+            <a
+              href="https://saascity.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <img
+                src="https://saascity.io/badges/featured-dark.svg"
+                alt="Featured on SaaSCity"
+                width={150}
+                height={54}
+              />
+            </a>
+          </div>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">
           <div className="flex flex-col gap-2">
