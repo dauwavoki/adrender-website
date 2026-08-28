@@ -38,6 +38,19 @@ export function Footer() {
                 height={54}
               />
             </a>
+            <a
+              href="https://startupbase.io/products/adrender?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-dark"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <img
+                src="https://statics.startupbase.io/site/badges/launched-on-sb-dark.svg"
+                alt="Launched on StartupBase"
+                height={55}
+                className="h-[55px] w-auto"
+              />
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap gap-10 text-sm">
