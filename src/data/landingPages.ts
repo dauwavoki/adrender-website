@@ -1,18 +1,24 @@
 import {
   ArrowLeftRight,
+  BarChart3,
   Briefcase,
   CameraOff,
   CircleDollarSign,
+  Clapperboard,
   CreditCard,
   Crop,
   EyeOff,
+  Film,
   FlaskConical,
+  Gamepad2,
+  Handshake,
   Images,
   KeyboardOff,
   Layers,
   LayoutGrid,
   LayoutTemplate,
   Maximize2,
+  Megaphone,
   Monitor,
   MousePointerClick,
   Music2,
@@ -29,8 +35,10 @@ import {
   Timer,
   User,
   UserRound,
+  Users,
   Video,
   Wand2,
+  Zap,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -899,6 +907,481 @@ export const landingPages: LandingPageConfig[] = [
     ],
     ctaHeading: 'Every size. Done properly.',
     ctaSub: 'No stretching. No bad crops. No pixelation.',
+  },
+  {
+    slug: 'freelance-designers',
+    documentTitle: 'AI Ad Generator for Freelance Designers | AdRender',
+    metaDescription:
+      'Deliver more ad variations per client without working more hours. AdRender helps freelance ad designers scale output and take on more gigs.',
+    headline: 'More clients. Same hours.',
+    subhead: 'Deliver 5x the ad variations per gig without working 5x the hours. Take on more work without burning out.',
+    stats: ['5x output, same hours', 'Client-ready in minutes', 'Static + video for every gig'],
+    founderHeading: 'The ceiling was production speed. Never skill.',
+    founderParagraphs: [
+      "After ten years designing app interfaces, I know what it's like to be capped by production speed, not skill.",
+      'Freelance ad designers face the same wall — clients always want more variations to test, and manual production is what limits how many gigs you can actually take.',
+      'AdRender exists to remove that ceiling.',
+    ],
+    featuresHeading: 'More gigs. Same hours. Same quality bar.',
+    featuresSub: 'Client brand in. Variations out. You stay on direction and finish.',
+    features: [
+      {
+        heading: 'Client brand, applied automatically',
+        body: "Pick a proven template, then pull their colors, logo, and product shots from their site or Shopify store — no rebuilding a kit by hand each gig.",
+        icon: Palette,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Client-ready in minutes',
+        body: 'Static and video variations from the same flow, no prompting — ready to send, not a rough you still have to rebuild.',
+        icon: Timer,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Concept before you commit hours',
+        body: 'Generate direction options first so the client can pick a path before you spend a day on a full build.',
+        icon: Images,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'Take more clients without more hours',
+        body: 'Production volume stops being the cap on how many gigs you can actually take.',
+        icon: Users,
+        accent: 'text-[#5B9FFF]',
+      },
+    ],
+    faqIntro: 'Client work, your skills, and whether the output looks generated.',
+    faq: [
+      {
+        q: 'Can I use this for client work, not just my own brand?',
+        a: 'Yes, set up a brand profile per client and generate on-brand variations for each one.',
+      },
+      {
+        q: 'Does this replace my design skills?',
+        a: "No, it removes the production ceiling so your skills go further — you're still choosing, directing, and refining the output.",
+      },
+      {
+        q: "Can clients tell it's AI-assisted?",
+        a: 'Templates come from real, currently-running ads, not a generic AI look — output is built to read as intentional, client-ready work.',
+      },
+    ],
+    ctaHeading: 'Take the next gig without adding hours.',
+    ctaSub: 'More variations per client. Same week. Same quality bar.',
+  },
+  {
+    slug: 'ugc-creator-scale',
+    documentTitle: 'Scale Your UGC Business | AdRender',
+    metaDescription:
+      'Scale your brand deals without more filming hours. AdRender helps UGC creators draft video concepts fast, keeping filmed content for what matters most.',
+    headline: "You can only film so much. Your income shouldn't be capped by that.",
+    subhead: 'Draft video concepts fast, pitch more brands, keep filmed content for your premium work.',
+    stats: ['More brand deals, same shoot schedule', 'Draft concepts in minutes', 'Static + video generation'],
+    founderHeading: 'The ceiling nobody talks about is the shoot schedule.',
+    founderParagraphs: [
+      "UGC creators face a hard ceiling most people don't think about — you can only physically film so much.",
+      "AdRender doesn't replace filmed work, it gives you a way to draft concepts, test hooks, and pitch brands faster, so your camera time goes to what actually pays best.",
+    ],
+    featuresHeading: 'Keep the camera for the work that pays.',
+    featuresSub: 'Draft, pitch, and test without booking another shoot day.',
+    features: [
+      {
+        heading: 'Draft concepts before you film',
+        body: 'Generate multiple video angles from proven ad structures so the shoot day is spent on the one that already has a pulse.',
+        icon: Clapperboard,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Pitch with something finished-looking',
+        body: 'Send brands a real concept instead of describing an idea in an email and hoping they can picture it.',
+        icon: Megaphone,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Filmed stays the premium offer',
+        body: 'Use generated drafts for testing and lower-stakes rounds. Camera time goes to the work brands pay a creator rate for.',
+        icon: Film,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'Build the portfolio between shoots',
+        body: 'Fill gaps on the calendar with concept work instead of waiting on the next brand day to show range.',
+        icon: Images,
+        accent: 'text-[#5B9FFF]',
+      },
+    ],
+    faqIntro: 'What this replaces, what to tell brands, and using your own look.',
+    faq: [
+      {
+        q: 'Does this replace filmed UGC content?',
+        a: "No — it's built for concept testing, pitching, and volume, while filmed work stays your premium offering.",
+      },
+      {
+        q: "Should I tell brands what's AI-assisted?",
+        a: "Yes, being upfront about what's generated versus filmed builds trust and matches where disclosure expectations are heading.",
+      },
+      {
+        q: 'Can I use my own likeness or characters?',
+        a: 'Upload reference images for more control over how your concepts look.',
+      },
+    ],
+    ctaHeading: 'Pitch more brands. Film what matters.',
+    ctaSub: 'Draft the volume. Keep the shoot day for the premium work.',
+  },
+  {
+    slug: 'affiliate-marketers',
+    documentTitle: 'AI Ad Generator for Affiliate Marketers | AdRender',
+    metaDescription:
+      'Endless ad variations for offer testing. AdRender generates from proven ad structures — no brand kit, no design team, no waiting.',
+    headline: 'Winning ads decay fast. Have the next one already made.',
+    subhead: 'Generate endless variations from proven ad structures. Keep testing without waiting on a designer.',
+    stats: ['No brand constraints', 'Batch generation for testing', 'Static + video, fast'],
+    founderHeading: 'No brand kit. No creative team. Just what converts.',
+    founderParagraphs: [
+      'Affiliate marketing runs on pure testing velocity — no brand kit, no creative team, just constant iteration on what converts.',
+      "AdRender's core mechanic, picking a proven ad structure and applying your offer, maps directly onto that workflow.",
+    ],
+    featuresHeading: 'Built for offer testing, not brand polish.',
+    featuresSub: 'Pick a structure. Apply the offer. Generate the next batch.',
+    features: [
+      {
+        heading: 'Dozens of variations per offer',
+        body: 'Generate a full test set in minutes — not one polished ad while the rest of the angles wait.',
+        icon: Layers,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'No brand constraints slowing you down',
+        body: 'Apply the offer directly to proven templates. You are optimizing for conversion, not a locked brand kit.',
+        icon: Zap,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Batch generation for real volume',
+        body: 'Built for the kind of testing schedule affiliates actually run — many variations, same offer, same session.',
+        icon: FlaskConical,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Static and video, same flow',
+        body: 'Both formats from the same generation pass, so a winning static angle can become a video test without a second pipeline.',
+        icon: Video,
+        accent: 'text-[#5B9FFF]',
+      },
+    ],
+    faqIntro: 'Brand setup, speed to first test, and batch volume.',
+    faq: [
+      {
+        q: 'Do I need a brand profile set up to use this?',
+        a: "A minimal one works fine — you're optimizing for conversion, not brand consistency.",
+      },
+      {
+        q: 'How fast can I test a new offer?',
+        a: 'Minutes from picking a template to a finished, ready-to-run variation.',
+      },
+      {
+        q: 'Can I generate many variations of the same offer at once?',
+        a: 'Yes, batch generation is built for exactly this kind of volume testing.',
+      },
+    ],
+    ctaHeading: 'Have the next ad already made.',
+    ctaSub: 'Winning ads decay. Your next variation should already be queued.',
+  },
+  {
+    slug: 'win-with-volume',
+    documentTitle: 'Win With Creative Volume | AdRender',
+    metaDescription:
+      'Targeting is automated now. Creative variety is the lever left. AdRender generates the variation volume modern ad platforms actually reward.',
+    headline: 'Targeting is automated now. Creative variety is the lever left.',
+    subhead: 'Only 6-7 of every 100 ads actually win. AdRender generates the volume it takes to find them.',
+    stats: ['10-20+ active creatives, made easy', 'Weekly refresh, achievable', 'Batch generation'],
+    founderHeading: 'The problem was never knowing you needed more ads.',
+    founderParagraphs: [
+      'The algorithm shifted — creative variety now outperforms targeting precision. Most teams know this.',
+      'The problem was never knowing they needed more variations, it was producing them fast enough.',
+      'AdRender closes that gap.',
+    ],
+    featuresHeading: 'The volume modern platforms actually reward.',
+    featuresSub: 'Full creative sets, weekly refresh, no bigger team required.',
+    features: [
+      {
+        heading: 'Full creative sets in one batch',
+        body: 'Ship a complete test set in one pass instead of trickling out one ad at a time and waiting on the next brief.',
+        icon: Layers,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'Weekly refresh, actually achievable',
+        body: 'The cadence platforms reward stops being aspirational when generation takes minutes, not a production cycle.',
+        icon: RefreshCw,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: '90% net-new, same headcount',
+        body: 'Match a modern creative-refresh mix — mostly new creative, not slight recrops — without hiring a bigger team.',
+        icon: BarChart3,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Static and video from the same flow',
+        body: 'Both formats in the same batch, so volume is not limited to whichever pipeline your team can staff this week.',
+        icon: Video,
+        accent: 'text-[#5B9FFF]',
+      },
+    ],
+    faqIntro: 'Batch size, Advantage+ volume, and multi-account use.',
+    faq: [
+      {
+        q: 'How many variations can I generate at once?',
+        a: 'Batches scale with your tier, from a handful up to hundreds at once on higher plans.',
+      },
+      {
+        q: 'Does this work for Advantage+ style campaigns?',
+        a: 'Yes, generating 15+ active ads per account is exactly the volume this is built for.',
+      },
+      {
+        q: 'Can I generate for multiple accounts or clients?',
+        a: 'Yes, multiple brand profiles are supported depending on your plan.',
+      },
+    ],
+    ctaHeading: 'Find the 6-7 that win.',
+    ctaSub: 'Generate the volume it takes. Weekly. Without a bigger team.',
+  },
+  {
+    slug: 'course-creators',
+    documentTitle: 'AI Ad Generator for Course Creators | AdRender',
+    metaDescription:
+      'Fresh ads for every course launch, without an agency budget. AdRender generates on-brand static and video ads for your info-product funnel.',
+    headline: "Your funnel needs fresh ads constantly. Your budget doesn't need an agency.",
+    subhead: 'Generate on-brand ads for every launch and relaunch, without hiring a designer.',
+    stats: ['Testimonial-style video, no shoot', 'Fresh ads per launch', 'Solo-creator friendly pricing'],
+    founderHeading: 'Course creators run funnels, not creative departments.',
+    founderParagraphs: [
+      'Course creators run funnels, not creative departments.',
+      "Every launch and relaunch needs new ad creative, and most solo creators don't have production capacity to match.",
+      'AdRender gives a one-person operation the creative volume usually reserved for a team.',
+    ],
+    featuresHeading: 'Fresh ads for every launch. No agency required.',
+    featuresSub: 'Hook tests, testimonial-style video, and relaunch batches — priced for a solo creator.',
+    features: [
+      {
+        heading: 'Test hook variations first',
+        body: 'Generate multiple angles before you spend on ads, so the funnel launches on a tested hook, not a guess.',
+        icon: FlaskConical,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'Testimonial-style video, no shoot',
+        body: 'Video ads generated from proven templates — no filming, no talent booking, no studio day.',
+        icon: Video,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Fresh batches every relaunch',
+        body: "New creative for every launch cycle so the funnel doesn't keep running last quarter's ads.",
+        icon: RefreshCw,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: "Built for a solo creator's budget",
+        body: 'Workflow and pricing that fit a one-person operation — not a retainer built for a team.',
+        icon: CircleDollarSign,
+        accent: 'text-[#96F07A]',
+      },
+    ],
+    faqIntro: 'Testimonial video, design skills, and ads per offer.',
+    faq: [
+      {
+        q: 'Can this generate testimonial-style ads?',
+        a: 'Yes, video generation can produce testimonial-style creative from proven templates.',
+      },
+      {
+        q: 'Do I need design experience to use this for my course?',
+        a: 'No, pick a template and your brand applies automatically.',
+      },
+      {
+        q: 'Can I generate different ads for different course modules or offers?',
+        a: "Yes, generate variations matched to whatever you're promoting.",
+      },
+    ],
+    ctaHeading: 'Fresh ads for every launch.',
+    ctaSub: 'On-brand static and video — no designer, no agency retainer.',
+  },
+  {
+    slug: 'beauty-skincare-ads',
+    documentTitle: 'AI Ad Generator for Beauty & Skincare Brands | AdRender',
+    metaDescription:
+      'Beauty CPMs run 30-40% above average. AdRender generates on-brand static and video ads from real, currently-running beauty and skincare templates.',
+    headline: 'The most competitive vertical on Meta needs the most creative volume.',
+    subhead: 'Generate ads from real, currently-running beauty templates — not generic AI output.',
+    stats: ['UGC-style video, no shoot', 'Full catalog sync via Shopify', 'Fresh variants to beat fatigue'],
+    founderHeading: 'Highest CPMs. Fastest fatigue. Generic AI makes it worse.',
+    founderParagraphs: [
+      'Beauty and skincare is the most ad-saturated, highest-CPM category on Meta — creative fatigue hits fast, and generic AI output stands out for the wrong reasons.',
+      "AdRender's templates are sourced from real, currently-running beauty ads, so what you start from is already proven in your exact category.",
+    ],
+    featuresHeading: 'Proven beauty templates. Your whole catalog. Fast refresh.',
+    featuresSub: 'Shopify sync, UGC-style video, and variants that do not look generic.',
+    features: [
+      {
+        heading: 'Full catalog sync via Shopify',
+        body: 'Connect the store once and generate ads across your entire beauty line — products, images, and variants stay current automatically.',
+        icon: Store,
+        accent: 'text-[#96F07A]',
+      },
+      {
+        heading: 'UGC-style video, no shoot',
+        body: 'Testimonial-style video from proven beauty templates — no filming, no creator booking, no wait.',
+        icon: Video,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Refresh fatigued creative in minutes',
+        body: 'When performance starts to dip, generate a new batch instead of waiting on the next production cycle.',
+        icon: RefreshCw,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Audience-matched, not one-size-fits-all',
+        body: 'Creative from real beauty ads already running in-category — not generic layouts stretched to fit skincare.',
+        icon: Users,
+        accent: 'text-[#B894F0]',
+      },
+    ],
+    faqIntro: 'Template source, Shopify sync, and launch-ready video.',
+    faq: [
+      {
+        q: 'Are these templates actually from beauty/skincare ads?',
+        a: 'Yes, sourced from real ads currently running in the beauty and skincare category.',
+      },
+      {
+        q: 'Does this sync with my Shopify beauty store?',
+        a: 'Yes, full catalog sync — products, images, and variants stay current automatically.',
+      },
+      {
+        q: 'Can I generate video ads for product launches?',
+        a: 'Yes, static and video from the same flow, ready when a new SKU launches.',
+      },
+    ],
+    ctaHeading: 'Beat beauty fatigue with real templates.',
+    ctaSub: 'On-brand static and video from ads already running in your category.',
+  },
+  {
+    slug: 'app-game-marketers',
+    documentTitle: 'AI Ad Generator for App & Game Marketers | AdRender',
+    metaDescription:
+      'Top gaming advertisers ship 2,400+ creative variations a quarter. AdRender generates the volume app and game marketing actually requires.',
+    headline: 'Top gaming advertisers ship 2,400+ ad variations a quarter. Can your team keep up?',
+    subhead: 'Generate the creative volume app-install and UA campaigns actually require.',
+    stats: ['Batch generation at UA scale', 'Static + video for installs', 'Fast refresh cycles'],
+    founderHeading: 'Install creative burns out fastest. Volume is the job.',
+    founderParagraphs: [
+      'App and game marketing has the highest structural need for creative volume of any category — install-driving creative burns out fast, and top advertisers are already producing thousands of variations per quarter.',
+      "AdRender's batch generation is built to match that pace without scaling a creative team.",
+    ],
+    featuresHeading: 'UA-scale volume. Without a UA-scale team.',
+    featuresSub: 'Batches sized for install campaigns. Static and video. Fast refresh.',
+    features: [
+      {
+        heading: 'Batches sized for every network',
+        body: "Generate ad batches sized and formatted for whatever network you're running install campaigns on.",
+        icon: Maximize2,
+        accent: 'text-[#5B9FFF]',
+      },
+      {
+        heading: 'Static and video app ads',
+        body: 'Both formats from the same flow — install-driving static and video without a second pipeline.',
+        icon: Video,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Refresh install creative fast',
+        body: 'When performance starts to fade, generate the next set in minutes instead of waiting on a production cycle.',
+        icon: RefreshCw,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Built for UA testing volume',
+        body: 'The volume app-install and game marketing actually require — not a handful of polished ads per quarter.',
+        icon: Gamepad2,
+        accent: 'text-[#B894F0]',
+      },
+    ],
+    faqIntro: 'Install-style creative, batch size, and app vs. game coverage.',
+    faq: [
+      {
+        q: 'Can this generate app-store or install-style creative?',
+        a: 'Yes, templates cover app and UA-focused formats alongside general ad structures.',
+      },
+      {
+        q: 'How many variations can I generate for a single campaign?',
+        a: 'Batches scale with your tier, built for high-volume testing.',
+      },
+      {
+        q: 'Does this cover both app and game marketing use cases?',
+        a: 'Yes, templates span both categories.',
+      },
+    ],
+    ctaHeading: 'Match the volume UA actually requires.',
+    ctaSub: 'Batch generation for app-install and game marketing — static and video.',
+  },
+  {
+    slug: 'works-with-your-agency',
+    documentTitle: 'Works Alongside Your Freelancer or Agency | AdRender',
+    metaDescription:
+      'Already work with a freelancer or agency? AdRender fills the gaps, speeds up testing, and helps you brief the people you hire — not replace them.',
+    headline: "You don't have to choose between your agency and AI.",
+    subhead: 'Test cheap variations yourself, brief better, fill the gaps between engagements.',
+    stats: ['Test before you commission', 'Brief with real concepts', "Fill gaps, don't wait"],
+    founderHeading: 'This fills the gap. It does not replace the people you hired.',
+    founderParagraphs: [
+      "Hiring a freelancer or agency and using AI aren't in competition — the real problem is the gap between needing ten more ideas this week and your team's actual turnaround time.",
+      "AdRender exists to fill that gap, not replace the people you've already hired.",
+    ],
+    featuresHeading: 'Test, brief, and fill gaps — alongside your team.',
+    featuresSub: 'Volume here. Strategy and polish with the people you already work with.',
+    features: [
+      {
+        heading: 'Test before you commission',
+        body: 'Run cheap variations yourself first, so billable time goes to what already tested well — not a first-guess brief.',
+        icon: FlaskConical,
+        accent: 'text-[#B894F0]',
+      },
+      {
+        heading: 'Brief with real concepts',
+        body: 'Pull visual options from proven ads and show your designer a direction, not a paragraph describing one.',
+        icon: Images,
+        accent: 'text-[#00E5FF]',
+      },
+      {
+        heading: 'Fill urgent gaps',
+        body: "Generate what your retainer doesn't cover this week, instead of waiting on the next available slot.",
+        icon: Timer,
+        accent: 'text-[#FF8F5C]',
+      },
+      {
+        heading: 'Keep your team for strategy and polish',
+        body: 'Use AdRender for volume. Keep the people you hired for the work that actually needs them.',
+        icon: Handshake,
+        accent: 'text-[#5B9FFF]',
+      },
+    ],
+    faqIntro: 'Replacement, briefing, and urgent requests your retainer does not cover.',
+    faq: [
+      {
+        q: 'Is this meant to replace my agency or freelancer?',
+        a: "No, it's built to fill gaps and speed up testing alongside whoever you already work with.",
+      },
+      {
+        q: 'Can I use this to brief my designer more clearly?',
+        a: 'Yes, generate visual concepts to show direction instead of describing it in words.',
+      },
+      {
+        q: "What if my agency's retainer doesn't cover an urgent request?",
+        a: 'Generate what you need directly instead of waiting on their next available slot.',
+      },
+    ],
+    ctaHeading: 'Keep your agency. Fill the gaps.',
+    ctaSub: 'Test cheap, brief better, ship the urgent work without waiting.',
   },
 ]
 
