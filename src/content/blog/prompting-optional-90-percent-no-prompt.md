@@ -33,4 +33,4 @@ Freelancers, User Generated Content (UGC) creators, agencies, and Direct-to-Cons
 
 Pick a real ad. Get your version. Static or video. No prompt needed.
 
-[Start free](https://app.adrender.app), no credit card required.
+[Start free](https://adrender.app/?src=prompting-optional-why), no credit card required.

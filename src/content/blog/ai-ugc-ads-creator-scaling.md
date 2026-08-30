@@ -35,4 +35,4 @@ If a brand is specifically trying to [get video without filming anything](/solut
 
 Use it to pitch more brands and land more deals — not to replace what makes your content work.
 
-[Start free](https://app.adrender.app), no card required. Generate the concept tests. Save the shoot day for the work only you can do.
+[Start free](https://adrender.app/?src=ai-generated-ugc-ads), no card required. Generate the concept tests. Save the shoot day for the work only you can do.

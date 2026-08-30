@@ -29,4 +29,4 @@ It's about not being bottlenecked by them for volume they were never meant to ha
 
 AdRender pulls from a library of 100M+ real ads currently running, applies the brand you already have — site, document, or Shopify catalog — and gives you static and video variations in minutes. No prompt required for most of it. Use it next to whoever you already work with, not instead of them.
 
-[Try it free](https://app.adrender.app), no credit card required. Keep the people. Stop waiting on them for every test.
+[Try it free](https://adrender.app/?src=hiring-a-freelancer), no credit card required. Keep the people. Stop waiting on them for every test.

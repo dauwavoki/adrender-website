@@ -33,4 +33,4 @@ You're still the designer. You're just not spending the first half of the engage
 
 If you're [hiring a freelancer or working with one](/blog/hiring-a-freelancer-or-agency-adrender-fits-in), the same tool fills a different gap — cheap tests and clearer briefs on their side, faster turnaround on yours. Either way, the hours you used to spend on version six through fifteen get to go somewhere else.
 
-[Start free](https://app.adrender.app) — no credit card required — and see how many client-ready static and video variations you can turn around in the time one used to take.
+[Start free](https://adrender.app/?src=freelance-ad-designer) — no credit card required — and see how many client-ready static and video variations you can turn around in the time one used to take.

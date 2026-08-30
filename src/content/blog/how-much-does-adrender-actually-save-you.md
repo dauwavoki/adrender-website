@@ -58,4 +58,4 @@ Static or video — same workflow, same brand, same plan.
 
 No briefing calls. No waiting on revisions. No $150-a-day retainer. Just pick a template, generate, and test.
 
-[Start Free →](https://app.adrender.app)
+[Start Free →](https://adrender.app/?src=how-much-does)

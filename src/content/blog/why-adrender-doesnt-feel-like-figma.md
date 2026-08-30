@@ -29,4 +29,4 @@ A lot of software adds simplicity as a marketing line — "easy to use!" — wit
 
 AdRender isn't trying to out-feature Figma or Canva. It's trying to remove the part of the job that was never supposed to be yours — figuring out the interface — so what's left is just: pick a proven structure, apply your brand, get your ad.
 
-If you've felt that same friction every other tool asks you to push through, [start free](https://app.adrender.app) and see what it feels like without it.
+If you've felt that same friction every other tool asks you to push through, [start free](https://adrender.app/?src=why-adrender-doesnt) and see what it feels like without it.

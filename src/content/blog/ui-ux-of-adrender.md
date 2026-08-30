@@ -33,4 +33,4 @@ If there's one principle from a decade of app design that shows up most in this 
 
 None of this shows up as a bullet point on a features page, because none of it is a feature — it's the absence of friction that would otherwise be there. That's a harder thing to market than "now with 50 new templates," but it's the actual reason a first-time user gets from a blank browser tab to a finished ad in minutes instead of hours.
 
-If you want to see what that actually feels like instead of reading about it — [start free](https://app.adrender.app), no card required, and judge the first five minutes for yourself.
+If you want to see what that actually feels like instead of reading about it — [start free](https://adrender.app/?src=the-ui-and), no card required, and judge the first five minutes for yourself.

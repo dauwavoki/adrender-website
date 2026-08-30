@@ -27,4 +27,4 @@ Not a smarter prompt box. Not another template library bolted onto a generic AI 
 
 That's the whole premise of AdRender. Not a bigger feature list. Not a cleverer AI. Just the actual gap I kept hitting, closed.
 
-If you've felt that same gap — the six-tabs-open, three-hours-for-twenty-ads problem — [start free](https://app.adrender.app) and see if it's gone.
+If you've felt that same gap — the six-tabs-open, three-hours-for-twenty-ads problem — [start free](https://adrender.app/?src=why-i-created) and see if it's gone.

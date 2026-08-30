@@ -80,4 +80,4 @@ on-brand without stitching a second video pipeline.
 See the full cost and time breakdown in
 [How much does AdRender actually save you?](/blog/how-much-does-adrender-actually-save-you).
 
-[Start Free →](https://app.adrender.app)
+[Start Free →](https://adrender.app/?src=static-vs-video)

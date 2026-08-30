@@ -39,4 +39,4 @@ None of these people need a complicated tool that requires prompting and design 
 
 If you're wondering how a tool this fast works without you learning to prompt — [over 90% of ads made on AdRender never need a prompt at all](/blog/prompting-optional-90-percent-no-prompt). That's the point, not a limitation.
 
-AdRender itself is simple on purpose. Pick a real, currently-running ad or video from a library of 100M+ proven templates. Apply your brand. Get your version — static and video, same setup. [Start free](https://app.adrender.app), no credit card required.
+AdRender itself is simple on purpose. Pick a real, currently-running ad or video from a library of 100M+ proven templates. Apply your brand. Get your version — static and video, same setup. [Start free](https://adrender.app/?src=who-actually-needs), no credit card required.
