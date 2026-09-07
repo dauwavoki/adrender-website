@@ -70,6 +70,8 @@ export function PrivacyPage() {
               our Service. By using the Service you agree to the practices described here. Capitalized terms not
               defined here have the meanings given in our Terms and Conditions at{' '}
               <a href="https://adrender.app/terms" className="text-[#00e5ff] hover:underline">adrender.app/terms</a>.
+              If you installed AdRender through the Shopify App Store, see Section 2.4 for how we handle data from
+              your store.
             </p>
           </section>
 
@@ -96,12 +98,8 @@ export function PrivacyPage() {
                     you send through our in-app support system.
                   </li>
                   <li>
-                    <span className="font-medium text-zinc-200">Payment information:</span> how billing is processed
-                    depends on how you signed up. If you created your account at adrender.app, billing details are
-                    collected and processed directly by Stripe. If you installed AdRender through the Shopify App
-                    Store, all subscription and usage charges are processed by Shopify and appear on your Shopify
-                    invoice; we receive only subscription status and usage records, never your card details. In both
-                    cases we do not store full card numbers or bank account details.
+                    <span className="font-medium text-zinc-200">Payment information:</span> billing details collected
+                    and processed directly by Stripe. We do not store full card numbers or bank account details.
                   </li>
                 </ul>
               </div>
@@ -126,13 +124,10 @@ export function PrivacyPage() {
                 <h3 className="mb-1.5 font-medium text-zinc-200">2.3 Information From Third Parties</h3>
                 <ul className="list-disc space-y-2 pl-5">
                   <li>
-                    <span className="font-medium text-zinc-200">Shopify:</span> we receive data from Shopify in two
-                    situations. If you connect a Shopify store from within your AdRender account, or if you install
-                    AdRender from the Shopify App Store, we receive your shop domain, store metadata, and product
-                    data (names, descriptions, images, variants, and pricing) via Shopify's API, solely to provide
-                    the Service. If you install through the Shopify App Store, we also receive your subscription
-                    plan and usage records from Shopify in order to apply your plan limits. We do not receive
-                    customer personal data, payment data, or order financial details from Shopify.
+                    <span className="font-medium text-zinc-200">Shopify:</span> if you connect a Shopify store, we
+                    receive product names, descriptions, images, variants, pricing, and store metadata via Shopify's
+                    API, solely to provide the Service. We do not receive customer payment data or order financial
+                    details from Shopify.
                   </li>
                   <li>
                     <span className="font-medium text-zinc-200">Advertising template data:</span> we receive advertising
@@ -141,6 +136,38 @@ export function PrivacyPage() {
                     not personal data about you.
                   </li>
                 </ul>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">2.4 Shopify App Store Installations</h3>
+                <p className="mb-3">
+                  If you install AdRender from the Shopify App Store, the following applies in addition to the rest of
+                  this policy.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">What we receive from Shopify:</span> your shop domain,
+                  store metadata, and product data (names, descriptions, images, variants, and pricing) via Shopify's
+                  API, used solely to generate advertising creative for your store. We also receive your subscription
+                  plan and usage records from Shopify so we can apply your plan limits.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">What we do not receive:</span> we do not access, request,
+                  or store your customers' personal data, order data, or payment information. We do not receive your
+                  payment details — all billing is handled by Shopify.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">Deletion when you uninstall:</span> when you uninstall
+                  AdRender, we delete the data derived from your store — synced products, the store connection, and
+                  shop metadata. Your AdRender account, brand profiles, and the ads you generated are your own content
+                  and remain available to you. You can delete those at any time from your account settings, or by
+                  contacting us at{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                </p>
+                <p>
+                  <span className="font-medium text-zinc-200">Requesting your data:</span> you or Shopify may request
+                  access to or deletion of store data at any time by contacting{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                  We respond to Shopify's data request and redaction requests within the timeframes Shopify requires.
+                </p>
               </div>
             </div>
           </section>

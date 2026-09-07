@@ -118,9 +118,7 @@ export function TermsPage() {
                 <p>
                   Paid subscriptions are billed in advance on a monthly or annual basis and renew automatically at the
                   end of each billing period at the then-current rate unless cancelled at least 24 hours before
-                  renewal. If you signed up at adrender.app, you authorize us to charge your payment method on each
-                  renewal date. If you installed AdRender through the Shopify App Store, all charges are processed by
-                  Shopify and appear on your Shopify invoice under Shopify's own billing cycle and terms.
+                  renewal. You authorize us to charge your payment method on each renewal date.
                 </p>
               </div>
               <div>
@@ -151,10 +149,8 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">4.6 Cancellation</h3>
                 <p>
-                  If you signed up at adrender.app, you may cancel at any time through your account settings. If you
-                  installed AdRender through the Shopify App Store, you cancel by uninstalling the app or changing
-                  your plan from your Shopify admin. In both cases access continues through the end of the current
-                  billing period. No partial-period refunds except as stated in Section 6.
+                  You may cancel at any time through your account settings. Access continues through the end of the
+                  current billing period. No partial-period refunds except as stated in Section 6.
                 </p>
               </div>
               <div>
@@ -164,14 +160,57 @@ export function TermsPage() {
                   responsibility.
                 </p>
               </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-lg font-semibold text-white">4A. Shopify App Store Users</h2>
+            <p className="mb-4">
+              This section applies only if you installed AdRender through the Shopify App Store. Where it conflicts
+              with Section 4, this section controls.
+            </p>
+            <div className="space-y-4">
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">4.8 Billing Provider</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.1 Billing Provider</h3>
                 <p>
-                  Your billing provider is determined when you first sign up and cannot be changed afterward.
-                  Accounts created at adrender.app are billed by us through Stripe. Accounts installed through the
-                  Shopify App Store are billed by Shopify. If you wish to move from one to the other, you must create
-                  a new account; existing subscriptions, token balances, and billing history do not transfer between
-                  billing providers.
+                  All subscription and usage charges are processed by Shopify and appear on your Shopify invoice. We
+                  do not collect or store your payment details. Shopify's own billing cycle, payment retry, and
+                  collection terms apply.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.2 Billing Provider Is Fixed</h3>
+                <p>
+                  Your billing provider is set when you first install and cannot be changed. Accounts installed
+                  through the Shopify App Store are billed by Shopify; accounts created at adrender.app are billed by
+                  us through Stripe. To move between them you must create a new account. Subscriptions, token
+                  balances, and billing history do not transfer.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.3 Plan Changes and Cancellation</h3>
+                <p>
+                  You can upgrade, downgrade, or cancel at any time from your Shopify admin or from within the app.
+                  Uninstalling the app cancels future recurring charges. You may still be billed for the current
+                  cycle, and your access continues until the end of that period.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.4 Additional Token Usage</h3>
+                <p>
+                  Top-up token packs are not available through the Shopify App Store. If you use more tokens than
+                  your monthly allotment, additional tokens are metered and billed by Shopify at the per-token rate
+                  shown in the app. This is subject to a spending limit you approve when you subscribe, which you can
+                  adjust at any time from your Shopify admin. When that limit is reached, generation pauses until you
+                  raise it or your next billing cycle begins.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.5 Refunds</h3>
+                <p>
+                  Refund requests for charges made through Shopify are handled by us, not by Shopify. Contact us at{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                  The refund terms in Section 6 apply.
                 </p>
               </div>
             </div>
@@ -196,10 +235,7 @@ export function TermsPage() {
                   new lower allotment takes effect at the next renewal. Additional tokens may be purchased as one-time
                   top-up packs at prices published on the pricing page. Volume discounts apply — the effective
                   per-token rate decreases as pack size increases. Top-up tokens purchased under any plan are never
-                  removed due to a plan change. Top-up packs are available only to accounts billed through Stripe.
-                  Accounts billed through the Shopify App Store instead consume additional tokens on a metered basis
-                  beyond their monthly allotment, billed by Shopify at the per-token rate shown in the app, subject
-                  to a spending limit you approve and can adjust in your Shopify admin.
+                  removed due to a plan change.
                 </p>
               </div>
               <div>
@@ -428,11 +464,9 @@ export function TermsPage() {
                 <p>
                   Certain account status changes — including suspension following a failed or overdue payment, and
                   final subscription cancellation after repeated payment failures — are determined in part by the
-                  processing and timeline of the payment processor handling your account: Stripe for accounts created
-                  at adrender.app, or Shopify for accounts installed through the Shopify App Store. These timelines
-                  are outside our direct control. We will make reasonable efforts to notify you when these changes
-                  occur, but the exact timing of payment retries, suspension, and cancellation is governed by that
-                  processor's own processing.
+                  processing and timeline of our third-party payment processor, Stripe, and are outside our direct
+                  control. We will make reasonable efforts to notify you when these changes occur, but the exact
+                  timing of payment retries, suspension, and cancellation is governed by Stripe's own processing.
                 </p>
               </div>
               <div>
