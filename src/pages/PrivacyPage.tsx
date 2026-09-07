@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: August 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -96,8 +96,12 @@ export function PrivacyPage() {
                     you send through our in-app support system.
                   </li>
                   <li>
-                    <span className="font-medium text-zinc-200">Payment information:</span> billing details collected
-                    and processed directly by Stripe. We do not store full card numbers or bank account details.
+                    <span className="font-medium text-zinc-200">Payment information:</span> how billing is processed
+                    depends on how you signed up. If you created your account at adrender.app, billing details are
+                    collected and processed directly by Stripe. If you installed AdRender through the Shopify App
+                    Store, all subscription and usage charges are processed by Shopify and appear on your Shopify
+                    invoice; we receive only subscription status and usage records, never your card details. In both
+                    cases we do not store full card numbers or bank account details.
                   </li>
                 </ul>
               </div>
@@ -122,10 +126,13 @@ export function PrivacyPage() {
                 <h3 className="mb-1.5 font-medium text-zinc-200">2.3 Information From Third Parties</h3>
                 <ul className="list-disc space-y-2 pl-5">
                   <li>
-                    <span className="font-medium text-zinc-200">Shopify:</span> if you connect a Shopify store, we
-                    receive product names, descriptions, images, variants, pricing, and store metadata via Shopify's
-                    API, solely to provide the Service. We do not receive customer payment data or order financial
-                    details from Shopify.
+                    <span className="font-medium text-zinc-200">Shopify:</span> we receive data from Shopify in two
+                    situations. If you connect a Shopify store from within your AdRender account, or if you install
+                    AdRender from the Shopify App Store, we receive your shop domain, store metadata, and product
+                    data (names, descriptions, images, variants, and pricing) via Shopify's API, solely to provide
+                    the Service. If you install through the Shopify App Store, we also receive your subscription
+                    plan and usage records from Shopify in order to apply your plan limits. We do not receive
+                    customer personal data, payment data, or order financial details from Shopify.
                   </li>
                   <li>
                     <span className="font-medium text-zinc-200">Advertising template data:</span> we receive advertising
@@ -215,6 +222,12 @@ export function PrivacyPage() {
               <li>Content has been shared publicly with your consent (e.g. community template contributions).</li>
             </ul>
             <p className="mt-3">
+              If you uninstall AdRender from your Shopify store, we delete the data derived from that store — synced
+              products, the store connection, and shop metadata — in line with Shopify's data deletion requirements.
+              This does not delete your AdRender account, your brand profiles, or the ads you generated, which remain
+              yours and stay available to you.
+            </p>
+            <p className="mt-3">
               Log data and usage analytics are retained for up to 90 days in identifiable form and may be retained
               longer in aggregated, de-identified form.
             </p>
@@ -283,10 +296,12 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">7. Cookies and Tracking</h2>
             <p className="mb-3">
-              This marketing site (adrender.app) does not set cookies and does not run analytics that track individual
-              users. The AdRender application (app.adrender.app) uses session cookies for authentication and may
-              collect usage analytics to improve the product. For full details on data collected within the
-              application, see Section 2 (Information We Collect) above.
+              This marketing site (adrender.app) does not set cookies and does not run analytics that track
+              individual users. The AdRender web application (app.adrender.app) uses session cookies for
+              authentication and may collect usage analytics to improve the product. When AdRender is used embedded
+              inside the Shopify admin, authentication uses Shopify session tokens rather than cookies, and the
+              embedded app does not rely on third-party cookies or browser local storage. For full details on data
+              collected within the application, see Section 2 (Information We Collect) above.
             </p>
             <p>
               We do not use third-party advertising cookies or sell cookie data to advertisers. You may disable cookies
