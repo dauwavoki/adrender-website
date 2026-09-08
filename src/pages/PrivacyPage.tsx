@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: August 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -70,6 +70,8 @@ export function PrivacyPage() {
               our Service. By using the Service you agree to the practices described here. Capitalized terms not
               defined here have the meanings given in our Terms and Conditions at{' '}
               <a href="https://adrender.app/terms" className="text-[#00e5ff] hover:underline">adrender.app/terms</a>.
+              If you installed AdRender through the Shopify App Store, see Section 2.4 for how we handle data from
+              your store.
             </p>
           </section>
 
@@ -134,6 +136,38 @@ export function PrivacyPage() {
                     not personal data about you.
                   </li>
                 </ul>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">2.4 Shopify App Store Installations</h3>
+                <p className="mb-3">
+                  If you install AdRender from the Shopify App Store, the following applies in addition to the rest of
+                  this policy.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">What we receive from Shopify:</span> your shop domain,
+                  store metadata, and product data (names, descriptions, images, variants, and pricing) via Shopify's
+                  API, used solely to generate advertising creative for your store. We also receive your subscription
+                  plan and usage records from Shopify so we can apply your plan limits.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">What we do not receive:</span> we do not access, request,
+                  or store your customers' personal data, order data, or payment information. We do not receive your
+                  payment details — all billing is handled by Shopify.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">Deletion when you uninstall:</span> when you uninstall
+                  AdRender, we delete the data derived from your store — synced products, the store connection, and
+                  shop metadata. Your AdRender account, brand profiles, and the ads you generated are your own content
+                  and remain available to you. You can delete those at any time from your account settings, or by
+                  contacting us at{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                </p>
+                <p>
+                  <span className="font-medium text-zinc-200">Requesting your data:</span> you or Shopify may request
+                  access to or deletion of store data at any time by contacting{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                  We respond to Shopify's data request and redaction requests within the timeframes Shopify requires.
+                </p>
               </div>
             </div>
           </section>
@@ -215,6 +249,12 @@ export function PrivacyPage() {
               <li>Content has been shared publicly with your consent (e.g. community template contributions).</li>
             </ul>
             <p className="mt-3">
+              If you uninstall AdRender from your Shopify store, we delete the data derived from that store — synced
+              products, the store connection, and shop metadata — in line with Shopify's data deletion requirements.
+              This does not delete your AdRender account, your brand profiles, or the ads you generated, which remain
+              yours and stay available to you.
+            </p>
+            <p className="mt-3">
               Log data and usage analytics are retained for up to 90 days in identifiable form and may be retained
               longer in aggregated, de-identified form.
             </p>
@@ -283,10 +323,12 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">7. Cookies and Tracking</h2>
             <p className="mb-3">
-              This marketing site (adrender.app) does not set cookies and does not run analytics that track individual
-              users. The AdRender application (app.adrender.app) uses session cookies for authentication and may
-              collect usage analytics to improve the product. For full details on data collected within the
-              application, see Section 2 (Information We Collect) above.
+              This marketing site (adrender.app) does not set cookies and does not run analytics that track
+              individual users. The AdRender web application (app.adrender.app) uses session cookies for
+              authentication and may collect usage analytics to improve the product. When AdRender is used embedded
+              inside the Shopify admin, authentication uses Shopify session tokens rather than cookies, and the
+              embedded app does not rely on third-party cookies or browser local storage. For full details on data
+              collected within the application, see Section 2 (Information We Collect) above.
             </p>
             <p>
               We do not use third-party advertising cookies or sell cookie data to advertisers. You may disable cookies

@@ -54,7 +54,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: August 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -109,7 +109,7 @@ export function TermsPage() {
                   each a "Plan"). Each Plan defines limits including monthly tokens, brand slots, product limits, team
                   seats, integrations, and feature access. Current Plan definitions, prices, and limits are published
                   at{' '}
-                  <a href="https://adrender.app/pricing" className="text-[#00e5ff] hover:underline">adrender.app/pricing</a>{' '}
+                  <a href="https://adrender.app/#pricing" className="text-[#00e5ff] hover:underline">adrender.app/#pricing</a>{' '}
                   and may be updated with at least 30 days prior notice to paying subscribers.
                 </p>
               </div>
@@ -158,6 +158,59 @@ export function TermsPage() {
                 <p>
                   Prices exclude applicable sales tax, VAT, GST, and other governmental fees, which are your sole
                   responsibility.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-lg font-semibold text-white">4A. Shopify App Store Users</h2>
+            <p className="mb-4">
+              This section applies only if you installed AdRender through the Shopify App Store. Where it conflicts
+              with Section 4, this section controls.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.1 Billing Provider</h3>
+                <p>
+                  All subscription and usage charges are processed by Shopify and appear on your Shopify invoice. We
+                  do not collect or store your payment details. Shopify's own billing cycle, payment retry, and
+                  collection terms apply.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.2 Billing Provider Is Fixed</h3>
+                <p>
+                  Your billing provider is set when you first install and cannot be changed. Accounts installed
+                  through the Shopify App Store are billed by Shopify; accounts created at adrender.app are billed by
+                  us through Stripe. To move between them you must create a new account. Subscriptions, token
+                  balances, and billing history do not transfer.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.3 Plan Changes and Cancellation</h3>
+                <p>
+                  You can upgrade, downgrade, or cancel at any time from your Shopify admin or from within the app.
+                  Uninstalling the app cancels future recurring charges. You may still be billed for the current
+                  cycle, and your access continues until the end of that period.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.4 Additional Token Usage</h3>
+                <p>
+                  Top-up token packs are not available through the Shopify App Store. If you use more tokens than
+                  your monthly allotment, additional tokens are metered and billed by Shopify at the per-token rate
+                  shown in the app. This is subject to a spending limit you approve when you subscribe, which you can
+                  adjust at any time from your Shopify admin. When that limit is reached, generation pauses until you
+                  raise it or your next billing cycle begins.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.5 Refunds</h3>
+                <p>
+                  Refund requests for charges made through Shopify are handled by us, not by Shopify. Contact us at{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
+                  The refund terms in Section 6 apply.
                 </p>
               </div>
             </div>
