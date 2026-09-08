@@ -37,6 +37,7 @@ export const tiers: Tier[] = [
     annual: 182,
     features: [
       '150 tokens/mo',
+      'Up to 150 image ads, or at least 7 video ads every month',
       '20 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 30',
@@ -52,6 +53,7 @@ export const tiers: Tier[] = [
     annual: 470,
     features: [
       '400 tokens/mo',
+      'Up to 400 image ads, or at least 20 video ads every month',
       '40 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 40',
@@ -67,6 +69,7 @@ export const tiers: Tier[] = [
     annual: 950,
     features: [
       '1,000 tokens/mo',
+      'Up to 1,000 image ads, or at least 50 video ads every month',
       '60 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 50',
@@ -83,6 +86,7 @@ export const tiers: Tier[] = [
     annual: 2870,
     features: [
       '3,500 tokens/mo',
+      'Up to 3,500 image ads, or at least 175 video ads every month',
       'Unlimited Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: Unlimited',
