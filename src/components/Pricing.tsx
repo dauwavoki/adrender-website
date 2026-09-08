@@ -22,9 +22,17 @@ function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: n
 }
 
 function FeatureList({ tier }: { tier: Tier }) {
+  const [tokens, ...rest] = tier.features
+
   return (
     <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-white/[0.06] pt-6 text-sm text-zinc-400">
-      {tier.features.map((feature) => (
+      {tokens && (
+        <li className="font-medium text-zinc-200">{tokens}</li>
+      )}
+      {tier.outputLine && (
+        <li className="font-medium text-[var(--accent-cyan)]">{tier.outputLine}</li>
+      )}
+      {rest.map((feature) => (
         <li key={feature} className="font-medium text-zinc-200">
           {feature}
         </li>

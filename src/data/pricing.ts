@@ -10,6 +10,8 @@ export type Tier = {
   annual: number | null
   /** Feature bullets copied verbatim from in-app pricing */
   features: string[]
+  /** Highlighted output-count line under the token allotment (paid tiers only) */
+  outputLine?: string
   popular?: boolean
 }
 
@@ -35,13 +37,13 @@ export const tiers: Tier[] = [
     tagline: 'For solo founders',
     monthly: 19,
     annual: 182,
+    outputLine: 'Up to 150 image ads, or at least 7 video ads every month',
     features: [
       '150 tokens/mo',
-      'Up to 150 image ads, or at least 7 video ads every month',
       '20 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 30',
-      'Shopify sync: No',
+      'Shopify sync: Yes',
       'No watermarks',
     ],
   },
@@ -51,9 +53,9 @@ export const tiers: Tier[] = [
     tagline: 'For growing DTC brands',
     monthly: 49,
     annual: 470,
+    outputLine: 'Up to 400 image ads, or at least 20 video ads every month',
     features: [
       '400 tokens/mo',
-      'Up to 400 image ads, or at least 20 video ads every month',
       '40 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 40',
@@ -67,9 +69,9 @@ export const tiers: Tier[] = [
     tagline: 'For agencies & freelancers',
     monthly: 99,
     annual: 950,
+    outputLine: 'Up to 1,000 image ads, or at least 50 video ads every month',
     features: [
       '1,000 tokens/mo',
-      'Up to 1,000 image ads, or at least 50 video ads every month',
       '60 Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: 50',
@@ -84,9 +86,9 @@ export const tiers: Tier[] = [
     tagline: 'For teams running at full volume',
     monthly: 299,
     annual: 2870,
+    outputLine: 'Up to 3,500 image ads, or at least 175 video ads every month',
     features: [
       '3,500 tokens/mo',
-      'Up to 3,500 image ads, or at least 175 video ads every month',
       'Unlimited Brands & Campaigns',
       'Team workspaces: Yes',
       'Concurrent renders: Unlimited',
