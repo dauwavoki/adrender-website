@@ -196,13 +196,12 @@ export function TermsPage() {
                 </p>
               </div>
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">4A.4 Additional Token Usage</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.4 Token Limits</h3>
                 <p>
-                  Top-up token packs are not available through the Shopify App Store. If you use more tokens than
-                  your monthly allotment, additional tokens are metered and billed by Shopify at the per-token rate
-                  shown in the app. This is subject to a spending limit you approve when you subscribe, which you can
-                  adjust at any time from your Shopify admin. When that limit is reached, generation pauses until you
-                  raise it or your next billing cycle begins.
+                  Top-up token packs are not available through the Shopify App Store. Your plan includes a fixed
+                  monthly token allotment. When that allotment is used up, generation pauses until your next billing
+                  cycle begins or you upgrade to a higher plan. You are never charged more than your plan price, and
+                  no additional usage charges apply.
                 </p>
               </div>
               <div>
