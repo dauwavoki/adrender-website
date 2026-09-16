@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 16, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -158,8 +158,7 @@ export function PrivacyPage() {
                   <span className="font-medium text-zinc-200">Deletion when you uninstall:</span> when you uninstall
                   AdRender, we delete the data derived from your store — synced products, the store connection, and
                   shop metadata. Your AdRender account, brand profiles, and the ads you generated are your own content
-                  and remain available to you. You can delete those at any time from your account settings, or by
-                  contacting us at{' '}
+                  and remain available to you. To delete this data, contact us at{' '}
                   <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
                 </p>
                 <p>
@@ -326,8 +325,10 @@ export function PrivacyPage() {
               This marketing site (adrender.app) does not set cookies and does not run analytics that track
               individual users. The AdRender web application (app.adrender.app) uses session cookies for
               authentication and may collect usage analytics to improve the product. When AdRender is used embedded
-              inside the Shopify admin, authentication uses Shopify session tokens rather than cookies, and the
-              embedded app does not rely on third-party cookies or browser local storage. For full details on data
+              inside the Shopify admin, authentication uses Shopify session tokens rather than a persistent login
+              cookie. The embedded app uses one first-party cookie to preserve your store context while navigating
+              within the embedded admin; it does not rely on third-party cookies or browser local storage. For full
+              details on data
               collected within the application, see Section 2 (Information We Collect) above.
             </p>
             <p>

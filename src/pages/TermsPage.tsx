@@ -54,7 +54,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 16, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -210,6 +210,14 @@ export function TermsPage() {
                   Refund requests for charges made through Shopify are handled by us, not by Shopify. Contact us at{' '}
                   <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.
                   The refund terms in Section 6 apply.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">4A.6 Additional Plans</h3>
+                <p>
+                  Accounts installed through the Shopify App Store may also have access to two additional plans
+                  available only through that channel: Volume and Agency. Current definitions, prices, and limits
+                  for all plans, including these two, are published within the app.
                 </p>
               </div>
             </div>
