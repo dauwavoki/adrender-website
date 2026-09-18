@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 16, 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 18, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -151,8 +151,12 @@ export function PrivacyPage() {
                 </p>
                 <p className="mb-3">
                   <span className="font-medium text-zinc-200">What we do not receive:</span> we do not access, request,
-                  or store your customers' personal data, order data, or payment information. We do not receive your
-                  payment details — all billing is handled by Shopify.
+                  or store your customers' personal data, order data, or payment information.
+                </p>
+                <p className="mb-3">
+                  <span className="font-medium text-zinc-200">Billing:</span> for Shopify-installed accounts, billing
+                  and payment processing is handled entirely by Shopify, under Shopify's own privacy practices and
+                  terms. AdRender does not process or store that payment information.
                 </p>
                 <p className="mb-3">
                   <span className="font-medium text-zinc-200">Deletion when you uninstall:</span> when you uninstall

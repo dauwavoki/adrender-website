@@ -16,8 +16,28 @@ const FAQ: { q: string; a: string }[] = [
     a: "Monthly plan tokens don't roll over and reset each cycle. Top-up tokens never expire and stay on your account until used — we always use your monthly tokens first, so your top-ups are the last thing spent.",
   },
   {
+    q: 'Can I buy extra tokens on Shopify?',
+    a: 'Top-up token packs are not available through the Shopify App Store. Your plan includes a fixed monthly token allotment. When that allotment is used up, generation pauses until your next billing cycle begins or you upgrade to a higher plan.',
+  },
+  {
     q: 'What happens if I cancel?',
     a: "You drop to the Free plan and keep every ad and brand library you've built, forever. You can top up anytime for exactly the tokens you need — those top-ups never expire.",
+  },
+  {
+    q: 'What happens if I uninstall AdRender from Shopify?',
+    a: 'Uninstalling cancels future recurring charges. You may still be billed for the current cycle, and access continues until the end of that period. We delete the data derived from your store. Your AdRender account, brand profiles, and the ads you generated remain yours.',
+  },
+  {
+    q: 'How do I manage my plan if I installed through Shopify?',
+    a: 'Plan changes, cancellation, and billing run through Shopify. You can upgrade, downgrade, or cancel from your Shopify admin or from within the embedded app. Charges appear on your Shopify invoice — there is no separate AdRender checkout.',
+  },
+  {
+    q: 'If I log into the Direct app with a Shopify-linked account, where is billing handled?',
+    a: 'Billing still runs through Shopify. Logging into the Direct app with a Shopify-linked account (Direct-Shopify) does not create a separate charge or a separate billed account.',
+  },
+  {
+    q: 'How do teams work on Shopify?',
+    a: 'Shopify accounts use teams rather than workspaces, because Shopify structures access around the store. The person who installed AdRender and subscribed is the primary. They can add other people to the store through Shopify staff or collaborator access; those people get product access inside the Shopify-embedded app. Only the primary can manage billing or the subscription.',
   },
   {
     q: 'What if I delete my account?',

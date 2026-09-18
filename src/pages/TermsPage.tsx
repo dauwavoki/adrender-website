@@ -54,7 +54,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 16, 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 18, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -371,12 +371,31 @@ export function TermsPage() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-lg font-semibold text-white">10. Team Accounts</h2>
-            <p>
-              Where your Plan includes team seats, the account owner may invite members and assign role-based
-              permissions. The account owner is responsible for all activity by team members and for their compliance
-              with these Terms. We are not responsible for disputes between account owners and team members.
-            </p>
+            <h2 className="mb-3 text-lg font-semibold text-white">10. Workspaces</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">10.1 Direct</h3>
+                <p>
+                  Subscribed accounts can create multiple workspaces and invite other users into them by email. Where
+                  your Plan includes team seats, the account owner may invite members and assign role-based
+                  permissions. The account owner is responsible for all activity by team members and for their
+                  compliance with these Terms. We are not responsible for disputes between account owners and team
+                  members.
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1.5 font-medium text-zinc-200">10.2 Shopify</h3>
+                <p>
+                  Each installed store is its own workspace. Only the account that completed the original installation
+                  and subscription (the "primary") can manage billing, change plans, or disconnect the store. The
+                  primary can add other people as team members on that store through Shopify's own staff and
+                  collaborator system. Team members receive product access within the Shopify-embedded app. They do
+                  not receive billing access or account-level access, and that access exists only within the
+                  Shopify-embedded app. The primary is responsible for all activity by team members and for their
+                  compliance with these Terms.
+                </p>
+              </div>
+            </div>
           </section>
 
           <section>
