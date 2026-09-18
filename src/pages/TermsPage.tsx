@@ -54,7 +54,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 18, 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 19, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -184,7 +184,9 @@ export function TermsPage() {
                   Your billing provider is set when you first install and cannot be changed. Accounts installed
                   through the Shopify App Store are billed by Shopify; accounts created at adrender.app are billed by
                   us through Stripe. To move between them you must create a new account. Subscriptions, token
-                  balances, and billing history do not transfer.
+                  balances, and billing history do not transfer. The same login and email work across both AdRender
+                  Direct and Shopify — this section refers only to which platform bills a given workspace, not to
+                  account access.
                 </p>
               </div>
               <div>
