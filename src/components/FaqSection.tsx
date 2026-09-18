@@ -91,6 +91,10 @@ const FAQ_SHOPIFY: FaqEntry[] = [
     a: 'Each installed store is its own workspace. Only the account that completed the original installation and subscription (the primary) can manage billing, change plans, or disconnect the store.',
   },
   {
+    q: 'Can I use AdRender on more than one Shopify store?',
+    a: 'Yes. Install AdRender on each store separately. Each installed store becomes its own workspace under the same login, with its own independent billing. Installing on a second store does not share or extend the subscription from the first.',
+  },
+  {
     q: 'What Shopify data does AdRender access?',
     a: "We receive your shop domain, store metadata, and product data (names, descriptions, images, variants, and pricing) via Shopify's API, used solely to generate advertising creative for your store. We also receive your subscription plan and usage records from Shopify so we can apply your plan limits. We do not access, request, or store your customers' personal data, order data, or payment information.",
   },

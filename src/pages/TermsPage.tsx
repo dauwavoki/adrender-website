@@ -388,13 +388,15 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">10.2 Shopify</h3>
                 <p>
-                  Each installed store is its own workspace. Only the account that completed the original installation
-                  and subscription (the "primary") can manage billing, change plans, or disconnect the store. The
-                  primary can add other people as team members on that store through Shopify's own staff and
-                  collaborator system. Team members receive product access within the Shopify-embedded app. They do
-                  not receive billing access or account-level access, and that access exists only within the
-                  Shopify-embedded app. The primary is responsible for all activity by team members and for their
-                  compliance with these Terms.
+                  Each installed store is its own workspace. If you install AdRender on more than one Shopify store
+                  using the same login, each store gets its own separate workspace with its own independent billing —
+                  they do not share a subscription or token pool between stores. Only the account that completed the
+                  original installation and subscription (the "primary") can manage billing, change plans, or
+                  disconnect the store. The primary can add other people as team members on that store through
+                  Shopify's own staff and collaborator system. Team members receive product access within the
+                  Shopify-embedded app. They do not receive billing access or account-level access, and that access
+                  exists only within the Shopify-embedded app. The primary is responsible for all activity by team
+                  members and for their compliance with these Terms.
                 </p>
               </div>
             </div>
