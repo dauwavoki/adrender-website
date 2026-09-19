@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: September 18, 2026 &nbsp;·&nbsp; Effective: June 2026
+            Last updated: September 19, 2026 &nbsp;·&nbsp; Effective: June 2026
           </p>
         </div>
 
@@ -242,8 +242,25 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">5. Data Retention</h2>
             <p className="mb-3">
-              We retain your account data and brand assets for as long as your account is active. If you close your
-              account, we delete or de-identify your personal data and uploaded content within 60 days, except where:
+              We retain your account data and brand assets for as long as your account is active. Cancelling a
+              subscription is not account deletion: your account remains on the Free plan and we continue to retain
+              the data associated with it, including ads, brands, and workspaces.
+            </p>
+            <p className="mb-3">
+              If you delete your account, it is deactivated immediately and scheduled for permanent deletion. The
+              account is archived (soft-deleted) for 30 days. During that window you can recover the account by
+              emailing{' '}
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>
+              {' '}or by replying to the deletion notice. In compliance with GDPR, all of your data will be
+              permanently deleted after 30 days, subject to the exceptions below. After 30 days the deletion is
+              final and no restoration is possible.
+              You may request immediate full deletion and skip the 30-day archive by explicitly emailing{' '}
+              <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>
+              {' '}from your account&apos;s email to request it.
+            </p>
+            <p className="mb-3">
+              If we terminate your account, we delete or de-identify your personal data and uploaded content within
+              60 days, except where:
             </p>
             <ul className="list-disc space-y-2 pl-5">
               <li>Retention is required to comply with legal obligations.</li>
@@ -273,6 +290,7 @@ export function PrivacyPage() {
                   You may also contact us at{' '}
                   <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>,
                   or through in-app Support, to request access to, correction of, or deletion of your personal data.
+                  Deleting your account is described in Section 5 and is not the same as cancelling a subscription.
                 </p>
               </div>
               <div>

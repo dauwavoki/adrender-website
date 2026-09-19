@@ -149,8 +149,11 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">4.6 Cancellation</h3>
                 <p>
-                  You may cancel at any time through your account settings. Access continues through the end of the
-                  current billing period. No partial-period refunds except as stated in Section 6.
+                  You may cancel your subscription at any time through your account settings. Cancellation is not
+                  account deletion. After cancellation, your account drops to the Free plan. All content — ads,
+                  brands, and workspaces — is kept exactly as-is. Your paid-plan token allotment is lost, because
+                  there is no active paid plan. Access continues through the end of the current billing period. No
+                  partial-period refunds except as stated in Section 6. To delete your account, see Section 13.1.
                 </p>
               </div>
               <div>
@@ -194,7 +197,9 @@ export function TermsPage() {
                 <p>
                   You can upgrade, downgrade, or cancel at any time from your Shopify admin or from within the app.
                   Uninstalling the app cancels future recurring charges. You may still be billed for the current
-                  cycle, and your access continues until the end of that period.
+                  cycle, and your access continues until the end of that period. Cancelling a subscription or
+                  uninstalling the app is not account deletion: your AdRender account, brands, ads, and workspaces
+                  remain. To delete your account, see Section 13.1.
                 </p>
               </div>
               <div>
@@ -264,10 +269,8 @@ export function TermsPage() {
                   Monthly allotment tokens expire at the end of each billing period and do not roll over, except that
                   annual subscribers may carry unused allotment tokens forward up to two times their monthly cap;
                   balances above that ceiling are forfeited at month end.{' '}
-                  <strong>Top-up tokens currently do not expire.</strong> This is our current policy and, like token
-                  pricing under Section 5.3, may be changed at any time without prior notice; continued use of the
-                  Service after such a change constitutes acceptance. All tokens are forfeited upon account
-                  termination, except where required by law.
+                  <strong>Top-up tokens and admin-granted tokens never expire.</strong> All tokens are forfeited upon
+                  account deletion or termination, except where required by law.
                 </p>
               </div>
               <div>
@@ -472,14 +475,33 @@ export function TermsPage() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-lg font-semibold text-white">13. Account Suspension and Termination</h2>
+            <h2 className="mb-3 text-lg font-semibold text-white">13. Cancellation, Deletion, Suspension, and Termination</h2>
+            <p className="mb-4">
+              Cancelling a subscription, deleting your account, and suspension or termination by AdRender are
+              different actions and are not interchangeable.
+            </p>
             <div className="space-y-4">
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">13.1 By You</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">13.1 Delete Account (Self-Initiated)</h3>
                 <p>
-                  You may close your account at any time through account settings, by contacting{' '}
+                  You may delete your account at any time through account settings, by contacting{' '}
                   <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>,
-                  or through in-app Support.
+                  or through in-app Support. Account deletion is not subscription cancellation. To cancel a
+                  subscription and keep your account and content, see Section 4.6.
+                </p>
+                <p className="mt-3">
+                  When you delete your account, it is deactivated immediately and scheduled for permanent deletion.
+                  The account is archived (soft-deleted) for 30 days. During that window you can recover the account
+                  by emailing{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>
+                  {' '}or by replying to the deletion notice. In compliance with GDPR, all of your data will be
+                  permanently deleted after 30 days. After 30 days the deletion is final and no restoration is
+                  possible.
+                </p>
+                <p className="mt-3">
+                  You may request immediate full deletion and skip the 30-day archive by explicitly emailing{' '}
+                  <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>
+                  {' '}from your account&apos;s email to request it.
                 </p>
               </div>
               <div>
@@ -497,14 +519,28 @@ export function TermsPage() {
                   processing and timeline of our third-party payment processor, Stripe, and are outside our direct
                   control. We will make reasonable efforts to notify you when these changes occur, but the exact
                   timing of payment retries, suspension, and cancellation is governed by Stripe's own processing.
+                  Those changes affect subscription and access; they are not account deletion under Section 13.1.
                 </p>
               </div>
               <div>
-                <h3 className="mb-1.5 font-medium text-zinc-200">13.4 Effect of Termination</h3>
+                <h3 className="mb-1.5 font-medium text-zinc-200">13.4 Effect of Cancellation, Deletion, and Termination</h3>
                 <p>
-                  On termination your access ends, outstanding fees become due, tokens are forfeited, and we will
-                  delete or de-identify your account data within 60 days, subject to legal retention requirements.
-                  Sections 7, 8, 11.3, 12, and 15–21 survive termination.
+                  If you cancel a subscription (Section 4.6), your account drops to the Free plan. All content —
+                  ads, brands, and workspaces — is kept exactly as-is. Your paid-plan token allotment is lost,
+                  because there is no active paid plan. Cancellation does not delete your account.
+                </p>
+                <p className="mt-3">
+                  If you delete your account (Section 13.1), access ends immediately, outstanding fees become due,
+                  and tokens are forfeited. The account is archived for 30 days as described above, then permanently
+                  deleted, unless you recover it or request immediate full deletion.
+                </p>
+                <p className="mt-3">
+                  If we suspend or terminate your account (Section 13.2), your access ends, outstanding fees become
+                  due, tokens are forfeited, and we will delete or de-identify your account data within 60 days,
+                  subject to legal retention requirements.
+                </p>
+                <p className="mt-3">
+                  Sections 4A, 5, 7, 8, 9, 10, 11.3, 12, 14, and 15–21 survive termination.
                 </p>
               </div>
             </div>
