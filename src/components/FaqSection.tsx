@@ -31,7 +31,7 @@ const VIDEO_COST: FaqEntry = {
 
 const CONNECT_SHOPIFY: FaqEntry = {
   q: 'Can I connect my Shopify store if I have a Direct account?',
-  a: 'Yes. From Brands & Campaigns you can connect your Shopify store and sync the catalog — product names, descriptions, images, variants, and pricing. That is the native catalog sync inside AdRender, not an App Store install.',
+  a: 'Yes — from Brands & Campaigns, enter your store domain (your-store.myshopify.com), click Connect Shopify Store, and approve read_products access on Shopify. Your catalog syncs into that brand. This is separate from installing AdRender through the Shopify App Store — billing stays on your Direct account.',
 }
 
 const SHOPIFY_APP: FaqEntry = {

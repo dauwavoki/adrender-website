@@ -367,7 +367,7 @@ export function TermsPage() {
             <h2 className="mb-3 text-lg font-semibold text-white">9. Shopify Integration</h2>
             <p>
               If you connect a Shopify store, you authorize us to access and process your store data (product names,
-              descriptions, images, variants, and metadata) solely to provide the Service. We do not access payment
+              descriptions, images, variants, pricing, and metadata) solely to provide the Service. We do not access payment
               card information or customer personal data beyond what is necessary and disclosed. You represent that
               your use of the Service with your Shopify store complies with Shopify's Terms of Service, API License,
               and Acceptable Use Policy. You may disconnect at any time; we will delete or de-identify imported
@@ -430,9 +430,9 @@ export function TermsPage() {
               <div>
                 <h3 className="mb-1.5 font-medium text-zinc-200">11.3 AdRender IP</h3>
                 <p>
-                  The Service, including all software, designs, the AdRender name and logo, Brain AI features, and
-                  related intellectual property, is owned by AdRender or its licensors. No rights are granted beyond
-                  those expressly stated.
+                  The Service, including all software, designs, the AdRender name and logo, Brain AI (our AI-powered
+                  features for researching brands and generating content) and related intellectual property, is
+                  owned by AdRender or its licensors. No rights are granted beyond those expressly stated.
                 </p>
               </div>
               <div>
