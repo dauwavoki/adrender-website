@@ -195,7 +195,16 @@ export function Footer() {
           <div>
             <BrandLogoLink variant="footer" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
-              AI-powered static and video ads for anyone running paid social — with optional Shopify sync when you want catalog in one click.
+              AI-powered static and video ads for anyone running paid social. Also available as a{' '}
+              <a
+                href="https://apps.shopify.com/search?q=AdRender"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 underline decoration-white/20 underline-offset-2 transition hover:text-[var(--accent-cyan)]"
+              >
+                native app on the Shopify App Store
+              </a>
+              , billed through Shopify.
             </p>
           </div>
           <div className="flex flex-wrap gap-10 text-sm">

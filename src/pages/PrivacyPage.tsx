@@ -344,8 +344,8 @@ export function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-lg font-semibold text-white">7. Cookies and Tracking</h2>
             <p className="mb-3">
-              This marketing site (adrender.app) does not set cookies and does not run analytics that track
-              individual users. The AdRender web application (app.adrender.app) uses session cookies for
+              This marketing site (adrender.app) uses analytics and similar tracking technologies to
+              understand how the site is used. The AdRender web application (app.adrender.app) uses session cookies for
               authentication and may collect usage analytics to improve the product. When AdRender is used embedded
               inside the Shopify admin, authentication uses Shopify session tokens rather than a persistent login
               cookie. The embedded app uses one first-party cookie to preserve your store context while navigating

@@ -138,7 +138,7 @@ export function Pricing() {
           <h2 className="mt-3 text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             Simple pricing. Serious output.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Switch billing anytime.</p>
+          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Choose monthly or annual.</p>
 
           <div className="mx-auto mt-10 flex items-center justify-center gap-3">
             <span className={`text-sm font-medium ${billing === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>Monthly</span>

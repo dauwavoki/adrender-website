@@ -5,7 +5,7 @@ const DEFAULT_SUBHEAD =
   'AdRender pulls from 100M+ real image and video ads running right now and remixes the winners into your brand. Hundreds of ads in under 10 minutes.'
 const DEFAULT_CTA_NOTE = 'No credit card. No demo call. No sales rep.'
 const DEFAULT_AUDIENCE =
-  "Built for anyone spending $500 to $50K+ a month on ads — whether that's your whole budget or your testing budget. Shopify sync included."
+  "Built for anyone spending $500 to $50K+ a month on ads — whether that's your whole budget or your testing budget."
 
 type HeroProps = {
   headline?: string

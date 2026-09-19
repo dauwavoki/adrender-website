@@ -27,7 +27,7 @@ export const tiers: Tier[] = [
       '1 Brand & Campaign',
       'Team workspaces: No',
       'Concurrent renders: 10',
-      'Shopify sync: No',
+      'Shopify sync: Yes',
       'No watermarks',
     ],
   },

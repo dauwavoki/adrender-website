@@ -4,7 +4,6 @@ import {
   FolderHeart,
   LayoutGrid,
   Maximize2,
-  ShoppingBag,
   Sparkles,
   Users,
   Wand2,
@@ -78,15 +77,6 @@ const FEATURES: FeatureCard[] = [
     imageId: '12',
     icon: Maximize2,
     accent: 'text-[#5B9FFF]',
-  },
-  {
-    anchor: 'shopify',
-    heading: 'Shopify sync',
-    sub: 'Your catalog, already in the tool.',
-    body: 'Connect your store once. Every product, image, and price flows in automatically — no manual uploads, no re-exporting when you add a SKU.',
-    imageId: '13',
-    icon: ShoppingBag,
-    accent: 'text-[#96F07A]',
   },
   {
     anchor: 'workspaces',
