@@ -56,6 +56,6 @@ On AdRender's Pro plan, the same $99/mo that produces your static ads also cover
 
 Static or video — same workflow, same brand, same plan.
 
-No briefing calls. No waiting on revisions. No $150-a-day retainer. Just pick a template, generate, and test.
+No briefing calls. No waiting on revisions. No $150-a-day retainer. Just pick a template, render, and test.
 
 [Start Free →](https://adrender.app/?src=how-much-does)

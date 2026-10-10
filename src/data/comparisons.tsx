@@ -48,14 +48,14 @@ export const comparisons: ComparisonConfig[] = [
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$39/mo (10 credits only)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: 'Trial only — card required' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: 'Library only — no live ad data' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic brand kit (manual)' },
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: 'Basic' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Locked behind $249/mo' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Locked behind $249/mo' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits consumed per download' },
       { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Yes, prompt required' },
@@ -65,12 +65,12 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: ShieldCheck,
         title: 'No billing traps',
-        body: 'AdCreative.ai is notorious for surprise auto-renewals and confusing credit systems. AdRender shows you the exact token cost before every generation. No surprises.',
+        body: 'AdCreative.ai is notorious for surprise auto-renewals and confusing credit systems. AdRender shows you the exact token cost before every render. No surprises.',
       },
       {
         icon: Video,
         title: 'Video included. No $249 gate.',
-        body: 'AdCreative.ai locks video behind a $249/month paywall — 6x their base price. AdRender includes real video generation from the entry tier: winning ad templates, converted into your brand. No upsell wall between you and video.',
+        body: 'AdCreative.ai locks video behind a $249/month paywall — 6x their base price. AdRender includes real video rendering from the entry tier: winning ad templates, converted into your brand. No upsell wall between you and video.',
       },
       {
         icon: ShoppingBag,
@@ -83,21 +83,21 @@ export const comparisons: ComparisonConfig[] = [
     slug: 'canva',
     competitor: 'Canva',
     competitorUrl: 'https://www.canva.com',
-    subheadline: 'AI that actually generates. Not just a template editor.',
+    subheadline: 'AI that actually renders. Not just a template editor.',
     documentTitle: 'AdRender vs Canva — AI Ad Generator Comparison',
     metaDescription:
       'AdRender vs Canva: AI generates on-brand ads from real winning templates—not a design editor. Shopify sync, auto copy, ready in minutes. Free to start.',
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$15/mo (Canva Pro)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ None' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: 'Generic design templates — no ad performance data' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: '❌ Manual only' },
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: '❌ Manual copywriting' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌ Manual upload' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Video editing in a design tool — not ad generation from winning templates' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Video editing in a design tool — not ad generation from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: '❌ One at a time' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Manual — one design at a time' },
       { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Everything is manual' },
@@ -106,13 +106,13 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Wand2,
-        title: 'AI generates. You approve.',
-        body: 'Canva is a design tool. AdRender is a generation engine. You don\u2019t drag and drop — you scan your brand, pick a template that\u2019s working in your niche, and get hundreds of ads in under 10 minutes.',
+        title: 'AI renders. You approve.',
+        body: 'Canva is a design tool. AdRender is a rendering engine. You don\u2019t drag and drop — you scan your brand, pick a template that\u2019s working in your niche, and get hundreds of ads in under 10 minutes.',
       },
       {
         icon: Clock,
         title: 'Half a day vs under 10 minutes',
-        body: 'Building 10 ad variants manually in Canva takes most people half a day. AdRender generates hundreds of ads in under 10 minutes, with your brand colors, your logo, your product images, and AI-written copy — automatically.',
+        body: 'Building 10 ad variants manually in Canva takes most people half a day. AdRender renders hundreds of ads in under 10 minutes, with your brand colors, your logo, your product images, and AI-written copy — automatically.',
       },
       {
         icon: LayoutTemplate,
@@ -132,14 +132,14 @@ export const comparisons: ComparisonConfig[] = [
     rows: [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$32/mo' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '✅ Limited' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: '❌ Yes, on Free' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: '❌ Yes, on Free' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Manual import only' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: '❌ Social post templates only' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic' },
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: '✅ Social captions' },
       { label: 'Brand documents upload', adrender: '✅ Upload docs, AI builds richer ad copy', competitor: '❌' },
       { label: 'Product image auto-import', adrender: '✅ Pulled from URL or Shopify catalog', competitor: '❌ Manual' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Social video posts — not paid-ad video from winning templates' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier — real video from winning templates', competitor: 'Social video posts — not paid-ad video from winning templates' },
       { label: 'Concurrent rendering', adrender: '✅ Unlimited — all tiers', competitor: 'Limited' },
       { label: 'Variation limits', adrender: 'Up to 999 on Scale (token-limited only)', competitor: 'Credits per post' },
       { label: 'No prompt needed', adrender: '✅ Brand info applies automatically', competitor: '❌ Text prompt required' },
@@ -154,7 +154,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: MousePointerClick,
         title: 'No prompt needed',
-        body: 'Predis requires a text prompt for every piece of content. AdRender auto-generates from your brand profile — your voice, colors, product images, and ad copies are applied automatically.',
+        body: 'Predis requires a text prompt for every piece of content. AdRender auto-renders from your brand profile — your voice, colors, product images, and ad copies are applied automatically.',
       },
       {
         icon: BarChart3,
@@ -175,10 +175,10 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$149/mo (Basic, up to $1,000 ad spend)' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '14-day trial only' },
       { label: 'Pricing model', adrender: 'Flat token pricing', competitor: 'Scales with your monthly ad spend tier' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: 'N/A' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: 'N/A' },
       {
         label: 'What it actually does',
-        adrender: 'AI ad creative generation — static and video',
+        adrender: 'AI ad creative rendering — static and video',
         competitor: 'Full media buying + optimization across Google/Meta, plus creative',
       },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Auto-imports store data for ad targeting' },
@@ -188,7 +188,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'No template library — generates from your own store data',
       },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic, focused on product feed' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: 'Included, tied to spend tier' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier', competitor: 'Included, tied to spend tier' },
       {
         label: 'Use your own media buyer/agency',
         adrender: '✅ Yes — AdRender is creative-only, plug into any workflow',
@@ -205,7 +205,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: CircleDollarSign,
         title: 'No ad-spend commitment required',
-        body: 'AdScale\u2019s pricing is directly tied to your monthly ad spend tier — the more you spend, the more you pay AdScale. AdRender\u2019s pricing has nothing to do with your ad spend. You pay for creative generation, full stop.',
+        body: 'AdScale\u2019s pricing is directly tied to your monthly ad spend tier — the more you spend, the more you pay AdScale. AdRender\u2019s pricing has nothing to do with your ad spend. You pay for creative rendering, full stop.',
       },
       {
         icon: BarChart3,
@@ -226,7 +226,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '~$45–99/mo, scales with your Meta ad spend' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: '7-day trial only' },
       { label: 'Platform coverage', adrender: 'Every platform — static and video for any ad channel', competitor: 'Meta (Facebook/Instagram) only' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: 'N/A' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: 'N/A' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Reporting/attribution only, not creative generation' },
       {
         label: 'Real ad templates (source)',
@@ -234,7 +234,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'Generates from your existing ads/product pages',
       },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Manual upload to platform required first' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: '❌ Static images and image edits — no native video generation' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier', competitor: '❌ Static images and image edits — no native video generation' },
       { label: 'Creative-first tool', adrender: '✅ Yes — this is the whole product', competitor: 'Creative is bolted onto a media-buying/optimization tool' },
       {
         label: 'Complexity',
@@ -246,7 +246,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Globe,
         title: 'Meta-only vs. every platform',
-        body: 'Madgicx is a Meta advertising super-app — its creative tools exist to feed campaigns it\u2019s also managing and optimizing on Facebook and Instagram. If any part of your ad strategy touches Google, TikTok, or anywhere else, Madgicx can\u2019t help with the creative there. AdRender generates ads for any platform you\u2019re running on.',
+        body: 'Madgicx is a Meta advertising super-app — its creative tools exist to feed campaigns it\u2019s also managing and optimizing on Facebook and Instagram. If any part of your ad strategy touches Google, TikTok, or anywhere else, Madgicx can\u2019t help with the creative there. AdRender renders ads for any platform you\u2019re running on.',
       },
       {
         icon: CircleDollarSign,
@@ -272,13 +272,13 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Varies by tier, up to $99/mo for full access' },
       { label: 'Free tier', adrender: '✅ 10 tokens, no card required', competitor: 'Trial only' },
       { label: 'Pricing clarity', adrender: 'One flat price per tier, always visible', competitor: 'Pricing varies significantly across sources/tiers' },
-      { label: 'No watermarks, ever', adrender: '✅ All plans, including Free', competitor: 'Varies by plan' },
+      { label: 'No watermarks, ever', adrender: '✅ No watermarks on any plan', competitor: 'Varies by plan' },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: 'Manual product entry / URL-based' },
       { label: 'Real ad templates (source)', adrender: '✅ 100M+ real ads currently running', competitor: '5–20M ad swipe library (varies by source)' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: 'Basic, per-product' },
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: 'AI copywriter, 35+ languages' },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier — real video from winning templates',
         competitor: 'Template-assembled video, not generative video',
       },
@@ -327,7 +327,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ Manual upload' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: '❌ Manual brand kit / moodboard setup' },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier — real video from winning templates',
         competitor: '❌ No video generation',
       },
@@ -338,7 +338,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Layers,
         title: 'Ad creative vs. product photography',
-        body: 'Flair is a product photography and scene-composition tool — it helps you place your product into a nicely lit background. That\u2019s a piece of what goes into an ad, not the ad itself. AdRender generates the complete ad: layout, copy, hooks, and CTAs, sourced from real templates that are actually running as ads.',
+        body: 'Flair is a product photography and scene-composition tool — it helps you place your product into a nicely lit background. That\u2019s a piece of what goes into an ad, not the ad itself. AdRender renders the complete ad: layout, copy, hooks, and CTAs, sourced from real templates that are actually running as ads.',
       },
       {
         icon: MousePointerClick,
@@ -348,7 +348,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Clock,
         title: 'Built for volume',
-        body: 'Flair is designed around one image at a time. AdRender is built to generate hundreds of complete, ready-to-run ads in minutes.',
+        body: 'Flair is designed around one image at a time. AdRender is built to render hundreds of complete, ready-to-run ads in minutes.',
       },
     ],
   },
@@ -380,14 +380,14 @@ export const comparisons: ComparisonConfig[] = [
       },
       { label: 'Shopify native sync', adrender: '✅ Auto-imports products, images, variants', competitor: '❌ Manual upload' },
       { label: 'Brand auto-setup from URL', adrender: '✅ Scans site, pulls colors/logo/voice/products', competitor: '❌ None' },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: '❌ No video generation' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier', competitor: '❌ No video generation' },
       { label: 'Complexity', adrender: 'Simple — hundreds of ads in under 10 minutes', competitor: 'Simple, but limited to single background swaps' },
     ],
     cards: [
       {
         icon: Layers,
         title: 'Ad creative vs. background swap',
-        body: 'Pebblely replaces the background behind your product photo using a shared library of themes — the same themes are available to every other Pebblely user, so results can look generic across sellers. AdRender generates the complete ad — layout, copy, and imagery — from real templates sourced from actual running ads.',
+        body: 'Pebblely replaces the background behind your product photo using a shared library of themes — the same themes are available to every other Pebblely user, so results can look generic across sellers. AdRender renders the complete ad — layout, copy, and imagery — from real templates sourced from actual running ads.',
       },
       {
         icon: RefreshCw,
@@ -421,7 +421,7 @@ export const comparisons: ComparisonConfig[] = [
         adrender: 'Scales with tier, unlimited concurrent on top tiers',
         competitor: '120–350 creatives/month depending on plan',
       },
-      { label: 'Concurrent generations', adrender: 'Higher limits across tiers', competitor: 'Capped at 2–6 depending on plan' },
+      { label: 'Concurrent rendering', adrender: 'Higher limits across tiers', competitor: 'Capped at 2–6 depending on plan' },
       {
         label: 'Real ad templates (source)',
         adrender: '✅ 100M+ real ads currently running',
@@ -442,7 +442,7 @@ export const comparisons: ComparisonConfig[] = [
         adrender: 'Focused: static and video ad creative',
         competitor: 'Broader: ads, social posts, and email sequences',
       },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: 'Included, static and video creatives' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier', competitor: 'Included, static and video creatives' },
       {
         label: 'Multi-brand support',
         adrender: 'Available per tier, unlimited on top tier',
@@ -463,7 +463,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: ShoppingBag,
         title: 'Built for e-commerce catalogs',
-        body: 'Holo works from a general website scan with no product catalog integration. If you\u2019re on Shopify, AdRender syncs your full catalog directly — every product, image, and variant — so ads are generated against your actual live inventory, not just brand tone pulled from your homepage.',
+        body: 'Holo works from a general website scan with no product catalog integration. If you\u2019re on Shopify, AdRender syncs your full catalog directly — every product, image, and variant — so ads are rendered against your actual live inventory, not just brand tone pulled from your homepage.',
       },
       {
         icon: Layers,
@@ -499,7 +499,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'Manual brand kit setup',
       },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier',
         competitor: 'Included as one of many tools in the bundle',
       },
@@ -513,7 +513,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Layers,
         title: 'A generalist vs a specialist',
-        body: 'Simplified bundles design, video, copywriting, and social scheduling into one low-cost subscription — genuinely useful if you need all four and want to consolidate tool spend. But breadth means it doesn\u2019t go deep on any one category, including ad creative specifically. AdRender does one thing: generate ad creative from real, currently-running templates, synced to your actual brand and catalog.',
+        body: 'Simplified bundles design, video, copywriting, and social scheduling into one low-cost subscription — genuinely useful if you need all four and want to consolidate tool spend. But breadth means it doesn\u2019t go deep on any one category, including ad creative specifically. AdRender does one thing: render ad creative from real, currently-running templates, synced to your actual brand and catalog.',
       },
       {
         icon: LayoutTemplate,
@@ -534,7 +534,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free (watermarked) / $17-20/mo paid' },
       {
         label: 'Free tier',
-        adrender: '✅ 10 tokens/month, no watermark on paid, renews monthly',
+        adrender: '✅ 10 tokens/month, no watermarks on any plan, renews monthly',
         competitor: 'Limited AI minutes, watermarked exports',
       },
       {
@@ -558,13 +558,13 @@ export const comparisons: ComparisonConfig[] = [
         adrender: '✅ Scans site, pulls colors/logo/voice/products',
         competitor: 'Manual setup',
       },
-      { label: 'Static ad generation', adrender: '✅ Included', competitor: 'Not the focus — video-first tool' },
+      { label: 'Static ad rendering', adrender: '✅ Included', competitor: 'Not the focus — video-first tool' },
     ],
     cards: [
       {
         icon: Video,
-        title: 'General video tool vs ad-specific generator',
-        body: 'InVideo is built for video content broadly — explainers, YouTube videos, social clips — with ad creative as one use case among many. AdRender is built specifically for ad creative, both static and video, generated from templates sourced from real running ads rather than general stock footage.',
+        title: 'General video tool vs ad-specific renderer',
+        body: 'InVideo is built for video content broadly — explainers, YouTube videos, social clips — with ad creative as one use case among many. AdRender is built specifically for ad creative, both static and video, rendered from templates sourced from real running ads rather than general stock footage.',
       },
       {
         icon: CircleDollarSign,
@@ -614,7 +614,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Layers,
         title: 'Static and video vs video-only',
-        body: 'Creatify specializes in AI avatar/UGC-style video ads generated from a product URL. If you only need that specific format, it\u2019s a focused tool. AdRender generates both static and video ads from the same brand setup and template library — you\u2019re not locked into one format.',
+        body: 'Creatify specializes in AI avatar/UGC-style video ads generated from a product URL. If you only need that specific format, it\u2019s a focused tool. AdRender renders both static and video ads from the same brand setup and template library — you\u2019re not locked into one format.',
       },
       {
         icon: RefreshCw,
@@ -627,7 +627,7 @@ export const comparisons: ComparisonConfig[] = [
     slug: 'adespresso',
     competitor: 'AdEspresso',
     competitorUrl: 'https://adespresso.com',
-    subheadline: 'Creative generation. Not spend-gated campaign management.',
+    subheadline: 'Creative rendering. Not spend-gated campaign management.',
     documentTitle: 'AdRender vs AdEspresso — AI Ad Generator Comparison',
     metaDescription:
       'AdRender vs AdEspresso: AI-generated ad creative, not spend-tiered campaign management. Real ad templates, Shopify sync, flat pricing.',
@@ -644,11 +644,11 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         label: 'What it actually does',
-        adrender: 'AI ad creative generation — static and video',
+        adrender: 'AI ad creative rendering — static and video',
         competitor: 'Meta/Google campaign management and A/B testing',
       },
       {
-        label: 'Creative generation',
+        label: 'Creative rendering',
         adrender: '✅ Core product, from real running ad templates',
         competitor: '❌ Not a creative generator — you bring your own creative',
       },
@@ -663,8 +663,8 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Wand2,
-        title: 'Campaign manager vs creative generator',
-        body: 'AdEspresso is a campaign management and split-testing tool for Meta and Google ads — it doesn\u2019t generate the creative itself, you still need to supply that separately. AdRender generates the actual ad creative from real, currently-running templates, with nothing to do with managing your ad account.',
+        title: 'Campaign manager vs creative renderer',
+        body: 'AdEspresso is a campaign management and split-testing tool for Meta and Google ads — it doesn\u2019t generate the creative itself, you still need to supply that separately. AdRender renders the actual ad creative from real, currently-running templates, with nothing to do with managing your ad account.',
       },
       {
         icon: CircleDollarSign,
@@ -677,7 +677,7 @@ export const comparisons: ComparisonConfig[] = [
     slug: 'creatopy',
     competitor: 'Creatopy',
     competitorUrl: 'https://www.creatopy.com',
-    subheadline: 'AI generates the ad. You don\u2019t design it by hand.',
+    subheadline: 'AI renders the ad. You don\u2019t design it by hand.',
     documentTitle: 'AdRender vs Creatopy — AI Ad Generator Comparison',
     metaDescription:
       'AdRender vs Creatopy: AI-generated ads from real running templates, not a manual banner design tool. Shopify sync, video included, free to start.',
@@ -685,7 +685,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '~$36/mo per user, no free tier for real use' },
       {
         label: 'What it actually does',
-        adrender: 'AI generates complete ads from real templates',
+        adrender: 'AI renders complete ads from real templates',
         competitor: 'Design automation tool — you build/animate banners manually',
       },
       {
@@ -705,7 +705,7 @@ export const comparisons: ComparisonConfig[] = [
       },
       { label: 'Ad copy auto-generation', adrender: '✅ Hooks, headlines, CTAs per product', competitor: '❌ Manual copywriting' },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier',
         competitor: 'Animation tools, not AI video generation',
       },
@@ -713,8 +713,8 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Wand2,
-        title: 'Design automation vs AI generation',
-        body: 'Creatopy is a genuinely strong tool for teams that want to manually design banner ads and then automate resizing/animation across formats. It\u2019s still a design tool — a person builds each creative. AdRender generates the ad directly from a real running-ad template and your brand data, with no manual design step.',
+        title: 'Design automation vs AI rendering',
+        body: 'Creatopy is a genuinely strong tool for teams that want to manually design banner ads and then automate resizing/animation across formats. It\u2019s still a design tool — a person builds each creative. AdRender renders the ad directly from a real running-ad template and your brand data, with no manual design step.',
       },
       {
         icon: LayoutTemplate,
@@ -735,7 +735,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: '$15/seat/mo (Start), $45/seat/mo (Pro)' },
       {
         label: 'What it actually does',
-        adrender: 'AI generates complete ads from real templates',
+        adrender: 'AI renders complete ads from real templates',
         competitor: 'Creative automation — bulk resizing/variation of designs you provide',
       },
       {
@@ -759,8 +759,8 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Layers,
-        title: 'Bulk production vs original generation',
-        body: 'Abyssale is excellent at taking a design you\u2019ve already made and producing dozens of size/format variations automatically — a real time-saver for teams with an existing creative to scale. It doesn\u2019t generate the original creative concept. AdRender generates the ad itself, starting from a real running-ad template, not from a design you have to supply first.',
+        title: 'Bulk production vs original rendering',
+        body: 'Abyssale is excellent at taking a design you\u2019ve already made and producing dozens of size/format variations automatically — a real time-saver for teams with an existing creative to scale. It doesn\u2019t generate the original creative concept. AdRender renders the ad itself, starting from a real running-ad template, not from a design you have to supply first.',
       },
       {
         icon: Users,
@@ -809,8 +809,8 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Megaphone,
-        title: 'Full marketing platform vs focused ad generator',
-        body: 'Blaze covers a lot of ground — social posts, ads, landing pages, review management, even AI phone answering — starting at $79/month. That breadth is genuinely useful if you want one platform for everything. AdRender is narrower by design: it generates ad creative specifically, from a much larger and more current library of real running ads.',
+        title: 'Full marketing platform vs focused ad renderer',
+        body: 'Blaze covers a lot of ground — social posts, ads, landing pages, review management, even AI phone answering — starting at $79/month. That breadth is genuinely useful if you want one platform for everything. AdRender is narrower by design: it renders ad creative specifically, from a much larger and more current library of real running ads.',
       },
       {
         icon: Users,
@@ -857,7 +857,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Video,
         title: 'One format vs full ad creative',
-        body: 'Riffkit is purpose-built for short-form UGC-style TikTok content specifically. If that\u2019s your only channel, it\u2019s a focused tool for that job. AdRender generates both static and video ads, sized for whatever platform you\u2019re running on, from templates sourced from real currently-running ads — not just trending TikTok formats.',
+        body: 'Riffkit is purpose-built for short-form UGC-style TikTok content specifically. If that\u2019s your only channel, it\u2019s a focused tool for that job. AdRender renders both static and video ads, sized for whatever platform you\u2019re running on, from templates sourced from real currently-running ads — not just trending TikTok formats.',
       },
     ],
   },
@@ -888,7 +888,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'Manual setup',
       },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier',
         competitor: 'Not the focus — primarily static ad copy and visuals',
       },
@@ -939,7 +939,7 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         label: 'Control',
-        adrender: 'You review and approve every generated ad',
+        adrender: 'You review and approve every rendered ad',
         competitor: 'Runs autonomously across the full campaign lifecycle, with autopilot or co-pilot modes',
       },
       {
@@ -952,7 +952,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Wand2,
         title: 'An autonomous agency vs a creative tool you control',
-        body: 'Solara AI positions itself as a full AI marketing team — building your site, running SEO, launching campaigns, shifting ad budget, and even answering inbound leads autonomously. That\u2019s a much bigger commitment than a creative tool, and pricing isn\u2019t public — you\u2019d need to inquire directly. AdRender does one job: generate the ad creative, with transparent published pricing and full control over what gets used.',
+        body: 'Solara AI positions itself as a full AI marketing team — building your site, running SEO, launching campaigns, shifting ad budget, and even answering inbound leads autonomously. That\u2019s a much bigger commitment than a creative tool, and pricing isn\u2019t public — you\u2019d need to inquire directly. AdRender does one job: render the ad creative, with transparent published pricing and full control over what gets used.',
       },
       {
         icon: LayoutTemplate,
@@ -973,7 +973,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'No public pricing — demo required' },
       {
         label: 'Access',
-        adrender: 'Sign up and start generating immediately',
+        adrender: 'Sign up and start rendering immediately',
         competitor: 'Requires booking a demo to get pricing or access',
       },
       {
@@ -1001,7 +1001,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: MousePointerClick,
         title: 'Self-serve vs demo-gated',
-        body: 'Sphere requires booking a demo before you can see pricing or get access — a longer path aimed at marketing teams evaluating a bigger platform purchase. AdRender is fully self-serve: sign up, connect your brand, and start generating immediately, with pricing published upfront.',
+        body: 'Sphere requires booking a demo before you can see pricing or get access — a longer path aimed at marketing teams evaluating a bigger platform purchase. AdRender is fully self-serve: sign up, connect your brand, and start rendering immediately, with pricing published upfront.',
       },
       {
         icon: Users,
@@ -1041,7 +1041,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'Product image upload and template selection',
       },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier',
         competitor: 'Included — product videoshoots and UGC-style clips',
       },
@@ -1144,7 +1144,7 @@ export const comparisons: ComparisonConfig[] = [
         competitor: 'Pastes URL to generate ads directly',
       },
       {
-        label: 'Video generation',
+        label: 'Video rendering',
         adrender: '✅ Included from the entry tier',
         competitor: 'Video credit-based, separate from static generation',
       },
@@ -1273,7 +1273,7 @@ export const comparisons: ComparisonConfig[] = [
         adrender: '✅ Scans site, pulls colors/logo/voice/products',
         competitor: 'Extracts product title/description/images from URL only',
       },
-      { label: 'Video generation', adrender: '✅ Included from the entry tier', competitor: 'Included — AI avatar video ads' },
+      { label: 'Video rendering', adrender: '✅ Included from the entry tier', competitor: 'Included — AI avatar video ads' },
       {
         label: 'Multi-platform export',
         adrender: 'Sized for whatever platform you\u2019re advertising on',
@@ -1297,7 +1297,7 @@ export const comparisons: ComparisonConfig[] = [
     slug: 'adsgo',
     competitor: 'AdsGo.ai',
     competitorUrl: 'https://www.adsgo.ai',
-    subheadline: 'Creative generation. Not campaign launch automation.',
+    subheadline: 'Creative rendering. Not campaign launch automation.',
     documentTitle: 'AdRender vs AdsGo.ai — AI Ad Generator Comparison',
     metaDescription:
       'AdRender vs AdsGo.ai: AI-generated ad creative from real running templates, not campaign launch automation. Shopify sync, video included.',
@@ -1305,11 +1305,11 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free' },
       {
         label: 'What it actually does',
-        adrender: 'AI ad creative generation — static and video',
+        adrender: 'AI ad creative rendering — static and video',
         competitor: 'Ad automation — creates, targets, and launches campaigns across Meta, Google, TikTok',
       },
       {
-        label: 'Creative generation',
+        label: 'Creative rendering',
         adrender: '✅ Core product, from real running ad templates',
         competitor: 'Secondary to campaign launch/targeting',
       },
@@ -1328,13 +1328,13 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Wand2,
-        title: 'Campaign launcher vs creative generator',
-        body: 'AdsGo.ai is built to help small sellers launch ad campaigns across multiple platforms without advertising experience — its focus is campaign setup and targeting, not creative depth. AdRender is built specifically to generate the ad creative itself, from real running-ad templates.',
+        title: 'Campaign launcher vs creative renderer',
+        body: 'AdsGo.ai is built to help small sellers launch ad campaigns across multiple platforms without advertising experience — its focus is campaign setup and targeting, not creative depth. AdRender is built specifically to render the ad creative itself, from real running-ad templates.',
       },
       {
         icon: Layers,
         title: 'If you need both',
-        body: 'If you want AdsGo\u2019s simplified campaign launch and AdRender\u2019s creative quality, the two can work together — generate the ad in AdRender, launch it through whichever platform or tool you prefer.',
+        body: 'If you want AdsGo\u2019s simplified campaign launch and AdRender\u2019s creative quality, the two can work together — render the ad in AdRender, launch it through whichever platform or tool you prefer.',
       },
     ],
   },
@@ -1350,7 +1350,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Pricing not publicly listed' },
       {
         label: 'What it actually does',
-        adrender: 'AI ad creative generation from real running templates',
+        adrender: 'AI ad creative rendering from real running templates',
         competitor: 'Brand intelligence + competitor analysis feeding a Meta ad creative pipeline',
       },
       {
@@ -1365,7 +1365,7 @@ export const comparisons: ComparisonConfig[] = [
     cards: [
       {
         icon: Layers,
-        title: 'A multi-phase intelligence pipeline vs direct generation',
+        title: 'A multi-phase intelligence pipeline vs direct rendering',
         body: 'Creads runs brand data through a multi-phase process — analysis, intelligence, brief generation, then production — aimed at Meta ad creative specifically. That depth may suit teams wanting a strategic layer before creative. AdRender goes straight from your brand and a real running-ad template to a finished ad, for any platform.',
       },
       {
@@ -1382,7 +1382,7 @@ export const comparisons: ComparisonConfig[] = [
     subheadline: 'Real running ads. Native Shopify sync.',
     documentTitle: 'AdRender vs Nextify.ai — AI Ad Generator Comparison',
     metaDescription:
-      'AdRender vs Nextify.ai: static and video ads from real running templates, native Shopify sync, no watermarks on paid plans.',
+      'AdRender vs Nextify.ai: static and video ads from real running templates, native Shopify sync, no watermarks on any plan.',
     rows: [
       {
         label: 'Starting price',
@@ -1391,7 +1391,7 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         label: 'Free tier',
-        adrender: '✅ 10 tokens every month, no watermark on paid, renews monthly',
+        adrender: '✅ 10 tokens every month, no watermarks on any plan, renews monthly',
         competitor: 'Free tier watermarked; ~2 videos/month on free plan',
       },
       {
@@ -1415,7 +1415,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: ShoppingBag,
         title: 'Full catalog sync vs manual per-project input',
-        body: 'Nextify.ai is a genuinely capable AI video ad studio with a large avatar library and multiple video formats, but it works project-by-project with manual product input. AdRender syncs your full Shopify catalog automatically and generates both static and video ads from the same brand setup.',
+        body: 'Nextify.ai is a genuinely capable AI video ad studio with a large avatar library and multiple video formats, but it works project-by-project with manual product input. AdRender syncs your full Shopify catalog automatically and renders both static and video ads from the same brand setup.',
       },
       {
         icon: ShieldCheck,
@@ -1468,7 +1468,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Globe,
         title: 'Every platform vs Meta-only',
-        body: 'AdRiseLab is built specifically around Meta\u2019s ad ecosystem, including direct publishing to Facebook and Instagram. If Meta is your only channel, that native integration is genuinely useful. AdRender generates ads for any platform, not tied to one ad network\u2019s algorithm.',
+        body: 'AdRiseLab is built specifically around Meta\u2019s ad ecosystem, including direct publishing to Facebook and Instagram. If Meta is your only channel, that native integration is genuinely useful. AdRender renders ads for any platform, not tied to one ad network\u2019s algorithm.',
       },
       {
         icon: RefreshCw,
@@ -1513,7 +1513,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Video,
         title: 'Static and video vs video-only',
-        body: 'VEONIB turns product pages into marketing videos — a focused, well-built tool for that specific job. AdRender generates both static and video ads from the same brand setup, giving you formats VEONIB doesn\u2019t cover.',
+        body: 'VEONIB turns product pages into marketing videos — a focused, well-built tool for that specific job. AdRender renders both static and video ads from the same brand setup, giving you formats VEONIB doesn\u2019t cover.',
       },
       {
         icon: ShoppingBag,
@@ -1526,7 +1526,7 @@ export const comparisons: ComparisonConfig[] = [
     slug: 'auxora',
     competitor: 'Auxora',
     competitorUrl: 'https://auxora.ai',
-    subheadline: 'Creative generation you control. Not a managed campaign service.',
+    subheadline: 'Creative rendering you control. Not a managed campaign service.',
     documentTitle: 'AdRender vs Auxora — AI Ad Generator Comparison',
     metaDescription:
       'AdRender vs Auxora: AI-generated ad creative you control, not a managed campaign service with human review built into the price.',
@@ -1538,7 +1538,7 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         label: 'What it actually does',
-        adrender: 'AI ad creative generation — static and video',
+        adrender: 'AI ad creative rendering — static and video',
         competitor: 'Full-service AI campaign management with human PPC expert review before spending',
       },
       {
@@ -1558,7 +1558,7 @@ export const comparisons: ComparisonConfig[] = [
       },
       {
         label: 'Control',
-        adrender: 'You review and approve every generated ad',
+        adrender: 'You review and approve every rendered ad',
         competitor: 'AI executes with a human expert reviewing strategy and spend decisions',
       },
     ],
@@ -1566,12 +1566,12 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Wand2,
         title: 'Managed service vs self-serve tool',
-        body: 'Auxora positions itself as a substitute for a PPC agency — AI builds the campaign, a vetted human expert reviews it before money is spent. That\u2019s a meaningfully different product than a creative generator: you\u2019re paying for oversight and campaign management, not just the ad itself. AdRender is a self-serve creative tool — faster and cheaper if you already know how to run your own campaigns and just need the ad.',
+        body: 'Auxora positions itself as a substitute for a PPC agency — AI builds the campaign, a vetted human expert reviews it before money is spent. That\u2019s a meaningfully different product than a creative renderer: you\u2019re paying for oversight and campaign management, not just the ad itself. AdRender is a self-serve creative tool — faster and cheaper if you already know how to run your own campaigns and just need the ad.',
       },
       {
         icon: CircleDollarSign,
         title: 'Price reflects scope',
-        body: 'Auxora\u2019s higher tiers ($249.99/mo for expert oversight) reflect the managed-service model. AdRender\u2019s pricing reflects creative generation alone, starting free.',
+        body: 'Auxora\u2019s higher tiers ($249.99/mo for expert oversight) reflect the managed-service model. AdRender\u2019s pricing reflects creative rendering alone, starting free.',
       },
     ],
   },
@@ -1587,7 +1587,7 @@ export const comparisons: ComparisonConfig[] = [
       { label: 'Starting price', adrender: '$0 free / $19 paid', competitor: 'Free to start, no card' },
       {
         label: 'Core approach',
-        adrender: 'Generate from templates sourced from real running ads',
+        adrender: 'Render from templates sourced from real running ads',
         competitor: 'Generate ad creative, then test it against AI personas that simulate your buyers',
       },
       {
@@ -1616,7 +1616,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Layers,
         title: 'Volume vs validation',
-        body: 'AdRender is built for generating large batches quickly. POPJAM is built for validating fewer creatives more carefully before launch. Depending on your workflow, these can be complementary rather than competing approaches.',
+        body: 'AdRender is built for rendering large batches quickly. POPJAM is built for validating fewer creatives more carefully before launch. Depending on your workflow, these can be complementary rather than competing approaches.',
       },
     ],
   },
@@ -1730,7 +1730,7 @@ export const comparisons: ComparisonConfig[] = [
       {
         icon: Video,
         title: 'Video specialist vs full ad creative',
-        body: 'Whatmore Studio does one thing well: turning a product URL into a trend-synced, music-matched video. If that\u2019s specifically what you need, it\u2019s a focused tool. AdRender generates both static and video ads, with full brand setup and ad copy included.',
+        body: 'Whatmore Studio does one thing well: turning a product URL into a trend-synced, music-matched video. If that\u2019s specifically what you need, it\u2019s a focused tool. AdRender renders both static and video ads, with full brand setup and ad copy included.',
       },
       {
         icon: ShoppingBag,
@@ -1769,13 +1769,13 @@ export const comparisons: ComparisonConfig[] = [
         adrender: '✅ 10 tokens every month, no card required',
         competitor: '$1 trial only, not a renewing free tier',
       },
-      { label: 'Batch generation', adrender: 'Hundreds of ads per batch', competitor: 'Batch generation available on paid plans' },
+      { label: 'Batch rendering', adrender: 'Hundreds of ads per batch', competitor: 'Batch generation available on paid plans' },
     ],
     cards: [
       {
         icon: Video,
         title: 'One video format vs full ad creative',
-        body: 'UGCFast specializes in fast-turnaround UGC-style video matched to buyer personas — a real, focused answer to creative fatigue for video specifically. AdRender generates both static and video ads from the same brand setup, across a much larger template library.',
+        body: 'UGCFast specializes in fast-turnaround UGC-style video matched to buyer personas — a real, focused answer to creative fatigue for video specifically. AdRender renders both static and video ads from the same brand setup, across a much larger template library.',
       },
       {
         icon: RefreshCw,

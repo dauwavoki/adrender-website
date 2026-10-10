@@ -33,7 +33,7 @@ headline, a clear offer, and social proof.
 
 **Rapid iteration cycle.** Because statics are fast to produce, you can test far
 more angles, copy variations, and visual hooks per week — and find winning
-concepts faster. This is the exact gap AdRender is built to close: generate
+concepts faster. This is the exact gap AdRender is built to close: render
 dozens of on-brand static variations from 100M+ real, currently-running ad
 templates in minutes, instead of waiting days on a designer for each round.
 
@@ -64,7 +64,7 @@ Most high-scaling ad accounts run a hybrid strategy:
 
 AdRender now covers both sides of that mix — static and video — from the same
 brand setup. Pull in your brand once, pick from 100M+ real winning templates,
-and generate on-brand static and video creative: winning formats converted into
+and render on-brand static and video creative: winning formats converted into
 your brand, hundreds of ads in under 10 minutes instead of days.
 
 Video is quality and reskinning, not a separate speed story. Pair stills and

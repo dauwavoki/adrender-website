@@ -59,7 +59,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "Every ad has a shelf life. The audience that once stopped scrolling for it has seen it a dozen times now, and the algorithm knows it before you do — CPA creeps up, CTR drifts down, and by the time it's obvious in your dashboard, you've already burned budget on a tired creative. The fix isn't a mystery: refresh the creative. The problem is *speed*. Briefing a designer, waiting on a freelancer, or rebuilding from scratch takes days you don't have while spend keeps flowing to a fading ad.",
     solution:
-      "Your brand is already set up — colors, voice, product catalog, all pulled in once. When a creative starts fading, you don't start from zero: browse the template library for a fresh structure, generate a new batch in minutes, and get variants back into rotation before the dip turns into a real CPA problem. Static or video, generated from templates sourced from ads that are actually converting right now — not the same tired layout reskinned.",
+      "Your brand is already set up — colors, voice, product catalog, all pulled in once. When a creative starts fading, you don't start from zero: browse the template library for a fresh structure, render a new batch in minutes, and get variants back into rotation before the dip turns into a real CPA problem. Static or video, rendered from templates sourced from ads that are actually converting right now — not the same tired layout reskinned.",
     steps: [
       {
         icon: Paintbrush,
@@ -73,7 +73,7 @@ export const solutions: SolutionConfig[] = [
       },
       {
         icon: RefreshCw,
-        title: 'Generate and rotate',
+        title: 'Render and rotate',
         body: 'A new batch in minutes, static or video, back into rotation before the dip turns into a real CPA problem.',
       },
     ],
@@ -92,7 +92,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       'A "simple" ad usually isn\'t. Find a reference in one tool. Generate a visual in another. Write copy in a third. Resize for every platform by hand. Track brand consistency across freelancers or a rotating cast of AI tools that don\'t talk to each other. Each tool in the stack is fine on its own — the stitching between them is where the hours actually go, and where the monthly subscription total quietly adds up to more than any single tool\'s price tag suggested.',
     solution:
-      "Set your brand up once — from a URL, brand documents, or Shopify sync. From there, browsing templates, generating the creative, and getting sized, on-brand output happens in one flow, not five. You're not exporting from one tool and importing to the next. One login, one subscription, one place your brand voice actually lives.",
+      "Set your brand up once — from a URL, brand documents, or Shopify sync. From there, browsing templates, rendering the creative, and getting sized, on-brand output happens in one flow, not five. You're not exporting from one tool and importing to the next. One login, one subscription, one place your brand voice actually lives.",
     steps: [
       {
         icon: Paintbrush,
@@ -102,7 +102,7 @@ export const solutions: SolutionConfig[] = [
       {
         icon: Layers,
         title: 'Create in one flow',
-        body: 'Browse templates and generate the creative without exporting from one tool and importing to the next.',
+        body: 'Browse templates and render the creative without exporting from one tool and importing to the next.',
       },
       {
         icon: Sparkles,
@@ -158,7 +158,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       '2026\'s AI ad backlash is real: oversaturated colors, that unmistakable "generated" sheen, copy that reads like it was written to satisfy an algorithm instead of a person. Shoppers have gotten good at spotting it, and once they do, trust drops before they\'ve even read what you\'re selling. Most AI ad tools optimize for "technically an ad, generated fast" — not for "doesn\'t look like every other AI ad in the feed."',
     solution:
-      "The starting point matters. AdRender doesn't generate from a blank prompt guessing at what an ad \"should\" look like — it starts from a library of over 100 million ads that are actually running and converting right now, real creative structures that already work, then applies your brand to them. The output looks like an ad a human directed, because the structure came from one.",
+      "The starting point matters. AdRender doesn't render from a blank prompt guessing at what an ad \"should\" look like — it starts from a library of over 100 million ads that are actually running and converting right now, real creative structures that already work, then applies your brand to them. The output looks like an ad a human directed, because the structure came from one.",
     steps: [
       {
         icon: LayoutTemplate,
@@ -215,7 +215,7 @@ export const solutions: SolutionConfig[] = [
   {
     slug: 'no-filming',
     navLabel: 'No Filming',
-    indexBlurb: 'Camera-shy? Generate video ads with no camera, talent booking, or shoot.',
+    indexBlurb: 'Camera-shy? Render video ads with no camera, talent booking, or shoot.',
     documentTitle: 'Make Video Ads Without Filming Anything | AdRender',
     metaDescription:
       'Camera-shy? AdRender generates video ads without filming anything — no camera, no talent booking, no shoot.',
@@ -224,7 +224,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "Video converts, everyone knows it, and everyone also knows what it takes to get one: booking talent or getting comfortable on camera yourself, finding a decent backdrop, filming multiple takes, editing it down, and doing that again every time the ad gets stale. For a solo founder who'd rather not be the face of the brand — or just doesn't have a studio, a camera operator, or the time — that whole pipeline is a wall before you even get to the ad itself.",
     solution:
-      'Video generation is part of the same flow as static ads — no camera required. Your brand and product apply to a video template automatically, and you get finished, on-brand video output without filming a single frame. Same brand setup, same template library, just a different output format.',
+      'Video rendering is part of the same flow as static ads — no camera required. Your brand and product apply to a video template automatically, and you get finished, on-brand video output without filming a single frame. Same brand setup, same template library, just a different output format.',
     steps: [
       {
         icon: CameraOff,
@@ -257,7 +257,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "A real ad agency retainer runs anywhere from $2,500 to $10,000+ a month, often with a multi-month contract attached, before you've even tested whether the creative direction works. For a small business or solo marketer, that's not a marketing line item, that's most of the budget — and you're paying for account management and meetings as much as the actual creative output.",
     solution:
-      'You get the creative output without the retainer, the contract, or the account manager. Set up your brand once, generate hundreds of on-brand ads from templates proven to work, and pay a flat monthly rate that has nothing to do with your ad spend or how many "campaigns" you\'re running. No multi-month commitment, cancel anytime.',
+      'You get the creative output without the retainer, the contract, or the account manager. Set up your brand once, render hundreds of on-brand ads from templates proven to work, and pay a flat monthly rate that has nothing to do with your ad spend or how many "campaigns" you\'re running. No multi-month commitment, cancel anytime.',
     steps: [
       {
         icon: Briefcase,
@@ -266,7 +266,7 @@ export const solutions: SolutionConfig[] = [
       },
       {
         icon: LayoutTemplate,
-        title: 'Brand once, generate hundreds',
+        title: 'Brand once, render hundreds',
         body: 'On-brand ads from templates proven to work — not a creative direction you wait months to test.',
       },
       {
@@ -323,7 +323,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "There are roughly 28 million one-person businesses in the US alone — founders, freelancers, side-hustlers — who are the designer, the marketer, the copywriter, and everything else, all at once. Most marketing tools are quietly built assuming a team: someone to brief, someone to review, someone to hand things off to. When it's just you, every one of those assumptions becomes extra work you have to absorb yourself.",
     solution:
-      "No handoffs, because there's no one to hand off to. Set up your brand once, generate ads directly, and skip the parts of the workflow that assume a team exists to manage. It's built for exactly this: one person, running their own ads, without hiring anyone else to make them.",
+      "No handoffs, because there's no one to hand off to. Set up your brand once, render ads directly, and skip the parts of the workflow that assume a team exists to manage. It's built for exactly this: one person, running their own ads, without hiring anyone else to make them.",
     steps: [
       {
         icon: User,
@@ -332,7 +332,7 @@ export const solutions: SolutionConfig[] = [
       },
       {
         icon: MousePointerClick,
-        title: 'Brand once, generate directly',
+        title: 'Brand once, render directly',
         body: 'Skip the parts of the workflow that assume a team exists to manage the process.',
       },
       {
@@ -389,7 +389,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "Running creative for multiple clients usually means juggling separate brand kits, separate tool logins, and separate mental context-switches for every single account — client A's tone is playful, client B's is clinical, and mixing them up is an easy, embarrassing mistake. Most tools aren't built with more than one brand in mind, so agencies and freelancers end up stretching a single-brand tool across five or six accounts, or paying for five or six separate subscriptions.",
     solution:
-      'Each client gets their own brand profile — colors, voice, product catalog, all set up independently and pulled in automatically per brand. Switch between client accounts without losing context, and generate creative for each one from templates matched to their specific niche. The Scale tier supports unlimited brands and campaigns under one subscription, built for exactly this use case.',
+      'Each client gets their own brand profile — colors, voice, product catalog, all set up independently and pulled in automatically per brand. Switch between client accounts without losing context, and render creative for each one from templates matched to their specific niche. The Scale tier supports unlimited brands and campaigns under one subscription, built for exactly this use case.',
     steps: [
       {
         icon: Users,
@@ -399,7 +399,7 @@ export const solutions: SolutionConfig[] = [
       {
         icon: RefreshCw,
         title: 'Switch without losing context',
-        body: 'Generate for each client from templates matched to their niche — not one voice stretched across six accounts.',
+        body: 'Render for each client from templates matched to their niche — not one voice stretched across six accounts.',
       },
       {
         icon: Layers,
@@ -422,7 +422,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "Product photography tools solve a real, narrow problem: turning a flat product shot into something that looks professionally lit. But a nice photo sitting alone on a page isn't an ad — you still need a headline, a CTA, sizing for the platform you're running on, and some sense of what layout is actually working right now. A lot of small business owners get a great photo from one of these tools and then hit a wall figuring out what to do with it next.",
     solution:
-      'Skip the extra step. AdRender generates the complete ad — product imagery, layout, headline, and CTA — from a single template pulled from real ads that are actually running and converting. You\'re not left holding a nice photo and no ad around it.',
+      'Skip the extra step. AdRender renders the complete ad — product imagery, layout, headline, and CTA — from a single template pulled from real ads that are actually running and converting. You\'re not left holding a nice photo and no ad around it.',
     steps: [
       {
         icon: ImageIcon,
@@ -446,7 +446,7 @@ export const solutions: SolutionConfig[] = [
   {
     slug: 'full-catalog-scale',
     navLabel: 'Full Catalog Scale',
-    indexBlurb: 'Sync your whole Shopify catalog and generate ads across every SKU.',
+    indexBlurb: 'Sync your whole Shopify catalog and render ads across every SKU.',
     documentTitle: 'Generate Ads Across Your Whole Catalog | AdRender',
     metaDescription:
       'Got 500 SKUs? AdRender syncs your entire Shopify catalog and generates ads across every product, not one at a time.',
@@ -455,7 +455,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       "A handful of products is manageable to advertise one at a time. A real, growing catalog isn't — 50, 200, 500 SKUs means one-ad-per-product simply doesn't scale by hand, and most tools still assume you're uploading a single image and working through a single workflow per ad, over and over, for every product you carry.",
     solution:
-      'Connect your Shopify store once and the full catalog syncs automatically — every product, every image, every variant. Generate ads across your whole product line without re-uploading anything per SKU, and without repeating the same manual steps hundreds of times.',
+      'Connect your Shopify store once and the full catalog syncs automatically — every product, every image, every variant. Render ads across your whole product line without re-uploading anything per SKU, and without repeating the same manual steps hundreds of times.',
     steps: [
       {
         icon: ShoppingBag,
@@ -465,7 +465,7 @@ export const solutions: SolutionConfig[] = [
       {
         icon: Package,
         title: 'No re-upload per SKU',
-        body: 'Generate across the whole product line without uploading a single image per product.',
+        body: 'Render across the whole product line without uploading a single image per product.',
       },
       {
         icon: Layers,
@@ -488,7 +488,7 @@ export const solutions: SolutionConfig[] = [
     problem:
       'Real testing means running multiple angles against each other, not just launching your best guess and hoping. But if producing each variant costs real time or money — a freelancer per version, hours of manual design per version — testing becomes the expensive part before you\'ve even spent a dollar on media. Most people end up testing two or three variants instead of ten, because ten was never realistically affordable to produce.',
     solution:
-      'Generation is fast and cheap enough that producing ten versions of an ad costs close to nothing. Test the angle you weren\'t sure about, because trying it barely costs anything to find out — the expensive part of testing was never supposed to be making the ad, it was supposed to be running it.',
+      'Rendering is fast and cheap enough that producing ten versions of an ad costs close to nothing. Test the angle you weren\'t sure about, because trying it barely costs anything to find out — the expensive part of testing was never supposed to be making the ad, it was supposed to be running it.',
     steps: [
       {
         icon: FlaskConical,
@@ -498,7 +498,7 @@ export const solutions: SolutionConfig[] = [
       {
         icon: Sparkles,
         title: 'Variants cost close to nothing',
-        body: 'Generation is fast and cheap enough that producing the test is no longer the expensive part.',
+        body: 'Rendering is fast and cheap enough that producing the test is no longer the expensive part.',
       },
       {
         icon: CircleDollarSign,
@@ -517,11 +517,11 @@ export const solutions: SolutionConfig[] = [
     metaDescription:
       'Generate TikTok-ready ads, static and video, sized correctly and built from formats that actually perform on TikTok.',
     headline: "TikTok has its own visual language. Generic ads don't speak it.",
-    subheadline: 'Generate TikTok-native ads, static and video, sized correctly.',
+    subheadline: 'Render TikTok-native ads, static and video, sized correctly.',
     problem:
       "An ad that works on Facebook often falls flat on TikTok — the platform has its own pacing, its own visual style, its own sense of what looks native versus what looks like an obvious outside ad getting skipped past. Resizing a Facebook creative to fit TikTok's dimensions doesn't fix that; the format mismatch runs deeper than aspect ratio.",
     solution:
-      'Generate ads specifically sized and structured for TikTok, static or video, from templates pulled from real ads that are actually running and performing on the platform, not repurposed from somewhere else. Your brand applies automatically, sized correctly from the start.',
+      'Render ads specifically sized and structured for TikTok, static or video, from templates pulled from real ads that are actually running and performing on the platform, not repurposed from somewhere else. Your brand applies automatically, sized correctly from the start.',
     steps: [
       {
         icon: Smartphone,
@@ -550,11 +550,11 @@ export const solutions: SolutionConfig[] = [
     metaDescription:
       'Generate Instagram-ready ads for feed, Stories, and Reels, sized correctly and built from formats that actually perform.',
     headline: 'Feed, Stories, Reels — three different shapes, one product.',
-    subheadline: 'Generate Instagram-native ads sized right for every placement.',
+    subheadline: 'Render Instagram-native ads sized right for every placement.',
     problem:
       'Instagram alone has multiple ad placements with different dimensions and different visual expectations — a feed post, a Story, a Reel each want something a little different, and manually resizing and re-cropping one creative into all three formats eats time and often produces a worse version in at least one of them.',
     solution:
-      'Generate ads sized correctly for feed, Stories, and Reels from the same brand setup, pulled from templates proven to work on Instagram specifically. No manual cropping or resizing per placement — the format is handled as part of generation.',
+      'Render ads sized correctly for feed, Stories, and Reels from the same brand setup, pulled from templates proven to work on Instagram specifically. No manual cropping or resizing per placement — the format is handled as part of the render.',
     steps: [
       {
         icon: Images,
@@ -569,7 +569,7 @@ export const solutions: SolutionConfig[] = [
       {
         icon: MousePointerClick,
         title: 'No manual cropping',
-        body: 'Format is handled as part of generation. No re-cropping per placement after the fact.',
+        body: 'Format is handled as part of the render. No re-cropping per placement after the fact.',
       },
     ],
     proof:

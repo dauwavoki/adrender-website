@@ -27,7 +27,7 @@ That last part is the one that used to eat a whole extra day. Video wasn't a res
 
 **Use it to build a stronger portfolio, not just a faster one**
 
-The other use that doesn't get talked about enough: concepting. Generate a set of variations to show a client options *before* you commit hours to a full build. Most revision cycles happen because the client couldn't picture the direction from a written brief. Showing them three real directions — built from ads that are actually running in their category — is a better conversation than describing those directions in Slack.
+The other use that doesn't get talked about enough: concepting. Render a set of variations to show a client options *before* you commit hours to a full build. Most revision cycles happen because the client couldn't picture the direction from a written brief. Showing them three real directions — built from ads that are actually running in their category — is a better conversation than describing those directions in Slack.
 
 You're still the designer. You're just not spending the first half of the engagement making the client decide what they wanted.
 

@@ -21,7 +21,7 @@ Every one of these interfaces assumes some baseline of design fluency that most 
 
 Simple doesn't mean fewer features. It means removing decisions that shouldn't be yours to make in the first place. You shouldn't have to decide where a headline goes, or which layout structure works for your niche, or how to resize a finished ad for five different platforms. Those are decisions a tool should absorb on your behalf, not hand back to you disguised as "customization."
 
-So the actual interface is deliberately boring: connect your brand once, browse real ad structures that are already proven to work, generate. No blank canvas. No layers panel. No prompt box waiting for you to describe something you don't have the vocabulary for. The complexity is still there underneath — brand extraction, a hundred-million-ad template index, generation across formats — you just never have to look at it to get a finished ad out the other end.
+So the actual interface is deliberately boring: connect your brand once, browse real ad structures that are already proven to work, render. No blank canvas. No layers panel. No prompt box waiting for you to describe something you don't have the vocabulary for. The complexity is still there underneath — brand extraction, a hundred-million-ad template index, rendering across formats — you just never have to look at it to get a finished ad out the other end.
 
 **Why this is a UX decision, not a feature decision**
 

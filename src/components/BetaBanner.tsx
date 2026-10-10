@@ -8,7 +8,7 @@ export function BetaBanner() {
       <a href={appUrl} className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 transition hover:opacity-95">
         <span>
           <span aria-hidden>🎨 </span>
-          Generate on-brand ads in minutes — 20% off your first month
+          Render on-brand ads in minutes — 20% off your first month
         </span>
         <span className="underline decoration-white/50 underline-offset-2">Start Free →</span>
       </a>

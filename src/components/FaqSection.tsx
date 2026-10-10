@@ -9,7 +9,7 @@ const DELETE_ACCOUNT: FaqEntry = {
 
 const VIDEO_SUPPORT: FaqEntry = {
   q: 'Do you support video ads?',
-  a: 'Yes. AdRender generates static and video ads from real winning templates, converted into your brand — included on every tier, right from Free.',
+  a: 'Yes. AdRender renders static and video ads from real winning templates, converted into your brand — included on every tier, right from Free.',
 }
 
 const VIDEO_LENGTH: FaqEntry = {
@@ -24,7 +24,7 @@ const VIDEO_ASPECT: FaqEntry = {
 
 const VIDEO_COST: FaqEntry = {
   q: 'Do videos cost more tokens than images?',
-  a: "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you generate, so there's no surprise mid-render.",
+  a: "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you render, so there's no surprise mid-render.",
 }
 
 const CONNECT_SHOPIFY: FaqEntry = {
@@ -37,38 +37,17 @@ const SHOPIFY_APP: FaqEntry = {
   a: 'Yes. AdRender is also available as a native app on the Shopify App Store — install directly from your Shopify admin, billed through Shopify. Search AdRender in the Shopify App Store.',
 }
 
-const FAQ: FaqEntry[] = [
-  {
-    q: 'What is AdRender?',
-    a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
-  },
-  {
-    q: "What's a token, and what happens if I run out mid-render?",
-    a: "Tokens meter AI generation. The cost is calculated from what you pick before you generate, so you never run out mid-render. If you do not have enough tokens to start, you are prompted to buy a top-up pack.",
-  },
-  {
-    q: 'Do my monthly tokens roll over?',
-    a: 'No. Monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount. Anything above that is forfeited at month end.',
-  },
-  {
-    q: 'Do top-up tokens expire?',
-    a: 'No. Top-up tokens stay on your account until you use them. Your monthly plan tokens are always spent first, so your top-ups are used last.',
-  },
-  {
-    q: 'What happens if I cancel?',
-    a: "You drop to the Free plan and keep every ad and brand library you've built, forever. You can top up anytime for exactly the tokens you need — those top-ups never expire.",
-  },
-  {
-    q: 'What are workspaces?',
-    a: 'Subscribed accounts can create multiple workspaces and invite other users into them by email. Where your plan includes team seats, the account owner may invite members and assign role-based permissions.',
-  },
-  CONNECT_SHOPIFY,
-  SHOPIFY_APP,
-  DELETE_ACCOUNT,
-  VIDEO_SUPPORT,
-  VIDEO_LENGTH,
-  VIDEO_ASPECT,
-  VIDEO_COST,
+const MONTHLY_TOKENS_ROLLOVER: FaqEntry = {
+  q: 'Do my monthly tokens roll over?',
+  a: 'No. Monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount. Anything above that is forfeited at month end.',
+}
+
+const TOPUP_TOKENS_EXPIRE: FaqEntry = {
+  q: 'Do top-up tokens expire?',
+  a: 'No. Top-up tokens stay on your account until you use them. Your monthly plan tokens are always spent first, so your top-ups are used last.',
+}
+
+const LANDING_FAQ_ADDED: FaqEntry[] = [
   {
     q: 'Are failed renders refunded?',
     a: 'Yes, always. If a render fails, the tokens are returned to your account.',
@@ -105,6 +84,42 @@ const FAQ: FaqEntry[] = [
     q: 'Can I see what my competitors are advertising?',
     a: 'Yes. Search through 100M+ real ads by niche and platform to see what competitors are running.',
   },
+]
+
+/** Homepage token + newer FAQ items, reused on every /lp page. */
+export const LANDING_SHARED_FAQ: FaqEntry[] = [
+  MONTHLY_TOKENS_ROLLOVER,
+  TOPUP_TOKENS_EXPIRE,
+  ...LANDING_FAQ_ADDED,
+]
+
+const FAQ: FaqEntry[] = [
+  {
+    q: 'What is AdRender?',
+    a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
+  },
+  {
+    q: "What's a token, and what happens if I run out mid-render?",
+    a: "Tokens meter AI rendering. The cost is calculated from what you pick before you render, so you never run out mid-render. If you do not have enough tokens to start, you are prompted to buy a top-up pack.",
+  },
+  MONTHLY_TOKENS_ROLLOVER,
+  TOPUP_TOKENS_EXPIRE,
+  {
+    q: 'What happens if I cancel?',
+    a: "You drop to the Free plan and keep every ad and brand library you've built, forever. You can top up anytime for exactly the tokens you need — those top-ups never expire.",
+  },
+  {
+    q: 'What are workspaces?',
+    a: 'Subscribed accounts can create multiple workspaces and invite other users into them by email. Where your plan includes team seats, the account owner may invite members and assign role-based permissions.',
+  },
+  CONNECT_SHOPIFY,
+  SHOPIFY_APP,
+  DELETE_ACCOUNT,
+  VIDEO_SUPPORT,
+  VIDEO_LENGTH,
+  VIDEO_ASPECT,
+  VIDEO_COST,
+  ...LANDING_FAQ_ADDED,
 ]
 
 function FaqItem({ q, a }: { q: string; a: string }) {

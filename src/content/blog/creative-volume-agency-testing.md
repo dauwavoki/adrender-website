@@ -29,7 +29,7 @@ That's not "replace the creative team." It's stop asking the creative team to be
 
 **Where AdRender fits**
 
-AdRender is built for volume across several client accounts without expanding headcount. Multiple brand profiles, so client A's voice and catalog never bleed into client B's. Fast batch generation of static *and* video ads from proven templates — a library of 100M+ real ads currently running, not a blank prompt per variation. No prompting required to get a usable batch out. The team still directs. They just aren't starting from zero on every size and format, for every brand, every week.
+AdRender is built for volume across several client accounts without expanding headcount. Multiple brand profiles, so client A's voice and catalog never bleed into client B's. Fast batch rendering of static *and* video ads from proven templates — a library of 100M+ real ads currently running, not a blank prompt per variation. No prompting required to get a usable batch out. The team still directs. They just aren't starting from zero on every size and format, for every brand, every week.
 
 If you're already [running creative for more than one client](/lp/agencies-multi-client), the multi-brand part is the difference between a tool you can actually use on an agency account and one you end up stretching. Same idea on the [solutions side for multi-client agencies](/solutions/multi-client-agencies) — one login, separate brands, volume that doesn't require a second subscription per client.
 

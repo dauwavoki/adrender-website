@@ -57,9 +57,9 @@ const FEATURES: FeatureCard[] = [
   },
   {
     anchor: 'generation',
-    heading: 'Batch generation',
+    heading: 'Batch rendering',
     sub: 'Hundreds of ads. One click.',
-    body: 'Pick a proven format, hit generate, get a batch. On-brand, ready to run, no prompt engineering required. The step that used to take three hours now ships hundreds of ads in under 10 minutes.',
+    body: 'Pick a proven format, hit render, get a batch. On-brand, ready to run, no prompt engineering required. The step that used to take three hours now ships hundreds of ads in under 10 minutes.',
     imageId: '10',
     icon: Sparkles,
     accent: 'text-[#00E5FF]',
@@ -76,8 +76,8 @@ const FEATURES: FeatureCard[] = [
   {
     anchor: 'sizes',
     heading: 'Every size, automatically',
-    sub: '11 formats. Every platform. Every video length up to 30 seconds. One generation.',
-    body: 'For images, choose 1K, 2K, or 4K resolution, and Standard or Pro generation quality. Video renders up to 30 seconds today, with longer coming soon. No resizing, no re-exporting, no cropping by hand.',
+    sub: '11 formats. Every platform. Every video length up to 30 seconds. One render.',
+    body: 'For images, choose 1K, 2K, or 4K resolution, and Standard or Pro rendering quality. Video renders up to 30 seconds today, with longer coming soon. No resizing, no re-exporting, no cropping by hand.',
     imageId: '12',
     icon: Maximize2,
     accent: 'text-[#5B9FFF]',

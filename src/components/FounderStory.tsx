@@ -7,7 +7,7 @@ const BODY_PARAS = [
   'Three hours of switching between six tabs. Finding a proven layout in one tool. Rebuilding it in another. Generating a visual somewhere else. Writing copy in a fourth. Resizing everything by hand for every placement. Then doing it all again tomorrow.',
   "Video was worse. Foreplay for ad research, CapCut, Premiere Pro, an AI video generator for the motion I couldn't shoot myself, a separate app for voice and sound — and more, since half of them do the same thing and I'd still end up needing another one. Eight, nine tools running at once for a handful of finished clips, and video takes real hours per piece, not minutes.",
   "The tools weren't bad. The stitching was the problem. Every one of them solved a slice and handed you the rest.",
-  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI generation in one place. Now hundreds of ads take under 10 minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
+  "So I built the thing I actually wanted: proven ad structures, brand intelligence, and AI rendering in one place. Now hundreds of ads take under 10 minutes — and they don't look like a robot made them, because they're built on formats that are genuinely running and converting right now.",
   "That's AdRender. It's the tool I needed for twenty years and nobody built.",
 ]
 
@@ -40,11 +40,18 @@ export function FounderStory({
                     <p key={p.slice(0, 40)}>{p}</p>
                   ))}
                   {extended && (
-                    <p>
-                      This page walks through every piece of that system — templates, library, brand intelligence,
-                      generation, playground, sizes, Shopify sync, and workspaces — so you can see exactly what
-                      replaces the six-tab grind.
-                    </p>
+                    <>
+                      <p>
+                        I also noticed that most people had to learn prompting and connecting AI tools (MCPs) before
+                        they got anything useful out of AI. So I made AdRender super simple: a few clicks, and you
+                        don&apos;t have to learn either.
+                      </p>
+                      <p>
+                        This page walks through every piece of that system — templates, library, brand intelligence,
+                        batch rendering, playground, sizes, Shopify sync, workspaces, and easy to use — so you can see
+                        exactly what replaces the six-tab grind.
+                      </p>
+                    </>
                   )}
                 </div>
                 <p className="mt-8 text-sm font-medium text-zinc-300">— Marc Lawrence, Founder</p>

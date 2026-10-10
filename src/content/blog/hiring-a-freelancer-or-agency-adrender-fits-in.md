@@ -17,11 +17,11 @@ Waiting on that gap is how good accounts go quiet. Paying to close it every time
 
 **Three ways AdRender fits without replacing anyone**
 
-**1. Test cheap variations yourself before you commission the full paid work.** Generate a batch of on-brand static and video ads from proven templates, run the ones that are good enough to learn from, and then hand your freelancer or agency the angle that already tested well. Their billable time goes into finishing a winner, not guessing which of ten directions to start with. If you've ever [paid for production before you knew what was worth producing](/solutions/test-before-spending), this is the part that flips.
+**1. Test cheap variations yourself before you commission the full paid work.** Render a batch of on-brand static and video ads from proven templates, run the ones that are good enough to learn from, and then hand your freelancer or agency the angle that already tested well. Their billable time goes into finishing a winner, not guessing which of ten directions to start with. If you've ever [paid for production before you knew what was worth producing](/solutions/test-before-spending), this is the part that flips.
 
 **2. Brief better.** Pull visual concept options from real, currently-running ads in your niche and show your designer the direction you want instead of describing it in words. "Make it feel premium but still scroll-stopping" is a paragraph. Three live ad structures from your category, with your product already dropped in, is a brief. You'll get fewer revision rounds. They'll spend less time translating.
 
-**3. Fill the gaps between engagements.** When your freelancer is booked, or your agency retainer doesn't cover an urgent ask — a new Stock Keeping Unit (SKU), a flash sale, a creative that died over the weekend — you're not stuck waiting. Generate the volume layer yourself. Bring them back in for the work that actually needs them.
+**3. Fill the gaps between engagements.** When your freelancer is booked, or your agency retainer doesn't cover an urgent ask — a new Stock Keeping Unit (SKU), a flash sale, a creative that died over the weekend — you're not stuck waiting. Render the volume layer yourself. Bring them back in for the work that actually needs them.
 
 **This isn't about cutting your team out**
 

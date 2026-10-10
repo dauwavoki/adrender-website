@@ -19,7 +19,7 @@ That's a [UX problem disguised as an AI problem](/blog/why-adrender-doesnt-feel-
 
 Instead of a blank prompt, you start from a real, currently-running ad already working in your niche — pulled from a library of 100M+ proven templates. Pick it. Apply your brand. Product, colors, and voice come in automatically from your site, a brand document, or your Shopify catalog. You get your version: static and video, same setup.
 
-No prompt required for the large majority of ads made on the platform — over 90%. That's not a marketing line about "ease." It's what the product actually does, because the default path never asks you to describe anything. You recognize what you want from a set of things that already work, then generate. [That's the whole interface bet](/blog/ui-ux-of-adrender): recognition instead of description.
+No prompt required for the large majority of ads made on the platform — over 90%. That's not a marketing line about "ease." It's what the product actually does, because the default path never asks you to describe anything. You recognize what you want from a set of things that already work, then render. [That's the whole interface bet](/blog/ui-ux-of-adrender): recognition instead of description.
 
 **Prompting is there when you want it, not because you have to**
 

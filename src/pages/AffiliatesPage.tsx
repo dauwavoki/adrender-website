@@ -49,7 +49,7 @@ const PERKS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Video,
     title: 'Make your promos with AdRender',
-    body: 'Use the platform itself to generate UGC-style videos promoting your link — no separate video tool, no extra cost.',
+    body: 'Use the platform itself to render UGC-style videos promoting your link — no separate video tool, no extra cost.',
   },
 ]
 
@@ -129,8 +129,8 @@ export function AffiliatesPage() {
           </p>
           <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-[color:color-mix(in_srgb,var(--accent-cyan)_22%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_6%,#12121a)] px-5 py-4 text-left md:px-6 md:py-5">
             <p className="text-base leading-relaxed text-zinc-300">
-              You&apos;re not just earning commission — you&apos;re getting the tool. Use AdRender itself to generate
-              on-brand UGC-style videos and ads promoting your link, in minutes, with the exact same generator
+              You&apos;re not just earning commission — you&apos;re getting the tool. Use AdRender itself to render
+              on-brand UGC-style videos and ads promoting your link, in minutes, with the exact same renderer
               you&apos;re recommending to everyone else.
             </p>
           </div>

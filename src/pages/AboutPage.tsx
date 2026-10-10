@@ -13,9 +13,13 @@ type FeatureSection = {
   id: string
   heading: string
   paragraphs: string[]
-  imageId: PlaceholderId
   imageLeft: boolean
   alt?: string
+  imageId?: PlaceholderId
+  /** Drop-in file for sections that are not on the numbered manifest. */
+  imageSrc?: string
+  imageWidth?: number
+  imageHeight?: number
 }
 
 const SECTIONS: FeatureSection[] = [
@@ -37,7 +41,7 @@ const SECTIONS: FeatureSection[] = [
     imageId: '16',
     imageLeft: true,
     paragraphs: [
-      'Save any template to your library with one click and organize saved templates into collections. Any ad you generate can also become a template — so your own winners feed back into your workflow instead of being one-offs.',
+      'Save any template to your library with one click and organize saved templates into collections. Any ad you render can also become a template — so your own winners feed back into your workflow instead of being one-offs.',
       'Over time your library becomes a private swipe file of formats proven to work for your brand specifically.',
     ],
   },
@@ -48,17 +52,17 @@ const SECTIONS: FeatureSection[] = [
     imageLeft: false,
     paragraphs: [
       'Point AdRender at your website and it extracts your palette, logo, product imagery, tone of voice, and target audience automatically. Or upload brand documents directly for a deeper read.',
-      'Set up multiple brands and switch between them — useful if you run several stores or handle multiple clients. Every generation inherits the active brand, so consistency isn\'t something you manage manually.',
+      'Set up multiple brands and switch between them — useful if you run several stores or handle multiple clients. Every render inherits the active brand, so consistency isn\'t something you manage manually.',
     ],
   },
   {
     id: 'generation',
-    heading: 'Batch generation',
+    heading: 'Batch rendering',
     imageId: '18',
     imageLeft: true,
     paragraphs: [
-      'Choose a proven format, choose your brand, hit generate. AdRender produces a batch of on-brand static and video ads from that template — images in every size you selected, video matched to your reference\'s exact aspect ratio and length. No prompt engineering — the structure comes from the template, the styling comes from your brand, and the AI fills the gap.',
-      'Behind the scenes, generation runs through a multi-provider fallback: if one AI provider is down or slow, it moves to the next automatically. You don\'t see the failure, you just get your ads.',
+      'Choose a proven format, choose your brand, hit render. AdRender produces a batch of on-brand static and video ads from that template — images in every size you selected, video matched to your reference\'s exact aspect ratio and length. No prompt engineering — the structure comes from the template, the styling comes from your brand, and the AI fills the gap.',
+      'Behind the scenes, rendering runs through a multi-provider fallback: if one AI provider is down or slow, it moves to the next automatically. You don\'t see the failure, you just get your ads.',
     ],
   },
   {
@@ -77,8 +81,8 @@ const SECTIONS: FeatureSection[] = [
     imageId: '20',
     imageLeft: true,
     paragraphs: [
-      'One generation produces every format you need, correctly sized. For static ads: Square (1080×1080), Portrait (1080×1350), Story/Reel (1080×1920), Landscape (1200×675), Feed Banner (1200×628), Pinterest Pin (1000×1500), Medium Rectangle (300×250), Half Page (300×600), Leaderboard (728×90), Wide Skyscraper (160×600), and Mobile Banner (320×50).',
-      'Video renders at every resolution up to 4K, at lengths up to 30 seconds — with longer videos coming soon. Filter by platform — Facebook, Instagram, LinkedIn, Google, TikTok — or select all. For images, choose 1K, 2K, or 4K resolution, and Standard or Pro generation quality. No resizing, no re-exporting, no cropping by hand.',
+      'One render produces every format you need, correctly sized. For static ads: Square (1080×1080), Portrait (1080×1350), Story/Reel (1080×1920), Landscape (1200×675), Feed Banner (1200×628), Pinterest Pin (1000×1500), Medium Rectangle (300×250), Half Page (300×600), Leaderboard (728×90), Wide Skyscraper (160×600), and Mobile Banner (320×50).',
+      'Video renders at every resolution up to 4K, at lengths up to 30 seconds — with longer videos coming soon. Filter by platform — Facebook, Instagram, LinkedIn, Google, TikTok — or select all. For images, choose 1K, 2K, or 4K resolution, and Standard or Pro rendering quality. No resizing, no re-exporting, no cropping by hand.',
     ],
   },
   {
@@ -87,7 +91,7 @@ const SECTIONS: FeatureSection[] = [
     imageId: '21',
     imageLeft: false,
     paragraphs: [
-      'Connect your Shopify store once and your entire product catalog is available inside AdRender — names, descriptions, images, variants, and pricing. Add a product to your store and it\'s there next time you generate.',
+      'Connect your Shopify store once and your entire product catalog is available inside AdRender — names, descriptions, images, variants, and pricing. Add a product to your store and it\'s there next time you render.',
       'AdRender also reads your storefront to pull brand colors and logo automatically during setup. Available on Growth and above.',
     ],
   },
@@ -104,12 +108,15 @@ const SECTIONS: FeatureSection[] = [
   {
     id: 'easy-to-use',
     heading: 'Easy to Use',
-    imageId: '03',
+    imageSrc: '/placeholders/easy-to-use.png',
+    imageWidth: 1280,
+    imageHeight: 800,
     imageLeft: false,
-    alt: 'Finished ads in AdRender, ready after three steps',
+    alt: 'Temporary placeholder',
     paragraphs: [
       'You only need to know how to click. No prompting is required, and you don\'t need to learn design or connect other tools to start. There\'s nothing technical to set up. You can still write your own prompt whenever you want to.',
       'It\'s self-explanatory by design, and the same three steps cover images and video. Add your brand — URL scan or campaign documents. Choose winning templates — Browse what\'s working, then render at scale. See your ads — Finished creatives, ready to launch.',
+      'Most AI tools ask you to learn prompting, or to connect other AI tools (MCPs), before they\'re useful. AdRender doesn\'t. A few clicks is all it takes.',
     ],
   },
 ]
@@ -126,9 +133,21 @@ function FeatureBlock({ section }: { section: FeatureSection }) {
     </div>
   )
 
-  const image = (
+  const image = section.imageSrc ? (
+    <div className="relative aspect-[8/5] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#12121a]">
+      <img
+        src={section.imageSrc}
+        alt={section.alt ?? 'Temporary placeholder'}
+        width={section.imageWidth ?? 1280}
+        height={section.imageHeight ?? 800}
+        decoding="async"
+        loading="lazy"
+        className="h-full w-full object-cover"
+      />
+    </div>
+  ) : (
     <PlaceholderImage
-      id={section.imageId}
+      id={section.imageId!}
       alt={section.alt}
       className="aspect-[8/5] rounded-2xl border border-white/[0.08]"
       imgClassName="h-full w-full object-cover"

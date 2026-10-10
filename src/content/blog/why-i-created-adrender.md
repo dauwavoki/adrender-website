@@ -23,7 +23,7 @@ I'd spent years by that point specifically designing minimal, focused interfaces
 
 **What I actually wanted to exist**
 
-Not a smarter prompt box. Not another template library bolted onto a generic AI wrapper. I wanted to type in a URL, or connect a Shopify store, and have a real batch of on-brand ads — static and video — come out the other end, generated from structures that were already proven to work, not invented by an AI guessing at what an ad should look like. I wanted the thing I'd been manually assembling for two decades to just... happen.
+Not a smarter prompt box. Not another template library bolted onto a generic AI wrapper. I wanted to type in a URL, or connect a Shopify store, and have a real batch of on-brand ads — static and video — come out the other end, rendered from structures that were already proven to work, not invented by an AI guessing at what an ad should look like. I wanted the thing I'd been manually assembling for two decades to just... happen.
 
 That's the whole premise of AdRender. Not a bigger feature list. Not a cleverer AI. Just the actual gap I kept hitting, closed.
 

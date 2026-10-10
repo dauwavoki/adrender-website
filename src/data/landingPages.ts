@@ -104,7 +104,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'No manual resizing',
-        body: 'Every platform size is handled for you in the same generation.',
+        body: 'Every platform size is handled for you in the same render.',
         icon: Maximize2,
         accent: 'text-[#5B9FFF]',
       },
@@ -152,13 +152,13 @@ export const landingPages: LandingPageConfig[] = [
     features: [
       {
         heading: 'Template research, in the same place',
-        body: 'No separate ad-spy subscription — proven structures live next to generation.',
+        body: 'No separate ad-spy subscription — proven structures live in the same flow as rendering.',
         icon: Layers,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Brand voice and copy, automatic',
-        body: 'No separate copywriting tool. Your voice is applied when you generate.',
+        body: 'No separate copywriting tool. Your voice is applied when you render.',
         icon: Wand2,
         accent: 'text-[#00E5FF]',
       },
@@ -218,7 +218,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'A fresh batch in minutes',
-        body: 'Generate from a different template without starting over.',
+        body: 'Render from a different template without starting over.',
         icon: LayoutTemplate,
         accent: 'text-[#B894F0]',
       },
@@ -239,15 +239,15 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'How fast can I actually get a replacement ad live?',
-        a: "Minutes, not days — your brand is already set up, so generating a fresh variant is immediate.",
+        a: "Minutes, not days — your brand is already set up, so rendering a fresh variant is immediate.",
       },
       {
         q: 'Should I test one replacement or several?',
-        a: "Several, ideally — generating multiple variants costs next to nothing, so you're not betting the refresh on a single guess.",
+        a: "Several, ideally — rendering multiple variants costs next to nothing, so you're not betting the refresh on a single guess.",
       },
       {
         q: 'Does this work for video ads too, or just static?',
-        a: 'Both — fatigue hits video and static creative alike, and AdRender generates both from the same flow.',
+        a: 'Both — fatigue hits video and static creative alike, and AdRender renders both from the same flow.',
       },
     ],
     ctaHeading: 'Refresh before CPA climbs.',
@@ -293,7 +293,7 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'How is this different from just prompting ChatGPT or another AI generator?',
-        a: 'Those generate from your description of what you want. AdRender generates from a real, proven ad structure and applies your brand to it — a fundamentally different starting point.',
+        a: 'Those generate from your description of what you want. AdRender renders from a real, proven ad structure and applies your brand to it — a fundamentally different starting point.',
       },
       {
         q: "Will my ads look 'AI-made'?",
@@ -301,7 +301,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Can I still customize the output?',
-        a: 'Yes, everything generated can be edited further.',
+        a: 'Yes, everything rendered can be edited further.',
       },
     ],
     ctaHeading: "Ads that don't look generated.",
@@ -322,7 +322,7 @@ export const landingPages: LandingPageConfig[] = [
       'AdRender strips that down to just the output.',
     ],
     featuresHeading: 'The output. Not the overhead.',
-    featuresSub: 'Flat monthly pricing. Cancel anytime. Generate directly.',
+    featuresSub: 'Flat monthly pricing. Cancel anytime. Render directly.',
     features: [
       {
         heading: 'Flat monthly pricing',
@@ -338,7 +338,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'No account manager needed',
-        body: 'No status-call overhead — you generate directly.',
+        body: 'No status-call overhead — you render directly.',
         icon: User,
         accent: 'text-[#FF8F5C]',
       },
@@ -373,20 +373,20 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Camera-shy? AdRender generates video ads without filming anything — no camera, no talent booking, no shoot.',
     headline: "You don't have to be on camera to have a video ad.",
-    subhead: 'No filming. No talent booking. No shoot. Video generated the same way your static ads are.',
+    subhead: 'No filming. No talent booking. No shoot. Video rendered the same way your static ads are.',
     stats: ['0 filming required', 'Video + static, same flow', 'Minutes, not a shoot day'],
     founderHeading: 'Video converts. Getting one made is the wall.',
     founderParagraphs: [
       'Video converts, everyone knows it — and everyone also knows what it costs to get one: booking talent, finding a backdrop, filming takes, editing it down.',
       "For a solo founder who'd rather not be the face of the brand, or just doesn't have a studio, that whole pipeline is a wall before the ad even exists.",
-      "I built video generation into the same flow as static ads specifically so that wall doesn't have to be there.",
+      "I built video rendering into the same flow as static ads specifically so that wall doesn't have to be there.",
     ],
     featuresHeading: 'No camera. No crew. No shoot day.',
     featuresSub: 'The same brand setup that powers your static ads powers video.',
     features: [
       {
         heading: 'Nothing to film',
-        body: 'No camera, no crew, no talent booking. Video is generated — not shot.',
+        body: 'No camera, no crew, no talent booking. Video is rendered — not shot.',
         icon: CameraOff,
         accent: 'text-[#FF8F5C]',
       },
@@ -413,7 +413,7 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'Do I need any video equipment at all?',
-        a: 'No — nothing to film, nothing to record. Video is generated the same way static ads are.',
+        a: 'No — nothing to film, nothing to record. Video is rendered the same way static ads are.',
       },
       {
         q: 'Can I still be in my ads if I want to?',
@@ -421,7 +421,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Is the video quality actually usable for real ad spend?',
-        a: "Yes — output is generated from real video ad structures, sized correctly for the platform you're running on.",
+        a: "Yes — output is rendered from real video ad structures, sized correctly for the platform you're running on.",
       },
     ],
     ctaHeading: 'Video ads. Zero filming.',
@@ -457,8 +457,8 @@ export const landingPages: LandingPageConfig[] = [
         accent: 'text-[#00E5FF]',
       },
       {
-        heading: 'Generate and approve yourself',
-        body: "No review layer built in that you don't need. You generate, you ship.",
+        heading: 'Render and approve yourself',
+        body: "No review layer built in that you don't need. You render, you ship.",
         icon: MousePointerClick,
         accent: 'text-[#B894F0]',
       },
@@ -553,15 +553,15 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Generate TikTok-ready ads, static and video, sized correctly and built from formats that actually perform on TikTok.',
     headline: "TikTok has its own visual language. Generic ads don't speak it.",
-    subhead: 'Generate TikTok-native ads, static and video, sized correctly from real formats that perform on the platform.',
+    subhead: 'Render TikTok-native ads, static and video, sized correctly from real formats that perform on the platform.',
     stats: ['Sized correctly for TikTok', 'Static + video', 'Built from real TikTok-performing ads'],
     founderHeading: 'Resizing a Facebook ad does not make it a TikTok ad.',
     founderParagraphs: [
       'An ad that works on Facebook often falls flat on TikTok — the platform has its own pacing and its own sense of what looks native versus what looks like an obvious outside ad getting skipped past.',
       "Resizing something built for a different platform doesn't fix that gap.",
-      'AdRender generates from templates pulled from ads actually performing on TikTok specifically, not adapted from somewhere else.',
+      'AdRender renders from templates pulled from ads actually performing on TikTok specifically, not adapted from somewhere else.',
     ],
-    featuresHeading: 'TikTok-native from generation. Not resized later.',
+    featuresHeading: 'TikTok-native when rendered. Not resized later.',
     featuresSub: 'Real TikTok ads as the source. Correct size from the start.',
     features: [
       {
@@ -572,7 +572,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Sized correctly from the start',
-        body: 'Correct sizing and format at generation, not cropped or stretched after the fact.',
+        body: 'Correct sizing and format when you render, not cropped or stretched after the fact.',
         icon: Maximize2,
         accent: 'text-[#00E5FF]',
       },
@@ -601,7 +601,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Can I use the same brand setup for TikTok and other platforms?',
-        a: "Yes — one brand setup, generate for any platform you're running on.",
+        a: "Yes — one brand setup, render for any platform you're running on.",
       },
     ],
     ctaHeading: 'Make ads that look like they belong on TikTok.',
@@ -613,15 +613,15 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Generate Instagram-ready ads for feed, Stories, and Reels, sized correctly and built from formats that actually perform.',
     headline: 'Feed, Stories, Reels — three shapes, one product.',
-    subhead: 'Generate Instagram-native ads sized right for every placement, without manually resizing anything.',
+    subhead: 'Render Instagram-native ads sized right for every placement, without manually resizing anything.',
     stats: ['3 placements, correctly sized', 'Static + video', 'Built from real Instagram-performing ads'],
     founderHeading: 'Three placements. Manually resizing one creative usually fails at least one of them.',
     founderParagraphs: [
       'Instagram alone has multiple placements with different dimensions and different visual expectations — feed, Story, Reel each want something a little different, and manually resizing one creative into all three usually produces a worse version in at least one of them.',
-      'AdRender generates each placement correctly from the start, from templates pulled from real Instagram ads.',
+      'AdRender renders each placement correctly from the start, from templates pulled from real Instagram ads.',
     ],
     featuresHeading: 'Every Instagram placement, sized right.',
-    featuresSub: 'Feed, Stories, and Reels — generated correctly, not cropped later.',
+    featuresSub: 'Feed, Stories, and Reels — rendered correctly, not cropped later.',
     features: [
       {
         heading: 'All three placements',
@@ -637,7 +637,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'No manual cropping',
-        body: 'No resizing per placement after the fact. Each shape is generated correctly.',
+        body: 'No resizing per placement after the fact. Each shape is rendered correctly.',
         icon: Crop,
         accent: 'text-[#FF8F5C]',
       },
@@ -651,8 +651,8 @@ export const landingPages: LandingPageConfig[] = [
     faqIntro: 'Placements, template source, and whether Reels video is covered.',
     faq: [
       {
-        q: 'Do I need to generate separately for feed vs. Stories vs. Reels?',
-        a: "No — each placement's sizing is handled as part of generation from the same brand setup.",
+        q: 'Do I need to render separately for feed vs. Stories vs. Reels?',
+        a: "No — each placement's sizing is handled as part of the render from the same brand setup.",
       },
       {
         q: 'Are these templates actually from Instagram?',
@@ -680,7 +680,7 @@ export const landingPages: LandingPageConfig[] = [
       "A handful of products is manageable to advertise by hand. A real, growing Shopify catalog isn't — most tools still assume you're uploading one image and working through one flow per product, over and over, for every SKU you carry.",
       'I built the Shopify integration specifically so a large catalog stops being a wall you hit as you grow.',
     ],
-    featuresHeading: 'Connect once. Generate the whole catalog.',
+    featuresHeading: 'Connect once. Render the whole catalog.',
     featuresSub: 'Products, images, variants, and branding — in from your store, not uploaded by hand.',
     features: [
       {
@@ -696,7 +696,7 @@ export const landingPages: LandingPageConfig[] = [
         accent: 'text-[#00E5FF]',
       },
       {
-        heading: 'Generate across the line',
+        heading: 'Render across the line',
         body: 'Ads for your whole product catalog, not one SKU at a time.',
         icon: Package,
         accent: 'text-[#B894F0]',
@@ -716,14 +716,14 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Does this work for stores with hundreds of SKUs?',
-        a: 'Yes — the sync and generation flow are built to handle large catalogs, not just a handful of products.',
+        a: 'Yes — the sync and rendering flow are built to handle large catalogs, not just a handful of products.',
       },
       {
         q: 'What exactly syncs from Shopify?',
         a: "Products, images, variants, and pricing, plus your store's colors and branding for the initial setup.",
       },
     ],
-    ctaHeading: 'Connect the store. Generate the catalog.',
+    ctaHeading: 'Connect the store. Render the catalog.',
     ctaSub: 'Every product, image, and variant — no manual uploads.',
   },
   {
@@ -733,19 +733,19 @@ export const landingPages: LandingPageConfig[] = [
       'Generate Meta-ready ads for Facebook and Instagram, sized correctly for every placement, from formats that actually perform.',
     headline: "Meta has more placements than you're probably designing for.",
     subhead:
-      'Feed, Stories, Reels, right column — generate ads sized correctly across Facebook and Instagram, without resizing anything by hand.',
+      'Feed, Stories, Reels, right column — render ads sized correctly across Facebook and Instagram, without resizing anything by hand.',
     stats: ['Every Meta placement covered', 'Static + video', 'Built from real Meta-performing ads'],
     founderHeading: 'Hand-resizing one creative usually means one placement gets the worse version.',
     founderParagraphs: [
       "Meta's ad ecosystem spans more placements than most people design for individually — Feed, Stories, Reels, and the older right-column format all want different dimensions, and hand-resizing one creative across all of them usually means at least one placement gets a worse version.",
-      'AdRender generates each one correctly from the same brand setup, from templates pulled from real Meta ads.',
+      'AdRender renders each one correctly from the same brand setup, from templates pulled from real Meta ads.',
     ],
     featuresHeading: 'Every Meta placement. Sized correctly. From one setup.',
-    featuresSub: 'Facebook and Instagram, static and video — generated, not resized by hand.',
+    featuresSub: 'Facebook and Instagram, static and video — rendered, not resized by hand.',
     features: [
       {
         heading: 'Every major placement',
-        body: 'Feed, Stories, Reels, and right column — each sized correctly at generation.',
+        body: 'Feed, Stories, Reels, and right column — each sized correctly when you render.',
         icon: LayoutGrid,
         accent: 'text-[#5B9FFF]',
       },
@@ -757,13 +757,13 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Static and video covered',
-        body: 'Both formats, across Meta placements, from the same generation flow.',
+        body: 'Both formats, across Meta placements, from the same rendering flow.',
         icon: Video,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'One brand setup, every placement',
-        body: 'Generate for every Meta placement at once — not a separate pass per size.',
+        body: 'Render for every Meta placement at once — not a separate pass per size.',
         icon: Wand2,
         accent: 'text-[#FF8F5C]',
       },
@@ -772,11 +772,11 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'Does this cover both Facebook and Instagram, or just one?',
-        a: "Both — Meta's placements across both platforms are handled from the same generation flow.",
+        a: "Both — Meta's placements across both platforms are handled from the same rendering flow.",
       },
       {
-        q: 'Do I need to generate separately for each placement?',
-        a: 'No — placement sizing is handled as part of generation, not a separate manual step.',
+        q: 'Do I need to render separately for each placement?',
+        a: 'No — placement sizing is handled as part of the render, not a separate manual step.',
       },
       {
         q: 'Are these templates actually pulled from real Meta ads?',
@@ -784,7 +784,7 @@ export const landingPages: LandingPageConfig[] = [
       },
     ],
     ctaHeading: 'Cover every Meta placement.',
-    ctaSub: 'Sized correctly from generation. Static and video.',
+    ctaSub: 'Sized correctly when rendered. Static and video.',
   },
   {
     slug: 'built-for-designers-too',
@@ -824,7 +824,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Full creative control still available',
-        body: 'This removes the repetition, not the judgment. Generation is a starting point.',
+        body: 'This removes the repetition, not the judgment. Rendering is a starting point.',
         icon: PenTool,
         accent: 'text-[#00E5FF]',
       },
@@ -837,7 +837,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Can I still customize the output with real design control?',
-        a: 'Yes — generation gives you a strong starting point, not a locked final file.',
+        a: 'Yes — rendering gives you a strong starting point, not a locked final file.',
       },
       {
         q: 'Is this replacing my design tool, or working alongside it?',
@@ -854,7 +854,7 @@ export const landingPages: LandingPageConfig[] = [
       'Medium Rectangle, Leaderboard, Skyscraper, and every other odd ad size — generated correctly, not stretched or cropped badly like most tools produce.',
     headline: 'The ad sizes everyone else gets wrong.',
     subhead:
-      'Medium Rectangle, Half Page, Leaderboard, Wide Skyscraper, Mobile Banner — generated cleanly, not stretched, cropped, or pixelated.',
+      'Medium Rectangle, Half Page, Leaderboard, Wide Skyscraper, Mobile Banner — rendered cleanly, not stretched, cropped, or pixelated.',
     stats: ['Every odd size supported', 'No stretching or bad crops', 'Google, LinkedIn, display sizes covered'],
     founderHeading: 'Standard sizes are easy. The odd ones took real work.',
     founderParagraphs: [
@@ -863,7 +863,7 @@ export const landingPages: LandingPageConfig[] = [
       'AdRender handles them properly, not as an afterthought.',
     ],
     featuresHeading: 'The sizes most tools treat as an afterthought.',
-    featuresSub: 'Odd display dimensions, generated cleanly — not stretched or cropped into place.',
+    featuresSub: 'Odd display dimensions, rendered cleanly — not stretched or cropped into place.',
     features: [
       {
         heading: 'Every odd size supported',
@@ -873,7 +873,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Clean output at every size',
-        body: 'No stretching, no bad crops, no pixelation — each size is generated and processed properly.',
+        body: 'No stretching, no bad crops, no pixelation — each size is rendered and processed properly.',
         icon: Crop,
         accent: 'text-[#FF8F5C]',
       },
@@ -885,7 +885,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Same brand, every size',
-        body: 'One brand setup generates every size automatically.',
+        body: 'One brand setup renders every size automatically.',
         icon: Wand2,
         accent: 'text-[#00E5FF]',
       },
@@ -894,7 +894,7 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'Why do odd ad sizes usually look bad from AI tools?',
-        a: 'Most tools crop or stretch a standard-shaped image into the odd dimension, which distorts or cuts off the content. AdRender generates and processes each size properly instead of forcing a mismatched crop.',
+        a: 'Most tools crop or stretch a standard-shaped image into the odd dimension, which distorts or cuts off the content. AdRender renders and processes each size properly instead of forcing a mismatched crop.',
       },
       {
         q: 'Does this cover Google Display Network sizes?',
@@ -939,7 +939,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Concept before you commit hours',
-        body: 'Generate direction options first so the client can pick a path before you spend a day on a full build.',
+        body: 'Render direction options first so the client can pick a path before you spend a day on a full build.',
         icon: Images,
         accent: 'text-[#B894F0]',
       },
@@ -954,7 +954,7 @@ export const landingPages: LandingPageConfig[] = [
     faq: [
       {
         q: 'Can I use this for client work, not just my own brand?',
-        a: 'Yes, set up a brand profile per client and generate on-brand variations for each one.',
+        a: 'Yes, set up a brand profile per client and render on-brand variations for each one.',
       },
       {
         q: 'Does this replace my design skills?',
@@ -975,7 +975,7 @@ export const landingPages: LandingPageConfig[] = [
       'Scale your brand deals without more filming hours. AdRender helps UGC creators draft video concepts fast, keeping filmed content for what matters most.',
     headline: "You can only film so much. Your income shouldn't be capped by that.",
     subhead: 'Draft video concepts fast, pitch more brands, keep filmed content for your premium work.',
-    stats: ['More brand deals, same shoot schedule', 'Draft concepts in minutes', 'Static + video generation'],
+    stats: ['More brand deals, same shoot schedule', 'Draft concepts in minutes', 'Static + video rendering'],
     founderHeading: 'The ceiling nobody talks about is the shoot schedule.',
     founderParagraphs: [
       "UGC creators face a hard ceiling most people don't think about — you can only physically film so much.",
@@ -986,7 +986,7 @@ export const landingPages: LandingPageConfig[] = [
     features: [
       {
         heading: 'Draft concepts before you film',
-        body: 'Generate multiple video angles from proven ad structures so the shoot day is spent on the one that already has a pulse.',
+        body: 'Render multiple video angles from proven ad structures so the shoot day is spent on the one that already has a pulse.',
         icon: Clapperboard,
         accent: 'text-[#FF8F5C]',
       },
@@ -998,7 +998,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Filmed stays the premium offer',
-        body: 'Use generated drafts for testing and lower-stakes rounds. Camera time goes to the work brands pay a creator rate for.',
+        body: 'Use rendered drafts for testing and lower-stakes rounds. Camera time goes to the work brands pay a creator rate for.',
         icon: Film,
         accent: 'text-[#B894F0]',
       },
@@ -1033,19 +1033,19 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Endless ad variations for offer testing. AdRender generates from proven ad structures — no brand kit, no design team, no waiting.',
     headline: 'Winning ads decay fast. Have the next one already made.',
-    subhead: 'Generate endless variations from proven ad structures. Keep testing without waiting on a designer.',
-    stats: ['No brand constraints', 'Batch generation for testing', 'Static + video, fast'],
+    subhead: 'Render endless variations from proven ad structures. Keep testing without waiting on a designer.',
+    stats: ['No brand constraints', 'Batch rendering for testing', 'Static + video, fast'],
     founderHeading: 'No brand kit. No creative team. Just what converts.',
     founderParagraphs: [
       'Affiliate marketing runs on pure testing velocity — no brand kit, no creative team, just constant iteration on what converts.',
       "AdRender's core mechanic, picking a proven ad structure and applying your offer, maps directly onto that workflow.",
     ],
     featuresHeading: 'Built for offer testing, not brand polish.',
-    featuresSub: 'Pick a structure. Apply the offer. Generate the next batch.',
+    featuresSub: 'Pick a structure. Apply the offer. Render the next batch.',
     features: [
       {
         heading: 'Dozens of variations per offer',
-        body: 'Generate a full test set in minutes — not one polished ad while the rest of the angles wait.',
+        body: 'Render a full test set in minutes — not one polished ad while the rest of the angles wait.',
         icon: Layers,
         accent: 'text-[#B894F0]',
       },
@@ -1056,14 +1056,14 @@ export const landingPages: LandingPageConfig[] = [
         accent: 'text-[#00E5FF]',
       },
       {
-        heading: 'Batch generation for real volume',
+        heading: 'Batch rendering for real volume',
         body: 'Built for the kind of testing schedule affiliates actually run — many variations, same offer, same session.',
         icon: FlaskConical,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'Static and video, same flow',
-        body: 'Both formats from the same generation pass, so a winning static angle can become a video test without a second pipeline.',
+        body: 'Both formats from the same rendering pass, so a winning static angle can become a video test without a second pipeline.',
         icon: Video,
         accent: 'text-[#5B9FFF]',
       },
@@ -1079,8 +1079,8 @@ export const landingPages: LandingPageConfig[] = [
         a: 'Minutes from picking a template to a finished, ready-to-run variation.',
       },
       {
-        q: 'Can I generate many variations of the same offer at once?',
-        a: 'Yes, batch generation is built for exactly this kind of volume testing.',
+        q: 'Can I render many variations of the same offer at once?',
+        a: 'Yes, batch rendering is built for exactly this kind of volume testing.',
       },
     ],
     ctaHeading: 'Have the next ad already made.',
@@ -1092,8 +1092,8 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Targeting is automated now. Creative variety is the lever left. AdRender generates the variation volume modern ad platforms actually reward.',
     headline: 'Targeting is automated now. Creative variety is the lever left.',
-    subhead: 'Only 6-7 of every 100 ads actually win. AdRender generates the volume it takes to find them.',
-    stats: ['10-20+ active creatives, made easy', 'Weekly refresh, achievable', 'Batch generation'],
+    subhead: 'Only 6-7 of every 100 ads actually win. AdRender renders the volume it takes to find them.',
+    stats: ['10-20+ active creatives, made easy', 'Weekly refresh, achievable', 'Batch rendering'],
     founderHeading: 'The problem was never knowing you needed more ads.',
     founderParagraphs: [
       'The algorithm shifted — creative variety now outperforms targeting precision. Most teams know this.',
@@ -1111,7 +1111,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Weekly refresh, actually achievable',
-        body: 'The cadence platforms reward stops being aspirational when generation takes minutes, not a production cycle.',
+        body: 'The cadence platforms reward stops being aspirational when rendering takes minutes, not a production cycle.',
         icon: RefreshCw,
         accent: 'text-[#00E5FF]',
       },
@@ -1131,20 +1131,20 @@ export const landingPages: LandingPageConfig[] = [
     faqIntro: 'Batch size, Advantage+ volume, and multi-account use.',
     faq: [
       {
-        q: 'How many variations can I generate at once?',
+        q: 'How many variations can I render at once?',
         a: 'Batches scale with your tier, from a handful up to hundreds at once on higher plans.',
       },
       {
         q: 'Does this work for Advantage+ style campaigns?',
-        a: 'Yes, generating 15+ active ads per account is exactly the volume this is built for.',
+        a: 'Yes, rendering 15+ active ads per account is exactly the volume this is built for.',
       },
       {
-        q: 'Can I generate for multiple accounts or clients?',
+        q: 'Can I render for multiple accounts or clients?',
         a: 'Yes, multiple brand profiles are supported depending on your plan.',
       },
     ],
     ctaHeading: 'Find the 6-7 that win.',
-    ctaSub: 'Generate the volume it takes. Weekly. Without a bigger team.',
+    ctaSub: 'Render the volume it takes. Weekly. Without a bigger team.',
   },
   {
     slug: 'course-creators',
@@ -1152,7 +1152,7 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Fresh ads for every course launch, without an agency budget. AdRender generates on-brand static and video ads for your info-product funnel.',
     headline: "Your funnel needs fresh ads constantly. Your budget doesn't need an agency.",
-    subhead: 'Generate on-brand ads for every launch and relaunch, without hiring a designer.',
+    subhead: 'Render on-brand ads for every launch and relaunch, without hiring a designer.',
     stats: ['Testimonial-style video, no shoot', 'Fresh ads per launch', 'Solo-creator friendly pricing'],
     founderHeading: 'Course creators run funnels, not creative departments.',
     founderParagraphs: [
@@ -1165,13 +1165,13 @@ export const landingPages: LandingPageConfig[] = [
     features: [
       {
         heading: 'Test hook variations first',
-        body: 'Generate multiple angles before you spend on ads, so the funnel launches on a tested hook, not a guess.',
+        body: 'Render multiple angles before you spend on ads, so the funnel launches on a tested hook, not a guess.',
         icon: FlaskConical,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Testimonial-style video, no shoot',
-        body: 'Video ads generated from proven templates — no filming, no talent booking, no studio day.',
+        body: 'Video ads rendered from proven templates — no filming, no talent booking, no studio day.',
         icon: Video,
         accent: 'text-[#00E5FF]',
       },
@@ -1191,16 +1191,16 @@ export const landingPages: LandingPageConfig[] = [
     faqIntro: 'Testimonial video, design skills, and ads per offer.',
     faq: [
       {
-        q: 'Can this generate testimonial-style ads?',
-        a: 'Yes, video generation can produce testimonial-style creative from proven templates.',
+        q: 'Can this render testimonial-style ads?',
+        a: 'Yes, video rendering can produce testimonial-style creative from proven templates.',
       },
       {
         q: 'Do I need design experience to use this for my course?',
         a: 'No, pick a template and your brand applies automatically.',
       },
       {
-        q: 'Can I generate different ads for different course modules or offers?',
-        a: "Yes, generate variations matched to whatever you're promoting.",
+        q: 'Can I render different ads for different course modules or offers?',
+        a: "Yes, render variations matched to whatever you're promoting.",
       },
     ],
     ctaHeading: 'Fresh ads for every launch.',
@@ -1212,7 +1212,7 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Beauty CPMs run 30-40% above average. AdRender generates on-brand static and video ads from real, currently-running beauty and skincare templates.',
     headline: 'The most competitive vertical on Meta needs the most creative volume.',
-    subhead: 'Generate ads from real, currently-running beauty templates — not generic AI output.',
+    subhead: 'Render ads from real, currently-running beauty templates — not generic AI output.',
     stats: ['UGC-style video, no shoot', 'Full catalog sync via Shopify', 'Fresh variants to beat fatigue'],
     founderHeading: 'Highest CPMs. Fastest fatigue. Generic AI makes it worse.',
     founderParagraphs: [
@@ -1224,7 +1224,7 @@ export const landingPages: LandingPageConfig[] = [
     features: [
       {
         heading: 'Full catalog sync via Shopify',
-        body: 'Connect the store once and generate ads across your entire beauty line — products, images, and variants stay current automatically.',
+        body: 'Connect the store once and render ads across your entire beauty line — products, images, and variants stay current automatically.',
         icon: Store,
         accent: 'text-[#96F07A]',
       },
@@ -1236,7 +1236,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Refresh fatigued creative in minutes',
-        body: 'When performance starts to dip, generate a new batch instead of waiting on the next production cycle.',
+        body: 'When performance starts to dip, render a new batch instead of waiting on the next production cycle.',
         icon: RefreshCw,
         accent: 'text-[#FF8F5C]',
       },
@@ -1258,7 +1258,7 @@ export const landingPages: LandingPageConfig[] = [
         a: 'Yes, full catalog sync — products, images, and variants stay current automatically.',
       },
       {
-        q: 'Can I generate video ads for product launches?',
+        q: 'Can I render video ads for product launches?',
         a: 'Yes, static and video from the same flow, ready when a new SKU launches.',
       },
     ],
@@ -1271,19 +1271,19 @@ export const landingPages: LandingPageConfig[] = [
     metaDescription:
       'Top gaming advertisers ship 2,400+ creative variations a quarter. AdRender generates the volume app and game marketing actually requires.',
     headline: 'Top gaming advertisers ship 2,400+ ad variations a quarter. Can your team keep up?',
-    subhead: 'Generate the creative volume app-install and UA campaigns actually require.',
-    stats: ['Batch generation at UA scale', 'Static + video for installs', 'Fast refresh cycles'],
+    subhead: 'Render the creative volume app-install and UA campaigns actually require.',
+    stats: ['Batch rendering at UA scale', 'Static + video for installs', 'Fast refresh cycles'],
     founderHeading: 'Install creative burns out fastest. Volume is the job.',
     founderParagraphs: [
       'App and game marketing has the highest structural need for creative volume of any category — install-driving creative burns out fast, and top advertisers are already producing thousands of variations per quarter.',
-      "AdRender's batch generation is built to match that pace without scaling a creative team.",
+      "AdRender's batch rendering is built to match that pace without scaling a creative team.",
     ],
     featuresHeading: 'UA-scale volume. Without a UA-scale team.',
     featuresSub: 'Batches sized for install campaigns. Static and video. Fast refresh.',
     features: [
       {
         heading: 'Batches sized for every network',
-        body: "Generate ad batches sized and formatted for whatever network you're running install campaigns on.",
+        body: "Render ad batches sized and formatted for whatever network you're running install campaigns on.",
         icon: Maximize2,
         accent: 'text-[#5B9FFF]',
       },
@@ -1295,7 +1295,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Refresh install creative fast',
-        body: 'When performance starts to fade, generate the next set in minutes instead of waiting on a production cycle.',
+        body: 'When performance starts to fade, render the next set in minutes instead of waiting on a production cycle.',
         icon: RefreshCw,
         accent: 'text-[#FF8F5C]',
       },
@@ -1309,11 +1309,11 @@ export const landingPages: LandingPageConfig[] = [
     faqIntro: 'Install-style creative, batch size, and app vs. game coverage.',
     faq: [
       {
-        q: 'Can this generate app-store or install-style creative?',
+        q: 'Can this render app-store or install-style creative?',
         a: 'Yes, templates cover app and UA-focused formats alongside general ad structures.',
       },
       {
-        q: 'How many variations can I generate for a single campaign?',
+        q: 'How many variations can I render for a single campaign?',
         a: 'Batches scale with your tier, built for high-volume testing.',
       },
       {
@@ -1322,7 +1322,7 @@ export const landingPages: LandingPageConfig[] = [
       },
     ],
     ctaHeading: 'Match the volume UA actually requires.',
-    ctaSub: 'Batch generation for app-install and game marketing — static and video.',
+    ctaSub: 'Batch rendering for app-install and game marketing — static and video.',
   },
   {
     slug: 'works-with-your-agency',
@@ -1354,7 +1354,7 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         heading: 'Fill urgent gaps',
-        body: "Generate what your retainer doesn't cover this week, instead of waiting on the next available slot.",
+        body: "Render what your retainer doesn't cover this week, instead of waiting on the next available slot.",
         icon: Timer,
         accent: 'text-[#FF8F5C]',
       },
@@ -1373,11 +1373,11 @@ export const landingPages: LandingPageConfig[] = [
       },
       {
         q: 'Can I use this to brief my designer more clearly?',
-        a: 'Yes, generate visual concepts to show direction instead of describing it in words.',
+        a: 'Yes, render visual concepts to show direction instead of describing it in words.',
       },
       {
         q: "What if my agency's retainer doesn't cover an urgent request?",
-        a: 'Generate what you need directly instead of waiting on their next available slot.',
+        a: 'Render what you need directly instead of waiting on their next available slot.',
       },
     ],
     ctaHeading: 'Keep your agency. Fill the gaps.',
