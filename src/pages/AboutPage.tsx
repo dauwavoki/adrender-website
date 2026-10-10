@@ -15,6 +15,7 @@ type FeatureSection = {
   paragraphs: string[]
   imageId: PlaceholderId
   imageLeft: boolean
+  alt?: string
 }
 
 const SECTIONS: FeatureSection[] = [
@@ -27,6 +28,7 @@ const SECTIONS: FeatureSection[] = [
       'Every template in AdRender is a real ad that ran in the wild. Search by keyword, filter by niche, platform, how long it\'s been running, and target market.',
       'Runtime matters: an ad that\'s been live for 90 days is still live because it\'s working. Browse by brand to see everything a specific company is running right now, or search across the whole index for a format or angle.',
       'Static and video templates live in the same library — filter to either, or browse both together.',
+      'You can see what your competitors are running. Search real ads by niche and platform, and use what you find to inspire your own image and video ads.',
     ],
   },
   {
@@ -99,6 +101,17 @@ const SECTIONS: FeatureSection[] = [
       'Invite teammates or clients into a workspace, and set an optional monthly token limit per workspace so one project can\'t consume everything. Your subscription covers all of them — no per-seat pricing, no per-workspace billing.',
     ],
   },
+  {
+    id: 'easy-to-use',
+    heading: 'Easy to Use',
+    imageId: '03',
+    imageLeft: false,
+    alt: 'Finished ads in AdRender, ready after three steps',
+    paragraphs: [
+      'You only need to know how to click. No prompting is required, and you don\'t need to learn design or connect other tools to start. There\'s nothing technical to set up. You can still write your own prompt whenever you want to.',
+      'It\'s self-explanatory by design, and the same three steps cover images and video. Add your brand — URL scan or campaign documents. Choose winning templates — Browse what\'s working, then render at scale. See your ads — Finished creatives, ready to launch.',
+    ],
+  },
 ]
 
 function FeatureBlock({ section }: { section: FeatureSection }) {
@@ -116,6 +129,7 @@ function FeatureBlock({ section }: { section: FeatureSection }) {
   const image = (
     <PlaceholderImage
       id={section.imageId}
+      alt={section.alt}
       className="aspect-[8/5] rounded-2xl border border-white/[0.08]"
       imgClassName="h-full w-full object-cover"
     />

@@ -1,5 +1,3 @@
-import { useId, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 
 type FaqEntry = { q: string; a: string }
@@ -49,8 +47,12 @@ const FAQ: FaqEntry[] = [
     a: "Tokens meter AI generation. The cost is calculated from what you pick before you generate, so you never run out mid-render. If you do not have enough tokens to start, you are prompted to buy a top-up pack.",
   },
   {
-    q: 'Do unused tokens roll over?',
-    a: 'Monthly plan tokens do not roll over and reset each cycle. Annual subscribers may carry unused allotment tokens forward up to two times their monthly cap; balances above that ceiling are forfeited at month end. Top-up tokens never expire and stay on your account until used — we always use your monthly tokens first, so your top-ups are the last thing spent.',
+    q: 'Do my monthly tokens roll over?',
+    a: 'No. Monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount. Anything above that is forfeited at month end.',
+  },
+  {
+    q: 'Do top-up tokens expire?',
+    a: 'No. Top-up tokens stay on your account until you use them. Your monthly plan tokens are always spent first, so your top-ups are used last.',
   },
   {
     q: 'What happens if I cancel?',
@@ -67,37 +69,51 @@ const FAQ: FaqEntry[] = [
   VIDEO_LENGTH,
   VIDEO_ASPECT,
   VIDEO_COST,
+  {
+    q: 'Are failed renders refunded?',
+    a: 'Yes, always. If a render fails, the tokens are returned to your account.',
+  },
+  {
+    q: 'Is there a watermark?',
+    a: 'No. All outputs are clean, with no watermarks, on every plan including Free.',
+  },
+  {
+    q: 'Do I need a credit card to start?',
+    a: 'No. You can start for free with no credit card. You get 10 free tokens each month to test AdRender with, so you can try it for yourself before choosing a plan.',
+  },
+  {
+    q: 'What sizes can I create?',
+    a: 'AdRender offers 11 ad sizes covering Facebook, Instagram, LinkedIn, Google, TikTok and more. You pick the size and your ad comes out at that size.',
+  },
+  {
+    q: 'Do I need a Shopify store or website to start?',
+    a: "No. A store or website URL works and lets AdRender pull in your brand automatically, but you don't need any assets to start. You can begin with neither.",
+  },
+  {
+    q: 'Can I upload my own product images and marketing documents?',
+    a: 'Yes. Upload your own product photos, reference images and marketing documents. AdRender can pull ready-written ad copy from your documents and write new ad copy based on your content.',
+  },
+  {
+    q: 'Do I need design or prompting skills?',
+    a: 'No. You only need to know how to click. You can still write your own prompt whenever you want to.',
+  },
+  {
+    q: 'How hard is it to learn AdRender?',
+    a: "It's simple by design. It takes three easy steps: Add your brand — URL scan or campaign documents. Choose winning templates — Browse what's working, then render at scale. See your ads — Finished creatives, ready to launch. It's self-explanatory, so there is nothing to learn up front and nothing technical to set up.",
+  },
+  {
+    q: 'Can I see what my competitors are advertising?',
+    a: 'Yes. Search through 100M+ real ads by niche and platform to see what competitors are running.',
+  },
 ]
 
-function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
-  const panelId = useId()
-  const buttonId = useId()
-
+function FaqItem({ q, a }: { q: string; a: string }) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-[#12121a]">
-      <h3>
-        <button
-          type="button"
-          id={buttonId}
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={onToggle}
-          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left focus-ring-brand rounded-2xl sm:px-6"
-        >
-          <span className="font-heading text-base font-semibold text-white sm:text-lg">{q}</span>
-          <ChevronDown
-            className={`h-5 w-5 shrink-0 text-[var(--accent-cyan)] transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-            aria-hidden
-          />
-        </button>
-      </h3>
-      {open && (
-        <div id={panelId} role="region" aria-labelledby={buttonId}>
-          <p className="border-t border-white/[0.06] px-5 pb-5 pt-4 text-sm leading-relaxed text-zinc-400 sm:px-6 sm:text-base">
-            {a}
-          </p>
-        </div>
-      )}
+    <div className="rounded-2xl border border-white/[0.06] bg-[#12121a] px-5 py-4 sm:px-6 sm:py-5">
+      <h3 className="font-heading text-base font-semibold text-white sm:text-lg">{q}</h3>
+      <p className="mt-3 border-t border-white/[0.06] pt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+        {a}
+      </p>
     </div>
   )
 }
@@ -111,8 +127,6 @@ export function FaqSection({
   items = FAQ,
   intro = "Tokens, canceling, and what's included — without the fine-print fog.",
 }: FaqSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-
   return (
     <section id="faq" className="scroll-mt-28 px-4 py-24 md:px-6 md:py-28">
       <div className="mx-auto max-w-3xl">
@@ -125,14 +139,9 @@ export function FaqSection({
         </ScrollReveal>
 
         <div className="mt-12 space-y-3">
-          {items.map((item, i) => (
+          {items.map((item) => (
             <ScrollReveal key={item.q}>
-              <FaqItem
-                q={item.q}
-                a={item.a}
-                open={openIndex === i}
-                onToggle={() => setOpenIndex((prev) => (prev === i ? null : i))}
-              />
+              <FaqItem q={item.q} a={item.a} />
             </ScrollReveal>
           ))}
         </div>

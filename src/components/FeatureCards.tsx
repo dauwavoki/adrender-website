@@ -4,6 +4,7 @@ import {
   FolderHeart,
   LayoutGrid,
   Maximize2,
+  MousePointerClick,
   Sparkles,
   Users,
   Wand2,
@@ -17,10 +18,12 @@ type FeatureCard = {
   anchor: string
   heading: string
   sub: string
+  highlights?: string[]
   body: string
   imageId: PlaceholderId
   icon: LucideIcon
   accent: string
+  alt?: string
 }
 
 const FEATURES: FeatureCard[] = [
@@ -28,6 +31,7 @@ const FEATURES: FeatureCard[] = [
     anchor: 'templates',
     heading: 'Proven templates',
     sub: '100M+ real ads. Searchable.',
+    highlights: ['Spy on competitor ads'],
     body: 'Not stock layouts — actual ads running right now, filterable by niche, platform, runtime, and market. Static and video, all searchable in one library.',
     imageId: '07',
     icon: LayoutGrid,
@@ -87,6 +91,16 @@ const FEATURES: FeatureCard[] = [
     icon: Users,
     accent: 'text-[#FF8F5C]',
   },
+  {
+    anchor: 'easy-to-use',
+    heading: 'Easy to Use',
+    sub: 'No setup. Just three steps.',
+    body: "No prompting and no design skills needed. Nothing technical to set up and nothing to connect. It's self-explanatory — you click through three steps and render images and video.",
+    imageId: '03',
+    icon: MousePointerClick,
+    accent: 'text-[#00E5FF]',
+    alt: 'Finished ads in AdRender, ready after three steps',
+  },
 ]
 
 export function FeatureCards() {
@@ -116,6 +130,11 @@ export function FeatureCards() {
                       </Link>
                     </div>
                     <p className="mt-2 text-sm font-medium text-zinc-300">{f.sub}</p>
+                    {f.highlights?.map((line) => (
+                      <p key={line} className="mt-1 text-sm font-medium text-zinc-300">
+                        {line}
+                      </p>
+                    ))}
                     <p className="mt-3 text-sm leading-relaxed text-zinc-500">{f.body}</p>
                     <Link
                       to={`/about#${f.anchor}`}
@@ -129,6 +148,7 @@ export function FeatureCards() {
                   </div>
                   <PlaceholderImage
                     id={f.imageId}
+                    alt={f.alt}
                     className="mt-auto aspect-[10/7] border-t border-white/[0.04]"
                     imgClassName="h-full w-full object-cover object-top"
                   />
