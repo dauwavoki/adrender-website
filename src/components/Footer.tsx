@@ -3,81 +3,6 @@ import { BrandLogoLink } from './BrandLogoLink'
 import { blogIndexPath } from '../data/blog'
 import { solutions, solutionPath } from '../data/solutions'
 
-function LaunchNestBadge() {
-  return (
-    <a
-      href="https://launch-nest-ai.base44.app/products/YOUR_PRODUCT_ID?ref=badge&from=adrender.app"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="shrink-0"
-      style={{
-        fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif",
-        display: 'inline-flex',
-        flexDirection: 'column',
-        gap: 2,
-        padding: '8px 14px',
-        borderRadius: 10,
-        lineHeight: 1,
-        whiteSpace: 'nowrap',
-        textDecoration: 'none',
-        background: '#5B5CFF',
-        boxShadow: '0 4px 14px rgba(91,92,255,0.35)',
-      }}
-    >
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-        <svg
-          width={16}
-          height={16}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ flexShrink: 0 }}
-        >
-          <path d="M13.5 1.5L4.5 10.5L1.5 12L4.5 13.5L13.5 22.5L16.5 19.5L9 12L16.5 4.5L13.5 1.5Z" fill="white" />
-          <circle cx="12" cy="8" r="2" fill="white" opacity={0.9} />
-        </svg>
-        <span
-          style={{
-            fontSize: 9,
-            fontWeight: 700,
-            letterSpacing: '1.2px',
-            color: 'white',
-            opacity: 0.85,
-          }}
-        >
-          LAUNCHED ON
-        </span>
-      </span>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-        <span
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: 'white',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          LaunchNest
-        </span>
-        <span
-          style={{
-            fontSize: 9,
-            fontWeight: 700,
-            background: 'rgba(255,255,255,0.22)',
-            color: 'white',
-            padding: '2px 5px',
-            borderRadius: 4,
-            lineHeight: 1,
-            letterSpacing: '0.5px',
-          }}
-        >
-          LN
-        </span>
-      </span>
-    </a>
-  )
-}
-
 function BadgeSet({ clone = false }: { clone?: boolean }) {
   return (
     <div
@@ -98,33 +23,6 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
           src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1185138&theme=light&t=1791703582287"
           loading="lazy"
           className="h-auto w-[250px] max-w-full object-contain"
-        />
-      </a>
-      <a
-        href="https://fazier.com/launches/adrender.app"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block shrink-0"
-      >
-        <img
-          src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=dark"
-          width={120}
-          alt="Fazier badge"
-          className="h-[54px] w-auto object-contain"
-        />
-      </a>
-      <a
-        href="https://saascity.io"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block shrink-0"
-      >
-        <img
-          src="https://saascity.io/badges/featured-dark.svg"
-          alt="Featured on SaaSCity"
-          width={150}
-          height={54}
-          className="h-[54px] w-auto object-contain"
         />
       </a>
       <a
@@ -155,18 +53,29 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
         />
       </a>
       <a
-        href="https://www.productlaunchify.com"
+        href="https://fazier.com/launches/adrender.app"
         target="_blank"
         rel="noopener noreferrer"
-        title="Featured on Product Launchify"
-        aria-label="Featured on Product Launchify"
         className="inline-block shrink-0"
       >
         <img
-          src="https://www.productlaunchify.com/images/badges/powered-by-light.svg"
-          alt="Featured on Product Launchify"
-          width={231}
-          height={55}
+          src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=dark"
+          width={120}
+          alt="Fazier badge"
+          className="h-[54px] w-auto object-contain"
+        />
+      </a>
+      <a
+        href="https://saascity.io"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block shrink-0"
+      >
+        <img
+          src="https://saascity.io/badges/featured-dark.svg"
+          alt="Featured on SaaSCity"
+          width={150}
+          height={54}
           className="h-[54px] w-auto object-contain"
         />
       </a>
@@ -185,17 +94,20 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
           className="h-[54px] w-auto object-contain"
         />
       </a>
-      <LaunchNestBadge />
     </div>
   )
 }
 
+/** Copies of one badge set. The scroll moves -50%, so half the track must stay at least as wide as a 2560px viewport. */
+const BADGE_SET_COPIES = 6
+
 function FooterBadgeCarousel() {
   return (
     <section aria-label="As featured on" className="footer-badge-carousel">
-      <div className="footer-badge-track">
-        <BadgeSet />
-        <BadgeSet clone />
+      <div className="footer-badge-track" style={{ animationDuration: '94s' }}>
+        {Array.from({ length: BADGE_SET_COPIES }, (_, index) => (
+          <BadgeSet key={index} clone={index > 0} />
+        ))}
       </div>
     </section>
   )
