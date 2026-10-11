@@ -109,10 +109,10 @@ const SECTIONS: FeatureSection[] = [
     id: 'easy-to-use',
     heading: 'Easy to Use',
     imageSrc: '/placeholders/easy-to-use.png',
-    imageWidth: 1280,
-    imageHeight: 800,
+    imageWidth: 1024,
+    imageHeight: 590,
     imageLeft: false,
-    alt: 'Temporary placeholder',
+    alt: 'AdRender made simple: a few clicks to render ads',
     paragraphs: [
       'You only need to know how to click. No prompting is required, and you don\'t need to learn design or connect other tools to start. There\'s nothing technical to set up. You can still write your own prompt whenever you want to.',
       'It\'s self-explanatory by design, and the same three steps cover images and video. Add your brand — URL scan or campaign documents. Choose winning templates — Browse what\'s working, then render at scale. See your ads — Finished creatives, ready to launch.',
@@ -137,7 +137,7 @@ function FeatureBlock({ section }: { section: FeatureSection }) {
     <div className="relative aspect-[8/5] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#12121a]">
       <img
         src={section.imageSrc}
-        alt={section.alt ?? 'Temporary placeholder'}
+        alt={section.alt ?? 'AdRender made simple: a few clicks to render ads'}
         width={section.imageWidth ?? 1280}
         height={section.imageHeight ?? 800}
         decoding="async"

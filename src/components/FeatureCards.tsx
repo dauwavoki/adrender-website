@@ -20,7 +20,10 @@ type FeatureCard = {
   sub: string
   highlights?: string[]
   body: string
-  imageId: PlaceholderId
+  imageId?: PlaceholderId
+  imageSrc?: string
+  imageWidth?: number
+  imageHeight?: number
   icon: LucideIcon
   accent: string
   alt?: string
@@ -96,10 +99,12 @@ const FEATURES: FeatureCard[] = [
     heading: 'Easy to Use',
     sub: 'No setup. Just three steps.',
     body: "No prompting and no design skills needed. Nothing technical to set up and nothing to connect. It's self-explanatory — you click through three steps and render images and video.",
-    imageId: '03',
+    imageSrc: '/placeholders/easy-to-use.png',
+    imageWidth: 1024,
+    imageHeight: 590,
     icon: MousePointerClick,
     accent: 'text-[#00E5FF]',
-    alt: 'Finished ads in AdRender, ready after three steps',
+    alt: 'AdRender made simple: a few clicks to render ads',
   },
 ]
 
@@ -146,12 +151,26 @@ export function FeatureCards() {
                       </span>
                     </Link>
                   </div>
-                  <PlaceholderImage
-                    id={f.imageId}
-                    alt={f.alt}
-                    className="mt-auto aspect-[10/7] border-t border-white/[0.04]"
-                    imgClassName="h-full w-full object-cover object-top"
-                  />
+                  {f.imageSrc ? (
+                    <div className="relative mt-auto aspect-[10/7] overflow-hidden border-t border-white/[0.04] bg-[#12121a]">
+                      <img
+                        src={f.imageSrc}
+                        alt={f.alt ?? 'AdRender made simple: a few clicks to render ads'}
+                        width={f.imageWidth}
+                        height={f.imageHeight}
+                        decoding="async"
+                        loading="lazy"
+                        className="h-full w-full object-cover object-top"
+                      />
+                    </div>
+                  ) : (
+                    <PlaceholderImage
+                      id={f.imageId!}
+                      alt={f.alt}
+                      className="mt-auto aspect-[10/7] border-t border-white/[0.04]"
+                      imgClassName="h-full w-full object-cover object-top"
+                    />
+                  )}
                 </article>
               </ScrollReveal>
             )
