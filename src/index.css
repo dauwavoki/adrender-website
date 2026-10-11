@@ -338,76 +338,170 @@
   }
 }
 
-/* How It Works — stacked showcase + tilted carousels.
+/* How It Works — stacked cards + carousels.
    Kept outside @layer so Tailwind doesn't tree-shake the keyframes. */
 
-/* Overlapping card stack (inactive headers peek from behind/below) */
-.hiw-stack {
-  display: flex;
-  flex-direction: column;
+@property --hiw-bezel {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 58%;
 }
 
-.hiw-stack-card + .hiw-stack-card {
-  margin-top: -0.65rem;
+/* Card 1 cyan → blue, card 2 violet → magenta, card 3 amber → orange.
+   Cyan, purple, and orange are the site tokens; blue, magenta, and amber
+   are the nearest steps that keep the three cards distinct on the dark bg. */
+.hiw-card {
+  --hiw-a: var(--accent-cyan);
+  --hiw-b: #2f80ff;
+  --hiw-spot-x: 0%;
+  --hiw-spot-y: 0%;
+  --hiw-spot2-x: 100%;
+  --hiw-spot2-y: 100%;
+  --hiw-base: #12121a;
+  --hiw-bezel: 58%;
+  position: relative;
+  max-width: 100%;
+  overflow: clip;
+  border: 2px solid transparent;
+  border-radius: 1.75rem;
+  background-image:
+    radial-gradient(
+      ellipse 78% 55% at var(--hiw-spot-x) var(--hiw-spot-y),
+      color-mix(in srgb, var(--hiw-a) 16%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 46% 42% at var(--hiw-spot2-x) var(--hiw-spot2-y),
+      color-mix(in srgb, var(--hiw-b) 12%, transparent),
+      transparent 58%
+    ),
+    linear-gradient(var(--hiw-base), var(--hiw-base)),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--hiw-a) var(--hiw-bezel), transparent),
+      color-mix(in srgb, var(--hiw-b) var(--hiw-bezel), transparent)
+    );
+  background-origin: border-box;
+  background-clip: padding-box, padding-box, padding-box, border-box;
+  box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
+  transition:
+    box-shadow 220ms ease,
+    --hiw-bezel 220ms ease;
 }
 
-/* Mobile: all cards open — drop overlap and add scrollable breathing room */
-@media (max-width: 767px) {
-  .hiw-stack-card + .hiw-stack-card {
-    margin-top: 1.25rem;
+.hiw-card--1 {
+  --hiw-a: var(--accent-cyan);
+  --hiw-b: #2f80ff;
+}
+
+.hiw-card--2 {
+  --hiw-a: var(--accent-purple);
+  --hiw-b: #e23d9b;
+  --hiw-spot-x: 100%;
+  --hiw-spot-y: 0%;
+  --hiw-spot2-x: 0%;
+  --hiw-spot2-y: 100%;
+  --hiw-base: #141018;
+}
+
+.hiw-card--3 {
+  --hiw-a: #f5b031;
+  --hiw-b: var(--accent-orange);
+  --hiw-spot-x: 50%;
+  --hiw-spot-y: 0%;
+  --hiw-spot2-x: 0%;
+  --hiw-spot2-y: 100%;
+  --hiw-base: #14110e;
+}
+
+.hiw-card-num {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  background-image: linear-gradient(120deg, var(--hiw-a), var(--hiw-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hiw-card-title {
+  margin-top: 0.9rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 4.2vw, 3.15rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  color: #fff;
+}
+
+@keyframes hiw-title-glaze {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: -100% 50%;
   }
 }
 
-.hiw-stack-card {
-  box-shadow:
-    0 18px 40px -24px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(255, 255, 255, 0.03);
+@media (hover: hover) and (pointer: fine) {
+  .hiw-card:hover {
+    --hiw-bezel: 100%;
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--hiw-a) 55%, transparent),
+      0 0 34px -4px color-mix(in srgb, var(--hiw-a) 62%, transparent),
+      0 18px 48px -14px color-mix(in srgb, var(--hiw-b) 55%, transparent);
+  }
+
+  .hiw-card:hover .hiw-card-title {
+    background-image: linear-gradient(
+      105deg,
+      var(--hiw-a) 0%,
+      var(--hiw-b) 36%,
+      #fff 50%,
+      var(--hiw-b) 64%,
+      var(--hiw-a) 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: hiw-title-glaze 2.8s linear infinite;
+  }
 }
 
-/* Ghostly logo wash — blue / purple / yellow, very light */
-.hiw-card-tone-1 {
-  background:
+/* Touch: static card gradient, no shimmer and no sticky hover glow. */
+@media (hover: none), (pointer: coarse) {
+  .hiw-card-title {
+    background-image: linear-gradient(105deg, var(--hiw-a), var(--hiw-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.hiw-closing {
+  border: 2px solid transparent;
+  border-radius: 1.75rem;
+  background-image:
     radial-gradient(
-      ellipse 80% 70% at 12% 0%,
+      ellipse 55% 80% at 0% 0%,
       color-mix(in srgb, var(--accent-cyan) 14%, transparent),
       transparent 58%
     ),
     radial-gradient(
-      ellipse 50% 45% at 90% 100%,
-      color-mix(in srgb, var(--accent-purple) 8%, transparent),
-      transparent 55%
-    ),
-    #12121a;
-}
-
-.hiw-card-tone-2 {
-  background:
-    radial-gradient(
-      ellipse 80% 70% at 88% 0%,
+      ellipse 40% 70% at 100% 100%,
       color-mix(in srgb, var(--accent-purple) 14%, transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 50% 45% at 10% 100%,
-      color-mix(in srgb, var(--accent-cyan) 7%, transparent),
       transparent 55%
     ),
-    #141018;
-}
-
-.hiw-card-tone-3 {
-  background:
-    radial-gradient(
-      ellipse 80% 70% at 50% 0%,
-      color-mix(in srgb, var(--accent-orange) 12%, transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 55% 50% at 15% 100%,
-      color-mix(in srgb, var(--accent-purple) 8%, transparent),
-      transparent 55%
-    ),
-    #12100e;
+    linear-gradient(#12121a, #12121a),
+    linear-gradient(120deg, var(--accent-cyan), var(--accent-purple));
+  background-origin: border-box;
+  background-clip: padding-box, padding-box, padding-box, border-box;
+  box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
 }
 
 /* Card 1 — always-on scanning control (stands in for app "Scan here") */
@@ -449,11 +543,16 @@
   animation: hiw-scan-sweep 2.2s ease-in-out infinite;
 }
 
-/* Soft edge fade — templates dissolve into the edges (no dark bars) */
+/* Soft edge fade. Tiles are larger than the old 132×176 / 148×198 strip
+   and sit in a flat, evenly spaced row so the bigger artwork is not piled up. */
 .hiw-tilted-carousel {
-  --hiw-card-w: 132px;
-  --hiw-card-h: 176px;
-  --hiw-overlap: -28px;
+  --hiw-card-w: 168px;
+  --hiw-card-h: 224px;
+  --hiw-gap: 14px;
+  max-width: 100%;
+  overflow: clip;
+  touch-action: pan-y;
+  contain: paint;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
@@ -464,79 +563,58 @@
   mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
 }
 
-/* Batch-render tile spinner (app-style loading ring) */
-@keyframes hiw-render-spin {
-  from {
-    transform: rotate(-90deg);
-  }
-  to {
-    transform: rotate(270deg);
-  }
-}
-
-.hiw-render-arc {
-  animation: hiw-render-spin 1.1s linear infinite;
-}
-
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .hiw-tilted-carousel {
-    --hiw-card-w: 148px;
-    --hiw-card-h: 198px;
-    --hiw-overlap: -32px;
+    --hiw-card-w: 220px;
+    --hiw-card-h: 293px;
+    --hiw-gap: 18px;
   }
 }
 
 .hiw-tilted-stage {
-  perspective: 900px;
-  transform-style: preserve-3d;
+  overflow: clip;
+  max-width: 100%;
 }
 
 .hiw-tilted-track {
   display: flex;
   width: max-content;
-  transform: rotateX(6deg) rotateY(-10deg) translateZ(0);
-  transform-style: preserve-3d;
-  animation: hiw-carousel-scroll 48s linear infinite;
   will-change: transform;
-}
-
-.hiw-tilted-track--paused {
-  animation-play-state: paused;
 }
 
 .hiw-tilted-card {
   flex: 0 0 var(--hiw-card-w);
   width: var(--hiw-card-w);
   height: var(--hiw-card-h);
-  margin-right: var(--hiw-overlap);
+  margin-right: var(--hiw-gap);
   border-radius: 1.15rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     0 14px 28px -12px rgba(0, 0, 0, 0.75),
     0 0 0 1px rgba(255, 255, 255, 0.04);
-  transform: rotateY(14deg);
-  transform-style: preserve-3d;
   overflow: hidden;
 }
 
-@keyframes hiw-carousel-scroll {
-  from {
-    transform: rotateX(6deg) rotateY(-10deg) translate3d(0, 0, 0);
-  }
-  to {
-    /* Half track = one full set of duplicated items */
-    transform: rotateX(6deg) rotateY(-10deg) translate3d(-50%, 0, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hiw-tilted-track {
+  .hiw-tilted-track,
+  .hiw-tilted-card {
+    transform: none;
+    will-change: auto;
+  }
+
+  .hiw-card-title,
+  .hiw-card:hover .hiw-card-title {
+    background-image: linear-gradient(105deg, var(--hiw-a), var(--hiw-b));
+    background-size: 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
     animation: none;
   }
 
   .hiw-scan-shimmer,
-  .hiw-scan-btn,
-  .hiw-render-arc {
+  .hiw-scan-btn {
     animation: none;
   }
 

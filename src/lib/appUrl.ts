@@ -79,3 +79,17 @@ export function getAppUrl(path = ''): string {
   // Avoid trailing slash-only path noise for the root app URL
   return href.endsWith('/') && url.pathname === '/' && !url.search ? APP_BASE : href
 }
+
+/**
+ * Marketing → app sign-up handoff.
+ * Same destination the How It Works Scan box used: `getAppUrl('/signup')`,
+ * which keeps affiliate `ref` and attribution params.
+ * A non-empty URL is appended as `?url=` so the app can preload brand setup.
+ * An empty value leaves that parameter off.
+ */
+export function getSignupUrl(websiteUrl?: string): string {
+  const dest = new URL(getAppUrl('/signup'))
+  const trimmed = (websiteUrl ?? '').trim()
+  if (trimmed) dest.searchParams.set('url', trimmed)
+  return dest.toString()
+}

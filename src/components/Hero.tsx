@@ -1,4 +1,7 @@
+import { useState, type FormEvent, type MouseEvent } from 'react'
+import { Globe } from 'lucide-react'
 import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 
 const DEFAULT_HEADLINE = 'Create more ads. Launch more tests. Find more winners.'
 const DEFAULT_SUBHEAD =
@@ -21,7 +24,22 @@ export function Hero({
   ctaNote = DEFAULT_CTA_NOTE,
   audienceLine = DEFAULT_AUDIENCE,
 }: HeroProps) {
-  const appUrl = useAppUrl()
+  const signupHref = useAppUrl('/signup')
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [isNavigating, setIsNavigating] = useState(false)
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (isNavigating) return
+    setIsNavigating(true)
+    window.location.assign(getSignupUrl(websiteUrl))
+  }
+
+  const handlePhotoStart = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    e.preventDefault()
+    window.location.assign(getSignupUrl())
+  }
 
   return (
     <section className="relative overflow-hidden px-4 pb-10 pt-16 md:px-6 md:pb-14 md:pt-24">
@@ -55,14 +73,45 @@ export function Hero({
         <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-zinc-400 sm:text-lg md:text-xl">
           {subhead}
         </p>
-        <div className="mt-10 flex flex-col items-center gap-3">
+        <div className="mt-10">
+          <form onSubmit={handleSubmit} className="mx-auto w-full max-w-2xl">
+            <div className="flex flex-col gap-3 md:flex-row md:items-stretch">
+              <div className="relative min-w-0 flex-1">
+                <label htmlFor="hero-brand-url" className="sr-only">
+                  Add your URL (optional)
+                </label>
+                <Globe
+                  className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40"
+                  aria-hidden
+                />
+                <input
+                  id="hero-brand-url"
+                  type="text"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="Add your URL (optional)"
+                  autoComplete="url"
+                  className="focus-ring-brand w-full rounded-xl border border-white/10 bg-bg-card py-3.5 pl-12 pr-4 font-mono text-base text-white placeholder-white/30 transition-all focus:border-[var(--accent-cyan)]"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isNavigating}
+                className="btn-cta inline-flex w-full shrink-0 items-center justify-center rounded-xl px-8 py-3.5 text-base font-semibold whitespace-nowrap disabled:opacity-70 md:w-auto"
+              >
+                Render my ads
+              </button>
+            </div>
+          </form>
+          <p className="mt-3 text-sm text-zinc-500">No URL needed to start. Add your assets later.</p>
           <a
-            href={appUrl}
-            className="btn-cta inline-flex items-center justify-center rounded-xl px-9 py-3.5 text-base font-semibold"
+            href={signupHref}
+            onClick={handlePhotoStart}
+            className="mt-2 inline-block text-sm text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
           >
-            Start Free
+            Or start free with a product photo →
           </a>
-          <p className="text-sm text-zinc-500">{ctaNote}</p>
+          <p className="mt-3 text-sm text-zinc-500">{ctaNote}</p>
         </div>
         {audienceLine ? (
           <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">{audienceLine}</p>
