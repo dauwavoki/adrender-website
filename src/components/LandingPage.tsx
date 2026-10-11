@@ -5,7 +5,7 @@ import { ProofRow } from './ProofRow'
 import { HowItWorks } from './HowItWorks'
 import { FounderStory } from './FounderStory'
 import { Pricing } from './Pricing'
-import { FaqSection, LANDING_SHARED_FAQ } from './FaqSection'
+import { FaqSection, landingSharedFaqGroups } from './FaqSection'
 import { ClosingCta } from './ClosingCta'
 import { landingPath, CTA_NOTE, type LandingPageConfig } from '../data/landingPages'
 
@@ -13,9 +13,8 @@ type LandingPageProps = {
   config: LandingPageConfig
 }
 
-function withSharedFaq(items: LandingPageConfig['faq']) {
-  const seen = new Set(items.map((item) => item.q))
-  return [...items, ...LANDING_SHARED_FAQ.filter((item) => !seen.has(item.q))]
+function sharedFaqForPage(items: LandingPageConfig['faq']) {
+  return landingSharedFaqGroups(new Set(items.map((item) => item.q)))
 }
 
 export function LandingPage({ config }: LandingPageProps) {
@@ -70,7 +69,7 @@ export function LandingPage({ config }: LandingPageProps) {
 
       <FounderStory heading={config.founderHeading} paragraphs={config.founderParagraphs} />
       <Pricing />
-      <FaqSection items={withSharedFaq(config.faq)} intro={config.faqIntro} />
+      <FaqSection leadingItems={config.faq} groups={sharedFaqForPage(config.faq)} intro={config.faqIntro} />
       <ClosingCta
         heading={config.ctaHeading}
         sub={config.ctaSub}

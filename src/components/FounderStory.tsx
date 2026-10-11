@@ -47,8 +47,8 @@ export function FounderStory({
                         don&apos;t have to learn either.
                       </p>
                       <p>
-                        This page walks through every piece of that system — templates, library, brand intelligence,
-                        batch rendering, playground, sizes, Shopify sync, workspaces, and easy to use — so you can see
+                        This page walks through every piece of that system — templates, easy to use, brand intelligence,
+                        batch rendering, sizes, library, Shopify sync, playground, and workspaces — so you can see
                         exactly what replaces the six-tab grind.
                       </p>
                     </>

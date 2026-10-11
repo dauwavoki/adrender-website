@@ -2,6 +2,8 @@ import { ScrollReveal } from './ScrollReveal'
 
 type FaqEntry = { q: string; a: string }
 
+type FaqGroup = { label: string; items: FaqEntry[] }
+
 const DELETE_ACCOUNT: FaqEntry = {
   q: 'What if I delete my account?',
   a: "You have 30 days to recover it. Need it gone immediately? Email info@adrender.app from your account's email after deleting.",
@@ -47,80 +49,112 @@ const TOPUP_TOKENS_EXPIRE: FaqEntry = {
   a: 'No. Top-up tokens stay on your account until you use them. Your monthly plan tokens are always spent first, so your top-ups are used last.',
 }
 
-const LANDING_FAQ_ADDED: FaqEntry[] = [
+const WHAT_IS_ADRENDER: FaqEntry = {
+  q: 'What is AdRender?',
+  a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
+}
+
+const TOKEN_METER: FaqEntry = {
+  q: "What's a token, and what happens if I run out mid-render?",
+  a: "Tokens meter AI rendering. The cost is calculated from what you pick before you render, so you never run out mid-render. If you do not have enough tokens to start, you are prompted to buy a top-up pack.",
+}
+
+const CANCEL: FaqEntry = {
+  q: 'What happens if I cancel?',
+  a: "You drop to the Free plan and keep every ad and brand library you've built, forever. You can top up anytime for exactly the tokens you need — those top-ups never expire.",
+}
+
+const WORKSPACES: FaqEntry = {
+  q: 'What are workspaces?',
+  a: 'Subscribed accounts can create multiple workspaces and invite other users into them by email. Where your plan includes team seats, the account owner may invite members and assign role-based permissions.',
+}
+
+const FAILED_RENDERS: FaqEntry = {
+  q: 'Are failed renders refunded?',
+  a: 'Yes, always. If a render fails, the tokens are returned to your account.',
+}
+
+const WATERMARK: FaqEntry = {
+  q: 'Is there a watermark?',
+  a: 'No. All outputs are clean, with no watermarks, on every plan including Free.',
+}
+
+const CREDIT_CARD: FaqEntry = {
+  q: 'Do I need a credit card to start?',
+  a: 'No. You can start for free with no credit card. You get 10 free tokens each month to test AdRender with, so you can try it for yourself before choosing a plan.',
+}
+
+const SIZES: FaqEntry = {
+  q: 'What sizes can I create?',
+  a: 'AdRender offers 11 ad sizes covering Facebook, Instagram, LinkedIn, Google, TikTok and more. You pick the size and your ad comes out at that size.',
+}
+
+const STORE_TO_START: FaqEntry = {
+  q: 'Do I need a Shopify store or website to start?',
+  a: "No. A store or website URL works and lets AdRender pull in your brand automatically, but you don't need any assets to start. You can begin with neither.",
+}
+
+const UPLOADS: FaqEntry = {
+  q: 'Can I upload my own product images and marketing documents?',
+  a: 'Yes. Upload your own product photos, reference images and marketing documents. AdRender can pull ready-written ad copy from your documents and write new ad copy based on your content.',
+}
+
+const DESIGN_SKILLS: FaqEntry = {
+  q: 'Do I need design or prompting skills?',
+  a: 'No. You only need to know how to click. You can still write your own prompt whenever you want to.',
+}
+
+const LEARNING_CURVE: FaqEntry = {
+  q: 'How hard is it to learn AdRender?',
+  a: "It's simple by design. It takes three easy steps: Add your brand — URL scan or campaign documents. Choose winning templates — Browse what's working, then render at scale. See your ads — Finished creatives, ready to launch. It's self-explanatory, so there is nothing to learn up front and nothing technical to set up.",
+}
+
+const COMPETITORS: FaqEntry = {
+  q: 'Can I see what my competitors are advertising?',
+  a: 'Yes. Search through 100M+ real ads by niche and platform to see what competitors are running.',
+}
+
+/** Questions already appended to every /lp page, in addition to that page's own FAQ. */
+const SHARED_WITH_LANDING = new Set<FaqEntry>([
+  MONTHLY_TOKENS_ROLLOVER,
+  TOPUP_TOKENS_EXPIRE,
+  FAILED_RENDERS,
+  WATERMARK,
+  CREDIT_CARD,
+  SIZES,
+  STORE_TO_START,
+  UPLOADS,
+  DESIGN_SKILLS,
+  LEARNING_CURVE,
+  COMPETITORS,
+])
+
+const FAQ_GROUPS: FaqGroup[] = [
   {
-    q: 'Are failed renders refunded?',
-    a: 'Yes, always. If a render fails, the tokens are returned to your account.',
+    label: 'Getting started',
+    items: [WHAT_IS_ADRENDER, CREDIT_CARD, LEARNING_CURVE, DESIGN_SKILLS, STORE_TO_START, UPLOADS],
   },
   {
-    q: 'Is there a watermark?',
-    a: 'No. All outputs are clean, with no watermarks, on every plan including Free.',
+    label: 'What you can make',
+    items: [COMPETITORS, SIZES, WATERMARK, VIDEO_SUPPORT, VIDEO_LENGTH, VIDEO_ASPECT],
   },
   {
-    q: 'Do I need a credit card to start?',
-    a: 'No. You can start for free with no credit card. You get 10 free tokens each month to test AdRender with, so you can try it for yourself before choosing a plan.',
+    label: 'Tokens and pricing',
+    items: [TOKEN_METER, VIDEO_COST, FAILED_RENDERS, MONTHLY_TOKENS_ROLLOVER, TOPUP_TOKENS_EXPIRE, CANCEL],
   },
   {
-    q: 'What sizes can I create?',
-    a: 'AdRender offers 11 ad sizes covering Facebook, Instagram, LinkedIn, Google, TikTok and more. You pick the size and your ad comes out at that size.',
-  },
-  {
-    q: 'Do I need a Shopify store or website to start?',
-    a: "No. A store or website URL works and lets AdRender pull in your brand automatically, but you don't need any assets to start. You can begin with neither.",
-  },
-  {
-    q: 'Can I upload my own product images and marketing documents?',
-    a: 'Yes. Upload your own product photos, reference images and marketing documents. AdRender can pull ready-written ad copy from your documents and write new ad copy based on your content.',
-  },
-  {
-    q: 'Do I need design or prompting skills?',
-    a: 'No. You only need to know how to click. You can still write your own prompt whenever you want to.',
-  },
-  {
-    q: 'How hard is it to learn AdRender?',
-    a: "It's simple by design. It takes three easy steps: Add your brand — URL scan or campaign documents. Choose winning templates — Browse what's working, then render at scale. See your ads — Finished creatives, ready to launch. It's self-explanatory, so there is nothing to learn up front and nothing technical to set up.",
-  },
-  {
-    q: 'Can I see what my competitors are advertising?',
-    a: 'Yes. Search through 100M+ real ads by niche and platform to see what competitors are running.',
+    label: 'Shopify and accounts',
+    items: [SHOPIFY_APP, CONNECT_SHOPIFY, WORKSPACES, DELETE_ACCOUNT],
   },
 ]
 
-/** Homepage token + newer FAQ items, reused on every /lp page. */
-export const LANDING_SHARED_FAQ: FaqEntry[] = [
-  MONTHLY_TOKENS_ROLLOVER,
-  TOPUP_TOKENS_EXPIRE,
-  ...LANDING_FAQ_ADDED,
-]
-
-const FAQ: FaqEntry[] = [
-  {
-    q: 'What is AdRender?',
-    a: 'We turn your brand and proven, real ad templates into on-brand static and video ads — hundreds of ads in under 10 minutes, no agency, no designer, no waiting.',
-  },
-  {
-    q: "What's a token, and what happens if I run out mid-render?",
-    a: "Tokens meter AI rendering. The cost is calculated from what you pick before you render, so you never run out mid-render. If you do not have enough tokens to start, you are prompted to buy a top-up pack.",
-  },
-  MONTHLY_TOKENS_ROLLOVER,
-  TOPUP_TOKENS_EXPIRE,
-  {
-    q: 'What happens if I cancel?',
-    a: "You drop to the Free plan and keep every ad and brand library you've built, forever. You can top up anytime for exactly the tokens you need — those top-ups never expire.",
-  },
-  {
-    q: 'What are workspaces?',
-    a: 'Subscribed accounts can create multiple workspaces and invite other users into them by email. Where your plan includes team seats, the account owner may invite members and assign role-based permissions.',
-  },
-  CONNECT_SHOPIFY,
-  SHOPIFY_APP,
-  DELETE_ACCOUNT,
-  VIDEO_SUPPORT,
-  VIDEO_LENGTH,
-  VIDEO_ASPECT,
-  VIDEO_COST,
-  ...LANDING_FAQ_ADDED,
-]
+/** Shared FAQ in group order, omitting questions a landing page already asks. */
+export function landingSharedFaqGroups(exclude: ReadonlySet<string>): FaqGroup[] {
+  return FAQ_GROUPS.map((group) => ({
+    label: group.label,
+    items: group.items.filter((item) => SHARED_WITH_LANDING.has(item) && !exclude.has(item.q)),
+  })).filter((group) => group.items.length > 0)
+}
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   return (
@@ -133,13 +167,29 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   )
 }
 
+function FaqItems({ items }: { items: FaqEntry[] }) {
+  return (
+    <div className="space-y-3">
+      {items.map((item) => (
+        <ScrollReveal key={item.q}>
+          <FaqItem q={item.q} a={item.a} />
+        </ScrollReveal>
+      ))}
+    </div>
+  )
+}
+
 type FaqSectionProps = {
-  items?: FaqEntry[]
+  /** Page-specific questions shown first, with no group label. */
+  leadingItems?: FaqEntry[]
+  /** Grouped questions. Defaults to the full homepage FAQ. */
+  groups?: FaqGroup[]
   intro?: string
 }
 
 export function FaqSection({
-  items = FAQ,
+  leadingItems = [],
+  groups = FAQ_GROUPS,
   intro = "Tokens, canceling, and what's included — without the fine-print fog.",
 }: FaqSectionProps) {
   return (
@@ -153,11 +203,15 @@ export function FaqSection({
           <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">{intro}</p>
         </ScrollReveal>
 
-        <div className="mt-12 space-y-3">
-          {items.map((item) => (
-            <ScrollReveal key={item.q}>
-              <FaqItem q={item.q} a={item.a} />
-            </ScrollReveal>
+        <div className="mt-12 space-y-10">
+          {leadingItems.length > 0 && <FaqItems items={leadingItems} />}
+          {groups.map((group) => (
+            <div key={group.label}>
+              <p className="text-section-label text-xs font-semibold uppercase tracking-[0.2em]">{group.label}</p>
+              <div className="mt-3">
+                <FaqItems items={group.items} />
+              </div>
+            </div>
           ))}
         </div>
       </div>
