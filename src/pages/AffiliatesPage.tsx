@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { PageMeta } from '../components/PageMeta'
-import { APP_BASE } from '../lib/appUrl'
+import { APP_BASE, getSignupUrl } from '../lib/appUrl'
 import { useAppUrl } from '../hooks/useAppUrl'
 
 const SITE_URL = 'https://adrender.app'
@@ -111,6 +111,7 @@ const FAQ: { q: string; a: string }[] = [
 
 export function AffiliatesPage() {
   const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
   const steps = getSteps(appUrl)
 
   return (
@@ -136,7 +137,7 @@ export function AffiliatesPage() {
           </div>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={appUrl}
+              href={signupUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Sign up to become an affiliate
@@ -272,7 +273,7 @@ export function AffiliatesPage() {
         <ScrollReveal>
           <div className="mt-10 flex justify-center">
             <a
-              href={appUrl}
+              href={signupUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Create your account
@@ -321,7 +322,7 @@ export function AffiliatesPage() {
             </p>
             <div className="mt-8 flex justify-center">
               <a
-                href={appUrl}
+                href={signupUrl}
                 className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
               >
                 Sign up at app.adrender.app

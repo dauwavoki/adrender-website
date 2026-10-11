@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
-import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
@@ -41,7 +41,7 @@ function FeatureList({ tier }: { tier: Tier }) {
   )
 }
 
-function TierCard({ tier, billing, appUrl }: { tier: Tier; billing: Billing; appUrl: string }) {
+function TierCard({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; signupUrl: string }) {
   const inner = (
     <>
       {tier.popular && (
@@ -60,7 +60,7 @@ function TierCard({ tier, billing, appUrl }: { tier: Tier; billing: Billing; app
       </div>
       <FeatureList tier={tier} />
       <a
-        href={appUrl}
+        href={signupUrl}
         className={`mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
           tier.popular ? 'btn-cta' : 'btn-outline-accent'
         }`}
@@ -81,7 +81,7 @@ function TierCard({ tier, billing, appUrl }: { tier: Tier; billing: Billing; app
   return <article className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#12121a] p-6">{inner}</article>
 }
 
-function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billing; appUrl: string }) {
+function FreeTierBanner({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; signupUrl: string }) {
   return (
     <article className="relative overflow-hidden rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)] bg-gradient-to-br from-[#0e1a22] via-[#12121a] to-[#16121f] px-6 py-8 sm:px-10">
       <div
@@ -106,7 +106,7 @@ function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billin
             )}
           </div>
           <a
-            href={appUrl}
+            href={signupUrl}
             className="btn-cta mt-6 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold"
           >
             Start Free
@@ -126,7 +126,7 @@ function FreeTierBanner({ tier, billing, appUrl }: { tier: Tier; billing: Billin
 
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
-  const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
   const freeTier = tiers.filter((t) => t.id === 'free')
   const paidTiers = tiers.filter((t) => t.id !== 'free')
 
@@ -165,14 +165,14 @@ export function Pricing() {
         <div className="mt-14 space-y-6">
           {freeTier.map((tier) => (
             <ScrollReveal key={tier.id}>
-              <FreeTierBanner tier={tier} billing={billing} appUrl={appUrl} />
+              <FreeTierBanner tier={tier} billing={billing} signupUrl={signupUrl} />
             </ScrollReveal>
           ))}
 
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {paidTiers.map((tier) => (
               <ScrollReveal key={tier.id}>
-                <TierCard tier={tier} billing={billing} appUrl={appUrl} />
+                <TierCard tier={tier} billing={billing} signupUrl={signupUrl} />
               </ScrollReveal>
             ))}
           </div>

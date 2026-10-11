@@ -1,4 +1,4 @@
-import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 
 type ClosingCtaProps = {
   className?: string
@@ -13,7 +13,7 @@ export function ClosingCta({
   sub = 'Your brand goes in. Hundreds of ads come out. Free to start, no card required.',
   ctaNote,
 }: ClosingCtaProps) {
-  const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
 
   return (
     <section className={`px-4 py-24 md:px-6 md:py-28 ${className}`}>
@@ -34,7 +34,7 @@ export function ClosingCta({
             {sub}
           </p>
           <a
-            href={appUrl}
+            href={signupUrl}
             className="btn-cta mt-8 inline-flex items-center justify-center rounded-xl px-9 py-3.5 text-base font-semibold"
           >
             Start Free

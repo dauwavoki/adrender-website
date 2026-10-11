@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 import { PageMeta } from './PageMeta'
 import { ProofRow } from './ProofRow'
-import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 import type { SolutionConfig } from '../data/solutions'
 import { solutionPath } from '../data/solutions'
 
@@ -29,7 +29,7 @@ function EmphasizedText({ text }: { text: string }) {
 }
 
 export function SolutionPage({ config }: SolutionPageProps) {
-  const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
   const path = solutionPath(config.slug)
 
   return (
@@ -60,7 +60,7 @@ export function SolutionPage({ config }: SolutionPageProps) {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3">
             <a
-              href={appUrl}
+              href={signupUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Start Free
@@ -150,7 +150,7 @@ export function SolutionPage({ config }: SolutionPageProps) {
             <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">Ready to switch?</h2>
             <div className="mt-8 flex justify-center">
               <a
-                href={appUrl}
+                href={signupUrl}
                 className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
               >
                 Start Free

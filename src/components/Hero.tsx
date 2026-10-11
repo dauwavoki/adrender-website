@@ -1,6 +1,5 @@
 import { useState, type FormEvent, type MouseEvent } from 'react'
 import { Globe } from 'lucide-react'
-import { useAppUrl } from '../hooks/useAppUrl'
 import { getSignupUrl } from '../lib/appUrl'
 
 const DEFAULT_HEADLINE = 'Create more ads. Launch more tests. Find more winners.'
@@ -24,7 +23,7 @@ export function Hero({
   ctaNote = DEFAULT_CTA_NOTE,
   audienceLine = DEFAULT_AUDIENCE,
 }: HeroProps) {
-  const signupHref = useAppUrl('/signup')
+  const signupHref = getSignupUrl()
   const [websiteUrl, setWebsiteUrl] = useState('')
   const [isNavigating, setIsNavigating] = useState(false)
 

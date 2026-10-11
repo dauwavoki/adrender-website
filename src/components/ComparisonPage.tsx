@@ -1,7 +1,7 @@
 import { Check, X, ArrowRight, ExternalLink, type LucideIcon } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 import { PageMeta } from './PageMeta'
-import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 
 export type ComparisonRow = {
   label: string
@@ -61,7 +61,7 @@ export function ComparisonPage({
   metaDescription,
   path,
 }: ComparisonPageProps) {
-  const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
 
   return (
     <div className="px-4 py-20 md:px-6 md:py-28">
@@ -77,7 +77,7 @@ export function ComparisonPage({
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">{subheadline}</p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={appUrl}
+              href={signupUrl}
               className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
             >
               Start Free on AdRender
@@ -166,7 +166,7 @@ export function ComparisonPage({
             <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">Ready to switch?</h2>
             <div className="mt-8 flex justify-center">
               <a
-                href={appUrl}
+                href={signupUrl}
                 className="btn-cta inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold"
               >
                 Start Free

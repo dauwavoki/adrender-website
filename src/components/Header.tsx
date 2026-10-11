@@ -4,6 +4,7 @@ import { BrandLogoLink } from './BrandLogoLink'
 import { MoreNav } from './MoreNav'
 import { SolutionsNav } from './SolutionsNav'
 import { useAppUrl } from '../hooks/useAppUrl'
+import { getSignupUrl } from '../lib/appUrl'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `text-sm font-medium transition-colors ${
@@ -13,6 +14,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 export function Header() {
   const [open, setOpen] = useState(false)
   const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/85 backdrop-blur-md">
@@ -50,7 +52,7 @@ export function Header() {
               Sign In
             </a>
             <a
-              href={appUrl}
+              href={signupUrl}
               className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold lg:inline-flex"
             >
               Start Free
@@ -117,7 +119,7 @@ export function Header() {
             Sign In
           </a>
           <a
-            href={appUrl}
+            href={signupUrl}
             className="btn-cta mt-2 rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
             onClick={() => setOpen(false)}
           >

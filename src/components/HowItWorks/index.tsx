@@ -1,4 +1,4 @@
-import { useAppUrl } from '../../hooks/useAppUrl'
+import { getSignupUrl } from '../../lib/appUrl'
 import { BrandScan } from './BrandScan'
 import { ResultsShowcase } from './ResultsShowcase'
 import { TemplateShowcase } from './TemplateShowcase'
@@ -25,7 +25,7 @@ const STEPS = [
 ]
 
 function ClosingStartCard() {
-  const appUrl = useAppUrl()
+  const signupUrl = getSignupUrl()
 
   return (
     <div className="hiw-closing px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12">
@@ -43,7 +43,7 @@ function ClosingStartCard() {
           </p>
         </div>
         <a
-          href={appUrl}
+          href={signupUrl}
           className="btn-cta inline-flex w-full shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-8 py-3.5 text-base font-semibold md:w-auto"
         >
           Start free →
