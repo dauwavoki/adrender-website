@@ -86,6 +86,21 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
       data-badge-clone={clone ? '' : undefined}
     >
       <a
+        href="https://www.producthunt.com/products/adrender?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-adrender"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block max-w-full shrink-0"
+      >
+        <img
+          alt="AdRender - Hundreds of real, on-brand ads in minutes — not AI slop | Product Hunt"
+          width={250}
+          height={54}
+          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1185138&theme=light&t=1791703582287"
+          loading="lazy"
+          className="h-auto w-[250px] max-w-full object-contain"
+        />
+      </a>
+      <a
         href="https://fazier.com/launches/adrender.app"
         target="_blank"
         rel="noopener noreferrer"
