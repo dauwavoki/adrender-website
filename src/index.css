@@ -488,45 +488,6 @@
   box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
 }
 
-/* Card 1 — always-on scanning control (stands in for app "Scan here") */
-@keyframes hiw-scan-sweep {
-  0% {
-    transform: translateX(-120%);
-    opacity: 0;
-  }
-  40% {
-    opacity: 0.65;
-  }
-  100% {
-    transform: translateX(120%);
-    opacity: 0;
-  }
-}
-
-@keyframes hiw-scan-btn-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-cyan) 35%, transparent);
-  }
-  50% {
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-cyan) 0%, transparent);
-  }
-}
-
-.hiw-scan-btn {
-  animation: hiw-scan-btn-pulse 2.4s ease-in-out infinite;
-}
-
-.hiw-scan-shimmer {
-  background: linear-gradient(
-    105deg,
-    transparent 28%,
-    color-mix(in srgb, var(--accent-cyan) 35%, transparent) 50%,
-    transparent 72%
-  );
-  animation: hiw-scan-sweep 2.2s ease-in-out infinite;
-}
-
 /* Soft edge fade. Tiles are larger than the old 132×176 / 148×198 strip
    and sit in a flat, evenly spaced row so the bigger artwork is not piled up. */
 .hiw-tilted-carousel {
@@ -595,15 +556,6 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
     animation: none;
-  }
-
-  .hiw-scan-shimmer,
-  .hiw-scan-btn {
-    animation: none;
-  }
-
-  .hiw-scan-shimmer {
-    opacity: 0.25;
   }
 }
 

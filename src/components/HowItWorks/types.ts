@@ -1,6 +1,5 @@
 export interface DemoBrand {
   name: string
-  url: string
   category: string
   logoSrc: string
   brandVoice: string

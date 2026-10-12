@@ -1,30 +1,7 @@
-import { Globe, ShoppingBag, Upload, type LucideIcon } from 'lucide-react'
 import { getSignupUrl } from '../../lib/appUrl'
 import { BrandScan } from './BrandScan'
 import { ResultsShowcase } from './ResultsShowcase'
 import { TemplateShowcase } from './TemplateShowcase'
-
-const BRAND_OPTIONS: { label: string; icon: LucideIcon }[] = [
-  { label: 'Scan URL', icon: Globe },
-  { label: 'Upload Assets', icon: Upload },
-  { label: 'Connect Shopify Store', icon: ShoppingBag },
-]
-
-function BrandOptionChips() {
-  return (
-    <div className="mt-3 flex max-w-full flex-wrap items-center gap-2">
-      {BRAND_OPTIONS.map(({ label, icon: Icon }) => (
-        <span
-          key={label}
-          className="inline-flex max-w-full cursor-default items-center gap-1.5 rounded-full border border-[color:color-mix(in_srgb,var(--accent-cyan)_45%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_14%,transparent)] px-2.5 py-1 text-[11px] font-semibold leading-none text-[var(--accent-cyan)] sm:text-xs"
-        >
-          <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} aria-hidden />
-          <span className="whitespace-nowrap">{label}</span>
-        </span>
-      ))}
-    </div>
-  )
-}
 
 const STEPS = [
   {
@@ -113,12 +90,10 @@ export function HowItWorks() {
             <article key={step.num} className={`hiw-card ${step.tone} px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12`}>
               <p className="hiw-card-num">{step.num}</p>
               <h3 className="hiw-card-title">{step.title}</h3>
-              {step.num === '01' ? (
-                <BrandOptionChips />
-              ) : (
+              {step.num === '01' ? null : (
                 <p className="mt-3 text-sm text-white/50 sm:text-base">{step.subtitle}</p>
               )}
-              <div className="mt-6">
+              <div className={step.num === '01' ? 'mt-3' : 'mt-6'}>
                 {step.num === '01' && <BrandScan />}
                 {step.num === '02' && <TemplateShowcase />}
                 {step.num === '03' && <ResultsShowcase />}

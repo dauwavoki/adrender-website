@@ -3,7 +3,6 @@ import type { CarouselItem, DemoBrand } from '../components/HowItWorks/types'
 /** Single fixed example brand for the How It Works showcase. */
 export const DEMO_BRAND: DemoBrand = {
   name: 'YourBrand',
-  url: 'yourbrand.com',
   category: 'Athletic Wear',
   logoSrc: '/how-it-works/logo.png',
   brandVoice:
