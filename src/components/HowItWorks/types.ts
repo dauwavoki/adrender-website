@@ -1,6 +1,5 @@
 export interface DemoBrand {
   name: string
-  url: string
   category: string
   logoSrc: string
   brandVoice: string
@@ -11,7 +10,6 @@ export interface DemoBrand {
     imageSrc: string
     adCopyCount: number
   }[]
-  documentCount: number
 }
 
 export type CarouselMediaKind = 'image' | 'video'

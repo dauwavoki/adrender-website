@@ -7,7 +7,6 @@ const STEPS = [
   {
     num: '01' as const,
     title: 'Add your brand',
-    subtitle: 'URL scan or campaign documents',
     tone: 'hiw-card--1',
   },
   {
@@ -91,8 +90,10 @@ export function HowItWorks() {
             <article key={step.num} className={`hiw-card ${step.tone} px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12`}>
               <p className="hiw-card-num">{step.num}</p>
               <h3 className="hiw-card-title">{step.title}</h3>
-              <p className="mt-3 text-sm text-white/50 sm:text-base">{step.subtitle}</p>
-              <div className="mt-6">
+              {step.num === '01' ? null : (
+                <p className="mt-3 text-sm text-white/50 sm:text-base">{step.subtitle}</p>
+              )}
+              <div className={step.num === '01' ? 'mt-3' : 'mt-6'}>
                 {step.num === '01' && <BrandScan />}
                 {step.num === '02' && <TemplateShowcase />}
                 {step.num === '03' && <ResultsShowcase />}

@@ -1,49 +1,90 @@
-import { Check, FileText } from 'lucide-react'
+import { Check, Globe, ShoppingBag, Upload, type LucideIcon } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { DEMO_BRAND } from '../../data/howItWorksMock'
 
+const BRAND_OPTIONS: {
+  label: string
+  detail: string
+  icon: LucideIcon
+  from: string
+  to: string
+}[] = [
+  { label: 'Scan URL', detail: 'Paste your website', icon: Globe, from: '#00e5ff', to: '#2f80ff' },
+  {
+    label: 'Upload Assets',
+    detail: 'Add logos, photos or documents',
+    icon: Upload,
+    from: '#7b4fd4',
+    to: '#e23d9b',
+  },
+  {
+    label: 'Connect Shopify Store',
+    detail: 'Import your products',
+    icon: ShoppingBag,
+    from: '#f5b031',
+    to: '#ff6b2b',
+  },
+]
+
+function BrandOptionTiles() {
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {BRAND_OPTIONS.map(({ label, detail, icon: Icon, from, to }) => (
+        <div
+          key={label}
+          className="relative flex min-w-0 cursor-default items-center gap-3 overflow-hidden rounded-xl border border-white/10 bg-[#12121a] px-3.5 py-4"
+          style={{
+            backgroundImage: `radial-gradient(ellipse 110% 80% at 0% 0%, color-mix(in srgb, ${from} 18%, transparent), transparent 64%)`,
+          }}
+        >
+          <span
+            className="pointer-events-none absolute inset-x-0 top-0 h-0.5"
+            style={{ backgroundImage: `linear-gradient(90deg, ${from}, ${to})` }}
+            aria-hidden
+          />
+          <span
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white"
+            style={{ backgroundImage: `linear-gradient(135deg, ${from}, ${to})` }}
+            aria-hidden
+          >
+            <Icon className="h-6 w-6" strokeWidth={1.75} />
+          </span>
+          <span className="min-w-0">
+            <span
+              className="block max-w-full font-heading text-lg font-bold leading-tight tracking-tight"
+              style={
+                {
+                  backgroundImage: `linear-gradient(120deg, ${from}, ${to})`,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                } satisfies CSSProperties
+              }
+            >
+              {label}
+            </span>
+            <span className="mt-1 block text-xs leading-snug text-white/55">{detail}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 /**
- * Card 1 — fixed example URL with always-on scanning control (app "Scan here"
- * position) and extraction results in a single panel. URL is display-only.
+ * Card 1 — three ways to add a brand, then the extracted example result.
  */
 export function BrandScan() {
   return (
     <div className="space-y-5">
       <p className="max-w-2xl text-sm leading-relaxed text-white/80">
-        AdRender can extract your brand voice, brand colors, logo, product images and ad copies by
-        simply scanning your brand URL, or upload manually with campaign documents instead.
+        Scan your website and AdRender pulls your brand voice, colors, logo, product images and ad
+        copy automatically. Or upload your assets, or connect your Shopify store. No URL needed to
+        start, and you can add your assets any time later.
       </p>
 
       <div className="space-y-4">
-        <div>
-          <label className="mb-2 block text-[11px] font-semibold uppercase tracking-widest text-white/35">
-            Example Brand URL
-          </label>
-
-          {/* App-style row: URL field + scanning control where "Scan here" sits */}
-          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-stretch">
-            <div
-              className="relative flex min-w-0 flex-1 items-center rounded-lg border border-white/10 bg-bg-card px-3.5 py-3 font-mono text-sm text-white/80"
-              aria-hidden
-            >
-              <span className="text-white/35">https://</span>
-              <span className="truncate">{DEMO_BRAND.url}</span>
-            </div>
-
-            <div
-              className="hiw-scan-btn relative flex shrink-0 items-center justify-center gap-2 overflow-hidden rounded-lg border border-[color:color-mix(in_srgb,var(--accent-cyan)_45%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-cyan)_12%,transparent)] px-4 py-3 sm:min-w-[9.5rem]"
-              aria-hidden
-            >
-              <span className="hiw-scan-shimmer pointer-events-none absolute inset-0" />
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent-cyan)] opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent-cyan)]" />
-              </span>
-              <span className="relative text-xs font-semibold tracking-wide text-[var(--accent-cyan)]">
-                Scanning…
-              </span>
-            </div>
-          </div>
-        </div>
+        <BrandOptionTiles />
 
         <div className="border-t border-white/10" />
 
@@ -125,18 +166,6 @@ export function BrandScan() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 pt-0.5">
-          <FileText className="h-4 w-4 shrink-0 text-white/45" />
-          <div className="min-w-0">
-            <p className="text-xs font-medium text-white/75">
-              {DEMO_BRAND.documentCount} campaign documents
-            </p>
-            <p className="truncate font-mono text-[10px] text-white/35">
-              brand-guide.pdf · product-brief.docx · offer-sheet.pdf
-            </p>
           </div>
         </div>
       </div>
