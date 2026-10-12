@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type RefObject, type UIEvent } from 'react'
 import {
   ArrowUpRight,
   Bookmark,
@@ -209,7 +209,7 @@ function PreviewVideo({
 function TemplateCard({ item, href }: { item: PreviewTemplate; href: string }) {
   return (
     <a
-      className={cx('ap-card', 'ap-template', item.highlighted && 'is-lit')}
+      className="ap-card ap-template"
       style={glow(item.accent)}
       href={href}
     >
@@ -247,8 +247,8 @@ function TemplateRows({
 }) {
   return (
     <>
-      <TemplateRow label="Image" items={images} variant="pair" href={href} viewAll={viewAll} />
-      <TemplateRow label="Video" items={videos} variant="grid" href={href} viewAll={viewAll} />
+      <TemplateRow label="Image" items={images} href={href} viewAll={viewAll} />
+      <TemplateRow label="Video" items={videos} href={href} viewAll={viewAll} />
     </>
   )
 }
@@ -256,13 +256,11 @@ function TemplateRows({
 function TemplateRow({
   label,
   items,
-  variant,
   href,
   viewAll,
 }: {
   label: string
   items: readonly PreviewTemplate[]
-  variant: 'pair' | 'grid'
   href: string
   viewAll?: string
 }) {
@@ -277,7 +275,7 @@ function TemplateRow({
           </a>
         ) : null}
       </div>
-      <div className={variant === 'pair' ? 'ap-use-images' : 'ap-template-grid'}>
+      <div className="ap-template-grid">
         {items.map((item) => (
           <TemplateCard key={item.id} item={item} href={href} />
         ))}
@@ -415,7 +413,7 @@ function Sidebar({ href }: { href: string }) {
   )
 }
 
-function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; youtubeHref: string; youtubeExternal: boolean }) {
+function HomeColumn({ href }: { href: string }) {
   return (
     <div className="ap-home">
       <QuoteBlock />
@@ -429,7 +427,7 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
               return (
                 <a
                   key={card.id}
-                  className={cx('ap-card', 'ap-work-card', card.highlighted && 'is-lit')}
+                  className="ap-card ap-work-card"
                   style={glow(card.accent)}
                   href={href}
                 >
@@ -468,7 +466,7 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
           </span>
         </a>
 
-        <a className="ap-card ap-your-plan" style={glow(YOUR_PLAN.accent)} href={href}>
+        <a className="ap-card ap-your-plan is-lit" style={glow(YOUR_PLAN.accent)} href={href}>
           <span className="ap-kicker-row">
             <span className="ap-mini-icon">
               <CreditCard size={13} strokeWidth={1.75} aria-hidden />
@@ -495,16 +493,22 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
           </span>
           <span className="ap-tokens-num">{TOKEN_SUMMARY.available}</span>
           <span className="ap-tokens-hint">{TOKEN_SUMMARY.availableLabel}</span>
-          <span className="ap-token-split">
-            <span className="ap-token-cell">
-              <span className="ap-token-cell-label">{TOKEN_SUMMARY.planLabel}</span>
-              <span className="ap-token-cell-num">{TOKEN_SUMMARY.plan}</span>
-              <span className="ap-token-cell-note">{TOKEN_SUMMARY.planNote}</span>
+          <span className="ap-token-lines">
+            <span className="ap-token-line">
+              <span className="ap-token-line-label">{TOKEN_SUMMARY.planLabel}</span>
+              <span className="ap-token-line-num">{TOKEN_SUMMARY.plan}</span>
+              <span className="ap-token-line-note">
+                <span className="ap-token-dot" aria-hidden="true">·</span>
+                {TOKEN_SUMMARY.planNote}
+              </span>
             </span>
-            <span className="ap-token-cell">
-              <span className="ap-token-cell-label">{TOKEN_SUMMARY.topUpLabel}</span>
-              <span className="ap-token-cell-num">{TOKEN_SUMMARY.topUp}</span>
-              <span className="ap-token-cell-note">{TOKEN_SUMMARY.topUpNote}</span>
+            <span className="ap-token-line">
+              <span className="ap-token-line-label">{TOKEN_SUMMARY.topUpLabel}</span>
+              <span className="ap-token-line-num">{TOKEN_SUMMARY.topUp}</span>
+              <span className="ap-token-line-note">
+                <span className="ap-token-dot" aria-hidden="true">·</span>
+                {TOKEN_SUMMARY.topUpNote}
+              </span>
             </span>
           </span>
           <span className="ap-token-actions">
@@ -553,12 +557,7 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
               <p className="ap-tutorial-kicker">{WALKTHROUGH.tutorial}</p>
               <p className="ap-tutorial-body">{WALKTHROUGH.body}</p>
             </div>
-            <a
-              className="ap-btn ap-btn-sm"
-              href={youtubeHref}
-              target={youtubeExternal ? '_blank' : undefined}
-              rel={youtubeExternal ? 'noopener noreferrer' : undefined}
-            >
+            <a className="ap-btn ap-btn-sm" href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener">
               {WALKTHROUGH.youtube}
               <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
             </a>
@@ -606,7 +605,7 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
             {MORE_DONE.plans.map((plan) => (
               <a
                 key={plan.id}
-                className={cx('ap-card', 'ap-plan', plan.yours && 'is-current')}
+                className="ap-card ap-plan"
                 style={glow(plan.accent)}
                 href={href}
               >
@@ -663,7 +662,7 @@ function HomeColumn({ href, youtubeHref, youtubeExternal }: { href: string; yout
   )
 }
 
-function Chrome() {
+function Chrome({ hintDismissed }: { hintDismissed: boolean }) {
   return (
     <div className="ap-chrome">
       <span className="ap-traffic" aria-hidden>
@@ -672,19 +671,25 @@ function Chrome() {
         <span className="ap-traffic-g" />
       </span>
       <span className="ap-url">{APP_ADDRESS}</span>
+      <span className={cx('ap-scroll-hint', hintDismissed && 'is-dismissed')} aria-hidden={hintDismissed || undefined}>
+        Scroll to explore ↓
+      </span>
     </div>
   )
 }
 
 export function AppPreviewSection() {
   const signupHref = getSignupUrl()
-  const youtubeExternal = Boolean(YOUTUBE_CHANNEL_URL)
-  const youtubeHref = YOUTUBE_CHANNEL_URL ?? signupHref
   const sectionRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
+  const [hintDismissed, setHintDismissed] = useState(false)
   const media = usePreviewMedia(sectionRef)
   useFrameScale(slotRef, frameRef)
+
+  const onMainScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (event.currentTarget.scrollTop > 0) setHintDismissed(true)
+  }
 
   const frameVars = {
     '--ap-design-w': `${DESIGN_WIDTH}px`,
@@ -702,13 +707,13 @@ export function AppPreviewSection() {
           <div className="ap-slot" ref={slotRef}>
             <div className="ap-frame" ref={frameRef}>
               <div className="ap-window" role="region" aria-label="AdRender app home screen">
-                <Chrome />
+                <Chrome hintDismissed={hintDismissed} />
                 <div className="ap-body">
                   <Sidebar href={signupHref} />
                   <div className="ap-main">
                     <MediaCtx.Provider value={media}>
-                      <div className="ap-main-scroll">
-                        <HomeColumn href={signupHref} youtubeHref={youtubeHref} youtubeExternal={youtubeExternal} />
+                      <div className="ap-main-scroll" onScroll={onMainScroll}>
+                        <HomeColumn href={signupHref} />
                       </div>
                     </MediaCtx.Provider>
                     <div className="ap-fade" aria-hidden />

@@ -7,17 +7,15 @@
  * Replacing media
  * ---------------
  * Drop new files in `public/app-preview/` and point `still.src` / `videoSrc`
- * at them (for example `/app-preview/fitness.mp4`).
+ * at them (for example `/app-preview/video-01.mp4`).
  *
- * Image cards reuse stills already in this repo (How It Works templates,
- * rendered ads, and product shots). The repo had no video files, so each
- * video card plays a short silent clip generated from one of those stills.
- * The clip and a matching poster frame both live in `public/app-preview/`.
- * Source stills are noted next to each clip. Reuse a clip by pointing two
- * cards at the same `videoSrc` if you add more cards than files.
- *
- * Use again shows 2 image templates. The product usually shows 4 there;
- * leave this row at 2 unless the frame layout is updated to fit 4.
+ * Static cards use How It Works template stills
+ * (`public/how-it-works/templates/template-XX.png`).
+ * Video cards use the silent clips in `public/app-preview/`:
+ * `video-01.mp4` through `video-08.mp4`, each with a matching poster
+ * `video-01.jpg` through `video-08.jpg`.
+ * Use again plays slots 01–04. Get inspired plays slots 05–08.
+ * Each clip is used once.
  */
 
 export const ACCENT = {
@@ -31,8 +29,7 @@ export const ACCENT = {
   pink: '#F472B6',
 } as const
 
-/** No YouTube channel URL is published in the site (footer, FAQ, or social links). */
-export const YOUTUBE_CHANNEL_URL: string | null = null
+export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@AdRender-AdCreator'
 
 export const APP_ADDRESS = 'app.adrender.app/app/home'
 
@@ -103,7 +100,6 @@ export type WorkCard = {
   title: string
   body: string
   accent: string
-  highlighted?: boolean
 }
 
 export const WORK_TODAY: WorkCard[] = [
@@ -118,7 +114,6 @@ export const WORK_TODAY: WorkCard[] = [
     title: 'Videos',
     body: 'Browse video templates',
     accent: ACCENT.green,
-    highlighted: true,
   },
   {
     id: 'playground',
@@ -141,7 +136,6 @@ type ImageTemplate = {
   tag: 'IMAGE'
   accent: string
   still: PreviewStill
-  highlighted?: boolean
 }
 
 type VideoTemplate = {
@@ -152,7 +146,6 @@ type VideoTemplate = {
   accent: string
   still: PreviewStill
   videoSrc: string
-  highlighted?: boolean
 }
 
 export type PreviewTemplate = ImageTemplate | VideoTemplate
@@ -210,7 +203,7 @@ export const WALKTHROUGH = {
   steps: [
     { id: 'brand', label: 'Connect a brand', done: true },
     { id: 'templates', label: 'Browse templates', done: true },
-    { id: 'ads', label: 'Create winning ads', done: false },
+    { id: 'ads', label: 'Create winning ads', done: true },
   ],
 }
 
@@ -293,7 +286,7 @@ export const MORE_DONE = {
   ] satisfies PlanTile[],
 }
 
-const POSTER = { width: 480, height: 854 } as const
+const POSTER_PORTRAIT = { width: 540, height: 960 } as const
 
 export const USE_AGAIN = {
   title: 'Use again',
@@ -309,56 +302,66 @@ export const USE_AGAIN = {
       still: { src: '/how-it-works/templates/template-01.png', width: 576, height: 1024 },
     },
     {
+      id: 'use-fashion',
+      kind: 'image',
+      label: 'Fashion',
+      tag: 'IMAGE',
+      accent: ACCENT.pink,
+      still: { src: '/how-it-works/templates/template-02.png', width: 576, height: 1024 },
+    },
+    {
       id: 'use-skincare',
       kind: 'image',
       label: 'Skincare',
       tag: 'IMAGE',
       accent: ACCENT.blue,
-      highlighted: true,
       still: { src: '/how-it-works/templates/template-03.png', width: 576, height: 1024 },
+    },
+    {
+      id: 'use-fitness',
+      kind: 'image',
+      label: 'Fitness',
+      tag: 'IMAGE',
+      accent: ACCENT.green,
+      still: { src: '/how-it-works/templates/template-04.png', width: 571, height: 1024 },
     },
   ] satisfies ImageTemplate[],
   videos: [
-    // Source still: public/how-it-works/ads/ad-01.png
     {
-      id: 'use-fitness',
+      id: 'use-video-01',
       kind: 'video',
       label: 'Fitness',
       tag: 'VIDEO',
       accent: ACCENT.green,
-      still: { src: '/app-preview/fitness.jpg', ...POSTER },
-      videoSrc: '/app-preview/fitness.mp4',
+      still: { src: '/app-preview/video-01.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-01.mp4',
     },
-    // Source still: public/how-it-works/ads/ad-03.png
     {
-      id: 'use-fashion',
+      id: 'use-video-02',
       kind: 'video',
       label: 'Fashion',
       tag: 'VIDEO',
       accent: ACCENT.orange,
-      highlighted: true,
-      still: { src: '/app-preview/fashion.jpg', ...POSTER },
-      videoSrc: '/app-preview/fashion.mp4',
+      still: { src: '/app-preview/video-02.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-02.mp4',
     },
-    // Source still: public/how-it-works/ads/ad-06.png
     {
-      id: 'use-food',
+      id: 'use-video-03',
       kind: 'video',
       label: 'Food and drink',
       tag: 'VIDEO',
       accent: ACCENT.amber,
-      still: { src: '/app-preview/food-and-drink.jpg', ...POSTER },
-      videoSrc: '/app-preview/food-and-drink.mp4',
+      still: { src: '/app-preview/video-03.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-03.mp4',
     },
-    // Source still: public/how-it-works/products/speed-elite-shorts.png
     {
-      id: 'use-footwear',
+      id: 'use-video-04',
       kind: 'video',
       label: 'Footwear',
       tag: 'VIDEO',
       accent: ACCENT.cyan,
-      still: { src: '/app-preview/footwear.jpg', ...POSTER },
-      videoSrc: '/app-preview/footwear.mp4',
+      still: { src: '/app-preview/video-04.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-04.mp4',
     },
   ] satisfies VideoTemplate[],
 }
@@ -375,7 +378,7 @@ export const GET_INSPIRED = {
       label: 'Footwear',
       tag: 'IMAGE',
       accent: ACCENT.cyan,
-      still: { src: '/how-it-works/products/ultra-light-runner.png', width: 571, height: 1024 },
+      still: { src: '/how-it-works/templates/template-06.png', width: 1024, height: 1024 },
     },
     {
       id: 'in-skincare',
@@ -383,7 +386,6 @@ export const GET_INSPIRED = {
       label: 'Skincare',
       tag: 'IMAGE',
       accent: ACCENT.blue,
-      highlighted: true,
       still: { src: '/how-it-works/templates/template-05.png', width: 819, height: 1024 },
     },
     {
@@ -404,46 +406,41 @@ export const GET_INSPIRED = {
     },
   ] satisfies ImageTemplate[],
   videos: [
-    // Source still: public/how-it-works/templates/template-02.png
     {
-      id: 'in-beauty-video',
+      id: 'in-video-05',
       kind: 'video',
       label: 'Beauty',
       tag: 'VIDEO',
       accent: ACCENT.pink,
-      still: { src: '/app-preview/beauty.jpg', ...POSTER },
-      videoSrc: '/app-preview/beauty.mp4',
+      still: { src: '/app-preview/video-05.jpg', width: 540, height: 676 },
+      videoSrc: '/app-preview/video-05.mp4',
     },
-    // Source still: public/how-it-works/templates/template-04.png
     {
-      id: 'in-skincare-video',
+      id: 'in-video-06',
       kind: 'video',
       label: 'Skincare',
       tag: 'VIDEO',
       accent: ACCENT.purple,
-      highlighted: true,
-      still: { src: '/app-preview/skincare.jpg', ...POSTER },
-      videoSrc: '/app-preview/skincare.mp4',
+      still: { src: '/app-preview/video-06.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-06.mp4',
     },
-    // Source still: public/how-it-works/products/compression-vest.png
     {
-      id: 'in-training-video',
+      id: 'in-video-07',
       kind: 'video',
       label: 'Fitness',
       tag: 'VIDEO',
       accent: ACCENT.green,
-      still: { src: '/app-preview/training.jpg', ...POSTER },
-      videoSrc: '/app-preview/training.mp4',
+      still: { src: '/app-preview/video-07.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-07.mp4',
     },
-    // Source still: public/how-it-works/ads/ad-11.png
     {
-      id: 'in-lookbook-video',
+      id: 'in-video-08',
       kind: 'video',
       label: 'Fashion',
       tag: 'VIDEO',
       accent: ACCENT.yellow,
-      still: { src: '/app-preview/lookbook.jpg', ...POSTER },
-      videoSrc: '/app-preview/lookbook.mp4',
+      still: { src: '/app-preview/video-08.jpg', ...POSTER_PORTRAIT },
+      videoSrc: '/app-preview/video-08.mp4',
     },
   ] satisfies VideoTemplate[],
 }
