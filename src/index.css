@@ -667,3 +667,48 @@
     display: none;
   }
 }
+
+/* What 1 token buys — same accent pairs and hover glow as How It Works cards. */
+.token-buy-card {
+  --token-from: #00e5ff;
+  --token-to: #2f80ff;
+  max-width: 100%;
+  background-color: #12121a;
+  background-image: radial-gradient(
+    ellipse 95% 52% at 0% 0%,
+    color-mix(in srgb, var(--token-from) 16%, transparent),
+    transparent 62%
+  );
+  transition:
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.token-buy-edge {
+  display: block;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--token-from), var(--token-to));
+}
+
+.token-buy-gradient-text {
+  background-image: linear-gradient(120deg, var(--token-from), var(--token-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .token-buy-card:hover {
+    border-color: color-mix(in srgb, var(--token-from) 45%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--token-from) 55%, transparent),
+      0 0 34px -4px color-mix(in srgb, var(--token-from) 62%, transparent),
+      0 18px 48px -14px color-mix(in srgb, var(--token-to) 55%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .token-buy-card {
+    transition: none;
+  }
+}

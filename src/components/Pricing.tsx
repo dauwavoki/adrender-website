@@ -3,6 +3,7 @@ import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
 import { getSignupUrl } from '../lib/appUrl'
+import { TokenBuys } from './TokenBuys'
 
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
@@ -177,6 +178,8 @@ export function Pricing() {
             ))}
           </div>
         </div>
+
+        <TokenBuys />
       </div>
     </section>
   )
