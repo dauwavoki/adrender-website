@@ -1,9 +1,33 @@
+import type { CSSProperties } from 'react'
 import { useState } from 'react'
+import { Check } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
 import { getSignupUrl } from '../lib/appUrl'
 import { TokenBuys } from './TokenBuys'
+
+const TIER_ACCENTS: Record<string, { from: string; to: string }> = {
+  free: { from: '#34d399', to: '#00e5ff' },
+  solo: { from: '#00e5ff', to: '#2f80ff' },
+  growth: { from: '#7b4fd4', to: '#e23d9b' },
+  pro: { from: '#f5b031', to: '#ff6b2b' },
+  scale: { from: '#e23d9b', to: '#f5b031' },
+}
+
+function accentStyle(accent: { from: string; to: string }): CSSProperties {
+  return {
+    '--accent-from': accent.from,
+    '--accent-to': accent.to,
+  } as CSSProperties
+}
+
+function splitAllowance(features: string[]) {
+  const [first, ...rest] = features
+  const match = first?.match(/^([\d,]+) tokens\/mo$/)
+  if (!match) return { allowance: null as string | null, features }
+  return { allowance: match[1], features: rest }
+}
 
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
@@ -12,7 +36,10 @@ function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: n
 
   return (
     <div className="flex items-baseline gap-1">
-      <span key={`${billing}-${display}`} className="price-pop font-heading text-4xl font-bold tracking-tight text-white">
+      <span
+        key={`${billing}-${display}`}
+        className="price-pop accent-card-gradient font-heading text-4xl font-bold tracking-tight tabular-nums"
+      >
         {display}
       </span>
       <span key={`${billing}-suf`} className="price-pop text-sm text-zinc-500">
@@ -22,20 +49,24 @@ function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: n
   )
 }
 
-function FeatureList({ tier }: { tier: Tier }) {
-  const [tokens, ...rest] = tier.features
+function FeatureList({ features, outputLine }: { features: string[]; outputLine?: string }) {
+  const rows = [
+    ...(outputLine ? [{ text: outputLine, accent: true }] : []),
+    ...features.map((text) => ({ text, accent: false })),
+  ]
 
   return (
-    <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-white/[0.06] pt-6 text-sm text-zinc-400">
-      {tokens && (
-        <li className="font-medium text-zinc-200">{tokens}</li>
-      )}
-      {tier.outputLine && (
-        <li className="font-medium text-[var(--accent-cyan)]">{tier.outputLine}</li>
-      )}
-      {rest.map((feature) => (
-        <li key={feature} className="font-medium text-zinc-200">
-          {feature}
+    <ul className="mt-6 flex flex-col">
+      {rows.map((row) => (
+        <li
+          key={row.text}
+          className="relative border-b border-white/[0.06] py-3 pl-6 text-sm font-medium text-zinc-200 last:border-b-0"
+        >
+          <Check
+            className="absolute top-3.5 left-0 h-4 w-4 text-[var(--accent-from)]"
+            aria-hidden="true"
+          />
+          <span className={row.accent ? 'text-[var(--accent-from)]' : undefined}>{row.text}</span>
         </li>
       ))}
     </ul>
@@ -43,83 +74,78 @@ function FeatureList({ tier }: { tier: Tier }) {
 }
 
 function TierCard({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; signupUrl: string }) {
-  const inner = (
-    <>
-      {tier.popular && (
-        <span className="badge-gradient absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-xs font-semibold text-white shadow-[0_4px_20px_rgba(0,0,0,0.35)]">
-          Most Popular
-        </span>
-      )}
-      <h3 className="font-heading text-lg font-bold text-white">{tier.name}</h3>
-      {tier.tagline && <p className="mt-1 text-sm text-zinc-500">{tier.tagline}</p>}
-      <div className="mt-4 min-h-[3.5rem]">
-        {tier.annual === null && billing === 'annual' ? (
-          <p className="font-heading text-3xl font-bold text-zinc-500">—</p>
-        ) : (
-          <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
-        )}
-      </div>
-      <FeatureList tier={tier} />
-      <a
-        href={signupUrl}
-        className={`mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
-          tier.popular ? 'btn-cta' : 'btn-outline-accent'
-        }`}
-      >
-        Start Free
-      </a>
-    </>
-  )
+  const accent = TIER_ACCENTS[tier.id] ?? TIER_ACCENTS.solo
+  const { allowance, features } = splitAllowance(tier.features)
 
-  if (tier.popular) {
-    return (
-      <div className="pricing-popular-ring h-full">
-        <article className="relative flex h-full flex-col rounded-[15px] bg-[#14141f] p-6 pt-8">{inner}</article>
-      </div>
-    )
-  }
-
-  return <article className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#12121a] p-6">{inner}</article>
-}
-
-function FreeTierBanner({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; signupUrl: string }) {
   return (
-    <article className="relative overflow-hidden rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)] bg-gradient-to-br from-[#0e1a22] via-[#12121a] to-[#16121f] px-6 py-8 sm:px-10">
-      <div
-        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-40"
-        style={{ background: 'radial-gradient(circle, rgba(0,229,255,0.18), transparent 70%)' }}
-        aria-hidden
-      />
-      <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-md">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-cyan)]">Free plan</p>
-          <h3 className="mt-2 font-heading text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            {tier.tagline ?? 'Try it out'}
+    <article
+      className={`accent-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/[0.06] ${
+        tier.popular ? 'plan-card--popular' : ''
+      }`}
+      style={accentStyle(accent)}
+    >
+      <span className="accent-card-edge" aria-hidden="true" />
+      <div className="flex min-h-0 flex-1 flex-col p-5 sm:p-6">
+        <a
+          href={signupUrl}
+          className="accent-card-link flex min-h-0 flex-1 flex-col"
+          aria-label={`${tier.name}: Start Free`}
+        >
+          <div className="accent-card-copy flex flex-1 flex-col">
+          <h3 className="font-heading text-2xl font-bold tracking-tight">
+            <span className="accent-card-gradient">{tier.name}</span>
           </h3>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-            No card required. Spin up ads and see if AdRender fits your workflow.
-          </p>
-          <div className="mt-5">
-            {billing === 'annual' ? (
-              <p className="font-heading text-3xl font-bold text-zinc-500">—</p>
+          {tier.id === 'free' ? (
+            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-from)]">
+              <span>Free plan</span>
+            </p>
+          ) : null}
+          {tier.tagline ? (
+            <p className="mt-1 text-sm text-zinc-500">
+              <span>{tier.tagline}</span>
+            </p>
+          ) : null}
+          {tier.id === 'free' ? (
+            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+              <span>No card required. Spin up ads and see if AdRender fits your workflow.</span>
+            </p>
+          ) : null}
+
+          <div className="mt-4 flex min-h-6 items-center">
+            {tier.popular ? <span className="plan-popular-badge">Most Popular</span> : null}
+          </div>
+
+          <div className="min-h-[3.25rem]">
+            {tier.annual === null && billing === 'annual' ? (
+              <p className="font-heading text-4xl font-bold text-zinc-500">
+                <span>—</span>
+              </p>
             ) : (
               <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
             )}
           </div>
-          <a
-            href={signupUrl}
-            className="btn-cta mt-6 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold"
+
+          {allowance ? (
+            <div className="mt-5">
+              <p className="font-heading text-4xl font-bold leading-none tracking-tight sm:text-5xl">
+                <span className="accent-card-gradient tabular-nums">{allowance}</span>
+              </p>
+              <p className="mt-2 text-sm text-zinc-500">
+                <span>tokens / month</span>
+              </p>
+            </div>
+          ) : null}
+
+            <FeatureList features={features} outputLine={tier.outputLine} />
+          </div>
+          <span
+            className={`accent-card-link-label mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
+              tier.popular ? 'btn-cta' : 'btn-outline-accent'
+            }`}
           >
             Start Free
-          </a>
-        </div>
-        <ul className="grid w-full max-w-sm grid-cols-1 gap-y-3 text-sm sm:grid-cols-2 sm:gap-x-8">
-          {tier.features.map((feature) => (
-            <li key={feature} className="border-b border-white/[0.06] pb-2 font-medium text-zinc-200">
-              {feature}
-            </li>
-          ))}
-        </ul>
+          </span>
+        </a>
       </div>
     </article>
   )
@@ -128,12 +154,10 @@ function FreeTierBanner({ tier, billing, signupUrl }: { tier: Tier; billing: Bil
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
   const signupUrl = getSignupUrl()
-  const freeTier = tiers.filter((t) => t.id === 'free')
-  const paidTiers = tiers.filter((t) => t.id !== 'free')
 
   return (
-    <section id="pricing" className="scroll-mt-28 px-4 py-24 md:px-6 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="pricing" className="scroll-mt-28 px-4 py-24 md:py-28">
+      <div className="pricing-shell">
         <ScrollReveal>
           <p className="text-section-label text-center text-xs font-semibold uppercase tracking-[0.2em]">Pricing</p>
           <h2 className="mt-3 text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
@@ -148,10 +172,10 @@ export function Pricing() {
               role="switch"
               aria-checked={billing === 'annual'}
               onClick={() => setBilling((b) => (b === 'monthly' ? 'annual' : 'monthly'))}
-              className="relative h-9 w-16 rounded-full border border-white/[0.1] bg-[#12121a] transition hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)]"
+              className="relative h-9 w-16 rounded-full border border-white/[0.1] bg-[#12121a] transition motion-reduce:transition-none hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)]"
             >
               <span
-                className={`toggle-thumb-gradient absolute top-1 left-1 h-7 w-7 rounded-full shadow transition-transform duration-300 ease-out ${
+                className={`toggle-thumb-gradient absolute top-1 left-1 h-7 w-7 rounded-full shadow transition-transform duration-300 ease-out motion-reduce:transition-none ${
                   billing === 'annual' ? 'translate-x-7' : ''
                 }`}
               />
@@ -163,20 +187,12 @@ export function Pricing() {
           </div>
         </ScrollReveal>
 
-        <div className="mt-14 space-y-6">
-          {freeTier.map((tier) => (
-            <ScrollReveal key={tier.id}>
-              <FreeTierBanner tier={tier} billing={billing} signupUrl={signupUrl} />
+        <div className="plan-grid mt-14">
+          {tiers.map((tier) => (
+            <ScrollReveal key={tier.id} className="h-full min-w-0">
+              <TierCard tier={tier} billing={billing} signupUrl={signupUrl} />
             </ScrollReveal>
           ))}
-
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {paidTiers.map((tier) => (
-              <ScrollReveal key={tier.id}>
-                <TierCard tier={tier} billing={billing} signupUrl={signupUrl} />
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
 
         <TokenBuys />
