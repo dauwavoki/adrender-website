@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
+import { getSignupUrl } from '../lib/appUrl'
 import { ScrollReveal } from './ScrollReveal'
 
 type Accent = {
@@ -110,8 +111,8 @@ function formatPrice(amount: number) {
 
 function accentStyle(accent: Accent): CSSProperties {
   return {
-    '--token-from': accent.from,
-    '--token-to': accent.to,
+    '--accent-from': accent.from,
+    '--accent-to': accent.to,
   } as CSSProperties
 }
 
@@ -131,7 +132,7 @@ function durationNote(video: TokenBuysContent['videoAds']) {
 function TokenFigure({ value, minWidth }: { value: number; minWidth: string }) {
   return (
     <span
-      className="token-buy-gradient-text inline-block text-right font-heading text-3xl font-bold leading-none tracking-tight tabular-nums lg:text-2xl xl:text-3xl"
+      className="accent-card-gradient inline-block text-right font-heading text-3xl font-bold leading-none tracking-tight tabular-nums lg:text-2xl xl:text-3xl"
       style={{ minWidth }}
     >
       {formatTokens(value)}
@@ -139,24 +140,38 @@ function TokenFigure({ value, minWidth }: { value: number; minWidth: string }) {
   )
 }
 
-function BuyCard({ accent, title, children }: { accent: Accent; title: string; children: ReactNode }) {
+function BuyCard({
+  accent,
+  title,
+  signupUrl,
+  children,
+}: {
+  accent: Accent
+  title: string
+  signupUrl: string
+  children: ReactNode
+}) {
   return (
     <article
-      className="token-buy-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/[0.06]"
+      className="accent-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/[0.06]"
       style={accentStyle(accent)}
     >
-      <span className="token-buy-edge" aria-hidden="true" />
+      <span className="accent-card-edge" aria-hidden="true" />
       <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
-        <h4 className="token-buy-gradient-text font-heading text-xl font-bold tracking-tight">{title}</h4>
-        {children}
+        <a href={signupUrl} className="accent-card-link flex min-h-0 flex-1 flex-col" aria-label={`${title}: start free`}>
+          <h4 className="font-heading text-xl font-bold tracking-tight">
+            <span className="accent-card-link-label accent-card-gradient">{title}</span>
+          </h4>
+          <div className="accent-card-copy flex min-w-0 flex-1 flex-col">{children}</div>
+        </a>
       </div>
     </article>
   )
 }
 
-function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
+function RateCard({ table, notes, signupUrl }: { table: RateTable; notes?: string[]; signupUrl: string }) {
   return (
-    <BuyCard accent={table.accent} title={table.title}>
+    <BuyCard accent={table.accent} title={table.title} signupUrl={signupUrl}>
       <div className="mt-5 min-w-0">
         <table className="w-full border-collapse text-left">
           <caption className="sr-only">{`${table.title} by resolution, ${table.unitLabel}`}</caption>
@@ -166,19 +181,19 @@ function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
                 scope="col"
                 className="pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
               >
-                {table.columns.resolution}
+                <span>{table.columns.resolution}</span>
               </th>
               <th
                 scope="col"
                 className="pb-1 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
               >
-                {table.columns.standard}
+                <span>{table.columns.standard}</span>
               </th>
               <th
                 scope="col"
                 className="pb-1 pl-3 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
               >
-                {table.columns.pro}
+                <span>{table.columns.pro}</span>
               </th>
             </tr>
             <tr>
@@ -188,7 +203,7 @@ function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
                 colSpan={2}
                 className="pb-1 text-right text-[11px] font-medium tracking-normal text-zinc-500 normal-case"
               >
-                {table.unitLabel}
+                <span>{table.unitLabel}</span>
               </th>
             </tr>
           </thead>
@@ -196,7 +211,7 @@ function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
             {table.rows.map((row) => (
               <tr key={row.resolution} className="border-t border-white/[0.06]">
                 <th scope="row" className="py-3 pr-3 text-sm font-medium text-zinc-300">
-                  {row.resolution}
+                  <span>{row.resolution}</span>
                 </th>
                 <td className="py-3 text-right align-baseline">
                   <TokenFigure value={row.standard} minWidth="2.5ch" />
@@ -213,7 +228,7 @@ function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
         <div className="mt-auto space-y-1.5 pt-4">
           {notes.map((note) => (
             <p key={note} className="text-sm leading-relaxed text-zinc-500">
-              {note}
+              <span>{note}</span>
             </p>
           ))}
         </div>
@@ -222,36 +237,31 @@ function RateCard({ table, notes }: { table: RateTable; notes?: string[] }) {
   )
 }
 
-function TopUpsCard({ topUps }: { topUps: TokenBuysContent['topUps'] }) {
+function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps']; signupUrl: string }) {
   return (
-    <BuyCard accent={topUps.accent} title={topUps.title}>
+    <BuyCard accent={topUps.accent} title={topUps.title} signupUrl={signupUrl}>
       <ul className="mt-5 min-w-0">
         {topUps.packs.map((pack) => (
-          <li
-            key={pack.price}
-            className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0"
-          >
-            <span className="min-w-0">
-              <span className="text-sm font-medium tabular-nums text-zinc-300">
-                {formatPrice(pack.price)} =
+          <li key={pack.price} className="topup-row border-b border-white/[0.06] py-3 last:border-b-0">
+            <span className="topup-row-price text-sm font-medium tabular-nums text-zinc-300">
+              {formatPrice(pack.price)} =
+            </span>
+            {pack.badge ? (
+              <span className="topup-row-badge rounded-full border border-white/15 bg-white/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-zinc-200">
+                {pack.badge}
               </span>
-              {pack.badge ? (
-                <span className="mt-1 inline-block max-w-full rounded-full border border-white/15 bg-white/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase leading-snug tracking-[0.08em] text-zinc-200">
-                  {pack.badge}
-                </span>
-              ) : null}
-            </span>
-            <span className="text-right">
+            ) : null}
+            <span className="topup-row-figure">
               <TokenFigure value={pack.tokens} minWidth="6.5ch" />
-              <span className="mt-1 block text-[11px] font-medium leading-none text-zinc-500">tokens</span>
             </span>
+            <span className="topup-row-unit text-[11px] font-medium leading-none text-zinc-500">tokens</span>
           </li>
         ))}
       </ul>
       <div className="mt-auto space-y-1.5 pt-4">
         {topUps.notes.map((note) => (
           <p key={note} className="text-sm leading-relaxed text-zinc-500">
-            {note}
+            <span>{note}</span>
           </p>
         ))}
       </div>
@@ -260,6 +270,7 @@ function TopUpsCard({ topUps }: { topUps: TokenBuysContent['topUps'] }) {
 }
 
 export function TokenBuys() {
+  const signupUrl = getSignupUrl()
   const videoNotes = [exampleNote(TOKEN_BUYS.videoAds), durationNote(TOKEN_BUYS.videoAds)]
 
   return (
@@ -270,9 +281,9 @@ export function TokenBuys() {
         </h3>
         <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">{TOKEN_BUYS.subline}</p>
         <div className="mt-10 grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-3">
-          <RateCard table={TOKEN_BUYS.imageAds} />
-          <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} />
-          <TopUpsCard topUps={TOKEN_BUYS.topUps} />
+          <RateCard table={TOKEN_BUYS.imageAds} signupUrl={signupUrl} />
+          <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} />
+          <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
         </div>
       </div>
     </ScrollReveal>
