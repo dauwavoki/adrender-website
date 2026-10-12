@@ -45,7 +45,7 @@ const SECTIONS: FeatureSection[] = [
     alt: 'AdRender made simple: a few clicks to render ads',
     paragraphs: [
       'You only need to know how to click. No prompting is required, and you don\'t need to learn design or connect other tools to start. There\'s nothing technical to set up. You can still write your own prompt whenever you want to.',
-      'It\'s self-explanatory by design, and the same three steps cover images and video. Add your brand — URL scan or campaign documents. Choose winning templates — Browse what\'s working, then render at scale. See your ads — Finished creatives, ready to launch.',
+      'It\'s self-explanatory by design, and the same three steps cover images and video. Add your brand — scan your URL, upload assets, or connect your Shopify store. Choose winning templates — Browse what\'s working, then render at scale. See your ads — Finished creatives, ready to launch.',
       'Most AI tools ask you to learn prompting, or to connect other AI tools (MCPs), before they\'re useful. AdRender doesn\'t. A few clicks is all it takes.',
     ],
   },

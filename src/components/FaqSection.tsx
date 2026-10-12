@@ -106,7 +106,7 @@ const DESIGN_SKILLS: FaqEntry = {
 
 const LEARNING_CURVE: FaqEntry = {
   q: 'How hard is it to learn AdRender?',
-  a: "It's simple by design. It takes three easy steps: Add your brand — URL scan or campaign documents. Choose winning templates — Browse what's working, then render at scale. See your ads — Finished creatives, ready to launch. It's self-explanatory, so there is nothing to learn up front and nothing technical to set up.",
+  a: "It's simple by design. It takes three easy steps: Add your brand — scan your URL, upload assets, or connect your Shopify store. Choose winning templates — Browse what's working, then render at scale. See your ads — Finished creatives, ready to launch. It's self-explanatory, so there is nothing to learn up front and nothing technical to set up.",
 }
 
 const COMPETITORS: FaqEntry = {
