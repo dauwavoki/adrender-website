@@ -1,4 +1,4 @@
-import { Check, FileText } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { DEMO_BRAND } from '../../data/howItWorksMock'
 
 /**
@@ -9,8 +9,9 @@ export function BrandScan() {
   return (
     <div className="space-y-5">
       <p className="max-w-2xl text-sm leading-relaxed text-white/80">
-        AdRender can extract your brand voice, brand colors, logo, product images and ad copies by
-        simply scanning your brand URL, or upload manually with campaign documents instead.
+        Scan your website and AdRender pulls your brand voice, colors, logo, product images and ad
+        copy automatically. Or upload your assets, or connect your Shopify store. No URL needed to
+        start, and you can add your assets any time later.
       </p>
 
       <div className="space-y-4">
@@ -125,18 +126,6 @@ export function BrandScan() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 pt-0.5">
-          <FileText className="h-4 w-4 shrink-0 text-white/45" />
-          <div className="min-w-0">
-            <p className="text-xs font-medium text-white/75">
-              {DEMO_BRAND.documentCount} campaign documents
-            </p>
-            <p className="truncate font-mono text-[10px] text-white/35">
-              brand-guide.pdf · product-brief.docx · offer-sheet.pdf
-            </p>
           </div>
         </div>
       </div>

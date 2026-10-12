@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type MouseEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Globe } from 'lucide-react'
 import { getSignupUrl } from '../lib/appUrl'
 
@@ -23,7 +23,6 @@ export function Hero({
   ctaNote = DEFAULT_CTA_NOTE,
   audienceLine = DEFAULT_AUDIENCE,
 }: HeroProps) {
-  const signupHref = getSignupUrl()
   const [websiteUrl, setWebsiteUrl] = useState('')
   const [isNavigating, setIsNavigating] = useState(false)
 
@@ -32,12 +31,6 @@ export function Hero({
     if (isNavigating) return
     setIsNavigating(true)
     window.location.assign(getSignupUrl(websiteUrl))
-  }
-
-  const handlePhotoStart = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-    e.preventDefault()
-    window.location.assign(getSignupUrl())
   }
 
   return (
@@ -102,15 +95,7 @@ export function Hero({
               </button>
             </div>
           </form>
-          <p className="mt-3 text-sm text-zinc-500">No URL needed to start. Add your assets later.</p>
-          <a
-            href={signupHref}
-            onClick={handlePhotoStart}
-            className="mt-2 inline-block text-sm text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-          >
-            Or start free with a product photo →
-          </a>
-          <p className="mt-3 text-sm text-zinc-500">{ctaNote}</p>
+          <p className="mt-4 text-sm text-zinc-500">{ctaNote}</p>
         </div>
         {audienceLine ? (
           <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-zinc-600">{audienceLine}</p>

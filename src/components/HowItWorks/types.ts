@@ -11,7 +11,6 @@ export interface DemoBrand {
     imageSrc: string
     adCopyCount: number
   }[]
-  documentCount: number
 }
 
 export type CarouselMediaKind = 'image' | 'video'

@@ -9,7 +9,6 @@ export const DEMO_BRAND: DemoBrand = {
   brandVoice:
     'Bold, performance-driven, and motivational — short hooks that push athletes to move faster.',
   swatches: ['#00e5ff', '#7b4fd4', '#111827', '#F3F4F6', '#00D2FF'],
-  documentCount: 3,
   products: [
     {
       id: 'p1',
