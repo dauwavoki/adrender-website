@@ -3,6 +3,7 @@ import { HowItWorks } from '../components/HowItWorks'
 import { ProblemBottleneckFix } from '../components/ProblemBottleneckFix'
 import { FounderStory } from '../components/FounderStory'
 import { FeatureCards } from '../components/FeatureCards'
+import { AppPreviewSection } from '../components/AppPreview/AppPreviewSection'
 import { CostTable } from '../components/CostTable'
 import { ProofRow } from '../components/ProofRow'
 import { Pricing } from '../components/Pricing'
@@ -23,6 +24,7 @@ export function HomePage() {
       <ProblemBottleneckFix />
       <FounderStory />
       <FeatureCards />
+      <AppPreviewSection />
       <CostTable />
       <ProofRow />
       <Pricing />
