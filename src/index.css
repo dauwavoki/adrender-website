@@ -540,6 +540,22 @@
   overflow: hidden;
 }
 
+/* Clips fill the same tile as the stills. No controls, and clicks fall through. */
+.hiw-tilted-card video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.hiw-tilted-card video::-webkit-media-controls,
+.hiw-tilted-card video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hiw-tilted-track,
   .hiw-tilted-card {

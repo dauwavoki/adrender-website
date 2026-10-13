@@ -30,38 +30,7 @@ function allowsHoverReverse() {
   return window.matchMedia('(hover: hover) and (pointer: fine)').matches
 }
 
-function CarouselMedia({ item, paused }: { item: CarouselItem; paused: boolean }) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const el = videoRef.current
-    if (!el) return
-    if (paused) {
-      el.pause()
-      return
-    }
-    void el.play().catch(() => {
-      /* muted + playsInline should allow autoplay; ignore policy blocks */
-    })
-  }, [paused])
-
-  if (item.kind === 'video') {
-    return (
-      <video
-        ref={videoRef}
-        src={item.src}
-        className="h-full w-full object-cover"
-        muted
-        loop
-        autoPlay
-        playsInline
-        preload="metadata"
-        draggable={false}
-        aria-label={item.alt}
-      />
-    )
-  }
-
+function CarouselStill({ item }: { item: CarouselItem }) {
   return (
     <img
       src={item.src}
@@ -71,6 +40,89 @@ function CarouselMedia({ item, paused }: { item: CarouselItem; paused: boolean }
       draggable={false}
     />
   )
+}
+
+/**
+ * Poster is always in the tile. The file is attached only once this tile is
+ * near the viewport, and playback stops again when it leaves.
+ * Reduced motion never mounts the clip, so the poster stays put.
+ */
+function CarouselVideo({
+  item,
+  enabled,
+}: {
+  item: Extract<CarouselItem, { kind: 'video' }>
+  enabled: boolean
+}) {
+  const boxRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const loadedSrc = useRef<string | null>(null)
+  const [onScreen, setOnScreen] = useState(false)
+
+  useEffect(() => {
+    if (!enabled) return
+    const box = boxRef.current
+    if (!box) return
+    const obs = new IntersectionObserver(([entry]) => setOnScreen(Boolean(entry?.isIntersecting)), {
+      rootMargin: '240px 160px',
+      threshold: 0,
+    })
+    obs.observe(box)
+    return () => obs.disconnect()
+  }, [enabled])
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+    el.muted = true
+    if (!enabled || !onScreen) {
+      el.pause()
+      return
+    }
+    if (loadedSrc.current !== item.src) {
+      loadedSrc.current = item.src
+      el.preload = 'auto'
+      el.src = item.src
+      el.load()
+    }
+    void el.play().catch(() => {
+      /* Poster stays visible if autoplay is blocked. */
+    })
+  }, [enabled, onScreen, item.src])
+
+  return (
+    <div ref={boxRef} className="relative h-full w-full">
+      <img
+        src={item.poster}
+        alt={enabled ? '' : item.alt}
+        aria-hidden={enabled ? true : undefined}
+        className="h-full w-full object-cover"
+        loading="lazy"
+        draggable={false}
+      />
+      {enabled ? (
+        <video
+          ref={videoRef}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          poster={item.poster}
+          muted
+          loop
+          autoPlay
+          playsInline
+          preload="none"
+          controls={false}
+          disablePictureInPicture
+          tabIndex={-1}
+          aria-label={item.alt}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function CarouselMedia({ item, enabled }: { item: CarouselItem; enabled: boolean }) {
+  if (item.kind === 'video') return <CarouselVideo item={item} enabled={enabled} />
+  return <CarouselStill item={item} />
 }
 
 /**
@@ -87,6 +139,7 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
   const pausedRef = useRef(paused)
   const inViewRef = useRef(false)
   const [inView, setInView] = useState(false)
+  const [near, setNear] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
   const loop = [...items, ...items]
 
@@ -109,14 +162,24 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
-    const obs = new IntersectionObserver(
+    const viewObs = new IntersectionObserver(
       ([entry]) => {
         setInView(Boolean(entry?.isIntersecting))
       },
       { threshold: 0, rootMargin: '120px 0px' },
     )
-    obs.observe(root)
-    return () => obs.disconnect()
+    const nearObs = new IntersectionObserver(
+      ([entry]) => {
+        setNear(Boolean(entry?.isIntersecting))
+      },
+      { threshold: 0, rootMargin: '480px 0px' },
+    )
+    viewObs.observe(root)
+    nearObs.observe(root)
+    return () => {
+      viewObs.disconnect()
+      nearObs.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -220,7 +283,7 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
     tweenRate(reverse ? -1 : 1)
   }
 
-  const halt = paused || reduceMotion || !inView
+  const videosOn = near && !paused && !reduceMotion
 
   return (
     <div
@@ -237,7 +300,7 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
               className="hiw-tilted-card overflow-hidden bg-zinc-900"
               aria-hidden={index >= items.length ? true : undefined}
             >
-              <CarouselMedia item={item} paused={halt} />
+              <CarouselMedia item={item} enabled={videosOn} />
             </div>
           ))}
         </div>
