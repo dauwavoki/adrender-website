@@ -10,6 +10,7 @@ import { Pricing } from '../components/Pricing'
 import { FaqSection } from '../components/FaqSection'
 import { ClosingCta } from '../components/ClosingCta'
 import { PageMeta } from '../components/PageMeta'
+import { SectionErrorBoundary } from '../components/SectionErrorBoundary'
 
 const TITLE = 'AdRender — AI Ad Generator | 100M+ Real Ad Templates'
 const DESCRIPTION =
@@ -19,17 +20,39 @@ export function HomePage() {
   return (
     <>
       <PageMeta title={TITLE} description={DESCRIPTION} path="/" />
-      <Hero />
-      <HowItWorks />
-      <ProblemBottleneckFix />
-      <FounderStory />
-      <FeatureCards />
-      <AppPreviewSection />
-      <CostTable />
-      <ProofRow />
-      <Pricing />
-      <FaqSection />
-      <ClosingCta />
+      <SectionErrorBoundary>
+        <Hero />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <HowItWorks />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <ProblemBottleneckFix />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <FounderStory />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <FeatureCards />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <AppPreviewSection />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <CostTable />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <ProofRow />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Pricing />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <FaqSection />
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <ClosingCta />
+      </SectionErrorBoundary>
     </>
   )
 }
