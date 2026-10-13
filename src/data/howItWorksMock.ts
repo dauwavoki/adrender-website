@@ -43,16 +43,16 @@ export const DEMO_BRAND: DemoBrand = {
  * stay in the row and sit next to the same type, spaced through the strip,
  * instead of being dropped.
  *
- * Alternate (this default): `['image', 'video']`
- * Two pictures then two videos:
+ * Alternate one-by-one: `['image', 'video']`
+ * Two pictures then two videos, repeated:
  *   order: ['image', 'image', 'video', 'video'],
- *   maxImages: 2,
- *   maxVideos: 2,
  *
- * `null` uses every still or every clip.
+ * `maxImages` / `maxVideos` cap how many stills or clips are used in total.
+ * A cap of 2 keeps only the first two of that type. `null` uses every item
+ * in that card's list.
  */
 export const MEDIA_PATTERN = {
-  order: ['image', 'video'] as const,
+  order: ['image', 'image', 'video', 'video'] as const,
   maxImages: null as number | null,
   maxVideos: null as number | null,
 }
@@ -145,7 +145,7 @@ function numberedClip(
 }
 
 /** Card 2 stills. Clips reuse the compressed app-preview files — do not copy them. */
-const TEMPLATE_STILLS: CarouselItem[] = Array.from({ length: 12 }, (_, i) => {
+const TEMPLATE_STILLS: CarouselItem[] = Array.from({ length: 6 }, (_, i) => {
   const n = String(i + 1).padStart(2, '0')
   return {
     id: `tpl-${n}`,
@@ -154,15 +154,15 @@ const TEMPLATE_STILLS: CarouselItem[] = Array.from({ length: 12 }, (_, i) => {
   }
 })
 
-const TEMPLATE_CLIPS: CarouselItem[] = Array.from({ length: 8 }, (_, i) =>
+const TEMPLATE_CLIPS: CarouselItem[] = Array.from({ length: 6 }, (_, i) =>
   numberedClip('tpl', '/app-preview', i, `Winning ad template clip ${i + 1}`),
 )
 
-/** 12 template stills interleaved with the 8 app-preview clips. */
+/** 6 template stills interleaved with app-preview clips 01–06. */
 export const TEMPLATE_ITEMS: CarouselItem[] = mixByMediaPattern(TEMPLATE_STILLS, TEMPLATE_CLIPS)
 
 /** Card 3 stills, plus clips compressed into public/how-it-works/. */
-const RESULT_STILLS: CarouselItem[] = Array.from({ length: 12 }, (_, i) => {
+const RESULT_STILLS: CarouselItem[] = Array.from({ length: 6 }, (_, i) => {
   const n = String(i + 1).padStart(2, '0')
   return {
     id: `ad-${n}`,
@@ -171,9 +171,9 @@ const RESULT_STILLS: CarouselItem[] = Array.from({ length: 12 }, (_, i) => {
   }
 })
 
-const RESULT_CLIPS: CarouselItem[] = Array.from({ length: 7 }, (_, i) =>
+const RESULT_CLIPS: CarouselItem[] = Array.from({ length: 6 }, (_, i) =>
   numberedClip('ad', '/how-it-works', i, `YourBrand rendered ad clip ${i + 1}`),
 )
 
-/** 12 rendered stills interleaved with the 7 How it Works clips. */
+/** 6 rendered stills interleaved with the 6 distinct How it Works clips. */
 export const RESULT_ITEMS: CarouselItem[] = mixByMediaPattern(RESULT_STILLS, RESULT_CLIPS)
