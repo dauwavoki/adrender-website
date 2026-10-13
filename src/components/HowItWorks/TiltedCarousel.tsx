@@ -29,14 +29,76 @@ function safePause(el: HTMLMediaElement) {
   }
 }
 
-function safePlay(el: HTMLMediaElement) {
-  try {
-    void el.play().catch(() => {
-      /* Poster stays visible if autoplay is blocked. */
-    })
-  } catch {
-    /* Ignore a media element that cannot play. */
+function hasMediaSrc(el: HTMLVideoElement) {
+  return Boolean(el.getAttribute('src') || el.currentSrc)
+}
+
+/** The file URL lives on the element, so a new node can never reuse a stale one. */
+function ensureVideoSrc(el: HTMLVideoElement) {
+  const wanted = el.dataset.hiwSrc
+  if (!wanted) return false
+  if (el.getAttribute('src') !== wanted) {
+    el.preload = 'none'
+    el.src = wanted
   }
+  return hasMediaSrc(el)
+}
+
+/**
+ * play() is only called once this element has a src. A rejection is not
+ * "started": log it, retry once when a frame is ready, and let the next
+ * time the row comes on screen call play() again.
+ */
+function playCarouselVideo(el: HTMLVideoElement, isCancelled: () => boolean) {
+  if (!ensureVideoSrc(el)) return () => {}
+
+  let didRetry = false
+  let removeReady = () => {}
+
+  const attempt = (reason: 'start' | 'retry') => {
+    if (isCancelled() || !hasMediaSrc(el)) return
+    let pending: Promise<void>
+    try {
+      pending = el.play()
+    } catch (error) {
+      console.debug(
+        'How it Works carousel video play() threw',
+        reason,
+        el.currentSrc || el.getAttribute('src'),
+        error,
+      )
+      return
+    }
+    void pending.catch((error: unknown) => {
+      console.debug(
+        'How it Works carousel video play() rejected',
+        reason,
+        el.currentSrc || el.getAttribute('src'),
+        error,
+      )
+      if (isCancelled() || didRetry || reason === 'retry') return
+      const retry = () => {
+        if (didRetry || isCancelled()) return
+        didRetry = true
+        removeReady()
+        attempt('retry')
+      }
+      removeReady = () => {
+        el.removeEventListener('loadeddata', retry)
+        el.removeEventListener('canplay', retry)
+      }
+      if (el.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        retry()
+        return
+      }
+      el.addEventListener('loadeddata', retry)
+      el.addEventListener('canplay', retry)
+    })
+  }
+
+  el.muted = true
+  attempt('start')
+  return () => removeReady()
 }
 
 function CarouselStill({ item }: { item: CarouselItem }) {
@@ -52,69 +114,38 @@ function CarouselStill({ item }: { item: CarouselItem }) {
 }
 
 /**
- * Poster is always in the tile. The file is attached only once this tile is
- * near the viewport, and playback stops again when it leaves.
- * Reduced motion never mounts the clip, so the poster stays put.
+ * Poster stays in the tile until the clip is actually playing.
+ * The <video> mounts the first time the row is near the viewport and then
+ * stays mounted. Leaving the row only pauses it. Reduced motion never
+ * mounts the clip, so the poster stays put.
+ * The row attaches src before play(). It is also on the element so a remount
+ * can never come back empty.
  */
 function CarouselVideo({
   item,
-  enabled,
+  mounted,
 }: {
   item: Extract<CarouselItem, { kind: 'video' }>
-  enabled: boolean
+  mounted: boolean
 }) {
-  const boxRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const loadedSrc = useRef<string | null>(null)
-  const [onScreen, setOnScreen] = useState(false)
-
-  useEffect(() => {
-    if (!enabled) return
-    const box = boxRef.current
-    if (!box) return
-    const obs = new IntersectionObserver(([entry]) => setOnScreen(Boolean(entry?.isIntersecting)), {
-      rootMargin: '240px 160px',
-      threshold: 0,
-    })
-    obs.observe(box)
-    return () => obs.disconnect()
-  }, [enabled])
-
-  useEffect(() => {
-    const el = videoRef.current
-    if (!el) return
-    el.muted = true
-    if (!enabled || !onScreen) {
-      safePause(el)
-      return
-    }
-    if (loadedSrc.current !== item.src) {
-      loadedSrc.current = item.src
-      el.preload = 'auto'
-      el.src = item.src
-      el.load()
-    }
-    safePlay(el)
-  }, [enabled, onScreen, item.src])
-
   return (
-    <div ref={boxRef} className="relative h-full w-full">
+    <div className="relative h-full w-full">
       <img
         src={item.poster}
-        alt={enabled ? '' : item.alt}
-        aria-hidden={enabled ? true : undefined}
+        alt={mounted ? '' : item.alt}
+        aria-hidden={mounted ? true : undefined}
         className="h-full w-full object-cover"
         loading="lazy"
         draggable={false}
       />
-      {enabled ? (
+      {mounted ? (
         <video
-          ref={videoRef}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          data-hiw-src={item.src}
+          src={item.src}
           poster={item.poster}
           muted
           loop
-          autoPlay
           playsInline
           preload="none"
           controls={false}
@@ -127,8 +158,8 @@ function CarouselVideo({
   )
 }
 
-function CarouselMedia({ item, enabled }: { item: CarouselItem; enabled: boolean }) {
-  if (item.kind === 'video') return <CarouselVideo item={item} enabled={enabled} />
+function CarouselMedia({ item, mounted }: { item: CarouselItem; mounted: boolean }) {
+  if (item.kind === 'video') return <CarouselVideo item={item} mounted={mounted} />
   return <CarouselStill item={item} />
 }
 
@@ -147,12 +178,18 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
   const [inView, setInView] = useState(false)
   const [near, setNear] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [videosSticky, setVideosSticky] = useState(false)
   const [durationSec, setDurationSec] = useState<number | null>(null)
+  const nearRef = useRef(false)
   const loop = [...items, ...items]
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduceMotion(mq.matches)
+    const sync = () => {
+      const reduce = mq.matches
+      setReduceMotion(reduce)
+      if (!reduce && nearRef.current) setVideosSticky(true)
+    }
     sync()
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
@@ -169,7 +206,10 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
     )
     const nearObs = new IntersectionObserver(
       ([entry]) => {
-        setNear(Boolean(entry?.isIntersecting))
+        const isNear = Boolean(entry?.isIntersecting)
+        nearRef.current = isNear
+        setNear(isNear)
+        if (isNear && !prefersReducedMotion()) setVideosSticky(true)
       },
       { threshold: 0, rootMargin: '480px 0px' },
     )
@@ -210,7 +250,33 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
 
   const scrolling = durationSec != null && !reduceMotion
   const held = paused || !inView
-  const videosOn = near && !paused && !reduceMotion
+  const mountVideos = videosSticky && !reduceMotion
+  const playVideos = mountVideos && near && !paused
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track || !mountVideos) return
+
+    const videos = Array.from(track.querySelectorAll('video'))
+    let cancelled = false
+    const removeReady: Array<() => void> = []
+
+    for (const el of videos) {
+      el.muted = true
+      if (!ensureVideoSrc(el)) continue
+      if (!playVideos) {
+        safePause(el)
+        continue
+      }
+      removeReady.push(playCarouselVideo(el, () => cancelled))
+    }
+
+    return () => {
+      cancelled = true
+      for (const remove of removeReady) remove()
+    }
+  }, [mountVideos, playVideos, items])
+
   const trackStyle: CSSProperties | undefined = scrolling
     ? ({ '--hiw-scroll-duration': `${durationSec}s` } as CSSProperties)
     : undefined
@@ -230,7 +296,7 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
               className="hiw-tilted-card overflow-hidden bg-zinc-900"
               aria-hidden={index >= items.length ? true : undefined}
             >
-              <CarouselMedia item={item} enabled={videosOn} />
+              <CarouselMedia item={item} mounted={mountVideos} />
             </div>
           ))}
         </div>
