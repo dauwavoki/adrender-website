@@ -527,6 +527,49 @@
   will-change: transform;
 }
 
+/* Fixed direction for the life of the page. Both use animation-direction: normal.
+   Forward (card 2) travels left. Reverse (card 3) is a mirrored keyframe that
+   travels right. Nothing toggles direction at runtime. */
+.hiw-tilted-track.is-scrolling {
+  animation-duration: var(--hiw-scroll-duration);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-play-state: running;
+}
+
+.hiw-tilted-track.is-scrolling[data-direction='forward'] {
+  animation-name: hiw-scroll-forward;
+}
+
+.hiw-tilted-track.is-scrolling[data-direction='reverse'] {
+  animation-name: hiw-scroll-reverse;
+  /* Same midpoint the reversed Web Animation used to start on (half a loop). */
+  animation-delay: calc(var(--hiw-scroll-duration) * -0.5);
+}
+
+.hiw-tilted-track.is-scrolling.is-held {
+  animation-play-state: paused;
+}
+
+@keyframes hiw-scroll-forward {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes hiw-scroll-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .hiw-tilted-card {
   flex: 0 0 var(--hiw-card-w);
   width: var(--hiw-card-w);
@@ -558,8 +601,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hiw-tilted-track,
+  .hiw-tilted-track.is-scrolling,
+  .hiw-tilted-track.is-scrolling[data-direction='forward'],
+  .hiw-tilted-track.is-scrolling[data-direction='reverse'],
   .hiw-tilted-card {
     transform: none;
+    animation: none;
     will-change: auto;
   }
 

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { CarouselItem } from './types'
 
 interface TiltedCarouselProps {
   items: CarouselItem[]
-  /** Pause the continuous scroll */
+  /** Pause the continuous scroll. Resume only — never a direction change. */
   paused?: boolean
-  /** Default direction. Card 3 passes true so it runs opposite Card 2. */
+  /** Card 3 passes true so it runs opposite Card 2. Fixed for the lifetime of the row. */
   reverse?: boolean
 }
 
@@ -15,19 +15,28 @@ interface TiltedCarouselProps {
  * Duration is derived from the measured track so larger tiles do not race.
  */
 const SCROLL_PX_PER_SEC = 76
-const REVERSE_MS = 420
-
-const KEYFRAMES = [
-  { transform: 'translate3d(0, 0, 0)' },
-  { transform: 'translate3d(-50%, 0, 0)' },
-]
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
-function allowsHoverReverse() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches
+/** Media play/pause must not become an uncaught exception. */
+function safePause(el: HTMLMediaElement) {
+  try {
+    el.pause()
+  } catch {
+    /* Ignore a media element that cannot pause. */
+  }
+}
+
+function safePlay(el: HTMLMediaElement) {
+  try {
+    void el.play().catch(() => {
+      /* Poster stays visible if autoplay is blocked. */
+    })
+  } catch {
+    /* Ignore a media element that cannot play. */
+  }
 }
 
 function CarouselStill({ item }: { item: CarouselItem }) {
@@ -76,7 +85,7 @@ function CarouselVideo({
     if (!el) return
     el.muted = true
     if (!enabled || !onScreen) {
-      el.pause()
+      safePause(el)
       return
     }
     if (loadedSrc.current !== item.src) {
@@ -85,9 +94,7 @@ function CarouselVideo({
       el.src = item.src
       el.load()
     }
-    void el.play().catch(() => {
-      /* Poster stays visible if autoplay is blocked. */
-    })
+    safePlay(el)
   }, [enabled, onScreen, item.src])
 
   return (
@@ -128,28 +135,20 @@ function CarouselMedia({ item, enabled }: { item: CarouselItem; enabled: boolean
 /**
  * Continuous flat portrait strip.
  * Items are duplicated so a -50% translate loops seamlessly.
- * Direction flips by tweening playbackRate, so the strip never jumps.
+ *
+ * Direction is fixed in CSS (animation-direction: normal on both rows).
+ * Card 2 uses a leftward keyframe. Card 3 uses a mirrored rightward keyframe.
+ * Scroll, hover, and visibility never reverse it. Off-screen and the paused
+ * prop only set animation-play-state.
  */
 export function TiltedCarousel({ items, paused = false, reverse = false }: TiltedCarouselProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
-  const animRef = useRef<Animation | null>(null)
-  const tweenRef = useRef(0)
-  const rateTargetRef = useRef<number | null>(null)
-  const pausedRef = useRef(paused)
-  const inViewRef = useRef(false)
   const [inView, setInView] = useState(false)
   const [near, setNear] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [durationSec, setDurationSec] = useState<number | null>(null)
   const loop = [...items, ...items]
-
-  useEffect(() => {
-    pausedRef.current = paused
-  }, [paused])
-
-  useEffect(() => {
-    inViewRef.current = inView
-  }, [inView])
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -185,115 +184,46 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
   useEffect(() => {
     const track = trackRef.current
     if (!track || reduceMotion || prefersReducedMotion()) {
-      animRef.current?.cancel()
-      animRef.current = null
       return
     }
 
-    let anim: Animation | null = null
-    let rebuildRaf = 0
-
-    const applyHold = () => {
-      if (!anim) return
-      if (pausedRef.current || !inViewRef.current) anim.pause()
-      else anim.play()
-    }
-
-    const build = () => {
+    let raf = 0
+    const measure = () => {
       const distance = track.scrollWidth / 2
       if (distance < 1) return
-
-      const duration = (distance / SCROLL_PX_PER_SEC) * 1000
-      const prev = anim
-      let fraction = reverse ? 0.5 : 0
-      let rate = reverse ? -1 : 1
-      if (prev) {
-        const prevDur = Number(prev.effect?.getComputedTiming().duration ?? 0)
-        const prevTime = Number(prev.currentTime ?? 0)
-        if (prevDur > 0) {
-          fraction = (((prevTime % prevDur) + prevDur) % prevDur) / prevDur
-        }
-        if (Number.isFinite(prev.playbackRate)) rate = prev.playbackRate
-      }
-
-      prev?.cancel()
-      anim = track.animate(KEYFRAMES, { duration, iterations: Infinity, easing: 'linear' })
-      anim.currentTime = fraction * duration
-      anim.playbackRate = rate
-      animRef.current = anim
-      applyHold()
+      const next = distance / SCROLL_PX_PER_SEC
+      setDurationSec((prev) => (prev != null && Math.abs(prev - next) < 0.05 ? prev : next))
     }
 
-    build()
+    measure()
     const ro = new ResizeObserver(() => {
-      cancelAnimationFrame(rebuildRaf)
-      rebuildRaf = requestAnimationFrame(build)
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(measure)
     })
     ro.observe(track)
 
     return () => {
       ro.disconnect()
-      cancelAnimationFrame(rebuildRaf)
-      cancelAnimationFrame(tweenRef.current)
-      tweenRef.current = 0
-      rateTargetRef.current = null
-      anim?.cancel()
-      if (animRef.current === anim) animRef.current = null
+      cancelAnimationFrame(raf)
     }
-  }, [reduceMotion, reverse, items])
+  }, [reduceMotion, items])
 
-  useEffect(() => {
-    const anim = animRef.current
-    if (!anim) return
-    if (paused || !inView || reduceMotion) anim.pause()
-    else anim.play()
-  }, [paused, inView, reduceMotion])
-
-  const tweenRate = (target: number) => {
-    const anim = animRef.current
-    if (!anim || reduceMotion || prefersReducedMotion()) return
-    if (rateTargetRef.current === target && tweenRef.current) return
-    rateTargetRef.current = target
-    cancelAnimationFrame(tweenRef.current)
-    const startRate = anim.playbackRate
-    if (Math.abs(startRate - target) < 0.02) {
-      anim.playbackRate = target
-      tweenRef.current = 0
-      return
-    }
-    const t0 = performance.now()
-    const step = (now: number) => {
-      if (animRef.current !== anim) return
-      const t = Math.min(1, (now - t0) / REVERSE_MS)
-      const eased = t * t * (3 - 2 * t)
-      anim.playbackRate = startRate + (target - startRate) * eased
-      if (t < 1) tweenRef.current = requestAnimationFrame(step)
-      else tweenRef.current = 0
-    }
-    tweenRef.current = requestAnimationFrame(step)
-  }
-
-  const onPointerEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse' || !allowsHoverReverse()) return
-    tweenRate(reverse ? 1 : -1)
-  }
-
-  const onPointerLeave = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse' || !allowsHoverReverse()) return
-    tweenRate(reverse ? -1 : 1)
-  }
-
+  const scrolling = durationSec != null && !reduceMotion
+  const held = paused || !inView
   const videosOn = near && !paused && !reduceMotion
+  const trackStyle: CSSProperties | undefined = scrolling
+    ? ({ '--hiw-scroll-duration': `${durationSec}s` } as CSSProperties)
+    : undefined
 
   return (
-    <div
-      ref={rootRef}
-      className="hiw-tilted-carousel relative py-3"
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-    >
+    <div ref={rootRef} className="hiw-tilted-carousel relative py-3">
       <div className="hiw-tilted-stage">
-        <div ref={trackRef} className="hiw-tilted-track">
+        <div
+          ref={trackRef}
+          className={`hiw-tilted-track${scrolling ? ' is-scrolling' : ''}${scrolling && held ? ' is-held' : ''}`}
+          data-direction={reverse ? 'reverse' : 'forward'}
+          style={trackStyle}
+        >
           {loop.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
