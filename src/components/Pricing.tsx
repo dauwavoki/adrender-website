@@ -1,11 +1,20 @@
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Check } from 'lucide-react'
 import { ScrollReveal } from './ScrollReveal'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
 import { getSignupUrl } from '../lib/appUrl'
 import { TokenBuys } from './TokenBuys'
+import { FAQ_TOKEN_ROLLOVER_ID } from './FaqSection'
+
+/** Home and /lp/* render Pricing on the same page as the rollover FAQ. */
+function tokenRolloverHref(pathname: string): string {
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  const faqOnPage = path === '/' || path.startsWith('/lp/')
+  return faqOnPage ? `#${FAQ_TOKEN_ROLLOVER_ID}` : `/#${FAQ_TOKEN_ROLLOVER_ID}`
+}
 
 const TIER_ACCENTS: Record<string, { from: string; to: string }> = {
   free: { from: '#34d399', to: '#00e5ff' },
@@ -154,6 +163,8 @@ function TierCard({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; 
 export function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
   const signupUrl = getSignupUrl()
+  const { pathname } = useLocation()
+  const rolloverHref = tokenRolloverHref(pathname)
 
   return (
     <section id="pricing" className="scroll-mt-28 px-4 py-24 md:py-28">
@@ -165,14 +176,14 @@ export function Pricing() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Choose monthly or annual.</p>
 
-          <div className="mx-auto mt-10 flex items-center justify-center gap-3">
+          <div className="mx-auto mt-10 flex max-w-full flex-wrap items-center justify-center gap-x-3 gap-y-1.5">
             <span className={`text-sm font-medium ${billing === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>Monthly</span>
             <button
               type="button"
               role="switch"
               aria-checked={billing === 'annual'}
               onClick={() => setBilling((b) => (b === 'monthly' ? 'annual' : 'monthly'))}
-              className="relative h-9 w-16 rounded-full border border-white/[0.1] bg-[#12121a] transition motion-reduce:transition-none hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)]"
+              className="relative h-9 w-16 shrink-0 rounded-full border border-white/[0.1] bg-[#12121a] transition motion-reduce:transition-none hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)]"
             >
               <span
                 className={`toggle-thumb-gradient absolute top-1 left-1 h-7 w-7 rounded-full shadow transition-transform duration-300 ease-out motion-reduce:transition-none ${
@@ -184,6 +195,12 @@ export function Pricing() {
               Annual{' '}
               <span className="text-gradient-accent font-semibold">(20% off)</span>
             </span>
+            <a
+              href={rolloverHref}
+              className="text-xs font-medium text-[var(--accent-cyan)] underline decoration-[color:color-mix(in_srgb,var(--accent-cyan)_45%,transparent)] underline-offset-2 transition-colors hover:decoration-[var(--accent-cyan)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+            >
+              + 2 months token carry-over
+            </a>
           </div>
         </ScrollReveal>
 

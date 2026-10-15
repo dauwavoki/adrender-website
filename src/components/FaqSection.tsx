@@ -1,6 +1,9 @@
 import { ScrollReveal } from './ScrollReveal'
 
-type FaqEntry = { q: string; a: string }
+/** Hash target for the annual token carry-over note in Pricing. */
+export const FAQ_TOKEN_ROLLOVER_ID = 'faq-token-rollover'
+
+type FaqEntry = { q: string; a: string; id?: string }
 
 type FaqGroup = { label: string; items: FaqEntry[] }
 
@@ -40,6 +43,7 @@ const SHOPIFY_APP: FaqEntry = {
 }
 
 const MONTHLY_TOKENS_ROLLOVER: FaqEntry = {
+  id: FAQ_TOKEN_ROLLOVER_ID,
   q: 'Do my monthly tokens roll over?',
   a: 'No. Monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount. Anything above that is forfeited at month end.',
 }
@@ -156,9 +160,14 @@ export function landingSharedFaqGroups(exclude: ReadonlySet<string>): FaqGroup[]
   })).filter((group) => group.items.length > 0)
 }
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+function FaqItem({ q, a, id }: FaqEntry) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-[#12121a] px-5 py-4 sm:px-6 sm:py-5">
+    <div
+      id={id}
+      className={`rounded-2xl border border-white/[0.06] bg-[#12121a] px-5 py-4 sm:px-6 sm:py-5${
+        id ? ' scroll-mt-28' : ''
+      }`}
+    >
       <h3 className="font-heading text-base font-semibold text-white sm:text-lg">{q}</h3>
       <p className="mt-3 border-t border-white/[0.06] pt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
         {a}
@@ -172,7 +181,7 @@ function FaqItems({ items }: { items: FaqEntry[] }) {
     <div className="space-y-3">
       {items.map((item) => (
         <ScrollReveal key={item.q}>
-          <FaqItem q={item.q} a={item.a} />
+          <FaqItem {...item} />
         </ScrollReveal>
       ))}
     </div>
