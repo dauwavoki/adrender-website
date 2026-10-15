@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -6,12 +7,43 @@ import { PageMeta } from '../components/PageMeta'
 import { ScrollReveal } from '../components/ScrollReveal'
 import { blogPostPath, formatPostDate, getPostBySlug } from '../data/blog'
 
+const SHOPIFY_APP_STORE_URL = 'https://apps.shopify.com/adrender'
+const SHOPIFY_APP_CTA_LABEL = 'Get the AdRender Shopify app'
+
+function linkLabel(children: ReactNode): string {
+  if (typeof children === 'string' || typeof children === 'number') return String(children)
+  if (Array.isArray(children)) return children.map((child) => linkLabel(child)).join('')
+  if (children && typeof children === 'object' && 'props' in children) {
+    const props = (children as { props?: { children?: ReactNode } }).props
+    return linkLabel(props?.children)
+  }
+  return ''
+}
+
 const markdownComponents: Components = {
   table: ({ children }) => (
     <div className="blog-table-wrap">
       <table>{children}</table>
     </div>
   ),
+  a: ({ href, children }) => {
+    const isAppStore = href === SHOPIFY_APP_STORE_URL
+    if (isAppStore && linkLabel(children).trim() === SHOPIFY_APP_CTA_LABEL) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="blog-cta">
+          {children}
+        </a>
+      )
+    }
+    if (isAppStore) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          {children}
+        </a>
+      )
+    }
+    return <a href={href}>{children}</a>
+  },
 }
 
 export function BlogPostPage() {

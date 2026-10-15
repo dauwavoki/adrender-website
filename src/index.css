@@ -142,6 +142,45 @@
     color: #fff;
   }
 
+  .blog-prose a.blog-cta {
+    display: inline-flex;
+    box-sizing: border-box;
+    min-height: 48px;
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.15rem;
+    border-radius: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    transition:
+      background-image 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .blog-prose a.blog-cta:hover {
+    color: #fff;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, var(--accent-purple), var(--accent-orange));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 0 24px -4px color-mix(in srgb, var(--accent-cyan) 25%, transparent);
+  }
+
+  @media (min-width: 640px) {
+    .blog-prose a.blog-cta {
+      width: auto;
+    }
+  }
+
   .blog-prose strong {
     color: #e4e4e7;
     font-weight: 600;
@@ -398,6 +437,113 @@
   --hiw-base: #14110e;
 }
 
+/* Shopify app card. Bezel runs #95BF47 → #5E8E3E; the field is #004C3F.
+   The button stays on the light green so #004C3F label text clears WCAG AA
+   (white on #95BF47 and #004C3F on #5E8E3E both fail). */
+.hiw-card--shopify {
+  --hiw-a: #95bf47;
+  --hiw-b: #5e8e3e;
+  --hiw-spot-x: 0%;
+  --hiw-spot-y: 0%;
+  --hiw-spot2-x: 100%;
+  --hiw-spot2-y: 100%;
+  --hiw-base: #004c3f;
+}
+
+.hiw-card--shopify .hiw-shopify-title {
+  margin-top: 0;
+  font-size: clamp(1.5rem, 2.5vw, 2.05rem);
+  line-height: 1.15;
+}
+
+.hiw-shopify-copy {
+  color: #e4e4e7;
+}
+
+.hiw-shopify-kicker {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #a1a1aa;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.hiw-shopify-kicker:hover {
+  color: #fff;
+}
+
+.hiw-shopify-btn {
+  display: inline-flex;
+  min-height: 48px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #004c3f;
+  text-align: center;
+  text-decoration: none;
+  background-color: #95bf47;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  transition:
+    filter 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.hiw-shopify-btn:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 0 22px -6px color-mix(in srgb, #95bf47 75%, transparent);
+}
+
+.hiw-shopify-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.35rem 0.15rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #dcecc4;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, #dcecc4 50%, transparent);
+  text-underline-offset: 3px;
+  transition: color 160ms ease;
+}
+
+.hiw-shopify-link:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.hiw-shopify-kicker:focus-visible,
+.hiw-shopify-btn:focus-visible,
+.hiw-shopify-link:focus-visible {
+  outline: 2px solid #dcecc4;
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .hiw-shopify-btn {
+    width: auto;
+    min-width: 13.75rem;
+  }
+
+  .hiw-shopify-link {
+    justify-content: flex-end;
+    text-align: right;
+  }
+}
+
 .hiw-card-num {
   font-family: var(--font-heading);
   font-size: clamp(2.5rem, 5vw, 3.75rem);
@@ -464,6 +610,13 @@
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Green-on-green gradient text fails contrast on the deep field. Keep it white. */
+  .hiw-card--shopify .hiw-card-title {
+    background-image: none;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
   }
 }
 

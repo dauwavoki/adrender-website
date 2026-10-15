@@ -23,6 +23,9 @@ const STEPS = [
   },
 ]
 
+const SHOPIFY_APP_URL = 'https://apps.shopify.com/adrender'
+const SHOPIFY_APP_POST_PATH = '/blog/adrender-shopify-app'
+
 function ClosingStartCard() {
   const signupUrl = getSignupUrl()
 
@@ -52,8 +55,41 @@ function ClosingStartCard() {
   )
 }
 
+function ShopifyAppCard() {
+  return (
+    <article className="hiw-card hiw-card--shopify px-6 py-7 sm:px-10 sm:py-9 md:px-12 md:py-10">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
+        <div className="min-w-0 max-w-xl text-left">
+          <h3 className="hiw-card-title hiw-shopify-title">Using Shopify? Get the native app</h3>
+          <div className="hiw-shopify-copy mt-3 space-y-1.5 text-sm leading-snug sm:text-[15px] sm:leading-relaxed">
+            <p>A native Shopify app, separate from the web app but working in a similar way.</p>
+            <p>
+              Install from the Shopify App Store, your products connect automatically, and billing goes through
+              Shopify.
+            </p>
+            <p>Unused plan tokens roll over on paid plans.</p>
+          </div>
+        </div>
+        <div className="flex w-full min-w-0 flex-col items-stretch gap-1 md:w-auto md:shrink-0 md:items-end">
+          <a
+            href={SHOPIFY_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hiw-shopify-btn"
+          >
+            Get the Shopify app
+          </a>
+          <a href={SHOPIFY_APP_POST_PATH} className="hiw-shopify-link">
+            How the Shopify app works →
+          </a>
+        </div>
+      </div>
+    </article>
+  )
+}
+
 /**
- * How It Works — three always-visible cards, then a closing start-free card.
+ * How It Works — three always-visible cards, a closing start-free card, then the Shopify app card.
  */
 export function HowItWorks() {
   return (
@@ -71,6 +107,14 @@ export function HowItWorks() {
           <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             How It Works
           </h2>
+          <a
+            href={SHOPIFY_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hiw-shopify-kicker"
+          >
+            On Shopify? Get the native app →
+          </a>
         </div>
 
         {/*
@@ -101,6 +145,7 @@ export function HowItWorks() {
             </article>
           ))}
           <ClosingStartCard />
+          <ShopifyAppCard />
         </div>
       </div>
     </section>

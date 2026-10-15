@@ -45,7 +45,7 @@ const SHOPIFY_APP: FaqEntry = {
 const MONTHLY_TOKENS_ROLLOVER: FaqEntry = {
   id: FAQ_TOKEN_ROLLOVER_ID,
   q: 'Do my monthly tokens roll over?',
-  a: 'No. Monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount. Anything above that is forfeited at month end.',
+  a: "Not on the web app's monthly plans: monthly plan tokens reset every billing cycle. Annual subscribers can carry unused plan tokens forward, up to two times their monthly amount, and anything above that is trimmed when the next monthly tokens are added. On the AdRender Shopify app, unused plan tokens roll over on paid monthly plans too, up to two times your monthly amount.",
 }
 
 const TOPUP_TOKENS_EXPIRE: FaqEntry = {
