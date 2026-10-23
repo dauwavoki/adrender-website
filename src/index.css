@@ -651,7 +651,12 @@
     }
 
     .hero-headline {
-      font-size: min(3.2rem, calc(100cqi / 11.7));
+      /* "Render image and video." in Plus Jakarta Sans 800, letter-spacing -0.045em,
+         is 11.093px wide per 1px of font-size. 0.98 keeps a ~2% safety margin.
+         Cap so a very wide column cannot make the type absurd. */
+      --hero-line-ratio: 11.093;
+      font-size: clamp(1.25rem, calc(100cqi / var(--hero-line-ratio) * 0.98), 4.5rem);
+      line-height: 1.02;
     }
 
     .hero-line1,
