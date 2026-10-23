@@ -1,73 +1,61 @@
+import { Link } from 'react-router-dom'
 import { ScrollReveal } from './ScrollReveal'
 
 const CARDS = [
   {
     n: '1',
-    title: 'The Problem',
+    eyebrow: 'The Problem',
     heading: 'Finding a winner means testing losers.',
-    body: "You don't know which ad wins until it's live and running. That means testing several angles, hooks, and formats before the real winner shows itself — and every test needs a finished creative, not a rough sketch. Skip the volume and you're just guessing. The only way to find what actually converts is testing enough versions that the pattern becomes obvious — and that takes real production, every time, for every angle.",
-    accent: {
-      bg: 'bg-[#C45A2C]',
-      ghost: 'text-white/20',
-      label: 'text-white',
-    },
+    body: "You won't know which ad wins until it's live. Finding it means testing many angles, hooks and formats, and every test needs a finished creative. Skip the volume and you're guessing.",
+    tone: 'hiw-card--1',
   },
   {
     n: '2',
-    title: 'The Bottleneck',
-    heading: "Your testing budget isn't the limit. Your creative budget is.",
-    body: "Hiring solves the skill problem, not the speed problem — find the right designer or agency, brief them, wait for a first pass, send notes, wait again. Do it yourself and the waiting becomes stitching instead: Figma, Canva, AdCreative.ai, or Predis for statics; Foreplay, CapCut, Premiere Pro, and an AI video generator for video — and more. Either way, by the time you have enough creative to test, the window's already closing.",
-    accent: {
-      bg: 'bg-[#5B3FA8]',
-      ghost: 'text-white/20',
-      label: 'text-[#E8D9FF]',
-    },
+    eyebrow: 'The Bottleneck',
+    heading: 'Your creative budget is the real limit.',
+    body: "Hiring means briefs, waiting and revisions. Doing it yourself means stitching six or more apps together for statics and video. Either way, by the time you have enough creative, the window's closing.",
+    tone: 'hiw-card--2',
   },
   {
     n: '3',
-    title: 'The Fix',
+    eyebrow: 'The Fix',
     heading: 'Make testing cheap enough to actually do it.',
-    body: "AdRender drops the cost of a creative — static or video — to near nothing. No briefing, no back-and-forth, no six-app stack. Hundreds of ads in under 10 minutes, on-brand, built on formats already proven in the wild. One tool instead of a stack of them. Test the angle you weren't sure about — because now it costs you almost nothing to find out, and nothing to wait for.",
-    accent: {
-      bg: 'bg-[#2F8F5B]',
-      ghost: 'text-white/20',
-      label: 'text-[#D4F5E4]',
-    },
+    body: 'AdRender drops the cost of a static or video creative to near nothing. Hundreds of on-brand ads in under 10 minutes, built on formats already proven to work. Test every angle.',
+    tone: 'hiw-card--3',
   },
 ] as const
 
 export function ProblemBottleneckFix() {
   return (
-    <section className="relative border-t border-white/[0.06] bg-[#08080c] px-4 py-24 md:px-6 md:py-28">
+    <section className="relative border-t border-white/[0.06] px-4 py-24 md:px-6 md:py-28">
       <div className="mx-auto max-w-6xl">
         <ScrollReveal>
-          <div className="grid gap-4 md:grid-cols-3 md:gap-5">
+          <div className="grid auto-rows-fr items-stretch gap-4 md:grid-cols-3 md:gap-5">
             {CARDS.map((card) => (
-              <article
+              <Link
                 key={card.n}
-                className={`relative overflow-hidden rounded-3xl ${card.accent.bg} p-8 md:min-h-[22rem] md:p-9`}
+                to="/about#founder-story"
+                aria-label={`Read why I built AdRender — ${card.heading}`}
+                className={`hiw-card ${card.tone} pbf-card`}
               >
-                <span
-                  className={`pointer-events-none absolute -left-1 -top-4 font-heading text-[9rem] font-extrabold leading-none ${card.accent.ghost} select-none`}
-                  aria-hidden
-                >
+                <span className="pbf-num" aria-hidden>
                   {card.n}
                 </span>
-                <div className="relative">
-                  <p
-                    className={`text-sm font-bold uppercase tracking-[0.16em] ${card.accent.label}`}
-                  >
-                    {card.title}
-                  </p>
-                  <h3 className="mt-3 font-heading text-xl font-bold leading-snug tracking-tight text-white md:text-2xl">
-                    {card.heading}
-                  </h3>
-                  <p className="mt-4 text-[15px] leading-relaxed text-white/90">{card.body}</p>
-                </div>
-              </article>
+                <p className="pbf-eyebrow">{card.eyebrow}</p>
+                <h3 className="hiw-card-title">{card.heading}</h3>
+                <p className="pbf-body">{card.body}</p>
+              </Link>
             ))}
           </div>
         </ScrollReveal>
+        <p className="mt-8 text-center">
+          <Link
+            to="/about#founder-story"
+            className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
+          >
+            Why I built AdRender →
+          </Link>
+        </p>
       </div>
     </section>
   )

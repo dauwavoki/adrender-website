@@ -4,7 +4,7 @@
   --accent-cyan: #00e5ff;
   --accent-purple: #7b4fd4;
   --accent-orange: #ff6b2b;
-  /* How It Works card-title gradients. The hero line 2 uses deeper stops of these pairs. */
+  /* How It Works card-title gradients. Hero line 2 reuses these bright pairs plus three more. */
   --hiw-title-1-a: var(--accent-cyan);
   --hiw-title-1-b: #2f80ff;
   --hiw-title-2-a: var(--accent-purple);
@@ -14,7 +14,7 @@
 }
 
 @theme {
-  --color-bg-base: #10141c;
+  --color-bg-base: #0a0a0f;
   --color-bg-elevated: #12121a;
   --color-bg-card: #14141c;
   --color-border-subtle: rgba(255, 255, 255, 0.06);
@@ -288,19 +288,26 @@
 }
 
 @layer utilities {
-  /* Homepage hero: white field with a dark dot texture, dissolving into the page colour. */
+  /* Homepage hero sits on the page colour. White dots fade out before How It Works. */
   .hero-home {
-    --hero-fade: 13rem;
-    padding-bottom: var(--hero-fade);
+    --hero-chrome: 7.35rem;
+    --hero-gutter: max(1rem, calc((100% - 72rem) / 2 + 1rem));
+    --hero-copy-w: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100svh - var(--hero-chrome));
+    overflow-x: clip;
     background-color: var(--color-bg-base);
-    background-image: linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #ffffff calc(100% - var(--hero-fade)),
-      color-mix(in srgb, var(--color-bg-base) 22%, #ffffff) calc(100% - var(--hero-fade) * 0.68),
-      color-mix(in srgb, var(--color-bg-base) 55%, #ffffff) calc(100% - var(--hero-fade) * 0.34),
-      var(--color-bg-base) 100%
-    );
+    padding-top: 1.25rem;
+    padding-bottom: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-home {
+      --hero-gutter: max(1.5rem, calc((100% - 72rem) / 2 + 1.5rem));
+    }
   }
 
   .hero-dots {
@@ -308,66 +315,95 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--color-bg-base) 42%, transparent) 0.75px,
-      transparent 0.8px
-    );
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.16) 1.5px, transparent 1.65px);
     background-size: 24px 24px;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      #000 0%,
-      #000 calc(100% - var(--hero-fade)),
-      transparent calc(100% - var(--hero-fade) * 0.28)
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      #000 0%,
-      #000 calc(100% - var(--hero-fade)),
-      transparent calc(100% - var(--hero-fade) * 0.28)
-    );
+    -webkit-mask-image:
+      linear-gradient(to bottom, #000 0%, #000 28%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, #000 0%, #000 28%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  .hero-stage {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+    margin-block: auto;
+  }
+
+  .hero-copy-shell {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .hero-copy {
+    width: 100%;
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  .hero-showcase {
+    width: 100%;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-copy-shell,
+    .hero-showcase {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  .hero-headline {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    font-size: clamp(2.05rem, 8.4vw, 2.7rem);
   }
 
   .hero-line1 {
-    color: var(--color-bg-base);
+    color: #fff;
   }
 
-  /* Deeper stops of the How It Works pairs (1–3), then three more brand gradients.
-     Light enough to show a sheen, dark enough to read on the white hero. */
+  /* Bright brand pairs. 1–3 match the How It Works cards; 4–6 are extra mixes. */
   .hero-line-grad-1 {
-    --glaze-a: #0e7490;
-    --glaze-b: #1d4ed8;
-    --glaze-shine: #0284c7;
+    --hiw-a: var(--hiw-title-1-a);
+    --hiw-b: var(--hiw-title-1-b);
   }
 
   .hero-line-grad-2 {
-    --glaze-a: #6d28d9;
-    --glaze-b: #be185d;
-    --glaze-shine: #9333ea;
+    --hiw-a: var(--hiw-title-2-a);
+    --hiw-b: var(--hiw-title-2-b);
   }
 
   .hero-line-grad-3 {
-    --glaze-a: #92400e;
-    --glaze-b: #c2410c;
-    --glaze-shine: #d97706;
+    --hiw-a: var(--hiw-title-3-a);
+    --hiw-b: var(--hiw-title-3-b);
   }
 
   .hero-line-grad-4 {
-    --glaze-a: #1e3a8a;
-    --glaze-b: #6d28d9;
-    --glaze-shine: #2563eb;
+    --hiw-a: #2f5bea;
+    --hiw-b: #7b3fe4;
   }
 
   .hero-line-grad-5 {
-    --glaze-a: #a21caf;
-    --glaze-b: #c2410c;
-    --glaze-shine: #db2777;
+    --hiw-a: #e23d9b;
+    --hiw-b: #ff7a1a;
   }
 
   .hero-line-grad-6 {
-    --glaze-a: #155e75;
-    --glaze-b: #6d28d9;
-    --glaze-shine: #1d4ed8;
+    --hiw-a: #3fe0e8;
+    --hiw-b: #7b4fd4;
   }
 
   .hero-line-grad-1,
@@ -376,7 +412,7 @@
   .hero-line-grad-4,
   .hero-line-grad-5,
   .hero-line-grad-6 {
-    background-image: linear-gradient(105deg, var(--glaze-a), var(--glaze-b));
+    background-image: linear-gradient(105deg, var(--hiw-a), var(--hiw-b));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -410,18 +446,104 @@
   }
 
   .hero-showcase-perspective {
-    perspective: 1600px;
-    perspective-origin: center center;
+    perspective: none;
   }
 
   .hero-showcase-tilt {
-    transform-origin: center center;
+    position: relative;
+    transform: none;
+    transform-origin: left center;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -56px -48px;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(100px);
+  }
+
+  .hero-glow-blob {
+    position: absolute;
+    display: block;
+    width: 46%;
+    height: 52%;
+    border-radius: 999px;
+    opacity: 0.42;
+    will-change: transform;
+  }
+
+  .hero-glow-blob--cyan {
+    top: 4%;
+    left: -2%;
+    background: #3fe0e8;
+    animation: hero-glow-drift-1 18s ease-in-out infinite alternate;
+  }
+
+  .hero-glow-blob--blue {
+    top: -4%;
+    right: 4%;
+    width: 50%;
+    height: 48%;
+    background: #2f5bea;
+    animation: hero-glow-drift-2 22s ease-in-out infinite alternate;
+  }
+
+  .hero-glow-blob--purple {
+    bottom: -2%;
+    left: 24%;
+    width: 44%;
+    background: #7b3fe4;
+    animation: hero-glow-drift-3 15s ease-in-out infinite alternate;
+  }
+
+  .hero-glow-blob--orange {
+    right: -4%;
+    bottom: 8%;
+    width: 38%;
+    height: 46%;
+    background: #ff7a1a;
+    opacity: 0.38;
+    animation: hero-glow-drift-4 20s ease-in-out infinite alternate;
+  }
+
+  .hero-showcase-frame {
+    position: relative;
+    z-index: 1;
+    border-radius: 16px;
+    box-shadow:
+      0 36px 80px -24px rgba(0, 0, 0, 0.78),
+      0 16px 36px -18px rgba(0, 0, 0, 0.62);
+  }
+
+  .hero-showcase-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(63, 224, 232, 0.5),
+      rgba(47, 91, 234, 0.28) 38%,
+      rgba(123, 63, 228, 0.38) 68%,
+      rgba(255, 122, 26, 0.42)
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 
   .hero-showcase-tilt .ap-window {
-    box-shadow:
-      0 22px 48px -18px rgba(16, 20, 28, 0.38),
-      0 8px 20px -12px rgba(16, 20, 28, 0.22);
+    border-color: transparent;
+    box-shadow: none;
   }
 
   .reveal {
@@ -475,9 +597,71 @@
   }
 
   @media (min-width: 1024px) {
+    .hero-home {
+      --hero-copy-w: clamp(18.5rem, 32vw, 28rem);
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .hero-stage {
+      display: block;
+      min-height: calc(100svh - var(--hero-chrome) - 1rem);
+    }
+
+    .hero-copy-shell {
+      display: flex;
+      max-width: none;
+      height: 100%;
+      min-height: inherit;
+      margin-inline: 0;
+      align-items: center;
+      padding-inline: 0;
+      padding-left: var(--hero-gutter);
+      width: calc(var(--hero-gutter) + var(--hero-copy-w));
+    }
+
+    .hero-copy {
+      width: var(--hero-copy-w);
+    }
+
+    .hero-headline {
+      font-size: min(3.2rem, calc(100cqi / 11.7));
+    }
+
+    .hero-line1,
+    .hero-line2 > span {
+      white-space: nowrap;
+    }
+
+    .hero-showcase {
+      position: absolute;
+      top: 50%;
+      right: -5.5vw;
+      left: calc(var(--hero-gutter) + var(--hero-copy-w) + 1.25rem);
+      width: auto;
+      padding-inline: 0;
+      translate: 0 -50%;
+    }
+
+    .hero-showcase-perspective {
+      perspective: 2200px;
+      perspective-origin: left center;
+    }
+
     .hero-showcase-tilt {
-      width: 100%;
-      transform: rotateY(-14deg) rotateX(6deg) rotateZ(1deg);
+      transform: rotateY(-9deg) rotateX(4deg) rotateZ(0.5deg);
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .hero-home {
+      --hero-copy-w: clamp(20rem, 30vw, 32rem);
+    }
+
+    .hero-showcase {
+      left: calc(var(--hero-gutter) + var(--hero-copy-w) + 1.5rem);
+      right: auto;
+      width: min(62vw, 1120px);
     }
   }
 
@@ -486,8 +670,56 @@
     .hero-line-shine {
       animation: none !important;
       transition: none !important;
-      background-image: linear-gradient(105deg, var(--glaze-a), var(--glaze-b)) !important;
+      background-image: linear-gradient(105deg, var(--hiw-a), var(--hiw-b)) !important;
       background-size: 100% 100% !important;
+    }
+
+    .hero-glow-blob {
+      animation: none !important;
+    }
+  }
+
+  @keyframes hero-glow-drift-1 {
+    from {
+      opacity: 0.4;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      opacity: 0.5;
+      transform: translate3d(26%, 16%, 0) scale(1.14);
+    }
+  }
+
+  @keyframes hero-glow-drift-2 {
+    from {
+      opacity: 0.38;
+      transform: translate3d(0, 0, 0) scale(1.04);
+    }
+    to {
+      opacity: 0.48;
+      transform: translate3d(-30%, 20%, 0) scale(0.9);
+    }
+  }
+
+  @keyframes hero-glow-drift-3 {
+    from {
+      opacity: 0.36;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      opacity: 0.5;
+      transform: translate3d(16%, -24%, 0) scale(1.16);
+    }
+  }
+
+  @keyframes hero-glow-drift-4 {
+    from {
+      opacity: 0.34;
+      transform: translate3d(0, 0, 0) scale(0.96);
+    }
+    to {
+      opacity: 0.46;
+      transform: translate3d(-22%, -14%, 0) scale(1.1);
     }
   }
 
@@ -536,6 +768,23 @@
 /* Card 1 cyan → blue, card 2 violet → magenta, card 3 amber → orange.
    Cyan, purple, and orange are the site tokens; blue, magenta, and amber
    are the nearest steps that keep the three cards distinct on the dark bg. */
+.hiw-card,
+.hero-line-grad-1,
+.hero-line-grad-2,
+.hero-line-grad-3,
+.hero-line-grad-4,
+.hero-line-grad-5,
+.hero-line-grad-6 {
+  --hiw-shine-image: linear-gradient(
+    105deg,
+    var(--hiw-a) 0%,
+    var(--hiw-b) 36%,
+    #fff 50%,
+    var(--hiw-b) 64%,
+    var(--hiw-a) 100%
+  );
+}
+
 .hiw-card {
   --hiw-a: var(--accent-cyan);
   --hiw-b: #2f80ff;
@@ -729,6 +978,66 @@
   color: #fff;
 }
 
+.pbf-card {
+  display: flex;
+  height: 100%;
+  cursor: pointer;
+  flex-direction: column;
+  padding: 1.75rem 1.6rem 1.85rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.pbf-card:focus-visible {
+  outline: 2px solid var(--hiw-a);
+  outline-offset: 4px;
+}
+
+.pbf-num {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.85rem;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-heading);
+  font-size: clamp(5.5rem, 7vw, 7.25rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.055);
+}
+
+.pbf-eyebrow {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: #a1a1aa;
+}
+
+.pbf-card .hiw-card-title {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.85rem;
+  font-size: clamp(1.28rem, 1.45vw, 1.55rem);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.pbf-body {
+  position: relative;
+  z-index: 1;
+  margin: 0.9rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #a1a1aa;
+}
+
 @keyframes hiw-title-glaze {
   from {
     background-position: 100% 50%;
@@ -750,14 +1059,7 @@
 }
 
 .hero-line-shine {
-  background-image: linear-gradient(
-    105deg,
-    var(--glaze-a) 0%,
-    var(--glaze-b) 36%,
-    var(--glaze-shine) 50%,
-    var(--glaze-b) 64%,
-    var(--glaze-a) 100%
-  );
+  background-image: var(--hiw-shine-image);
 }
 
 .hero-line2 > .is-current.hero-line-shine {
@@ -776,14 +1078,7 @@
   }
 
   .hiw-card:hover .hiw-card-title {
-    background-image: linear-gradient(
-      105deg,
-      var(--hiw-a) 0%,
-      var(--hiw-b) 36%,
-      #fff 50%,
-      var(--hiw-b) 64%,
-      var(--hiw-a) 100%
-    );
+    background-image: var(--hiw-shine-image);
   }
 }
 

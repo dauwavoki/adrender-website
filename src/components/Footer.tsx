@@ -122,7 +122,8 @@ export function Footer() {
           <div>
             <BrandLogoLink variant="footer" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
-              AI-powered static and video ads for anyone running paid social. Also available as a{' '}
+              AI-powered image and video ads for anyone running paid social — whether you spend $500 or $50K+ a
+              month, and whether it&apos;s your whole budget or your testing budget. Also available as a{' '}
               <a
                 href="https://apps.shopify.com/search?q=AdRender"
                 target="_blank"

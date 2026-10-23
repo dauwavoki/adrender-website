@@ -29,12 +29,6 @@ function HomeFaqFooter() {
           Chat with our in-app support
         </a>
       </div>
-      <Link
-        to="/about#founder-story"
-        className="mt-6 text-center text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-      >
-        Why I built AdRender →
-      </Link>
     </div>
   )
 }

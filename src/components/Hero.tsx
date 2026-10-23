@@ -11,26 +11,24 @@ const LINE_2 = [
   { text: 'Launch more tests.', gradient: HERO_LINE_GRADIENTS[0] },
   { text: 'Find more winners.', gradient: HERO_LINE_GRADIENTS[1] },
   { text: 'Test every angle.', gradient: HERO_LINE_GRADIENTS[2] },
-  { text: "Scale what's working.", gradient: HERO_LINE_GRADIENTS[3] },
-  { text: 'Beat creative fatigue.', gradient: HERO_LINE_GRADIENTS[4] },
-  { text: 'Images and video, on-brand.', gradient: HERO_LINE_GRADIENTS[5] },
+  { text: 'Scale what works.', gradient: HERO_LINE_GRADIENTS[3] },
+  { text: 'Beat ad fatigue.', gradient: HERO_LINE_GRADIENTS[4] },
+  { text: 'Render image and video.', gradient: HERO_LINE_GRADIENTS[5] },
 ] as const
 
 const LINE_1 = 'Create more ads.'
 const SR_HEADLINE = 'Create more ads. Launch more tests. Find more winners.'
 
 const DEFAULT_SUBHEAD =
-  'AdRender pulls from 100M+ real image and video ads running right now and remixes the winners into your brand. Hundreds of ads in under 10 minutes.'
+  'Remix 100M+ real image and video ads into your brand. Hundreds of ads in under 10 minutes.'
 const DEFAULT_CTA_NOTE = 'No credit card. No demo call. No sales rep.'
-const DEFAULT_AUDIENCE =
-  "Built for anyone spending $500 to $50K+ a month on ads — whether that's your whole budget or your testing budget."
 
 type HeroProps = {
   /** Landing pages pass their own headline. Homepage uses the rotating headline. */
   headline?: string
   subhead?: string
   ctaNote?: string
-  /** Pass `null` to hide the audience line (landing pages). */
+  /** Pass a string to show an audience line. Homepage leaves this off. */
   audienceLine?: string | null
   /** Homepage: text left, tilted app showcase on the right. */
   showcase?: boolean
@@ -69,7 +67,7 @@ function RotatingHeadline() {
   const animate = !reduced && rot.animate
 
   return (
-    <h1 className="font-heading text-[2.15rem] font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.15rem] lg:leading-[1.02] xl:text-[3.35rem]">
+    <h1 className="hero-headline">
       <span className="sr-only">{SR_HEADLINE}</span>
       <span aria-hidden="true" className="block">
         <span className="hero-line1 block">{LINE_1}</span>
@@ -99,7 +97,7 @@ export function Hero({
   headline,
   subhead = DEFAULT_SUBHEAD,
   ctaNote = DEFAULT_CTA_NOTE,
-  audienceLine = DEFAULT_AUDIENCE,
+  audienceLine = null,
   showcase = false,
 }: HeroProps) {
   const [websiteUrl, setWebsiteUrl] = useState('')
@@ -113,17 +111,15 @@ export function Hero({
   }
 
   const form = (
-    <div className={showcase ? 'mt-8' : 'mt-10'}>
-      <form onSubmit={handleSubmit} className={showcase ? 'w-full max-w-xl' : 'mx-auto w-full max-w-2xl'}>
+    <div className={showcase ? 'mt-7' : 'mt-10'}>
+      <form onSubmit={handleSubmit} className={showcase ? 'w-full' : 'mx-auto w-full max-w-2xl'}>
         <div className="flex flex-col gap-3 md:flex-row md:items-stretch">
           <div className="relative min-w-0 flex-1">
             <label htmlFor="hero-brand-url" className="sr-only">
               Add your URL (optional)
             </label>
             <Globe
-              className={`pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 ${
-                showcase ? 'text-zinc-500' : 'text-white/40'
-              }`}
+              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40"
               aria-hidden
             />
             <input
@@ -133,11 +129,7 @@ export function Hero({
               onChange={(e) => setWebsiteUrl(e.target.value)}
               placeholder="Add your URL (optional)"
               autoComplete="url"
-              className={
-                showcase
-                  ? 'focus-ring-brand w-full rounded-xl border border-zinc-300 bg-white py-3.5 pl-12 pr-4 font-mono text-base text-bg-base shadow-sm placeholder:text-zinc-500 transition-all focus:border-[var(--accent-cyan)]'
-                  : 'focus-ring-brand w-full rounded-xl border border-white/10 bg-bg-card py-3.5 pl-12 pr-4 font-mono text-base text-white placeholder-white/30 transition-all focus:border-[var(--accent-cyan)]'
-              }
+              className="focus-ring-brand w-full rounded-xl border border-white/10 bg-bg-card py-3.5 pl-12 pr-4 font-mono text-base text-white placeholder-white/30 transition-all focus:border-[var(--accent-cyan)]"
             />
           </div>
           <button
@@ -149,7 +141,7 @@ export function Hero({
           </button>
         </div>
       </form>
-      <p className={`mt-4 text-sm ${showcase ? 'text-zinc-600' : 'text-zinc-500'}`}>{ctaNote}</p>
+      <p className="mt-4 text-sm text-zinc-500">{ctaNote}</p>
     </div>
   )
 
@@ -163,8 +155,8 @@ export function Hero({
         </h1>
       )}
       <p
-        className={`mt-6 text-base leading-relaxed sm:text-lg md:text-xl ${
-          showcase ? 'max-w-xl text-zinc-700' : 'mx-auto max-w-3xl text-zinc-400'
+        className={`mt-5 text-base leading-relaxed text-zinc-400 sm:text-lg ${
+          showcase ? '' : 'mx-auto max-w-3xl md:text-xl'
         }`}
       >
         {subhead}
@@ -172,8 +164,8 @@ export function Hero({
       {form}
       {audienceLine ? (
         <p
-          className={`mt-6 text-sm leading-relaxed ${
-            showcase ? 'max-w-xl text-zinc-600' : 'mx-auto max-w-xl text-zinc-600'
+          className={`mt-6 text-sm leading-relaxed text-zinc-500 ${
+            showcase ? 'max-w-xl' : 'mx-auto max-w-xl'
           }`}
         >
           {audienceLine}
@@ -191,13 +183,25 @@ export function Hero({
   }
 
   return (
-    <section className="hero-home relative pt-12 md:pt-14 lg:pt-12">
+    <section className="hero-home">
       <div className="hero-dots" aria-hidden />
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 px-4 md:px-6 lg:grid-cols-2 lg:gap-8">
-        <div className="min-w-0 text-left">{copy}</div>
-        <div className="hero-showcase-perspective min-w-0">
-          <div className="hero-showcase-tilt">
-            <AppPreviewSection embedded />
+      <div className="hero-stage">
+        <div className="hero-copy-shell">
+          <div className="hero-copy">{copy}</div>
+        </div>
+        <div className="hero-showcase">
+          <div className="hero-showcase-perspective">
+            <div className="hero-showcase-tilt">
+              <div className="hero-glow" aria-hidden>
+                <span className="hero-glow-blob hero-glow-blob--cyan" />
+                <span className="hero-glow-blob hero-glow-blob--blue" />
+                <span className="hero-glow-blob hero-glow-blob--purple" />
+                <span className="hero-glow-blob hero-glow-blob--orange" />
+              </div>
+              <div className="hero-showcase-frame">
+                <AppPreviewSection embedded />
+              </div>
+            </div>
           </div>
         </div>
       </div>
