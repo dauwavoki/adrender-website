@@ -21,7 +21,7 @@ const SR_HEADLINE = 'Create more ads. Launch more tests. Find more winners.'
 
 const DEFAULT_SUBHEAD =
   'Remix 100M+ real image and video ads into your brand. Hundreds of ads in under 10 minutes.'
-const DEFAULT_CTA_NOTE = 'No credit card. No demo call. No sales rep.'
+const DEFAULT_CTA_NOTE = 'Free to start. No credit card needed'
 
 type HeroProps = {
   /** Landing pages pass their own headline. Homepage uses the rotating headline. */

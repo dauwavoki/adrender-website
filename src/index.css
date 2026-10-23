@@ -291,8 +291,6 @@
   /* Homepage hero sits on the page colour. White dots fade out before How It Works. */
   .hero-home {
     --hero-chrome: 7.35rem;
-    --hero-gutter: max(1rem, calc((100% - 72rem) / 2 + 1rem));
-    --hero-copy-w: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -302,12 +300,6 @@
     background-color: var(--color-bg-base);
     padding-top: 1.25rem;
     padding-bottom: 1.75rem;
-  }
-
-  @media (min-width: 768px) {
-    .hero-home {
-      --hero-gutter: max(1.5rem, calc((100% - 72rem) / 2 + 1.5rem));
-    }
   }
 
   .hero-dots {
@@ -598,30 +590,64 @@
 
   @media (min-width: 1024px) {
     .hero-home {
-      --hero-copy-w: clamp(18.5rem, 32vw, 28rem);
+      --hero-pad: clamp(24px, 4vw, 72px);
+      --hero-gap: 2rem;
+      --hero-copy-max: 28rem;
+      /* Floor used only when the approved showcase size cannot fit. Wide enough for the URL field. */
+      --hero-copy-min: 18rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
     }
 
     .hero-stage {
+      /* Same layout width the showcase has today, including the part that used to sit past the edge. */
+      --hero-showcase-target: calc(
+        100% + 5.5vw - max(1.5rem, (100% - 72rem) / 2 + 1.5rem) - clamp(18.5rem, 32vw, 28rem) - 1.25rem
+      );
+      /* Projected corners of rotateY(-9deg) rotateX(4deg) rotateZ(0.5deg), origin left center, perspective 2200px.
+         Width variable is --tw (target) or --sw (fitted). Right edge is the further of TR/BR; left edge is BL. */
+      --tw: var(--hero-showcase-target);
+      --vis-target: calc(
+        max(
+          0.99341481 * var(--tw) * 2200px / (2200px - 0.13677078 * var(--tw)),
+          0.98169621 * var(--tw) * 2200px / (2200px - 0.17728872 * var(--tw))
+        ) -
+          (-0.0058593 * var(--tw) * 2200px / (2200px - 0.02025897 * var(--tw)))
+      );
+      --hero-showcase-w: min(
+        var(--hero-showcase-target),
+        (100% - 2 * var(--hero-pad) - var(--hero-gap) - var(--hero-copy-min)) / var(--vis-target) *
+          var(--hero-showcase-target)
+      );
+      --sw: var(--hero-showcase-w);
+      --hero-vis-right: max(
+        0.99341481 * var(--sw) * 2200px / (2200px - 0.13677078 * var(--sw)),
+        0.98169621 * var(--sw) * 2200px / (2200px - 0.17728872 * var(--sw))
+      );
+      --hero-vis-left: calc(-0.0058593 * var(--sw) * 2200px / (2200px - 0.02025897 * var(--sw)));
+      --hero-visual: calc(var(--hero-vis-right) - var(--hero-vis-left));
       display: block;
       min-height: calc(100svh - var(--hero-chrome) - 1rem);
     }
 
     .hero-copy-shell {
       display: flex;
+      position: relative;
+      z-index: 2;
       max-width: none;
       height: 100%;
       min-height: inherit;
-      margin-inline: 0;
+      margin: 0 0 0 var(--hero-pad);
       align-items: center;
-      padding-inline: 0;
-      padding-left: var(--hero-gutter);
-      width: calc(var(--hero-gutter) + var(--hero-copy-w));
+      padding: 0;
+      width: min(
+        var(--hero-copy-max),
+        100% - 2 * var(--hero-pad) - var(--hero-visual) - var(--hero-gap)
+      );
     }
 
     .hero-copy {
-      width: var(--hero-copy-w);
+      width: 100%;
     }
 
     .hero-headline {
@@ -633,12 +659,24 @@
       white-space: nowrap;
     }
 
+    /* Stack the URL row when the column is too narrow for the field and button together. */
+    @container (max-width: 30rem) {
+      .hero-copy form > div {
+        flex-direction: column;
+      }
+
+      .hero-copy form button {
+        width: 100%;
+      }
+    }
+
     .hero-showcase {
       position: absolute;
+      z-index: 1;
       top: 50%;
-      right: -5.5vw;
-      left: calc(var(--hero-gutter) + var(--hero-copy-w) + 1.25rem);
-      width: auto;
+      right: calc(var(--hero-pad) + var(--hero-vis-right) - var(--hero-showcase-w));
+      left: auto;
+      width: var(--hero-showcase-w);
       padding-inline: 0;
       translate: 0 -50%;
     }
@@ -655,13 +693,11 @@
 
   @media (min-width: 1600px) {
     .hero-home {
-      --hero-copy-w: clamp(20rem, 30vw, 32rem);
+      --hero-copy-max: 32rem;
     }
 
-    .hero-showcase {
-      left: calc(var(--hero-gutter) + var(--hero-copy-w) + 1.5rem);
-      right: auto;
-      width: min(62vw, 1120px);
+    .hero-stage {
+      --hero-showcase-target: min(62vw, 1120px);
     }
   }
 
