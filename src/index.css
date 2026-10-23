@@ -670,24 +670,17 @@
       }
     }
 
+    /* Flat comparison: same on-screen footprint as the tilted showcase.
+       Width is the projected visual width; the right edge sits on the hero padding. */
     .hero-showcase {
       position: absolute;
       z-index: 1;
       top: 50%;
-      right: calc(var(--hero-pad) + var(--hero-vis-right) - var(--hero-showcase-w));
+      right: var(--hero-pad);
       left: auto;
-      width: var(--hero-showcase-w);
+      width: var(--hero-visual);
       padding-inline: 0;
       translate: 0 -50%;
-    }
-
-    .hero-showcase-perspective {
-      perspective: 2200px;
-      perspective-origin: left center;
-    }
-
-    .hero-showcase-tilt {
-      transform: rotateY(-9deg) rotateX(4deg) rotateZ(0.5deg);
     }
   }
 
