@@ -6,6 +6,7 @@ import { BlogIndexPage } from './pages/BlogIndexPage'
 import { BlogPostPage } from './pages/BlogPostPage'
 import { ContactPage } from './pages/ContactPage'
 import { AboutPage } from './pages/AboutPage'
+import { FaqPage } from './pages/FaqPage'
 import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
 import { PrivacyPage } from './pages/PrivacyPage'
@@ -28,6 +29,7 @@ export function AppRoutes() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="faq" element={<FaqPage />} />
         <Route path="affiliates" element={<AffiliatesPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="blog" element={<BlogIndexPage />} />

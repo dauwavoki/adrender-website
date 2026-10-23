@@ -77,6 +77,7 @@ export function getAllRoutes() {
   return [
     '/',
     '/about',
+    '/faq',
     '/affiliates',
     '/contact',
     '/terms',

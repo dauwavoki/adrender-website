@@ -8,12 +8,16 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 const MORE_LINKS = [
+  { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About' },
   { to: '/affiliates', label: 'Affiliates' },
   { to: '/contact', label: 'Contact' },
 ] as const
 
-const MORE_PATHS: Set<string> = new Set(MORE_LINKS.map((l) => l.to))
+function isMorePath(pathname: string) {
+  if (pathname === '/blog' || pathname.startsWith('/blog/')) return true
+  return MORE_LINKS.some((link) => link.to === pathname)
+}
 
 /**
  * Desktop "More" dropdown — same pattern as SolutionsNav:
@@ -26,7 +30,7 @@ export function MoreNav() {
   const location = useLocation()
   const wrapRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
-  const onMore = MORE_PATHS.has(location.pathname)
+  const onMore = isMorePath(location.pathname)
 
   useEffect(() => {
     setOpen(false)

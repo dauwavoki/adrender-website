@@ -4,6 +4,13 @@
   --accent-cyan: #00e5ff;
   --accent-purple: #7b4fd4;
   --accent-orange: #ff6b2b;
+  /* How It Works card-title gradients. Shared with the homepage hero line 1. */
+  --hiw-title-1-a: var(--accent-cyan);
+  --hiw-title-1-b: #2f80ff;
+  --hiw-title-2-a: var(--accent-purple);
+  --hiw-title-2-b: #e23d9b;
+  --hiw-title-3-a: #f5b031;
+  --hiw-title-3-b: var(--accent-orange);
 }
 
 @theme {
@@ -89,6 +96,30 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  /* Same 105deg stops as the How It Works card titles. */
+  .hero-grad {
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-grad-1 {
+    background-image: linear-gradient(105deg, var(--hiw-title-1-a), var(--hiw-title-1-b));
+  }
+
+  .hero-grad-2 {
+    background-image: linear-gradient(105deg, var(--hiw-title-2-a), var(--hiw-title-2-b));
+  }
+
+  .hero-grad-3 {
+    background-image: linear-gradient(105deg, var(--hiw-title-3-a), var(--hiw-title-3-b));
+  }
+
+  .hero-grad-layer {
+    transition: opacity 400ms ease;
   }
 
   .focus-ring-brand:focus {
@@ -281,13 +312,94 @@
 }
 
 @layer utilities {
-  .grain-overlay {
+  /* Hero mesh + glows. Masked to transparent so they dissolve into --color-bg-base
+     (#0a0a0f, also the layout background) with no seam at the next section. */
+  .hero-backdrop {
     pointer-events: none;
     position: absolute;
     inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 82%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 82%);
+  }
+
+  .hero-mesh {
+    position: absolute;
+    inset: 0;
+    background-image: url('/hero-mesh.svg');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: max(100%, 1500px) auto;
     opacity: 0.22;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero-glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+  }
+
+  .hero-glow--blue {
+    top: -8rem;
+    left: -6rem;
+    width: 36rem;
+    height: 26rem;
+    background: #2f5bea;
+    opacity: 0.22;
+  }
+
+  .hero-glow--purple {
+    top: -4rem;
+    left: 28%;
+    width: 32rem;
+    height: 22rem;
+    background: #7b3fe4;
+    opacity: 0.18;
+  }
+
+  .hero-glow--orange {
+    top: 0;
+    right: -4rem;
+    width: 34rem;
+    height: 24rem;
+    background: #ff7a1a;
+    opacity: 0.14;
+  }
+
+  .hero-line2 {
+    display: grid;
+  }
+
+  .hero-line2 > span {
+    grid-area: 1 / 1;
+  }
+
+  .hero-line2 > .is-shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-line2 > .is-current {
+    animation: hero-line2-in 400ms ease both;
+  }
+
+  .hero-line2 > .is-outgoing {
+    animation: hero-line2-out 400ms ease both;
+  }
+
+  .hero-line2 > .is-idle {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+
+  .hero-showcase-perspective {
+    perspective: 2000px;
+    perspective-origin: left center;
+  }
+
+  .hero-showcase-tilt {
+    transform-origin: left center;
   }
 
   .reveal {
@@ -318,13 +430,43 @@
     animation: price-pop 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  @keyframes drift {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1);
+  @keyframes hero-line2-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.45em);
     }
-    50% {
-      transform: translate(2%, -1%) scale(1.03);
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-line2-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-0.45em);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-showcase-tilt {
+      width: min(118%, 760px);
+      margin-right: -7vw;
+      transform: rotateY(-14deg) rotateX(6deg) rotateZ(1deg);
+      transform-origin: left center;
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-grad-layer,
+    .hero-line2 > span {
+      animation: none !important;
+      transition: none !important;
     }
   }
 
@@ -413,13 +555,13 @@
 }
 
 .hiw-card--1 {
-  --hiw-a: var(--accent-cyan);
-  --hiw-b: #2f80ff;
+  --hiw-a: var(--hiw-title-1-a);
+  --hiw-b: var(--hiw-title-1-b);
 }
 
 .hiw-card--2 {
-  --hiw-a: var(--accent-purple);
-  --hiw-b: #e23d9b;
+  --hiw-a: var(--hiw-title-2-a);
+  --hiw-b: var(--hiw-title-2-b);
   --hiw-spot-x: 100%;
   --hiw-spot-y: 0%;
   --hiw-spot2-x: 0%;
@@ -428,8 +570,8 @@
 }
 
 .hiw-card--3 {
-  --hiw-a: #f5b031;
-  --hiw-b: var(--accent-orange);
+  --hiw-a: var(--hiw-title-3-a);
+  --hiw-b: var(--hiw-title-3-b);
   --hiw-spot-x: 50%;
   --hiw-spot-y: 0%;
   --hiw-spot2-x: 0%;

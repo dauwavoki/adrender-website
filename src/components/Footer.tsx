@@ -143,7 +143,7 @@ export function Footer() {
               <a href="/#pricing" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
                 Pricing
               </a>
-              <a href="/#faq" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
+              <a href="/faq" className="text-zinc-500 transition hover:text-[var(--accent-cyan)]">
                 FAQ
               </a>
             </div>

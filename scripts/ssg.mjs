@@ -42,6 +42,7 @@ function hoistHeadTags(appHtml) {
     /<title\b[^>]*>[\s\S]*?<\/title>/i,
     /<meta\b[^>]*>/gi,
     /<link\b[^>]*\brel=["']canonical["'][^>]*>/gi,
+    /<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi,
   ]
 
   for (const pattern of patterns) {

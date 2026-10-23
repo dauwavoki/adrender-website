@@ -114,7 +114,8 @@ export function FeatureCards() {
       <div className="mx-auto max-w-6xl">
         <ScrollReveal>
           <h2 className="mx-auto max-w-3xl text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            A creative production system, not a collection of tools.
+            <span className="block">A creative production system,</span>
+            <span className="block">not a collection of tools.</span>
           </h2>
         </ScrollReveal>
 
