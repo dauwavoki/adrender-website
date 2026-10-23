@@ -1,3 +1,4 @@
+import { CostTable } from '../components/CostTable'
 import { FounderStory } from '../components/FounderStory'
 import { ClosingCta } from '../components/ClosingCta'
 import { PageMeta } from '../components/PageMeta'
@@ -192,7 +193,8 @@ export function AboutPage() {
           </p>
         </div>
       </div>
-      <FounderStory extended />
+      <FounderStory extended id="founder-story" />
+      <CostTable />
       {SECTIONS.map((section) => (
         <FeatureBlock key={section.id} section={section} />
       ))}

@@ -106,7 +106,8 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
       slot.style.height = `${WINDOW_HEIGHT * scale}px`
     }
 
-    apply(slot.getBoundingClientRect().width)
+    // clientWidth ignores CSS transforms, so a tilted hero parent doesn't inflate the scale.
+    apply(slot.clientWidth)
     const observer = new ResizeObserver((entries) => {
       const width = entries[0]?.contentRect.width
       if (width) apply(width)
@@ -678,7 +679,12 @@ function Chrome({ hintDismissed }: { hintDismissed: boolean }) {
   )
 }
 
-export function AppPreviewSection() {
+type AppPreviewSectionProps = {
+  /** Hero column: the mockup only, without the section heading. */
+  embedded?: boolean
+}
+
+export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) {
   const signupHref = getSignupUrl()
   const sectionRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
@@ -696,6 +702,46 @@ export function AppPreviewSection() {
     '--ap-window-h': `${WINDOW_HEIGHT}px`,
   } as CSSProperties
 
+  const frame = (
+    <div className="ap-scaler">
+      <div className="ap-slot" ref={slotRef}>
+        <div className="ap-frame" ref={frameRef}>
+          <div className="ap-window" role="region" aria-label="AdRender app home screen">
+            <Chrome hintDismissed={hintDismissed} />
+            <div className="ap-body">
+              <Sidebar href={signupHref} />
+              <div className="ap-main">
+                <MediaCtx.Provider value={media}>
+                  <div className="ap-main-scroll" onScroll={onMainScroll}>
+                    <HomeColumn href={signupHref} />
+                  </div>
+                </MediaCtx.Provider>
+                <div className="ap-fade" aria-hidden />
+                <a className="ap-chat" href={signupHref} aria-label="Chat">
+                  <MessageCircle size={18} strokeWidth={1.75} aria-hidden />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  if (embedded) {
+    return (
+      <div
+        ref={(node) => {
+          sectionRef.current = node
+        }}
+        className="ap-section ap-section--embed"
+        style={frameVars}
+      >
+        {frame}
+      </div>
+    )
+  }
+
   return (
     <section ref={sectionRef} className="ap-section" style={frameVars} aria-labelledby="take-a-look-inside-heading">
       <div className="ap-inner">
@@ -703,29 +749,7 @@ export function AppPreviewSection() {
           Take a look inside
         </h2>
         <p className="ap-lead">Your brand, thousands of proven templates, one workspace.</p>
-        <div className="ap-scaler">
-          <div className="ap-slot" ref={slotRef}>
-            <div className="ap-frame" ref={frameRef}>
-              <div className="ap-window" role="region" aria-label="AdRender app home screen">
-                <Chrome hintDismissed={hintDismissed} />
-                <div className="ap-body">
-                  <Sidebar href={signupHref} />
-                  <div className="ap-main">
-                    <MediaCtx.Provider value={media}>
-                      <div className="ap-main-scroll" onScroll={onMainScroll}>
-                        <HomeColumn href={signupHref} />
-                      </div>
-                    </MediaCtx.Provider>
-                    <div className="ap-fade" aria-hidden />
-                    <a className="ap-chat" href={signupHref} aria-label="Chat">
-                      <MessageCircle size={18} strokeWidth={1.75} aria-hidden />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {frame}
       </div>
     </section>
   )

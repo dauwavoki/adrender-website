@@ -37,10 +37,10 @@ export function Header() {
             <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
               Pricing
             </a>
-            <SolutionsNav variant="desktop" />
-            <NavLink to="/blog" className={navLinkClass}>
-              Blog
+            <NavLink to="/faq" className={navLinkClass}>
+              FAQ
             </NavLink>
+            <SolutionsNav variant="desktop" />
             <MoreNav />
           </nav>
 
@@ -96,14 +96,21 @@ export function Header() {
           >
             Pricing
           </a>
+          <NavLink
+            to="/faq"
+            className={({ isActive }) => `py-2 ${navLinkClass({ isActive })}`}
+            onClick={() => setOpen(false)}
+          >
+            FAQ
+          </NavLink>
           <div className="py-2">
             <SolutionsNav variant="mobile" onNavigate={() => setOpen(false)} />
           </div>
-          <NavLink to="/about" className={navLinkClass} onClick={() => setOpen(false)}>
-            About
-          </NavLink>
           <NavLink to="/blog" className={navLinkClass} onClick={() => setOpen(false)}>
             Blog
+          </NavLink>
+          <NavLink to="/about" className={navLinkClass} onClick={() => setOpen(false)}>
+            About
           </NavLink>
           <NavLink to="/affiliates" className={navLinkClass} onClick={() => setOpen(false)}>
             Affiliates

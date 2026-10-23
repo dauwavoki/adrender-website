@@ -63,6 +63,21 @@
   container-type: inline-size;
 }
 
+.ap-section--embed {
+  border-top: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.ap-section--embed .ap-scaler {
+  margin-top: 0;
+}
+
+.ap-section--embed .ap-slot {
+  overflow: visible;
+}
+
+
 /* Height and scale match the fixed 1280-wide frame. ResizeObserver writes
    inline height/transform once it has measured the slot; this container-query
    rule is the same proportion before that runs. */

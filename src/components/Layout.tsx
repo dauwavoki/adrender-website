@@ -5,7 +5,7 @@ import { Header } from './Header'
 
 export function Layout() {
   return (
-    <div className="flex min-h-dvh flex-col bg-[#0a0a0f]">
+    <div className="flex min-h-dvh flex-col bg-bg-base">
       <BetaBanner />
       <Header />
       <main className="flex-1">
