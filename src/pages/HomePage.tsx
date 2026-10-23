@@ -72,7 +72,7 @@ export function HomePage() {
         <FaqSection leadingItems={HOME_FAQ_ITEMS} groups={[]} after={<HomeFaqFooter />} />
       </SectionErrorBoundary>
       <SectionErrorBoundary>
-        <ClosingCta />
+        <ClosingCta plain />
       </SectionErrorBoundary>
     </>
   )

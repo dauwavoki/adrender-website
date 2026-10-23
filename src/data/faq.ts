@@ -166,13 +166,12 @@ export const FAQ_GROUPS: FaqGroup[] = [
   },
 ]
 
-/** The six questions that stay on the homepage, in display order. */
+/** The five questions that stay on the homepage, in display order. */
 export const HOME_FAQ_ITEMS: FaqEntry[] = [
   WHAT_IS_ADRENDER,
   CREDIT_CARD,
   DESIGN_SKILLS,
   VIDEO_SUPPORT,
-  MONTHLY_TOKENS_ROLLOVER,
   FAILED_RENDERS,
 ]
 

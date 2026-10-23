@@ -1,7 +1,14 @@
 /**
- * How It Works card-title gradients, in card order (01 → 03).
- * The colour stops live once in CSS (`--hiw-title-1-a` … `--hiw-title-3-b`)
- * and these classes paint `linear-gradient(105deg, a, b)` — the same gradient
- * the card titles use.
+ * Rotating hero line-2 gradients, in rotation order.
+ * 1–3 follow the How It Works card hue pairs (cyan→blue, purple→magenta, amber→orange)
+ * with deeper stops so they read on the white hero. 4–6 are extra brand mixes.
+ * Stops live in CSS on `.hero-line-grad-*`. The moving sheen reuses `hiw-title-glaze`.
  */
-export const HIW_TITLE_GRADIENTS = ['hero-grad-1', 'hero-grad-2', 'hero-grad-3'] as const
+export const HERO_LINE_GRADIENTS = [
+  'hero-line-grad-1',
+  'hero-line-grad-2',
+  'hero-line-grad-3',
+  'hero-line-grad-4',
+  'hero-line-grad-5',
+  'hero-line-grad-6',
+] as const

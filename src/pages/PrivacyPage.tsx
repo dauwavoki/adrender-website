@@ -6,10 +6,10 @@ const DESCRIPTION =
 
 export function PrivacyPage() {
   return (
-    <div className="min-h-dvh bg-[#0a0a0f] text-zinc-300">
+    <div className="min-h-dvh bg-bg-base text-zinc-300">
       <PageMeta title={TITLE} description={DESCRIPTION} path="/privacy" />
       {/* Minimal standalone header */}
-      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-bg-base/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4 md:px-6">
           <a
             href="https://adrender.app"

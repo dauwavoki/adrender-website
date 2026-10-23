@@ -77,13 +77,6 @@
   overflow: visible;
 }
 
-@media (min-width: 1024px) {
-  .hero-showcase-tilt .ap-window {
-    box-shadow:
-      0 36px 90px -24px rgba(0, 0, 0, 0.72),
-      0 60px 140px -36px rgba(0, 0, 0, 0.55);
-  }
-}
 
 /* Height and scale match the fixed 1280-wide frame. ResizeObserver writes
    inline height/transform once it has measured the slot; this container-query

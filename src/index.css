@@ -4,7 +4,7 @@
   --accent-cyan: #00e5ff;
   --accent-purple: #7b4fd4;
   --accent-orange: #ff6b2b;
-  /* How It Works card-title gradients. Shared with the homepage hero line 1. */
+  /* How It Works card-title gradients. The hero line 2 uses deeper stops of these pairs. */
   --hiw-title-1-a: var(--accent-cyan);
   --hiw-title-1-b: #2f80ff;
   --hiw-title-2-a: var(--accent-purple);
@@ -14,7 +14,7 @@
 }
 
 @theme {
-  --color-bg-base: #0a0a0f;
+  --color-bg-base: #10141c;
   --color-bg-elevated: #12121a;
   --color-bg-card: #14141c;
   --color-border-subtle: rgba(255, 255, 255, 0.06);
@@ -96,30 +96,6 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-  }
-
-  /* Same 105deg stops as the How It Works card titles. */
-  .hero-grad {
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .hero-grad-1 {
-    background-image: linear-gradient(105deg, var(--hiw-title-1-a), var(--hiw-title-1-b));
-  }
-
-  .hero-grad-2 {
-    background-image: linear-gradient(105deg, var(--hiw-title-2-a), var(--hiw-title-2-b));
-  }
-
-  .hero-grad-3 {
-    background-image: linear-gradient(105deg, var(--hiw-title-3-a), var(--hiw-title-3-b));
-  }
-
-  .hero-grad-layer {
-    transition: opacity 400ms ease;
   }
 
   .focus-ring-brand:focus {
@@ -312,59 +288,99 @@
 }
 
 @layer utilities {
-  /* Hero mesh + glows. Masked to transparent so they dissolve into --color-bg-base
-     (#0a0a0f, also the layout background) with no seam at the next section. */
-  .hero-backdrop {
-    pointer-events: none;
+  /* Homepage hero: white field with a dark dot texture, dissolving into the page colour. */
+  .hero-home {
+    --hero-fade: 13rem;
+    padding-bottom: var(--hero-fade);
+    background-color: var(--color-bg-base);
+    background-image: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #ffffff calc(100% - var(--hero-fade)),
+      color-mix(in srgb, var(--color-bg-base) 22%, #ffffff) calc(100% - var(--hero-fade) * 0.68),
+      color-mix(in srgb, var(--color-bg-base) 55%, #ffffff) calc(100% - var(--hero-fade) * 0.34),
+      var(--color-bg-base) 100%
+    );
+  }
+
+  .hero-dots {
     position: absolute;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 82%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 82%);
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-bg-base) 42%, transparent) 0.75px,
+      transparent 0.8px
+    );
+    background-size: 24px 24px;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 calc(100% - var(--hero-fade)),
+      transparent calc(100% - var(--hero-fade) * 0.28)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 calc(100% - var(--hero-fade)),
+      transparent calc(100% - var(--hero-fade) * 0.28)
+    );
   }
 
-  .hero-mesh {
-    position: absolute;
-    inset: 0;
-    background-image: url('/hero-mesh.svg');
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: max(100%, 1500px) auto;
-    opacity: 0.22;
+  .hero-line1 {
+    color: var(--color-bg-base);
   }
 
-  .hero-glow {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(90px);
+  /* Deeper stops of the How It Works pairs (1–3), then three more brand gradients.
+     Light enough to show a sheen, dark enough to read on the white hero. */
+  .hero-line-grad-1 {
+    --glaze-a: #0e7490;
+    --glaze-b: #1d4ed8;
+    --glaze-shine: #0284c7;
   }
 
-  .hero-glow--blue {
-    top: -8rem;
-    left: -6rem;
-    width: 36rem;
-    height: 26rem;
-    background: #2f5bea;
-    opacity: 0.22;
+  .hero-line-grad-2 {
+    --glaze-a: #6d28d9;
+    --glaze-b: #be185d;
+    --glaze-shine: #9333ea;
   }
 
-  .hero-glow--purple {
-    top: -4rem;
-    left: 28%;
-    width: 32rem;
-    height: 22rem;
-    background: #7b3fe4;
-    opacity: 0.18;
+  .hero-line-grad-3 {
+    --glaze-a: #92400e;
+    --glaze-b: #c2410c;
+    --glaze-shine: #d97706;
   }
 
-  .hero-glow--orange {
-    top: 0;
-    right: -4rem;
-    width: 34rem;
-    height: 24rem;
-    background: #ff7a1a;
-    opacity: 0.14;
+  .hero-line-grad-4 {
+    --glaze-a: #1e3a8a;
+    --glaze-b: #6d28d9;
+    --glaze-shine: #2563eb;
+  }
+
+  .hero-line-grad-5 {
+    --glaze-a: #a21caf;
+    --glaze-b: #c2410c;
+    --glaze-shine: #db2777;
+  }
+
+  .hero-line-grad-6 {
+    --glaze-a: #155e75;
+    --glaze-b: #6d28d9;
+    --glaze-shine: #1d4ed8;
+  }
+
+  .hero-line-grad-1,
+  .hero-line-grad-2,
+  .hero-line-grad-3,
+  .hero-line-grad-4,
+  .hero-line-grad-5,
+  .hero-line-grad-6 {
+    background-image: linear-gradient(105deg, var(--glaze-a), var(--glaze-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   .hero-line2 {
@@ -394,12 +410,18 @@
   }
 
   .hero-showcase-perspective {
-    perspective: 2000px;
-    perspective-origin: left center;
+    perspective: 1600px;
+    perspective-origin: center center;
   }
 
   .hero-showcase-tilt {
-    transform-origin: left center;
+    transform-origin: center center;
+  }
+
+  .hero-showcase-tilt .ap-window {
+    box-shadow:
+      0 22px 48px -18px rgba(16, 20, 28, 0.38),
+      0 8px 20px -12px rgba(16, 20, 28, 0.22);
   }
 
   .reveal {
@@ -454,19 +476,18 @@
 
   @media (min-width: 1024px) {
     .hero-showcase-tilt {
-      width: min(118%, 760px);
-      margin-right: -7vw;
+      width: 100%;
       transform: rotateY(-14deg) rotateX(6deg) rotateZ(1deg);
-      transform-origin: left center;
     }
-
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-grad-layer,
-    .hero-line2 > span {
+    .hero-line2 > span,
+    .hero-line-shine {
       animation: none !important;
       transition: none !important;
+      background-image: linear-gradient(105deg, var(--glaze-a), var(--glaze-b)) !important;
+      background-size: 100% 100% !important;
     }
   }
 
@@ -717,6 +738,34 @@
   }
 }
 
+/* Shared moving sheen: How It Works card titles on hover, and the visible hero line. */
+.hiw-card:hover .hiw-card-title,
+.hero-line-shine {
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hiw-title-glaze 2.8s linear infinite;
+}
+
+.hero-line-shine {
+  background-image: linear-gradient(
+    105deg,
+    var(--glaze-a) 0%,
+    var(--glaze-b) 36%,
+    var(--glaze-shine) 50%,
+    var(--glaze-b) 64%,
+    var(--glaze-a) 100%
+  );
+}
+
+.hero-line2 > .is-current.hero-line-shine {
+  animation:
+    hero-line2-in 400ms ease both,
+    hiw-title-glaze 2.8s linear infinite;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .hiw-card:hover {
     --hiw-bezel: 100%;
@@ -735,12 +784,6 @@
       var(--hiw-b) 64%,
       var(--hiw-a) 100%
     );
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: hiw-title-glaze 2.8s linear infinite;
   }
 }
 
@@ -920,7 +963,7 @@
 .footer-badge-carousel {
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  background: #0a0a0f;
+  background: var(--color-bg-base);
   padding: 1.25rem 0;
   mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
 }

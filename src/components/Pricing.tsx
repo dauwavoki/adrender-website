@@ -9,11 +9,11 @@ import { getSignupUrl } from '../lib/appUrl'
 import { TokenBuys } from './TokenBuys'
 import { FAQ_TOKEN_ROLLOVER_ID } from './FaqSection'
 
-/** Home and /lp/* render Pricing on the same page as the rollover FAQ. */
+/** Landing pages still include the rollover FAQ. The homepage links to /faq. */
 function tokenRolloverHref(pathname: string): string {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
-  const faqOnPage = path === '/' || path.startsWith('/lp/')
-  return faqOnPage ? `#${FAQ_TOKEN_ROLLOVER_ID}` : `/#${FAQ_TOKEN_ROLLOVER_ID}`
+  if (path.startsWith('/lp/')) return `#${FAQ_TOKEN_ROLLOVER_ID}`
+  return `/faq#${FAQ_TOKEN_ROLLOVER_ID}`
 }
 
 const TIER_ACCENTS: Record<string, { from: string; to: string }> = {
