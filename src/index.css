@@ -651,17 +651,25 @@
     }
 
     .hero-headline {
-      /* "Render image and video." in Plus Jakarta Sans 800, letter-spacing -0.045em,
-         is 11.093px wide per 1px of font-size. 0.98 keeps a ~2% safety margin.
-         Cap so a very wide column cannot make the type absurd. */
-      --hero-line-ratio: 11.093;
-      font-size: clamp(1.25rem, calc(100cqi / var(--hero-line-ratio) * 0.98), 4.5rem);
+      /* "Create more ads." in Plus Jakarta Sans 800, letter-spacing -0.045em,
+         remeasured after fonts load: 7.77px wide per 1px of font-size, including the full stop.
+         0.99 fills the column. The rotating line uses this same size and may wrap. */
+      --hero-line-ratio: 7.77;
+      font-size: clamp(1.25rem, calc(100cqi / var(--hero-line-ratio) * 0.99), 5rem);
       line-height: 1.02;
     }
 
-    .hero-line1,
-    .hero-line2 > span {
+    .hero-line1 {
       white-space: nowrap;
+    }
+
+    /* Keep two lines reserved so the paragraph, field and button never jump. */
+    .hero-line2 {
+      min-height: 2lh;
+    }
+
+    .hero-line2 > span {
+      text-wrap: balance;
     }
 
     /* Stack the URL row when the column is too narrow for the field and button together. */
