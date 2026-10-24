@@ -640,9 +640,12 @@
       margin: 0 0 0 var(--hero-pad);
       align-items: center;
       padding: 0;
-      width: min(
-        var(--hero-copy-max),
-        100% - 2 * var(--hero-pad) - var(--hero-visual) - var(--hero-gap)
+      /* Grow by the space the 15% smaller showcase gives up, so the gap stays as it is. */
+      width: calc(
+        min(
+          var(--hero-copy-max),
+          100% - 2 * var(--hero-pad) - var(--hero-visual) - var(--hero-gap)
+        ) + 0.15 * var(--hero-visual)
       );
     }
 
@@ -652,10 +655,10 @@
 
     .hero-headline {
       /* "Render image and video." in Plus Jakarta Sans 800, letter-spacing -0.045em,
-         is 11.093px wide per 1px of font-size. 0.98 keeps a ~2% safety margin.
-         Cap so a very wide column cannot make the type absurd. */
+         remeasured after fonts load: 11.093px wide per 1px of font-size, including the full stop.
+         0.99 fills the column. */
       --hero-line-ratio: 11.093;
-      font-size: clamp(1.25rem, calc(100cqi / var(--hero-line-ratio) * 0.98), 4.5rem);
+      font-size: clamp(1.25rem, calc(100cqi / var(--hero-line-ratio) * 0.99), 5rem);
       line-height: 1.02;
     }
 
@@ -683,7 +686,7 @@
       top: 50%;
       right: var(--hero-pad);
       left: auto;
-      width: var(--hero-visual);
+      width: calc(var(--hero-visual) * 0.85);
       padding-inline: 0;
       translate: 0 -50%;
     }
