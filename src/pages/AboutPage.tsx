@@ -97,7 +97,7 @@ const SECTIONS: FeatureSection[] = [
     imageLeft: false,
     paragraphs: [
       'Connect your Shopify store once and your entire product catalog is available inside AdRender — names, descriptions, images, variants, and pricing. Add a product to your store and it\'s there next time you render.',
-      'AdRender also reads your storefront to pull brand colors and logo automatically during setup. Available on Growth and above.',
+      'AdRender also reads your storefront to pull brand colors and logo automatically during setup. Available on every plan, including Free. Connect your store from the AdRender web app or the Shopify app.',
     ],
   },
   {
