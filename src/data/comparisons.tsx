@@ -1,24 +1,6 @@
-import {
-  ShieldCheck,
-  Video,
-  ShoppingBag,
-  Wand2,
-  Clock,
-  LayoutTemplate,
-  Megaphone,
-  MousePointerClick,
-  BarChart3,
-  Globe,
-  CircleDollarSign,
-  RefreshCw,
-  Layers,
-  Users,
-  type LucideIcon,
-} from 'lucide-react'
 import type { ComparisonRow } from '../components/ComparisonPage'
 
 export type ComparisonCardData = {
-  icon: LucideIcon
   title: string
   body: string
 }
@@ -63,17 +45,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: ShieldCheck,
         title: 'No billing traps',
         body: 'AdCreative.ai is notorious for surprise auto-renewals and confusing credit systems. AdRender shows you the exact token cost before every render. No surprises.',
       },
       {
-        icon: Video,
         title: 'Video included. No $249 gate.',
         body: 'AdCreative.ai locks video behind a $249/month paywall — 6x their base price. AdRender includes real video rendering from the entry tier: winning ad templates, converted into your brand. No upsell wall between you and video.',
       },
       {
-        icon: ShoppingBag,
         title: 'Shopify-native. Nothing else comes close.',
         body: 'AdCreative.ai has no Shopify integration. AdRender syncs your entire product catalog automatically — names, images, variants — so every ad is built from your real products.',
       },
@@ -105,17 +84,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'AI renders. You approve.',
         body: 'Canva is a design tool. AdRender is a rendering engine. You don\u2019t drag and drop — you scan your brand, pick a template that\u2019s working in your niche, and get hundreds of ads in under 10 minutes.',
       },
       {
-        icon: Clock,
         title: 'Half a day vs under 10 minutes',
         body: 'Building 10 ad variants manually in Canva takes most people half a day. AdRender renders hundreds of ads in under 10 minutes, with your brand colors, your logo, your product images, and AI-written copy — automatically.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real ads. Not design templates.',
         body: 'Canva templates are designed to look pretty. AdRender templates are real ads currently running and converting across Facebook, Instagram, and Google. You start from what\u2019s already working.',
       },
@@ -147,17 +123,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Megaphone,
         title: 'Ad creation vs content scheduling',
         body: 'Predis is a social media content tool. It schedules posts and generates captions. AdRender is purpose-built for paid advertising — static and video creative from real winning templates, built around your brand.',
       },
       {
-        icon: MousePointerClick,
         title: 'No prompt needed',
         body: 'Predis requires a text prompt for every piece of content. AdRender auto-renders from your brand profile — your voice, colors, product images, and ad copies are applied automatically.',
       },
       {
-        icon: BarChart3,
         title: 'Real ad benchmarks vs generic templates',
         body: 'Predis uses social post templates. AdRender uses 100M+ real ads that are currently running and converting across platforms — so every creative starts from proven performance data.',
       },
@@ -198,17 +171,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Creative tool vs. media-buying platform',
         body: 'AdScale is built to run your Google and Meta campaigns for you — it manages bids, budgets, and targeting, and its pricing scales with how much you spend on ads. AdRender is purpose-built for creative: you get the ad, you decide where and how to run it. If you already have a media buyer, an agency, or just want to run ads yourself, AdRender gives you the creative without committing to a spend-tiered platform.',
       },
       {
-        icon: CircleDollarSign,
         title: 'No ad-spend commitment required',
         body: 'AdScale\u2019s pricing is directly tied to your monthly ad spend tier — the more you spend, the more you pay AdScale. AdRender\u2019s pricing has nothing to do with your ad spend. You pay for creative rendering, full stop.',
       },
       {
-        icon: BarChart3,
         title: 'Real ad benchmarks vs. your own store data',
         body: 'AdScale generates ad content from your product feed. AdRender starts every creative from 100M+ real ads that are currently running and converting — so you\u2019re working from proven performance data, not just your own catalog.',
       },
@@ -244,17 +214,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Globe,
         title: 'Meta-only vs. every platform',
         body: 'Madgicx is a Meta advertising super-app — its creative tools exist to feed campaigns it\u2019s also managing and optimizing on Facebook and Instagram. If any part of your ad strategy touches Google, TikTok, or anywhere else, Madgicx can\u2019t help with the creative there. AdRender renders ads for any platform you\u2019re running on.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Flat pricing vs. ad-spend tiers',
         body: 'Madgicx pricing scales with your monthly Meta ad spend — the more you spend, the more the platform costs. AdRender\u2019s pricing has nothing to do with what you spend on ads.',
       },
       {
-        icon: Megaphone,
         title: 'Creative-first vs. optimization-first',
         body: 'Madgicx\u2019s core product is bid/budget automation and account optimization; creative generation is a feature within that. AdRender\u2019s core product is the creative itself — built from 100M+ real, currently-running ads, not just remixes of your own existing assets.',
       },
@@ -287,17 +254,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: ShieldCheck,
         title: 'One price, always visible',
         body: 'Quickads pricing is genuinely hard to pin down — published figures range from $9/mo to $99/mo depending on the source and plan, and user reviews report billing surprises around trial-end dates. AdRender has one flat price per tier, shown upfront, with no ad-spend or usage surprises.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real ad benchmarks, always current',
         body: 'Quickads pulls from a historical ad swipe library. AdRender\u2019s templates are sourced from 100M+ ads currently running and converting, so every creative starts from what\u2019s actually working right now — not what worked at some point in the past.',
       },
       {
-        icon: ShoppingBag,
         title: 'Native Shopify sync',
         body: 'Quickads relies on manual product entry or URL pulls per ad. AdRender syncs your full Shopify catalog automatically — products, images, and variants update without manual re-entry.',
       },
@@ -336,17 +300,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'Ad creative vs. product photography',
         body: 'Flair is a product photography and scene-composition tool — it helps you place your product into a nicely lit background. That\u2019s a piece of what goes into an ad, not the ad itself. AdRender renders the complete ad: layout, copy, hooks, and CTAs, sourced from real templates that are actually running as ads.',
       },
       {
-        icon: MousePointerClick,
         title: 'No manual scene-building required',
         body: 'Flair requires you to drag and drop your product into a scene by hand for every image. AdRender applies your brand automatically — no manual composition per creative.',
       },
       {
-        icon: Clock,
         title: 'Built for volume',
         body: 'Flair is designed around one image at a time. AdRender is built to render hundreds of complete, ready-to-run ads in minutes.',
       },
@@ -385,17 +346,14 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'Ad creative vs. background swap',
         body: 'Pebblely replaces the background behind your product photo using a shared library of themes — the same themes are available to every other Pebblely user, so results can look generic across sellers. AdRender renders the complete ad — layout, copy, and imagery — from real templates sourced from actual running ads.',
       },
       {
-        icon: RefreshCw,
         title: 'A free tier that\u2019s actually free, every month',
         body: 'Pebblely\u2019s \u201cfree\u201d tier is 40 images total, one time — not a monthly allowance. Once they\u2019re used, you\u2019re on a paid plan. AdRender\u2019s free tier renews every month: 10 tokens, no card required, ongoing.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real ad templates vs. generic themes',
         body: 'Pebblely\u2019s 40+ background themes are shared across its entire user base. AdRender sources templates from 100M+ ads that are actually running and converting right now.',
       },
@@ -451,22 +409,18 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs. a fixed training set',
         body: 'Holo generates from what its AI learned during training — a fixed snapshot of roughly 10 million assets and 19,000 past ads. AdRender\u2019s template library is a live index of over 100 million ads that are actually running right now, so what you start from reflects current performance, not a training cutoff.',
       },
       {
-        icon: RefreshCw,
         title: 'A free tier that actually renews',
         body: 'Holo doesn\u2019t offer a free tier at all — only a 7-day refund window if you don\u2019t use your credits. AdRender\u2019s free tier renews every month: 10 tokens, no card required, ongoing for as long as you want to use it.',
       },
       {
-        icon: ShoppingBag,
         title: 'Built for e-commerce catalogs',
         body: 'Holo works from a general website scan with no product catalog integration. If you\u2019re on Shopify, AdRender syncs your full catalog directly — every product, image, and variant — so ads are rendered against your actual live inventory, not just brand tone pulled from your homepage.',
       },
       {
-        icon: Layers,
         title: 'Broader scope vs. deeper focus',
         body: 'Holo covers more ground — ads, social posts, and email sequences in one subscription. If you need all three, that breadth may be worth it. AdRender is built specifically for ad creative, with the Shopify integration and real-running-ad template library that a broader, do-everything tool doesn\u2019t have room to prioritize.',
       },
@@ -511,12 +465,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'A generalist vs a specialist',
         body: 'Simplified bundles design, video, copywriting, and social scheduling into one low-cost subscription — genuinely useful if you need all four and want to consolidate tool spend. But breadth means it doesn\u2019t go deep on any one category, including ad creative specifically. AdRender does one thing: render ad creative from real, currently-running templates, synced to your actual brand and catalog.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs a generic template library',
         body: 'Simplified\u2019s templates are general-purpose design templates, not sourced from ads that are actually running and converting. AdRender\u2019s library is pulled from 100M+ real ads live right now, filterable by niche and platform.',
       },
@@ -562,12 +514,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'General video tool vs ad-specific renderer',
         body: 'InVideo is built for video content broadly — explainers, YouTube videos, social clips — with ad creative as one use case among many. AdRender is built specifically for ad creative, both static and video, rendered from templates sourced from real running ads rather than general stock footage.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Predictable monthly access vs shifting credit costs',
         body: 'InVideo\u2019s credit system varies by which AI model you use and doesn\u2019t roll over between billing periods, which can make costs unpredictable. AdRender\u2019s free and paid tiers are straightforward monthly allotments.',
       },
@@ -612,12 +562,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'Static and video vs video-only',
         body: 'Creatify specializes in AI avatar/UGC-style video ads generated from a product URL. If you only need that specific format, it\u2019s a focused tool. AdRender renders both static and video ads from the same brand setup and template library — you\u2019re not locked into one format.',
       },
       {
-        icon: RefreshCw,
         title: 'A free tier that renews vs credits that expire',
         body: 'Creatify has no permanent free plan, and paid-tier credits expire every two months whether you use them or not. AdRender\u2019s free tier renews every month with no expiration pressure.',
       },
@@ -662,12 +610,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Campaign manager vs creative renderer',
         body: 'AdEspresso is a campaign management and split-testing tool for Meta and Google ads — it doesn\u2019t generate the creative itself, you still need to supply that separately. AdRender renders the actual ad creative from real, currently-running templates, with nothing to do with managing your ad account.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Flat pricing vs spend-tiered pricing',
         body: 'AdEspresso\u2019s plans are gated by how much you spend on ads monthly, starting at a $1,000 limit on the entry plan. AdRender\u2019s pricing has nothing to do with your ad spend.',
       },
@@ -712,12 +658,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Design automation vs AI rendering',
         body: 'Creatopy is a genuinely strong tool for teams that want to manually design banner ads and then automate resizing/animation across formats. It\u2019s still a design tool — a person builds each creative. AdRender renders the ad directly from a real running-ad template and your brand data, with no manual design step.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs a static template library',
         body: 'Creatopy\u2019s templates aren\u2019t sourced from live ad performance data. AdRender\u2019s library reflects over 100 million ads that are actually running and converting right now.',
       },
@@ -758,12 +702,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'Bulk production vs original rendering',
         body: 'Abyssale is excellent at taking a design you\u2019ve already made and producing dozens of size/format variations automatically — a real time-saver for teams with an existing creative to scale. It doesn\u2019t generate the original creative concept. AdRender renders the ad itself, starting from a real running-ad template, not from a design you have to supply first.',
       },
       {
-        icon: Users,
         title: 'Per-seat vs flat pricing',
         body: 'Abyssale charges per seat, which adds up for any team beyond one person. AdRender\u2019s pricing is flat per tier regardless of team size up to your plan\u2019s seat limit.',
       },
@@ -808,12 +750,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Megaphone,
         title: 'Full marketing platform vs focused ad renderer',
         body: 'Blaze covers a lot of ground — social posts, ads, landing pages, review management, even AI phone answering — starting at $79/month. That breadth is genuinely useful if you want one platform for everything. AdRender is narrower by design: it renders ad creative specifically, from a much larger and more current library of real running ads.',
       },
       {
-        icon: Users,
         title: 'One brand per workspace vs built-in multi-brand support',
         body: 'Blaze requires a separate workspace (and separate cost, for 5+ brands) per brand you manage. AdRender supports multiple brands within a single account depending on tier.',
       },
@@ -850,12 +790,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: CircleDollarSign,
         title: 'Per-video pricing vs a monthly allotment',
         body: 'Riffkit charges per video, which is straightforward for occasional short-form content but adds up fast if you need volume — 50 videos means 50x the per-video cost. AdRender\u2019s monthly tiers give you a set allotment of tokens to spend across static and video ads however you want.',
       },
       {
-        icon: Video,
         title: 'One format vs full ad creative',
         body: 'Riffkit is purpose-built for short-form UGC-style TikTok content specifically. If that\u2019s your only channel, it\u2019s a focused tool for that job. AdRender renders both static and video ads, sized for whatever platform you\u2019re running on, from templates sourced from real currently-running ads — not just trending TikTok formats.',
       },
@@ -895,12 +833,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Templates sourced from real ads vs generic generation',
         body: 'AdFuse AI generates ad copy and creative variations from your inputs, but not from a library of currently-running ads. AdRender\u2019s template library reflects over 100 million real ads live right now, so what you start from is grounded in current performance, not just AI guesswork.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier',
         body: 'AdFuse AI has no free tier at any price point in its range. AdRender\u2019s free tier renews every month, no card required.',
       },
@@ -950,12 +886,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'An autonomous agency vs a creative tool you control',
         body: 'Solara AI positions itself as a full AI marketing team — building your site, running SEO, launching campaigns, shifting ad budget, and even answering inbound leads autonomously. That\u2019s a much bigger commitment than a creative tool, and pricing isn\u2019t public — you\u2019d need to inquire directly. AdRender does one job: render the ad creative, with transparent published pricing and full control over what gets used.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs a closed system',
         body: 'AdRender\u2019s templates are pulled from a library of 100M+ ads that are actually running and converting right now, so you can see exactly what you\u2019re starting from. Solara\u2019s creative output is one piece of a larger autonomous system without the same visibility into a template source.',
       },
@@ -999,12 +933,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: MousePointerClick,
         title: 'Self-serve vs demo-gated',
         body: 'Sphere requires booking a demo before you can see pricing or get access — a longer path aimed at marketing teams evaluating a bigger platform purchase. AdRender is fully self-serve: sign up, connect your brand, and start rendering immediately, with pricing published upfront.',
       },
       {
-        icon: Users,
         title: 'Built for small teams, not enterprise procurement',
         body: 'Sphere is positioned as an "AI creative operating system for marketing teams," which shows in its access model. AdRender is built specifically for small businesses and solo marketers who need to move fast without a sales process in the way.',
       },
@@ -1053,12 +985,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Scale of the template library',
         body: 'Mintly clones winning ad structures from Meta and TikTok Shop specifically — a real, useful approach, but the pool it draws from is smaller than AdRender\u2019s index of over 100 million ads currently running across platforms and niches.',
       },
       {
-        icon: Layers,
         title: 'Similar philosophy, different scale',
         body: 'Both tools share a similar core idea — start from a proven ad structure rather than a blank canvas — which makes this a genuinely close comparison. The difference comes down to breadth: AdRender\u2019s brand setup pulls full context (colors, voice, product catalog) from a URL or Shopify sync automatically, while Mintly\u2019s workflow is built more narrowly around individual product photo uploads per ad.',
       },
@@ -1098,12 +1028,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'A specialized video technique vs a full ad workflow',
         body: 'SellReel\u2019s body-double technology is a genuinely clever solution for camera-shy founders who want UGC-style content without appearing on camera. It\u2019s built around one specific technique. AdRender covers the full range of ad creative — static and video, sourced from real running ad templates — with automatic brand and catalog setup.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier',
         body: 'SellReel has no free tier at $49/month. AdRender\u2019s free tier renews every month, no card required.',
       },
@@ -1151,12 +1079,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs URL-to-ad generation',
         body: 'AdMaker.ai\u2019s core pitch is pasting a URL and getting an ad in 30 seconds — fast, but it\u2019s generating from your page content directly rather than starting from a template proven to work in your niche. AdRender\u2019s library reflects over 100 million ads that are actually running and converting right now.',
       },
       {
-        icon: RefreshCw,
         title: 'A free tier that renews vs a one-time trial',
         body: 'AdMaker.ai offers a free trial with a 7-day partial refund window, not an ongoing free tier. AdRender\u2019s free tier renews every month for as long as you use it.',
       },
@@ -1200,12 +1126,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Users,
         title: 'Built for a different audience',
         body: 'Pyksel is positioned as a content creation suite for influencers and creators — character training, content generation, general image and video tools. AdRender is built specifically for businesses running paid ads, with brand and product catalog sync that a creator-focused tool doesn\u2019t need or offer.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Ad-specific templates vs general content generation',
         body: 'Pyksel\u2019s tools are general-purpose content creation, not built around a library of real running ads. AdRender\u2019s entire template library is sourced from over 100 million ads currently running and converting.',
       },
@@ -1237,12 +1161,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'One video format vs full ad creative',
         body: 'HookTok specializes in AI avatar UGC-style video for TikTok and Meta specifically — a real, focused tool for that format. AdRender covers both static and video ads from the same brand setup, sourced from a much broader template library.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier',
         body: 'HookTok has no free tier at any price point. AdRender\u2019s free tier renews every month, no card required.',
       },
@@ -1282,12 +1204,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Real running ads vs URL extraction',
         body: 'AdForge pulls product details from a pasted URL and generates ads from that — fast, but not grounded in what\u2019s actually converting elsewhere. AdRender\u2019s templates come from a library of over 100 million ads that are actually running and converting right now.',
       },
       {
-        icon: ShoppingBag,
         title: 'Full catalog sync vs one URL at a time',
         body: 'AdForge works one product URL at a time. AdRender syncs your entire Shopify catalog at once — every product, image, and variant.',
       },
@@ -1327,12 +1247,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Campaign launcher vs creative renderer',
         body: 'AdsGo.ai is built to help small sellers launch ad campaigns across multiple platforms without advertising experience — its focus is campaign setup and targeting, not creative depth. AdRender is built specifically to render the ad creative itself, from real running-ad templates.',
       },
       {
-        icon: Layers,
         title: 'If you need both',
         body: 'If you want AdsGo\u2019s simplified campaign launch and AdRender\u2019s creative quality, the two can work together — render the ad in AdRender, launch it through whichever platform or tool you prefer.',
       },
@@ -1364,12 +1282,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Layers,
         title: 'A multi-phase intelligence pipeline vs direct rendering',
         body: 'Creads runs brand data through a multi-phase process — analysis, intelligence, brief generation, then production — aimed at Meta ad creative specifically. That depth may suit teams wanting a strategic layer before creative. AdRender goes straight from your brand and a real running-ad template to a finished ad, for any platform.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Published pricing vs inquiry-based',
         body: 'Creads doesn\u2019t publish pricing — you\u2019d need to reach out directly. AdRender\u2019s pricing is visible upfront, starting free.',
       },
@@ -1413,12 +1329,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: ShoppingBag,
         title: 'Full catalog sync vs manual per-project input',
         body: 'Nextify.ai is a genuinely capable AI video ad studio with a large avatar library and multiple video formats, but it works project-by-project with manual product input. AdRender syncs your full Shopify catalog automatically and renders both static and video ads from the same brand setup.',
       },
       {
-        icon: ShieldCheck,
         title: 'Free tier without watermarks',
         body: 'Nextify\u2019s free tier includes a watermark on outputs. AdRender has no watermarks on any plan, including Free.',
       },
@@ -1466,12 +1380,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Globe,
         title: 'Every platform vs Meta-only',
         body: 'AdRiseLab is built specifically around Meta\u2019s ad ecosystem, including direct publishing to Facebook and Instagram. If Meta is your only channel, that native integration is genuinely useful. AdRender renders ads for any platform, not tied to one ad network\u2019s algorithm.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier vs a one-time allotment',
         body: 'AdRiseLab\u2019s free tier is 5 creatives total, not renewing. AdRender\u2019s free tier renews every month.',
       },
@@ -1511,12 +1423,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'Static and video vs video-only',
         body: 'VEONIB turns product pages into marketing videos — a focused, well-built tool for that specific job. AdRender renders both static and video ads from the same brand setup, giving you formats VEONIB doesn\u2019t cover.',
       },
       {
-        icon: ShoppingBag,
         title: 'Full catalog sync vs per-product workflow',
         body: 'VEONIB works from individual product URLs. AdRender syncs your entire Shopify catalog at once.',
       },
@@ -1564,12 +1474,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Managed service vs self-serve tool',
         body: 'Auxora positions itself as a substitute for a PPC agency — AI builds the campaign, a vetted human expert reviews it before money is spent. That\u2019s a meaningfully different product than a creative renderer: you\u2019re paying for oversight and campaign management, not just the ad itself. AdRender is a self-serve creative tool — faster and cheaper if you already know how to run your own campaigns and just need the ad.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Price reflects scope',
         body: 'Auxora\u2019s higher tiers ($249.99/mo for expert oversight) reflect the managed-service model. AdRender\u2019s pricing reflects creative rendering alone, starting free.',
       },
@@ -1609,12 +1517,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Proven templates vs synthetic testing',
         body: 'POPJAM\u2019s angle is testing your ad against AI-simulated audiences before you spend real money on it — a genuinely interesting idea for validating a single creative direction. AdRender starts from templates already proven in the real world — ads that are actually running and converting right now — rather than testing hypothetical performance.',
       },
       {
-        icon: Layers,
         title: 'Volume vs validation',
         body: 'AdRender is built for rendering large batches quickly. POPJAM is built for validating fewer creatives more carefully before launch. Depending on your workflow, these can be complementary rather than competing approaches.',
       },
@@ -1650,12 +1556,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Megaphone,
         title: 'Ad-specific vs general social content',
         body: 'Buzzi AI is built for ongoing social media content — posts, designs, scheduling — with broad language support. AdRender is built specifically for paid ad creative, sourced from real running ad templates rather than general social post designs.',
       },
       {
-        icon: Layers,
         title: 'If you need both',
         body: 'Buzzi AI\u2019s scheduling and broad language support may suit ongoing organic social content. AdRender is the better fit specifically for the ads you\u2019re running paid spend behind.',
       },
@@ -1687,12 +1591,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: LayoutTemplate,
         title: 'Prompt-based generation vs proven templates',
         body: 'Motion Wave Ads generates static ads from text prompts — fast for a single concept, but not grounded in what\u2019s actually running and converting elsewhere. AdRender\u2019s templates come from a library of over 100 million real ads live right now.',
       },
       {
-        icon: Video,
         title: 'Static and video vs static only',
         body: 'Motion Wave Ads is focused on static social ads. AdRender covers both static and video from the same brand setup, with a renewing free tier Motion Wave Ads doesn\u2019t offer.',
       },
@@ -1728,12 +1630,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'Video specialist vs full ad creative',
         body: 'Whatmore Studio does one thing well: turning a product URL into a trend-synced, music-matched video. If that\u2019s specifically what you need, it\u2019s a focused tool. AdRender renders both static and video ads, with full brand setup and ad copy included.',
       },
       {
-        icon: ShoppingBag,
         title: 'Catalog sync vs per-URL workflow',
         body: 'Whatmore Studio processes one product URL at a time. AdRender syncs your entire Shopify catalog automatically.',
       },
@@ -1773,12 +1673,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Video,
         title: 'One video format vs full ad creative',
         body: 'UGCFast specializes in fast-turnaround UGC-style video matched to buyer personas — a real, focused answer to creative fatigue for video specifically. AdRender renders both static and video ads from the same brand setup, across a much larger template library.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier vs a paid trial',
         body: 'UGCFast\u2019s entry point is a $1 trial, not an ongoing free tier. AdRender\u2019s free tier renews every month, no card required.',
       },
@@ -1814,12 +1712,10 @@ export const comparisons: ComparisonConfig[] = [
     ],
     cards: [
       {
-        icon: Wand2,
         title: 'Full brand setup vs per-project video generation',
         body: 'EzUGC\u2019s core strength is its large AI actor library for UGC-style video. AdRender covers both static and video ads with automatic brand setup pulled from your URL or Shopify catalog — no manual re-entry per project.',
       },
       {
-        icon: RefreshCw,
         title: 'A renewing free tier',
         body: 'AdRender\u2019s free tier renews every month, no card required — a straightforward starting point compared to EzUGC\u2019s less consistently published free access.',
       },

@@ -5,7 +5,7 @@ import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
 import { getSignupUrl } from '../lib/appUrl'
 import { TokenBuys } from './TokenBuys'
-import { FAQ_TOKEN_ROLLOVER_ID } from './FaqSection'
+import { FAQ_TOKEN_ROLLOVER_ID } from '../data/faq'
 import { SplitTitle } from './site/SplitTitle'
 import { PrimaryLink, SecondaryLink, TextLink } from './site/Buttons'
 

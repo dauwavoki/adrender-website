@@ -7,7 +7,6 @@ import { CheckCaption } from './site/CheckCaption'
 import { LinkTable } from './site/LinkTable'
 import { ClosingCta } from './site/ClosingCta'
 import { PrimaryLink, SecondaryLink } from './site/Buttons'
-import type { LucideIcon } from 'lucide-react'
 
 export type ComparisonRow = {
   label: string
@@ -16,7 +15,6 @@ export type ComparisonRow = {
 }
 
 export type ComparisonCard = {
-  icon: LucideIcon
   title: string
   body: string
 }
