@@ -1,0 +1,14 @@
+/** DESIGN.md §8.13 and the page/section type roles. */
+export const linkClass =
+  "text-primary underline decoration-strong underline-offset-[3px] hover:decoration-secondary";
+
+/** DESIGN.md §8.36. Dashboard links: accent, underline on hover only. */
+export const dashboardLinkClass =
+  "text-accent underline-offset-[3px] hover:underline";
+
+/** Home page header and §8.38 section titles. 20px / 28 / 600. */
+export const pageTitle = "text-xl font-semibold leading-7 text-primary";
+
+export const sectionTitle = pageTitle;
+
+export const helperText = "text-[13px] leading-[18px] text-secondary";

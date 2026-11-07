@@ -1,0 +1,246 @@
+/**
+ * DESIGN.md §5.3 profile button and drop-up.
+ * Workspaces live on the workspace button, not here.
+ */
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { CaretUpDown, CreditCard, Moon, Plus, SignOut, Sun, UserCircle } from "@phosphor-icons/react";
+import { useNavShell } from "../../context/NavShellContext";
+import { useTheme } from "../../context/ThemeContext";
+import { cn } from "../../lib/utils";
+import Button from "../ui/Button";
+import Menu, { MenuDivider, MenuRow } from "../ui/Menu";
+import SegmentedControl from "../ui/SegmentedControl";
+import { Toggle } from "../ui/Toggle";
+import { measureMenuAnchor } from "./menuAnchor";
+
+function Avatar({
+  url,
+  initials,
+  size,
+}: {
+  url?: string;
+  initials: string;
+  size: number;
+}) {
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt=""
+        className="shrink-0 rounded-full object-cover"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+  return (
+    <div
+      className="flex shrink-0 items-center justify-center rounded-full bg-soft font-medium text-muted"
+      style={{ width: size, height: size, fontSize: size <= 24 ? 10 : 12 }}
+    >
+      {initials}
+    </div>
+  );
+}
+
+export default function ProfileMenu({
+  collapsed,
+  displayName,
+  email,
+  avatarUrl,
+  initials,
+  profileTo,
+  billingTo,
+  planLabel,
+  tokenLabel,
+  tokenNoun,
+  onTopUp,
+  onSignOut,
+}: {
+  collapsed: boolean;
+  displayName: string;
+  email: string;
+  avatarUrl?: string;
+  initials: string;
+  profileTo: string;
+  billingTo: string;
+  planLabel: string;
+  tokenLabel: string;
+  /** "tokens" on the client, "test tokens" on admin. */
+  tokenNoun: string;
+  onTopUp: () => void;
+  onSignOut: () => void;
+}) {
+  const { theme, setTheme } = useTheme();
+  const { pinned, setPinned, setMenuLock } = useNavShell();
+  const [open, setOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState({ left: 0, width: 0, bottom: 0 });
+  const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+
+  const updateMenuPos = useCallback(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    setMenuPos(measureMenuAnchor(el, collapsed));
+  }, [collapsed]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    updateMenuPos();
+    const onReposition = () => updateMenuPos();
+    window.addEventListener("resize", onReposition);
+    window.addEventListener("scroll", onReposition, true);
+    return () => {
+      window.removeEventListener("resize", onReposition);
+      window.removeEventListener("scroll", onReposition, true);
+    };
+  }, [open, updateMenuPos]);
+
+  useEffect(() => {
+    if (!open) return;
+    setMenuLock(true);
+    return () => setMenuLock(false);
+  }, [open, setMenuLock]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: MouseEvent) => {
+      const n = e.target as Node;
+      if (rootRef.current?.contains(n)) return;
+      if (panelRef.current?.contains(n)) return;
+      setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls={open ? menuId : undefined}
+        title={collapsed ? displayName : undefined}
+        aria-label={collapsed ? displayName : undefined}
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          "flex h-10 w-full items-center gap-2 rounded-lg px-2.5 text-left transition-colors duration-150 ease-out hover:bg-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring",
+          collapsed && "justify-center px-0",
+        )}
+      >
+        <Avatar url={avatarUrl} initials={initials} size={24} />
+        {!collapsed && (
+          <>
+            <span className="sidebar-label min-w-0 flex-1">
+              <span className="block truncate text-sm font-medium leading-5 text-primary">{displayName}</span>
+              <span className="block truncate text-xs leading-4 text-secondary">{email}</span>
+            </span>
+            <CaretUpDown size={16} className="sidebar-label shrink-0 text-secondary" aria-hidden />
+          </>
+        )}
+      </button>
+
+      {open &&
+        typeof document !== "undefined" &&
+        createPortal(
+            <div
+            ref={panelRef}
+            data-sidebar-menu
+            style={{
+              position: "fixed",
+              left: menuPos.left,
+              bottom: menuPos.bottom,
+              width: menuPos.width,
+              zIndex: 80,
+            }}
+          >
+            <Menu id={menuId} className="pop-slide max-h-[min(32rem,calc(100vh-5rem))] overflow-y-auto">
+              <div className="flex items-center gap-2 px-2.5 py-2">
+                <Avatar url={avatarUrl} initials={initials} size={32} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium leading-5 text-primary">{displayName}</p>
+                  <p className="truncate text-xs leading-4 text-secondary">{email}</p>
+                </div>
+              </div>
+
+              <MenuRow icon={UserCircle} to={profileTo} onClick={() => setOpen(false)}>
+                Profile & account
+              </MenuRow>
+              <MenuRow icon={CreditCard} to={billingTo} onClick={() => setOpen(false)}>
+                Plans & billing
+              </MenuRow>
+
+              <div className="flex h-8 items-center gap-2 rounded-md px-2.5">
+                {theme === "light" ? (
+                  <Sun size={16} className="shrink-0 text-secondary" aria-hidden />
+                ) : (
+                  <Moon size={16} className="shrink-0 text-secondary" aria-hidden />
+                )}
+                <span className="shrink-0 whitespace-nowrap text-sm text-primary">Appearance</span>
+                <SegmentedControl
+                  ariaLabel="Appearance"
+                  value={theme}
+                  onChange={setTheme}
+                  fit
+                  className="ml-auto h-7 shrink-0"
+                  options={[
+                    { id: "light", label: "Light" },
+                    { id: "dark", label: "Dark" },
+                  ]}
+                />
+              </div>
+
+              <div className="flex min-h-11 items-center gap-2 rounded-md px-2.5">
+                <span className="min-w-0 flex-1 text-sm leading-5 text-primary">Keep sidebar open</span>
+                <Toggle checked={pinned} onChange={setPinned} label="Keep sidebar open" />
+              </div>
+
+              <MenuDivider />
+
+              <div className="rounded-lg bg-inset p-3">
+                <p className="text-sm font-medium leading-5 text-primary">{planLabel}</p>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <p className="min-w-0 text-sm leading-5 tabular-nums text-primary">
+                    {tokenLabel} <span className="text-secondary">{tokenNoun}</span>
+                  </p>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leadingIcon={<Plus size={16} aria-hidden />}
+                    onClick={() => {
+                      setOpen(false);
+                      onTopUp();
+                    }}
+                  >
+                    Top up
+                  </Button>
+                </div>
+              </div>
+
+              <MenuDivider />
+
+              <MenuRow
+                icon={SignOut}
+                onClick={() => {
+                  setOpen(false);
+                  onSignOut();
+                }}
+              >
+                Sign out
+              </MenuRow>
+            </Menu>
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}

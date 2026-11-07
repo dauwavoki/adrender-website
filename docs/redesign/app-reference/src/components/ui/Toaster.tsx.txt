@@ -1,0 +1,11 @@
+/**
+ * DESIGN.md toast look: raised surface, 1px border, radius 12, 14px primary text.
+ * Colors are enforced in src/index.css on [data-sonner-toast].
+ */
+import { Toaster as Sonner } from "sonner";
+import { useTheme } from "../../context/ThemeContext";
+
+export default function AppToaster() {
+  const { theme } = useTheme();
+  return <Sonner theme={theme} position="bottom-right" className="z-[100000]" />;
+}

@@ -1,0 +1,326 @@
+/**
+ * DESIGN.md §5.8. Floating sidebar in every state.
+ * Pinned: the page reserves the panel width. Unpinned: the page reserves the
+ * 60px rail only, and hover/tap opens the full panel as an overlay.
+ *
+ * Library selection does not change the saved pin. It temporarily uses the
+ * rail: the slot and the panel both shrink, and the panel does not pop out
+ * until the pointer crosses into the rail afterwards. If the pointer is
+ * already over the rail, it must leave and enter again.
+ */
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
+import { useNavShell } from "../../context/NavShellContext";
+import { cn } from "../../lib/utils";
+
+const EDGE = 8;
+const RAIL = 60;
+const OPEN = 256;
+const OPEN_MS = 200;
+const CLOSE_MS = 150;
+const LEAVE_MS = 300;
+
+type Phase = "rail" | "opening" | "open" | "closing";
+
+export type HoverPeekApi = {
+  /** Icon rail chrome. False while the layout is pinned or while the overlay is showing labels. */
+  collapsed: boolean;
+  /** True when the page is reserving the full panel width (saved pin, and not a temporary selection collapse). */
+  pinned: boolean;
+  onCollapse: () => void;
+  onNavigate: () => void;
+};
+
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia(query).matches : false,
+  );
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const onChange = () => setMatches(media.matches);
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
+function eventInSidebarMenu(target: EventTarget | null): boolean {
+  const element = target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
+  return Boolean(element?.closest("[data-sidebar-menu]"));
+}
+
+export default function HoverPeekFrame({
+  children,
+  topInset = 0,
+}: {
+  children: (api: HoverPeekApi) => ReactNode;
+  /** Extra top offset, e.g. the fixed admin-preview bar. */
+  topInset?: number;
+}) {
+  const { pinned, setPinned, sidebarMenuOpen, selectionCollapsed } = useNavShell();
+  const canHover = useMediaQuery("(hover: hover)");
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const [peek, setPeek] = useState(false);
+  const [phase, setPhase] = useState<Phase>(pinned ? "open" : "rail");
+  const asideRef = useRef<HTMLElement>(null);
+  const insideRef = useRef(false);
+  /** Ignore hover-open until this timestamp so collapse, Escape, and nav clicks stay closed. */
+  const blockUntilRef = useRef(0);
+  const closeTimerRef = useRef<number | null>(null);
+  /**
+   * Selection collapse just put the rail under the pointer. Ignore hover-open
+   * until the pointer leaves, so the panel cannot pop out over Collections.
+   */
+  const suppressUntilLeaveRef = useRef(false);
+  const prevForceRailRef = useRef(false);
+
+  // Saved "Keep sidebar open" still reserves the page only when Library
+  // selection is not holding a temporary rail.
+  const layoutPinned = pinned && !selectionCollapsed;
+  const forceRail = pinned && selectionCollapsed;
+
+  if (prevForceRailRef.current !== forceRail) {
+    prevForceRailRef.current = forceRail;
+    suppressUntilLeaveRef.current = forceRail;
+  }
+
+  if (suppressUntilLeaveRef.current && peek) {
+    setPeek(false);
+  }
+
+  const suppressPeek = suppressUntilLeaveRef.current;
+  const holdForMenu = !layoutPinned && sidebarMenuOpen && !suppressPeek;
+  const expanded = layoutPinned || (!suppressPeek && peek) || holdForMenu;
+
+  const prevExpandedRef = useRef(expanded);
+  const panelMsRef = useRef(0);
+  if (prevExpandedRef.current !== expanded) {
+    panelMsRef.current = reduced ? 0 : expanded ? OPEN_MS : CLOSE_MS;
+    prevExpandedRef.current = expanded;
+  }
+
+  const prevLayoutPinnedRef = useRef(layoutPinned);
+  const slotMsRef = useRef(0);
+  if (prevLayoutPinnedRef.current !== layoutPinned) {
+    const panelAlreadyOpen = phase === "open" || phase === "opening";
+    // Opening the reserved width under an already-open peek would cover
+    // Collections until the slot caught up. Snap the slot instead.
+    slotMsRef.current =
+      reduced || (layoutPinned && panelAlreadyOpen) ? 0 : layoutPinned ? OPEN_MS : CLOSE_MS;
+    prevLayoutPinnedRef.current = layoutPinned;
+  }
+
+  // Commit the rail and the panel at the same width. A hover-peek is the only
+  // time the panel is wider than the slot, and it starts on the next render
+  // after a real pointer enter — not in the same paint as a selection collapse.
+  if (!expanded && (phase === "open" || phase === "opening")) {
+    setPhase(reduced ? "rail" : "closing");
+  } else if (expanded && (phase === "rail" || phase === "closing")) {
+    setPhase(reduced ? "open" : "opening");
+  }
+
+  useEffect(() => {
+    if (reduced) {
+      setPhase(expanded ? "open" : "rail");
+      return;
+    }
+    if (expanded) {
+      setPhase((current) => (current === "open" || current === "opening" ? current : "opening"));
+      const timeout = window.setTimeout(() => setPhase("open"), OPEN_MS);
+      return () => window.clearTimeout(timeout);
+    }
+    setPhase((current) => (current === "rail" || current === "closing" ? current : "closing"));
+    const timeout = window.setTimeout(() => setPhase("rail"), CLOSE_MS);
+    return () => window.clearTimeout(timeout);
+  }, [expanded, reduced]);
+
+  useEffect(() => {
+    if (!forceRail) return;
+    let cancelled = false;
+    // Runs after the collapse layout and its pointer-boundary events. If that
+    // layout left the pointer over the rail, keep suppressing until it leaves.
+    const id = window.setTimeout(() => {
+      if (cancelled) return;
+      const hovering = asideRef.current?.matches(":hover") ?? false;
+      suppressUntilLeaveRef.current = hovering;
+      setPeek(false);
+    }, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(id);
+    };
+  }, [forceRail]);
+
+  const clearClose = () => {
+    if (closeTimerRef.current != null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const peekBlocked = () => performance.now() < blockUntilRef.current;
+
+  const blockPeek = () => {
+    blockUntilRef.current = performance.now() + CLOSE_MS + LEAVE_MS;
+  };
+
+  const prevMenuOpenRef = useRef(sidebarMenuOpen);
+
+  useEffect(() => () => clearClose(), []);
+
+  // When a drop-up closes, stay open if the pointer is still over the panel.
+  // Otherwise start the same 300ms leave timer. This does not run on ordinary hovers.
+  useEffect(() => {
+    const wasOpen = prevMenuOpenRef.current;
+    prevMenuOpenRef.current = sidebarMenuOpen;
+    if (!wasOpen || sidebarMenuOpen || layoutPinned || !canHover || peekBlocked()) return;
+    if (suppressUntilLeaveRef.current) return;
+    if (asideRef.current?.matches(":hover")) {
+      insideRef.current = true;
+      clearClose();
+      setPeek(true);
+      return;
+    }
+    if (!peek) return;
+    const timer = window.setTimeout(() => {
+      if (closeTimerRef.current === timer) closeTimerRef.current = null;
+      setPeek(false);
+    }, LEAVE_MS);
+    closeTimerRef.current = timer;
+    return () => {
+      window.clearTimeout(timer);
+      if (closeTimerRef.current === timer) closeTimerRef.current = null;
+    };
+  }, [sidebarMenuOpen, layoutPinned, peek, canHover]);
+
+  useEffect(() => {
+    if (!peek || layoutPinned) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      blockPeek();
+      clearClose();
+      setPeek(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [peek, layoutPinned]);
+
+  useEffect(() => {
+    if (canHover || layoutPinned || !peek) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (asideRef.current?.contains(target)) return;
+      if (eventInSidebarMenu(target)) return;
+      setPeek(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [canHover, layoutPinned, peek]);
+
+  const onPointerEnter = () => {
+    insideRef.current = true;
+    clearClose();
+    if (suppressUntilLeaveRef.current) return;
+    if (!canHover || layoutPinned || peekBlocked()) return;
+    setPeek(true);
+  };
+
+  const onPointerLeave = (event: ReactPointerEvent<HTMLElement>) => {
+    insideRef.current = false;
+    if (suppressUntilLeaveRef.current) suppressUntilLeaveRef.current = false;
+    if (eventInSidebarMenu(event.relatedTarget)) return;
+    if (!canHover || layoutPinned || sidebarMenuOpen) return;
+    clearClose();
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      setPeek(false);
+    }, LEAVE_MS);
+  };
+
+  const onCollapse = () => {
+    blockPeek();
+    clearClose();
+    setPeek(false);
+    setPinned(false);
+  };
+
+  const onNavigate = () => {
+    if (layoutPinned) return;
+    blockPeek();
+    clearClose();
+    setPeek(false);
+  };
+
+  const onClickCapture = (event: ReactMouseEvent<HTMLElement>) => {
+    if (canHover || layoutPinned || peek || holdForMenu || suppressUntilLeaveRef.current) return;
+    event.preventDefault();
+    event.stopPropagation();
+    setPeek(true);
+  };
+
+  const panelWidth = phase === "open" || phase === "opening" ? OPEN : RAIL;
+  const showShadow = !layoutPinned && expanded;
+
+  const panel = (
+    <aside
+      ref={asideRef}
+      data-sidebar-panel
+      data-pinned={pinned ? "true" : "false"}
+      data-layout-pinned={layoutPinned ? "true" : "false"}
+      data-selection-collapsed={selectionCollapsed ? "true" : "false"}
+      data-phase={phase}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onClickCapture={onClickCapture}
+      style={{
+        top: EDGE + topInset,
+        bottom: EDGE,
+        left: EDGE,
+        width: panelWidth,
+        transitionProperty: "width, box-shadow",
+        transitionDuration: `${panelMsRef.current}ms`,
+        transitionTimingFunction: "ease-out",
+      }}
+      className={cn(
+        "sidebar-panel fixed z-40 flex flex-col overflow-hidden rounded-2xl border border-default bg-sidebar p-2",
+        phase === "opening" && "sidebar-opening",
+        phase === "closing" && "sidebar-closing",
+        showShadow && "shadow-menu",
+      )}
+    >
+      {children({
+        collapsed: phase === "rail",
+        pinned: layoutPinned,
+        onCollapse,
+        onNavigate,
+      })}
+    </aside>
+  );
+
+  return (
+    <>
+      <div
+        aria-hidden
+        data-sidebar-slot
+        data-layout-pinned={layoutPinned ? "true" : "false"}
+        className="shrink-0"
+        style={{
+          width: EDGE + (layoutPinned ? OPEN : RAIL),
+          transitionProperty: "width",
+          transitionDuration: `${slotMsRef.current}ms`,
+          transitionTimingFunction: "ease-out",
+        }}
+      />
+      {typeof document !== "undefined" ? createPortal(panel, document.body) : panel}
+    </>
+  );
+}

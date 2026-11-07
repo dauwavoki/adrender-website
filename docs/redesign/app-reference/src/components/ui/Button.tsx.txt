@@ -1,0 +1,100 @@
+/**
+ * DESIGN.md §4 plus the §8.36 tinted variant.
+ * Icon-only is square and requires an aria-label (pass it through).
+ */
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "../../lib/utils";
+import { controlMdBoxClass, controlMdClass } from "./controlSize";
+import Tooltip from "./Tooltip";
+
+type Variant = "primary" | "secondary" | "soft" | "ghost" | "danger" | "tinted";
+type Size = "sm" | "md" | "lg";
+export type ButtonTone = "accent" | "info" | "success" | "warning" | "danger";
+
+const SIZES: Record<Size, string> = {
+  sm: "h-7 px-2.5",
+  md: cn(controlMdClass, "px-3"),
+  lg: "h-10 px-4",
+};
+
+const ICON_ONLY: Record<Size, string> = {
+  sm: "size-7",
+  md: controlMdBoxClass,
+  lg: "size-10",
+};
+
+const VARIANTS: Record<Exclude<Variant, "tinted">, string> = {
+  primary: "bg-btn-primary text-btn-primary-text hover:opacity-90",
+  secondary:
+    "border border-default bg-surface text-primary hover:border-strong hover:bg-hover",
+  soft: "bg-soft text-primary hover:brightness-110",
+  ghost: "text-secondary hover:bg-hover hover:text-primary",
+  danger: "bg-danger text-on-danger hover:opacity-90",
+};
+
+/** DESIGN.md §8.36. Soft fill, colored text, 1px border at ~30%. */
+const TINTED: Record<ButtonTone, string> = {
+  accent:
+    "border border-[color-mix(in_srgb,var(--accent)_30%,transparent)] bg-accent-soft text-accent hover:brightness-110",
+  info:
+    "border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-info-soft text-info hover:brightness-110",
+  success:
+    "border border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-success-soft text-success hover:brightness-110",
+  warning:
+    "border border-[color-mix(in_srgb,var(--warning)_30%,transparent)] bg-warning-soft text-warning hover:brightness-110",
+  danger:
+    "border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] bg-danger-soft text-danger hover:brightness-110",
+};
+
+type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> & {
+  variant?: Variant;
+  /** Semantic color for `variant="tinted"` (DESIGN.md §8.36). */
+  tone?: ButtonTone;
+  size?: Size;
+  leadingIcon?: ReactNode;
+  /** Square. Caller must pass aria-label. */
+  iconOnly?: boolean;
+  /** Ghost trash controls turn danger-colored on hover. */
+  dangerHover?: boolean;
+  /** Wraps the button in the shared tooltip. */
+  tooltip?: string;
+  tooltipSide?: "top" | "right";
+};
+
+export default function Button({
+  variant = "secondary",
+  tone = "accent",
+  size = "md",
+  leadingIcon,
+  iconOnly = false,
+  dangerHover = false,
+  tooltip,
+  tooltipSide = "top",
+  className,
+  children,
+  type = "button",
+  ...rest
+}: ButtonProps) {
+  const button = (
+    <button
+      type={type}
+      className={cn(
+        "inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg text-sm font-medium leading-5 transition duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring disabled:pointer-events-none disabled:opacity-50",
+        iconOnly ? ICON_ONLY[size] : SIZES[size],
+        variant === "tinted" ? TINTED[tone] : VARIANTS[variant],
+        className,
+        dangerHover && "hover:text-danger",
+      )}
+      {...rest}
+    >
+      {leadingIcon}
+      {children}
+    </button>
+  );
+  if (!tooltip) return button;
+  return (
+    <Tooltip label={tooltip} side={tooltipSide}>
+      {button}
+    </Tooltip>
+  );
+}

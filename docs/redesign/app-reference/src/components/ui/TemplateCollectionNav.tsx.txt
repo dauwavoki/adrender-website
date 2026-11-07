@@ -1,0 +1,163 @@
+/**
+ * Saved-template collection rows (image and video).
+ * DESIGN.md §8.28: Stack for All, Folder for every collection, Fill when selected.
+ */
+import type { MouseEvent as ReactMouseEvent } from "react";
+import { DotsSixVertical, Folder, PencilSimple, Stack, Trash } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import Tooltip from "./Tooltip";
+
+export type CollectionNavItem = {
+  id: string;
+  name: string;
+  brand_id?: string | null;
+};
+
+export function TemplateCollectionNav<T extends CollectionNavItem>({
+  folders,
+  selectedId,
+  countFor,
+  allCount,
+  allLabel,
+  sidebarCollapsed,
+  onSelectAll,
+  onSelect,
+  onRename,
+  onDelete,
+  onResizeStart,
+}: {
+  folders: T[];
+  selectedId: string;
+  countFor: (folderId: string) => number;
+  allCount: number;
+  allLabel: string;
+  sidebarCollapsed: boolean;
+  onSelectAll: () => void;
+  onSelect: (id: string) => void;
+  onRename: (folder: T) => void;
+  onDelete: (folder: T) => void;
+  onResizeStart?: (event: ReactMouseEvent<HTMLButtonElement>) => void;
+}) {
+  if (sidebarCollapsed) {
+    return (
+      <>
+        <Tooltip label={allLabel} side="right">
+          <button
+            type="button"
+            aria-label={allLabel}
+            onClick={onSelectAll}
+            className={cn(
+              "flex h-8 w-full items-center justify-center rounded-lg transition-colors duration-150",
+              selectedId === "all" ? "bg-selected text-primary" : "text-secondary hover:bg-hover hover:text-primary",
+            )}
+          >
+            <Stack size={16} weight={selectedId === "all" ? "fill" : "regular"} aria-hidden />
+          </button>
+        </Tooltip>
+        {folders.map((folder) => {
+          const selected = selectedId === folder.id;
+          return (
+            <Tooltip key={folder.id} label={folder.name} side="right">
+              <button
+                type="button"
+                aria-label={folder.name}
+                onClick={() => onSelect(folder.id)}
+                className={cn(
+                  "flex h-8 w-full items-center justify-center rounded-lg transition-colors duration-150",
+                  selected ? "bg-selected text-primary" : "text-secondary hover:bg-hover hover:text-primary",
+                )}
+              >
+                <Folder size={16} weight={selected ? "fill" : "regular"} aria-hidden />
+              </button>
+            </Tooltip>
+          );
+        })}
+      </>
+    );
+  }
+
+  const row = (selected: boolean) =>
+    cn(
+      "group/item flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-sm leading-5 transition-colors duration-150",
+      selected ? "bg-selected text-primary" : "text-secondary hover:bg-hover hover:text-primary",
+    );
+
+  return (
+    <>
+      <button type="button" onClick={onSelectAll} className={row(selectedId === "all")}>
+        <Stack
+          size={16}
+          weight={selectedId === "all" ? "fill" : "regular"}
+          className={selectedId === "all" ? "text-primary" : "text-secondary"}
+          aria-hidden
+        />
+        <span className="min-w-0 flex-1 truncate text-left">{allLabel}</span>
+        <span className="shrink-0 text-xs font-medium leading-4 text-muted">{allCount}</span>
+      </button>
+      {folders.map((folder) => {
+        const selected = selectedId === folder.id;
+        return (
+          <div key={folder.id} className={row(selected)}>
+            <button
+              type="button"
+              onClick={() => onSelect(folder.id)}
+              className="flex min-w-0 flex-1 items-center gap-2 text-left"
+            >
+              <Folder
+                size={16}
+                weight={selected ? "fill" : "regular"}
+                className={cn("shrink-0", selected ? "text-primary" : "text-secondary")}
+                aria-hidden
+              />
+              <span className="min-w-0 flex-1 truncate">{folder.name}</span>
+            </button>
+            <span className="shrink-0 text-xs font-medium leading-4 text-muted group-hover/item:hidden">
+              {countFor(folder.id)}
+            </span>
+            <span className="hidden shrink-0 items-center group-hover/item:flex">
+              {onResizeStart ? (
+                <button
+                  type="button"
+                  aria-label="Resize collections"
+                  className="flex size-6 cursor-col-resize items-center justify-center rounded-md text-muted hover:bg-hover hover:text-secondary"
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onResizeStart(event);
+                  }}
+                >
+                  <DotsSixVertical size={14} aria-hidden />
+                </button>
+              ) : null}
+              <button
+                type="button"
+                title={folder.brand_id ? "Rename brand or campaign" : "Rename collection"}
+                aria-label={folder.brand_id ? "Rename brand or campaign" : "Rename collection"}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onRename(folder);
+                }}
+                className="flex size-6 items-center justify-center rounded-md text-secondary hover:bg-hover hover:text-primary"
+              >
+                <PencilSimple size={14} aria-hidden />
+              </button>
+              <button
+                type="button"
+                title={folder.brand_id ? "Delete brand or campaign" : "Delete collection"}
+                aria-label={folder.brand_id ? "Delete brand or campaign" : "Delete collection"}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onDelete(folder);
+                }}
+                className="flex size-6 items-center justify-center rounded-md text-secondary hover:bg-hover hover:text-danger"
+              >
+                <Trash size={14} aria-hidden />
+              </button>
+              <span className="pl-1 text-xs font-medium leading-4 text-muted">{countFor(folder.id)}</span>
+            </span>
+          </div>
+        );
+      })}
+    </>
+  );
+}

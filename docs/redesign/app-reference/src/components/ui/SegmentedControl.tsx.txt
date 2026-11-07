@@ -1,0 +1,213 @@
+/**
+ * DESIGN.md §4 segmented control. Track is --bg-soft.
+ * Selected segment is --bg-segment: #3A3836 + border-strong in dark, white + border in light.
+ * The selected fill slides (DESIGN.md §5 sliding highlight).
+ *
+ * Optional `sublabel` (DESIGN.md §8.33) draws a 48px two-line segment: the label
+ * on line 1, the sublabel on line 2. If one row would clip the text, the
+ * segments wrap into two columns. Callers that omit `sublabel` keep the
+ * single-line control.
+ */
+import { useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import type { Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import LayoutHighlight from "../motion/LayoutHighlight";
+import Badge, { type BadgeVariant } from "./Badge";
+
+export type SegmentOption<T extends string> = {
+  id: T;
+  label: string;
+  icon?: Icon;
+  disabled?: boolean;
+  title?: string;
+  /** Count badge (8.7). Omitted when undefined. */
+  count?: number;
+  /** Ready uses success, Failed uses danger. Anything else stays neutral. */
+  countTone?: Extract<BadgeVariant, "success" | "danger">;
+  /**
+   * Second line under `label` (DESIGN.md §8.33): 12px `--text-secondary`.
+   * When any option sets this, every segment is a 48px two-line button.
+   */
+  sublabel?: string;
+};
+
+export default function SegmentedControl<T extends string>({
+  value,
+  onChange,
+  options,
+  ariaLabel,
+  collapsed = false,
+  fit = false,
+  iconOnly = false,
+  disabled = false,
+  className,
+}: {
+  value: T;
+  onChange: (id: T) => void;
+  options: readonly SegmentOption<T>[];
+  ariaLabel: string;
+  /** Icon-only, stacked. Used by the collapsed sidebar. */
+  collapsed?: boolean;
+  /** Size to the labels instead of stretching. Used on the Appearance row. */
+  fit?: boolean;
+  /** Icon-only segments in a horizontal row. Labels stay available to screen readers. */
+  iconOnly?: boolean;
+  /** Disables every segment. Per-option `disabled` still applies on its own. */
+  disabled?: boolean;
+  className?: string;
+}) {
+  const highlightId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const twoLine = !collapsed && !iconOnly && options.some((opt) => !!opt.sublabel);
+  const measureKey = options
+    .map((opt) => `${opt.label}\u0000${opt.sublabel ?? ""}\u0000${opt.count ?? ""}`)
+    .join("\u0001");
+  const [wrapped, setWrapped] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!twoLine) {
+      setWrapped(false);
+      return;
+    }
+    const root = rootRef.current;
+    const measure = measureRef.current;
+    if (!root || !measure) return;
+
+    const update = () => {
+      const style = getComputedStyle(root);
+      const pad = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      const available = root.clientWidth - pad;
+      if (available <= 0) return;
+      let needed = 0;
+      for (const child of Array.from(measure.children)) {
+        needed += (child as HTMLElement).offsetWidth;
+      }
+      // A row that is merely equal to the labels still clips on a subpixel.
+      const next = needed >= available;
+      setWrapped((prev) => (prev === next ? prev : next));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(root);
+    let cancelled = false;
+    void document.fonts?.ready.then(() => {
+      if (!cancelled) update();
+    });
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
+  }, [twoLine, measureKey]);
+
+  return (
+    <div
+      ref={rootRef}
+      role="group"
+      aria-label={ariaLabel}
+      className={cn(
+        "relative rounded-lg bg-soft p-0.5",
+        collapsed
+          ? "flex w-auto flex-col items-center"
+          : twoLine && wrapped
+            ? "grid w-full grid-cols-[repeat(2,minmax(min-content,1fr))] gap-0.5"
+            : twoLine
+              ? "flex h-auto w-full flex-row"
+              : iconOnly || fit
+                ? "flex h-8 w-auto flex-row"
+                : "flex h-8 w-full flex-row",
+        className,
+      )}
+    >
+      {options.map((opt) => {
+        const selected = opt.id === value;
+        const IconComp = opt.icon;
+        const off = disabled || !!opt.disabled;
+        const hideLabel = collapsed || iconOnly;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            title={opt.title ?? (hideLabel ? opt.label : undefined)}
+            aria-pressed={selected}
+            aria-label={hideLabel ? opt.label : undefined}
+            disabled={off}
+            onClick={() => {
+              if (!off) onChange(opt.id);
+            }}
+            className={cn(
+              "relative inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium leading-5 transition-colors duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring disabled:cursor-not-allowed disabled:opacity-60",
+              twoLine
+                ? wrapped
+                  ? "h-12 w-full px-2"
+                  : "h-12 min-w-max flex-1 px-2"
+                : collapsed || iconOnly
+                  ? "size-7"
+                  : fit
+                    ? "h-full px-2"
+                    : "min-w-0 flex-1 self-stretch px-2",
+              selected ? "segment-selected" : "segment-idle",
+            )}
+          >
+            {selected ? <LayoutHighlight layoutId={highlightId} className="segment-highlight rounded-md" /> : null}
+            {twoLine ? (
+              <span className="relative z-[1] flex flex-col items-center justify-center">
+                <span className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-sm font-medium leading-5">
+                  {IconComp ? <IconComp size={16} weight="regular" aria-hidden /> : null}
+                  {opt.label}
+                  {typeof opt.count === "number" ? (
+                    <Badge
+                      variant={opt.countTone ?? "neutral"}
+                      className="min-w-5 justify-center [text-shadow:none]"
+                    >
+                      {opt.count > 99 ? "99+" : opt.count}
+                    </Badge>
+                  ) : null}
+                </span>
+                {opt.sublabel ? <span className="segment-sublabel">{opt.sublabel}</span> : null}
+              </span>
+            ) : (
+              <span className="relative z-[1] inline-flex items-center justify-center gap-1.5 whitespace-nowrap">
+                {IconComp ? <IconComp size={16} weight="regular" aria-hidden /> : null}
+                {hideLabel ? <span className="sr-only">{opt.label}</span> : opt.label}
+                {typeof opt.count === "number" && !hideLabel ? (
+                  <Badge
+                    variant={opt.countTone ?? "neutral"}
+                    className="min-w-5 justify-center [text-shadow:none]"
+                  >
+                    {opt.count > 99 ? "99+" : opt.count}
+                  </Badge>
+                ) : null}
+              </span>
+            )}
+          </button>
+        );
+      })}
+      {twoLine && typeof document !== "undefined"
+        ? createPortal(
+            <div aria-hidden className="pointer-events-none fixed top-0 w-max" style={{ left: -10000 }}>
+              <div ref={measureRef} className="flex w-max">
+                {options.map((opt) => (
+                  <span key={opt.id} className="inline-flex shrink-0 flex-col items-center px-2">
+                    <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-medium leading-5">
+                      {opt.icon ? <span className="inline-block size-4 shrink-0" /> : null}
+                      {opt.label}
+                      {typeof opt.count === "number" ? (
+                        <span className="min-w-5 px-1.5 text-xs font-medium">
+                          {opt.count > 99 ? "99+" : opt.count}
+                        </span>
+                      ) : null}
+                    </span>
+                    {opt.sublabel ? <span className="segment-sublabel">{opt.sublabel}</span> : null}
+                  </span>
+                ))}
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
+    </div>
+  );
+}

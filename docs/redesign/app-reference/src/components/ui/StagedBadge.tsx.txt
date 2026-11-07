@@ -1,0 +1,15 @@
+/**
+ * "Staged" mark on library image and video cards.
+ */
+import { Check } from "@phosphor-icons/react";
+
+export function StagedBadge({ justReady }: { justReady?: boolean }) {
+  return (
+    <span className="media-overlay inline-flex h-5 items-center gap-1 rounded-md px-1.5 text-xs font-medium text-success">
+      {justReady ? <Check size={12} weight="bold" aria-hidden /> : null}
+      Staged
+    </span>
+  );
+}
+
+export const StagedMark = StagedBadge;

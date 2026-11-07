@@ -1,0 +1,46 @@
+/**
+ * DESIGN.md §8.24. Library / Ready / Rendering / Failed in one segmented bar.
+ */
+import SegmentedControl from "./SegmentedControl";
+
+type StatusTab<T extends string> = {
+  id: T;
+  label: string;
+  count?: number;
+};
+
+export function StatusTabBar<T extends string>({
+  value,
+  onChange,
+  tabs,
+  ariaLabel,
+}: {
+  value: T;
+  onChange: (id: T) => void;
+  tabs: readonly StatusTab<T>[];
+  ariaLabel: string;
+}) {
+  return (
+    <SegmentedControl
+      fit
+      className="max-w-full shrink-0"
+      ariaLabel={ariaLabel}
+      value={value}
+      onChange={onChange}
+      options={tabs.map((tab) => {
+        const count = tab.count ?? 0;
+        const ready = tab.id === "staging" && count > 0;
+        const failed = tab.id === "failed" && count > 0;
+        return {
+          id: tab.id,
+          label: tab.label,
+          count,
+          countTone: ready ? ("success" as const) : failed ? ("danger" as const) : undefined,
+        };
+      })}
+    />
+  );
+}
+
+/** Previous name. */
+export const StatusPillTabs = StatusTabBar;

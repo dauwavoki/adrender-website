@@ -1,0 +1,1422 @@
+/**
+ * Direct App Home. The plan and tokens tiles always read the personal
+ * workspace, even when another workspace is selected. The floating banner
+ * (live post or next quote) is one small request in the first wave. Continue
+ * and stats follow the active workspace in one parallel batch. Recent
+ * templates skeleton in. Walkthrough checkmarks read those two responses — no
+ * extra request. Pricing and Get Inspired wait until after first paint.
+ * Other-workspace stats load only when expanded.
+ */
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { preloadWebBrowseTemplates } from "../lib/preloadBrowseTemplates";
+import { runWhenIdle } from "../lib/browsePageCache";
+import { SkeletonCard } from "../components/GridSkeleton";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  ArrowCounterClockwise,
+  ArrowRight,
+  ArrowUpRight,
+  BookmarkSimple,
+  CaretDown,
+  ChartBar,
+  CheckCircle,
+  CircleNotch,
+  Coins,
+  CreditCard,
+  House,
+  Image as ImageIcon,
+  Lightbulb,
+  Package,
+  Play,
+  Plus,
+  Rocket,
+  Sparkle,
+  SquaresFour,
+  Stack,
+  VideoCamera,
+} from "@phosphor-icons/react";
+import Button from "../components/ui/Button";
+
+import { toast } from "sonner";
+import { useTeam } from "../context/TeamContext";
+import { useAdsLibraryCounts } from "../context/AdsLibraryCountsContext";
+import { useVideoLibraryCounts } from "../context/VideoLibraryCountsContext";
+import { useClientMode, type ClientMode } from "../context/ClientModeContext";
+import AddTokensModal from "../components/AddTokensModal";
+import { useAnimatedTokenCount } from "../components/motion/AnimatedTokenCount";
+import { isTombstonedMembership, workspaceDisplayName, type WorkspaceMembership } from "../lib/teamData";
+import {
+  listDirectSubscriptionTiers,
+  paidTierMonthlyOutputLine,
+  type SubscriptionTier,
+  type TeamSubscription,
+} from "../lib/billingData";
+import { resolveTeamSubscription } from "../lib/planLimits";
+import { getWorkspaceTokenState, type WorkspaceTokenState } from "../lib/tokenData";
+import { isShopifyBilled } from "../lib/shopifyBilling";
+import { directTutorialHref } from "../lib/directTutorial";
+import {
+  fetchHomeWave2,
+  fetchHomeInspired,
+  fetchRecentTemplates,
+  fetchWorkspaceStats,
+  type HomeContinueItem,
+  type HomeRecentTemplates,
+  type HomeTemplateCard,
+  type HomeWave2,
+  type HomeWorkspaceStats,
+} from "../lib/directHomeData";
+import {
+  fetchHomeBanner,
+  listActiveHomeQuotes,
+  pickRotatedHomeQuote,
+  type ActiveHomeQuote,
+  type HomeBanner,
+} from "../lib/homeBanner";
+import { cardGlowLiftClass, type CardGlowTone } from "../lib/cardGlow";
+import { cn } from "../lib/utils";
+import Badge from "../components/ui/Badge";
+import { cardClass } from "../components/ui/Card";
+import PageHeader from "../components/ui/PageHeader";
+import { sectionLabelClass } from "../components/ui/SectionLabel";
+import { linkClass } from "../components/ui/text";
+
+/**
+ * Manual open/closed choice for the walkthrough. Missing key means "use the
+ * completion default" (open until all three steps are done, then collapsed).
+ * Scoped per workspace. Not the Getting Started dismiss flag — that one hides
+ * a checklist, and this section has to stay on the card.
+ */
+const WALKTHROUGH_OPEN_KEY = "adrender_direct_home_walkthrough_open";
+
+const WALKTHROUGH_STEPS = [
+  { key: "brand", title: "Connect a brand", href: "/app/brands" },
+  { key: "templates", title: "Browse templates", href: "/app/templates" },
+  { key: "ads", title: "Create winning ads", href: "/app/ads-library" },
+] as const;
+
+const POPULAR_TIER_NAME = "Pro";
+
+/** Shown when there is no live post and the quote pool is empty or unreachable. */
+const FALLBACK_BANNER: HomeBanner = {
+  kind: "quote",
+  quote: "Make something they can't scroll past.",
+  author: "The AdRender crew",
+};
+
+/** A rotated quote has to stay up this long, and changes are at least this far apart. */
+const QUOTE_FADE_MS = 300;
+
+function quoteErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) return error.message;
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string" && message) return message;
+  }
+  return "request failed";
+}
+
+function walkthroughStorageKey(teamId: string): string {
+  return teamId ? `${WALKTHROUGH_OPEN_KEY}:${teamId}` : WALKTHROUGH_OPEN_KEY;
+}
+
+/** `null` when the user has not chosen. `"1"` open, `"0"` collapsed. */
+function readWalkthroughOpen(teamId: string): boolean | null {
+  try {
+    const value = localStorage.getItem(walkthroughStorageKey(teamId));
+    if (value === "1") return true;
+    if (value === "0") return false;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function writeWalkthroughOpen(teamId: string, open: boolean) {
+  try {
+    localStorage.setItem(walkthroughStorageKey(teamId), open ? "1" : "0");
+  } catch {
+    /* private mode */
+  }
+}
+
+function relativeTime(iso: string): string {
+  const delta = Date.now() - new Date(iso).getTime();
+  if (!Number.isFinite(delta) || delta < 0) return "";
+  const mins = Math.round(delta / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function formatPeriod(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+/** "Billed monthly" / "Billed annually", or null when the row has no interval. */
+function billedIntervalPhrase(
+  interval: TeamSubscription["billing_interval"] | undefined,
+): string | null {
+  if (interval === "monthly") return "Billed monthly";
+  if (interval === "annual") return "Billed annually";
+  return null;
+}
+
+/**
+ * Label for the personal workspace on the tokens tile. Personal workspaces
+ * display as "Personal"; the tile adds "workspace" so the balance is not
+ * mistaken for the workspace selected in the switcher.
+ */
+function personalTokensWorkspaceLabel(membership: WorkspaceMembership | null): string {
+  const name = membership ? workspaceDisplayName(membership) : "Personal";
+  return /workspace$/i.test(name) ? name : `${name} workspace`;
+}
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function riseDelay(ms: number): CSSProperties {
+  return { "--rise-delay": `${ms}ms` } as CSSProperties;
+}
+
+/** Home under /admin keeps the same screens on the admin prefix. */
+function portalPath(pathname: string, path: string): string {
+  const base = pathname.startsWith("/admin") ? "/admin" : "/app";
+  if (path === "/app" || path.startsWith("/app/") || path.startsWith("/app?")) {
+    return base + path.slice(4);
+  }
+  return path;
+}
+
+type TileTone = "blue" | "violet" | "orange" | "green" | "amber";
+
+function ColorIconTile({ tone, children }: { tone: TileTone; children: ReactNode }) {
+  return (
+    <span data-tone={tone} className="color-icon-tile">
+      {children}
+    </span>
+  );
+}
+
+function Tile({ className, children, style }: { className?: string; children: ReactNode; style?: CSSProperties }) {
+  return (
+    <section className={cn(cardClass, "p-5", className)} style={style}>
+      {children}
+    </section>
+  );
+}
+
+function Eyebrow({ children }: { children: ReactNode }) {
+  return <p className={sectionLabelClass}>{children}</p>;
+}
+
+function StatNumber({ value, size = "strip" }: { value: number | null; size?: "strip" | "inline" }) {
+  return (
+    <p
+      className={cn(
+        "font-semibold tabular-nums text-primary",
+        size === "strip" ? "text-[28px] leading-none" : "text-[28px] leading-none",
+      )}
+    >
+      {value === null ? "…" : value.toLocaleString()}
+    </p>
+  );
+}
+
+function QuoteFace({ banner }: { banner: HomeBanner }) {
+  const text = banner.kind === "live" ? banner.message : `\u201C${banner.quote}\u201D`;
+  return (
+    <div className="flex w-full flex-col items-center">
+      {banner.kind === "live" ? (
+        <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-warning">
+          <Sparkle size={14} />
+          Live
+        </p>
+      ) : null}
+      <p className="home-quote-text text-balance">{text}</p>
+      {banner.kind === "quote" && banner.author ? (
+        <p className="mt-3 text-sm leading-5 text-secondary">— {banner.author}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function HomeBannerHeadline({
+  banner,
+  quotes,
+}: {
+  banner: HomeBanner | null;
+  quotes: readonly ActiveHomeQuote[];
+}) {
+  const [shown, setShown] = useState<HomeBanner | null>(null);
+  const [outgoing, setOutgoing] = useState<HomeBanner | null>(null);
+  const shownAtRef = useRef(0);
+  const lastChangeRef = useRef<number | null>(null);
+  const fadeTimerRef = useRef<number | null>(null);
+  const display = shown ?? banner;
+
+  if (banner && shownAtRef.current === 0) shownAtRef.current = Date.now();
+
+  useEffect(() => {
+    if (!banner) return;
+    setShown((current) => current ?? banner);
+  }, [banner]);
+
+  useEffect(() => {
+    return () => {
+      if (fadeTimerRef.current != null) window.clearTimeout(fadeTimerRef.current);
+    };
+  }, []);
+
+  const rotateQuote = () => {
+    const now = Date.now();
+    const next = pickRotatedHomeQuote({
+      current: display,
+      quotes,
+      shownAt: shownAtRef.current,
+      lastChangeAt: lastChangeRef.current,
+      now,
+    });
+    if (!next) return;
+    const nextBanner: HomeBanner = { kind: "quote", quote: next.quote, author: next.author };
+    if (!prefersReducedMotion()) {
+      setOutgoing(display);
+      if (fadeTimerRef.current != null) window.clearTimeout(fadeTimerRef.current);
+      fadeTimerRef.current = window.setTimeout(() => {
+        fadeTimerRef.current = null;
+        setOutgoing(null);
+      }, QUOTE_FADE_MS);
+    }
+    setShown(nextBanner);
+    shownAtRef.current = now;
+    lastChangeRef.current = now;
+  };
+
+  return (
+    <header className="flex flex-col items-center px-2 py-2 text-center">
+      {display ? (
+        <div
+          className="grid w-full max-w-[960px]"
+          onMouseLeave={display.kind === "quote" ? rotateQuote : undefined}
+        >
+          {outgoing?.kind === "quote" ? (
+            <div className="home-quote-out pointer-events-none col-start-1 row-start-1" aria-hidden>
+              <QuoteFace banner={outgoing} />
+            </div>
+          ) : null}
+          <div
+            key={display.kind === "quote" ? display.quote : display.message}
+            aria-live="polite"
+            className={cn("col-start-1 row-start-1", outgoing && "home-quote-in")}
+          >
+            <QuoteFace banner={display} />
+          </div>
+        </div>
+      ) : (
+        <div className="flex w-full max-w-2xl flex-col items-center gap-3" aria-hidden>
+          <div className="h-10 w-4/5 animate-pulse rounded-full bg-soft" />
+          <div className="h-10 w-3/5 animate-pulse rounded-full bg-soft" />
+        </div>
+      )}
+    </header>
+  );
+}
+
+/**
+ * Muted, looping, control-less preview that only plays while on screen. The
+ * source attaches the first time the card nears the viewport, so offscreen
+ * videos never download. Reduced motion keeps the poster still.
+ */
+function InViewVideo({ src, poster, className }: { src: string; poster?: string; className?: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [attached, setAttached] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [still] = useState(prefersReducedMotion);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || still || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const video = videoRef.current;
+        if (entry.isIntersecting) {
+          setAttached(true);
+          if (video && video.src) void video.play().catch(() => {});
+        } else if (video) {
+          video.pause();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [still]);
+
+  return (
+    <div ref={wrapRef} className={cn("relative h-full w-full", className)}>
+      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
+        {!still ? (
+          <video
+            ref={videoRef}
+            src={attached ? src : undefined}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="none"
+            disablePictureInPicture
+            onPlaying={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          />
+        ) : null}
+        {poster ? (
+          <img
+            src={poster}
+            alt=""
+            loading="lazy"
+            className={cn(
+              "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+              playing ? "opacity-0" : "opacity-100",
+            )}
+          />
+        ) : null}
+      </div>
+      {!playing ? (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span className="flex size-5 items-center justify-center rounded-full bg-black/55 backdrop-blur-[6px]">
+            <Play className="size-3 translate-x-px text-white" weight="fill" />
+          </span>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+const MEDIA_ZOOM = "transition-transform duration-500 group-hover:scale-105";
+
+function TemplateCard({ card, tone }: { card: HomeTemplateCard; tone: CardGlowTone }) {
+  const { pathname } = useLocation();
+  return (
+    <Link
+      to={portalPath(pathname, card.href)}
+      className={cn(cardClass, "group block overflow-hidden", cardGlowLiftClass(tone))}
+    >
+      <div className="relative aspect-[4/5] overflow-hidden bg-inset">
+        {card.kind === "video" && card.videoUrl ? (
+          <InViewVideo src={card.videoUrl} poster={card.imageUrl || undefined} />
+        ) : card.imageUrl ? (
+          <img src={card.imageUrl} alt="" loading="lazy" className={cn("h-full w-full object-cover", MEDIA_ZOOM)} />
+        ) : (
+          <div className="flex h-full items-center justify-center text-secondary">
+            {card.kind === "video" ? <VideoCamera size={20} /> : <ImageIcon size={20} />}
+          </div>
+        )}
+      </div>
+      <div className="flex items-center justify-between gap-2 px-3 py-2.5">
+        <p className="truncate text-sm font-medium text-primary">{card.title}</p>
+        <span className="shrink-0 text-xs font-medium text-secondary">
+          {card.kind === "video" ? "Video" : "Image"}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+/** Same track as the real template cards, so the swap does not reflow the row. */
+const TEMPLATE_GRID = "grid grid-cols-2 gap-3 sm:grid-cols-4";
+
+function TemplateSkeletonRow() {
+  return (
+    <div className={TEMPLATE_GRID} aria-hidden>
+      {Array.from({ length: 4 }, (_, i) => (
+        <div key={i} className="contents">
+          <SkeletonCard caption="home" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SectionHeading({
+  tone,
+  icon,
+  title,
+  subtitle,
+  action,
+}: {
+  tone: TileTone;
+  icon: ReactNode;
+  title: string;
+  subtitle: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="flex items-center gap-3">
+        <ColorIconTile tone={tone}>{icon}</ColorIconTile>
+        <div>
+          <h2 className="text-sm font-medium text-primary">{title}</h2>
+          <p className="mt-0.5 text-[13px] text-secondary">{subtitle}</p>
+        </div>
+      </div>
+      {action}
+    </div>
+  );
+}
+
+function SubRow({ label, action, children }: { label: string; action?: ReactNode; children: ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <p className="text-[13px] font-medium text-secondary">{label}</p>
+        {action}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function ContinueTile({ loading, item, style }: { loading: boolean; item: HomeContinueItem | null; style?: CSSProperties }) {
+  const { pathname } = useLocation();
+  const frame = cn(cardClass, "flex h-full flex-col overflow-hidden p-4");
+  const linkFrame = frame;
+  const shell = (child: ReactNode) => (
+    <div className="home-rise aspect-square" style={style}>
+      {child}
+    </div>
+  );
+  if (loading) {
+    return shell(
+      <div className={frame} aria-hidden>
+        <div className="h-3 w-1/2 animate-pulse rounded bg-soft" />
+        <div className="mt-2 min-h-0 flex-1 animate-pulse rounded-lg bg-soft" />
+        <div className="mt-2 h-3 w-2/3 animate-pulse rounded bg-soft" />
+      </div>,
+    );
+  }
+  if (!item) {
+    return shell(
+      <Link to={portalPath(pathname, "/app/templates")} className={cn(linkFrame, "group", cardGlowLiftClass("amber"))}>
+        <Eyebrow>Start something</Eyebrow>
+        <div className="mt-2 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-inset">
+          <Rocket size={20} className="text-secondary" />
+        </div>
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <p className="truncate text-sm font-medium text-primary">Make your first ad</p>
+          <ArrowRight size={16} className="shrink-0 text-secondary" />
+        </div>
+      </Link>,
+    );
+  }
+  return shell(
+    <Link
+      to={portalPath(pathname, item.href)}
+      className={cn(linkFrame, "group", cardGlowLiftClass(item.kind === "brand" ? "violet" : item.kind === "video" ? "emerald" : "blue"))}
+    >
+      <Eyebrow>Keep working on</Eyebrow>
+      <div
+        className={cn(
+          "relative mt-2 min-h-0 flex-1 overflow-hidden rounded-xl bg-inset",
+          item.kind === "brand" && "brand-logo-well",
+        )}
+      >
+        {item.kind === "brand" && item.imageUrl ? (
+          <img src={item.imageUrl} alt="" className={cn("absolute inset-0 h-full w-full object-contain p-4", MEDIA_ZOOM)} />
+        ) : item.kind === "image" && item.imageUrl ? (
+          <img src={item.imageUrl} alt="" className={cn("absolute inset-0 h-full w-full object-cover", MEDIA_ZOOM)} />
+        ) : item.kind === "video" && item.videoUrl ? (
+          <video
+            src={`${item.videoUrl}#t=0.1`}
+            muted
+            playsInline
+            preload="metadata"
+            className={cn("pointer-events-none absolute inset-0 h-full w-full object-cover", MEDIA_ZOOM)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-secondary">
+            {item.kind === "brand" ? (
+              <Package size={20} />
+            ) : item.kind === "video" ? (
+              <VideoCamera size={20} />
+            ) : (
+              <ImageIcon size={20} />
+            )}
+          </div>
+        )}
+      </div>
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-primary">{item.label}</p>
+          <p className="text-xs text-muted">{relativeTime(item.at)}</p>
+        </div>
+        <ArrowUpRight size={16} className="shrink-0 text-secondary" />
+      </div>
+    </Link>,
+  );
+}
+
+function WalkthroughTutorialsCard({
+  teamId,
+  brandDone,
+  templateDone,
+  libraryDone,
+  stepsKnown,
+  style,
+}: {
+  teamId: string;
+  brandDone: boolean;
+  templateDone: boolean;
+  libraryDone: boolean;
+  /** False while the counts this card reads are still in flight. */
+  stepsKnown: boolean;
+  style?: CSSProperties;
+}) {
+  const { pathname } = useLocation();
+  const [manualOpen, setManualOpen] = useState<boolean | null>(() => readWalkthroughOpen(teamId));
+
+  useEffect(() => {
+    setManualOpen(readWalkthroughOpen(teamId));
+  }, [teamId]);
+
+  const doneByKey = { brand: brandDone, templates: templateDone, ads: libraryDone };
+  const allComplete = brandDone && templateDone && libraryDone;
+  const open = manualOpen ?? (stepsKnown ? !allComplete : true);
+  const tutorialHref = directTutorialHref();
+
+  const toggle = () => {
+    const next = !open;
+    setManualOpen(next);
+    writeWalkthroughOpen(teamId, next);
+  };
+
+  return (
+    <div className="home-rise h-full" style={style}>
+    <Tile className="card-hover flex h-full flex-col p-0">
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center gap-3">
+          <ColorIconTile tone="blue">
+            <Play size={18} />
+          </ColorIconTile>
+          <p className="text-sm font-medium text-primary">Walkthrough and tutorials</p>
+        </div>
+
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={toggle}
+            aria-expanded={open}
+            aria-controls="home-walkthrough-steps"
+            className="flex w-full items-center justify-between gap-3 text-left"
+          >
+            <span className="text-sm font-medium text-primary">Get started</span>
+            <span className="inline-flex items-center gap-1 text-xs text-secondary">
+              {open ? "Hide" : "Show"}
+              <CaretDown
+                size={14}
+                className={cn(
+                  "transition-transform duration-200 motion-reduce:transition-none",
+                  open && "rotate-180",
+                )}
+              />
+            </span>
+          </button>
+          <div
+            id="home-walkthrough-steps"
+            className={cn(
+              "grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none",
+              open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+            )}
+          >
+            <div className={cn("min-h-0 overflow-hidden", !open && "pointer-events-none")} aria-hidden={!open}>
+              <ul className="space-y-2 pt-3">
+                {WALKTHROUGH_STEPS.map((step, index) => {
+                  const done = doneByKey[step.key];
+                  return (
+                    <li key={step.key}>
+                      <Link
+                        to={portalPath(pathname, step.href)}
+                        tabIndex={open ? 0 : -1}
+                        aria-label={
+                          done ? `Step ${index + 1}: ${step.title}, completed` : `Step ${index + 1}: ${step.title}`
+                        }
+                        className="flex w-full items-center gap-3 text-left"
+                      >
+                        {done ? (
+                          <CheckCircle size={16} weight="fill" className="shrink-0 text-success" aria-hidden />
+                        ) : (
+                          <span className="size-4 shrink-0 rounded-full border border-default" aria-hidden />
+                        )}
+                        <span className={cn("min-w-0 flex-1 text-sm", done ? "text-muted" : "text-primary")}>
+                          {step.title}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-default p-5">
+        <p className="text-sm font-medium text-primary">Tutorial</p>
+        <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[13px] text-secondary">Guides and walkthroughs for generating ads in AdRender.</p>
+          {tutorialHref ? (
+            <a
+              href={tutorialHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-lg border border-default bg-surface px-2.5 text-sm font-medium text-primary hover:border-strong hover:bg-hover"
+            >
+              <ArrowUpRight size={16} />
+              Open YouTube channel
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </Tile>
+    </div>
+  );
+}
+
+export default function DirectHomeView() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { teamId, memberships } = useTeam();
+  const { setMode } = useClientMode();
+  const adsCounts = useAdsLibraryCounts();
+  const videoCounts = useVideoLibraryCounts();
+
+  const personalMembership = memberships.find((m) => m.isPersonal) ?? null;
+  const personalTeamId = personalMembership?.teamId ?? "";
+  const personalWorkspaceLabel = personalTokensWorkspaceLabel(personalMembership);
+
+  const [personalPlan, setPersonalPlan] = useState<{
+    subscription: TeamSubscription | null;
+    tier: SubscriptionTier | null;
+    isFree: boolean;
+  } | null>(null);
+  const [planLoading, setPlanLoading] = useState(true);
+  const [personalTokens, setPersonalTokens] = useState<WorkspaceTokenState | null>(null);
+  const [tokensLoading, setTokensLoading] = useState(true);
+
+  const subscription = personalPlan?.subscription ?? null;
+  const tier = personalPlan?.tier ?? null;
+  const isFree = personalPlan?.isFree ?? true;
+  const personalShopifyBilled = isShopifyBilled(subscription);
+  const balance = personalTokens?.display_balance ?? null;
+  const tierBalance = personalTokens == null ? null : personalTokens.tier_balance;
+  const permanentBalance = personalTokens == null ? null : personalTokens.permanent_balance;
+  const capExhausted = personalTokens?.cap_exhausted ?? false;
+  const isPoolOwner = personalTokens?.is_pool_owner ?? false;
+  const balanceLabel = useAnimatedTokenCount(balance, tokensLoading && balance == null);
+
+  const active = memberships.find((m) => m.teamId === teamId) ?? null;
+  const workspaceName = active ? workspaceDisplayName(active) : "Workspace";
+  const otherWorkspaces = memberships.filter(
+    (m) => m.teamId !== teamId && m.accountStatus !== "deleted" && !isTombstonedMembership(m),
+  );
+
+  const [banner, setBanner] = useState<HomeBanner | null>(null);
+  const bannerRequestRef = useRef<Promise<HomeBanner | null> | null>(null);
+  const [activeQuotes, setActiveQuotes] = useState<ActiveHomeQuote[]>([]);
+  const listRequestRef = useRef<Promise<ActiveHomeQuote[]> | null>(null);
+  const listLoggedRef = useRef(false);
+  const [wave2, setWave2] = useState<HomeWave2 | null>(null);
+  const [recent, setRecent] = useState<HomeRecentTemplates | null>(null);
+  const [statsExpanded, setStatsExpanded] = useState(false);
+  const [otherStats, setOtherStats] = useState<Record<string, HomeWorkspaceStats> | null>(null);
+  const [otherLoading, setOtherLoading] = useState(false);
+  const otherRequestRef = useRef(0);
+  const [tiers, setTiers] = useState<SubscriptionTier[] | null>(null);
+  const [inspired, setInspired] = useState<{ image: HomeTemplateCard[]; video: HomeTemplateCard[] } | null>(null);
+  const [showAddTokens, setShowAddTokens] = useState(false);
+
+  // Plan and tokens are pinned to the personal workspace. The active workspace
+  // (sidebar / switcher) must not change these two tiles.
+  useEffect(() => {
+    if (!personalTeamId) {
+      setPersonalPlan({ subscription: null, tier: null, isFree: true });
+      setPlanLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setPlanLoading(true);
+    void resolveTeamSubscription(personalTeamId)
+      .then((result) => {
+        if (cancelled) return;
+        setPersonalPlan({
+          subscription: result.subscription,
+          tier: result.tier,
+          isFree: result.isFree,
+        });
+      })
+      .catch((e) => {
+        console.warn("[home] personal plan", e);
+        if (!cancelled) setPersonalPlan({ subscription: null, tier: null, isFree: true });
+      })
+      .finally(() => {
+        if (!cancelled) setPlanLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [personalTeamId]);
+
+  useEffect(() => {
+    if (!personalTeamId) {
+      setPersonalTokens(null);
+      setTokensLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setTokensLoading(true);
+    const load = () => {
+      void getWorkspaceTokenState(personalTeamId)
+        .then((state) => {
+          if (!cancelled) setPersonalTokens(state);
+        })
+        .catch((e) => {
+          console.warn("[home] personal tokens", e);
+        })
+        .finally(() => {
+          if (!cancelled) setTokensLoading(false);
+        });
+    };
+    load();
+    const onFocus = () => load();
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [personalTeamId]);
+
+  // Claiming a quote advances the rotation, so a StrictMode re-run shares the
+  // first request instead of claiming a second quote.
+  useEffect(() => {
+    let cancelled = false;
+    bannerRequestRef.current ??= fetchHomeBanner();
+    void bannerRequestRef.current
+      .then((next) => {
+        if (!cancelled) setBanner(next ?? FALLBACK_BANNER);
+      })
+      .catch((e) => {
+        console.warn("[home] banner", e);
+        if (!cancelled) setBanner(FALLBACK_BANNER);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // One read-only fetch per Home visit, after the claimed quote is on screen.
+  // A missing function or a short list leaves that single quote in place.
+  useEffect(() => {
+    if (!banner) return;
+    let cancelled = false;
+    listRequestRef.current ??= listActiveHomeQuotes(20).catch((error: unknown) => {
+      if (!listLoggedRef.current) {
+        listLoggedRef.current = true;
+        console.debug("[home] list_active_home_quotes", quoteErrorMessage(error));
+      }
+      return [];
+    });
+    void listRequestRef.current.then((rows) => {
+      if (!cancelled) setActiveQuotes(rows);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [banner]);
+
+  useEffect(() => {
+    setStatsExpanded(false);
+    setOtherStats(null);
+    setOtherLoading(false);
+    otherRequestRef.current += 1;
+  }, [teamId]);
+
+  useEffect(() => {
+    if (!teamId) return;
+    let cancelled = false;
+    setWave2(null);
+    void fetchHomeWave2(teamId)
+      .then((data) => {
+        if (!cancelled) setWave2(data);
+      })
+      .catch((e) => {
+        console.warn("[home] wave 2", e);
+        if (!cancelled) {
+          setWave2({
+            stats: { adsGenerated: 0, templatesSaved: 0, brands: 0 },
+            onboarding: null,
+            continueItem: null,
+            hasVideoAd: false,
+          });
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [teamId]);
+
+  useEffect(() => {
+    if (!teamId) return;
+    let cancelled = false;
+    setRecent(null);
+    void fetchRecentTemplates(teamId)
+      .then((data) => {
+        if (!cancelled) setRecent(data);
+      })
+      .catch((e) => {
+        console.warn("[home] recent templates", e);
+        if (!cancelled) setRecent({ image: [], video: [], renderedFromTemplate: false });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [teamId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = () => {
+      if (cancelled) return;
+      void listDirectSubscriptionTiers()
+        .then((rows) => {
+          if (!cancelled) setTiers(rows);
+        })
+        .catch((e) => {
+          console.warn("[home] pricing", e);
+          if (!cancelled) setTiers([]);
+        });
+      void fetchHomeInspired()
+        .then((rows) => {
+          if (!cancelled) setInspired(rows);
+        })
+        .catch((e) => {
+          console.warn("[home] inspired", e);
+          if (!cancelled) setInspired({ image: [], video: [] });
+        });
+    };
+    let idleId: number | null = null;
+    let timerId: number | null = null;
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(run, { timeout: 800 });
+    } else {
+      timerId = window.setTimeout(run, 200);
+    }
+    return () => {
+      cancelled = true;
+      if (idleId != null) window.cancelIdleCallback(idleId);
+      if (timerId != null) window.clearTimeout(timerId);
+    };
+  }, []);
+
+  const homeReady = !planLoading && !tokensLoading && wave2 != null && recent != null && banner != null;
+  useEffect(() => {
+    if (!homeReady) return;
+    return runWhenIdle(() => preloadWebBrowseTemplates());
+  }, [homeReady]);
+
+  const inProgress = (adsCounts?.generatingCount ?? 0) + (videoCounts?.generatingCount ?? 0);
+
+  const go = (path: string) => navigate(portalPath(pathname, path));
+
+  const goTemplates = (mode: ClientMode) => {
+    setMode(mode);
+    go("/app/templates");
+  };
+
+  const expandStats = () => {
+    const next = !statsExpanded;
+    setStatsExpanded(next);
+    if (!next || otherStats || otherLoading || otherWorkspaces.length === 0) return;
+    const request = otherRequestRef.current + 1;
+    otherRequestRef.current = request;
+    const ids = otherWorkspaces.map((m) => m.teamId);
+    setOtherLoading(true);
+    void Promise.all(ids.map(async (id) => [id, await fetchWorkspaceStats(id)] as const))
+      .then((rows) => {
+        if (otherRequestRef.current !== request) return;
+        setOtherStats(Object.fromEntries(rows));
+      })
+      .catch((e) => {
+        if (otherRequestRef.current !== request) return;
+        console.warn("[home] other workspaces", e);
+        toast.error("Could not load other workspace stats");
+        setOtherStats({});
+      })
+      .finally(() => {
+        if (otherRequestRef.current === request) setOtherLoading(false);
+      });
+  };
+
+  const planStatus = isFree
+    ? "Free"
+    : subscription?.status === "past_due"
+      ? "Past due"
+      : subscription?.status === "cancelled"
+        ? "Cancelled"
+        : subscription?.status === "trialing"
+          ? "Trial"
+          : "Active";
+  const periodEnd = formatPeriod(subscription?.current_period_end);
+  const intervalPhrase = billedIntervalPhrase(subscription?.billing_interval);
+  const planMeta = [
+    planStatus,
+    isFree ? null : intervalPhrase,
+    !isFree && periodEnd ? `Renews ${periodEnd}` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  const planHighlight = tier ? paidTierMonthlyOutputLine(tier.name) : undefined;
+  const raiseCap = () => {
+    if (isPoolOwner) {
+      go("/app/profile?tab=team&focus=cap");
+      return;
+    }
+    toast.message("Contact the workspace owner to increase this workspace's limit");
+  };
+
+  const highlightTiers = (tiers ?? []).filter((row) => row.name.toLowerCase() !== "free");
+  const showImageAgain = recent == null || recent.image.length > 0;
+  const showVideoAgain = recent == null || recent.video.length > 0;
+  const useAgainVisible = recent == null || recent.image.length > 0 || recent.video.length > 0;
+  const hasOtherWorkspaces = otherWorkspaces.length > 0;
+
+  const statTiles: Array<{ label: string; value: number | null; tone: TileTone; icon: ReactNode }> = [
+    { label: "Ads generated", value: wave2 ? wave2.stats.adsGenerated : null, tone: "blue", icon: <ChartBar size={18} /> },
+    { label: "Templates saved", value: wave2 ? wave2.stats.templatesSaved : null, tone: "violet", icon: <BookmarkSimple size={18} /> },
+    { label: "Brands", value: wave2 ? wave2.stats.brands : null, tone: "amber", icon: <Package size={18} /> },
+    {
+      label: "In progress",
+      value: inProgress,
+      tone: "green",
+      icon: <CircleNotch size={18} className={inProgress > 0 ? "animate-spin" : undefined} />,
+    },
+  ];
+
+  const workTodayActions: Array<{ tone: TileTone; icon: ReactNode; title: string; body: string; onClick: () => void }> = [
+    { tone: "blue", icon: <ImageIcon size={18} />, title: "Statics", body: "Browse image templates", onClick: () => goTemplates("image") },
+    { tone: "green", icon: <VideoCamera size={18} />, title: "Videos", body: "Browse video templates", onClick: () => goTemplates("video") },
+    { tone: "amber", icon: <Sparkle size={18} />, title: "Playground", body: "Restyle your own reference", onClick: () => go("/app/ad-playground") },
+  ];
+
+  return (
+    <div className="min-h-0 flex-1 overflow-y-auto bg-page">
+      {showAddTokens && !personalShopifyBilled ? (
+        <AddTokensModal
+          onClose={() => setShowAddTokens(false)}
+          currentBalance={balance}
+          teamId={personalTeamId}
+          shopifyBilled={false}
+        />
+      ) : null}
+
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 pb-10 pt-8 max-md:px-4">
+        <HomeBannerHeadline banner={banner} quotes={activeQuotes} />
+
+        <PageHeader
+          icon={House}
+          title="Home"
+          subtitle={workspaceName}
+          actions={
+            <Button
+              variant="primary"
+              onClick={() => goTemplates("image")}
+              leadingIcon={<SquaresFour size={16} />}
+            >
+              Browse templates
+            </Button>
+          }
+        />
+
+        <div className="grid grid-cols-2 overflow-hidden rounded-xl border border-default bg-surface lg:grid-cols-4">
+          {statTiles.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={cn(
+                "group px-4 py-4",
+                index % 2 === 1 && "border-l border-default",
+                index >= 2 && "border-t border-default",
+                index >= 2 && "lg:border-t-0",
+                index > 0 && "lg:border-l lg:border-default",
+              )}
+            >
+              <ColorIconTile tone={stat.tone}>{stat.icon}</ColorIconTile>
+              <p className="mt-3 text-[13px] leading-[18px] text-secondary">{stat.label}</p>
+              <div className="mt-2">
+                <StatNumber value={stat.value} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {hasOtherWorkspaces ? (
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={expandStats}
+              aria-expanded={statsExpanded}
+              className={cn(cardClass, "card-hover inline-flex items-center gap-3 px-3 py-2.5 text-left")}
+            >
+              <ColorIconTile tone="violet">
+                <Stack size={18} />
+              </ColorIconTile>
+              <span className="text-sm font-medium text-primary">
+                {statsExpanded ? "Hide workspaces" : "Other workspaces"}
+              </span>
+              <span className="text-[13px] text-secondary">
+                {otherWorkspaces.length} more
+              </span>
+              <CaretDown
+                size={14}
+                className={cn(
+                  "transition-transform duration-200 motion-reduce:transition-none",
+                  statsExpanded && "rotate-180",
+                )}
+              />
+            </button>
+            {statsExpanded ? (
+              <div className="space-y-3">
+                {otherLoading && !otherStats ? (
+                  <p className="text-[13px] text-secondary">Loading other workspaces…</p>
+                ) : null}
+                {otherWorkspaces.map((m) => {
+                  const stats = otherStats?.[m.teamId];
+                  const cells = [
+                    ["Ads generated", stats ? stats.adsGenerated : null],
+                    ["Templates saved", stats ? stats.templatesSaved : null],
+                    ["Brands", stats ? stats.brands : null],
+                    ["In progress", stats ? stats.inProgress : null],
+                  ] as const;
+                  return (
+                    <div key={m.teamId} className={cn(cardClass, "pop-slide overflow-hidden")}>
+                      <p className="border-b border-default px-4 py-3 text-sm font-medium text-primary">
+                        {workspaceDisplayName(m)}
+                      </p>
+                      <div className="grid grid-cols-2 lg:grid-cols-4">
+                        {cells.map(([label, value], index) => (
+                          <div
+                            key={label}
+                            className={cn(
+                              "px-4 py-3",
+                              index % 2 === 1 && "border-l border-default",
+                              index >= 2 && "border-t border-default lg:border-t-0",
+                              index > 0 && "lg:border-l",
+                            )}
+                          >
+                            <p className="text-[13px] text-secondary">{label}</p>
+                            <p className="mt-1 text-[28px] font-semibold leading-none text-primary tabular-nums">
+                              {value === null ? "…" : value.toLocaleString()}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+          <Tile className="home-rise col-span-1 flex flex-col lg:col-span-2" style={riseDelay(40)}>
+            <p className="text-sm font-medium text-primary">Work today</p>
+            <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-3">
+              {workTodayActions.map((action) => (
+                <button
+                  key={action.title}
+                  type="button"
+                  onClick={action.onClick}
+                  className="card-hover flex flex-col rounded-xl border border-default bg-surface p-4 text-left"
+                >
+                  <ColorIconTile tone={action.tone}>{action.icon}</ColorIconTile>
+                  <p className="mt-auto pt-3 text-sm font-medium text-primary">{action.title}</p>
+                  <p className="mt-0.5 text-[13px] text-secondary">{action.body}</p>
+                </button>
+              ))}
+            </div>
+          </Tile>
+
+          <ContinueTile loading={wave2 == null} item={wave2?.continueItem ?? null} style={riseDelay(80)} />
+
+          <div className="home-rise h-full" style={riseDelay(120)}>
+          <button
+            type="button"
+            onClick={() => go("/app/profile?tab=billing")}
+            className={cn(cardClass, "card-hover flex h-full flex-col p-5 text-left")}
+          >
+            <div className="flex items-center gap-3">
+              <ColorIconTile tone="green">
+                <CreditCard size={18} />
+              </ColorIconTile>
+              <span className="text-[13px] font-medium text-secondary">Your plan</span>
+            </div>
+            <p className="mt-3 text-[28px] font-semibold leading-none text-primary">
+              {planLoading && !tier ? "…" : tier?.name ?? "Free"}
+            </p>
+            <p className="mt-2 text-[13px] text-secondary">
+              {planLoading && !tier ? "…" : planMeta}
+            </p>
+            <p className="mt-auto pt-3 text-sm leading-snug text-secondary">
+              {planLoading && !tier
+                ? "\u00A0"
+                : planHighlight ?? "Upgrade to unlock a monthly stack of image and video ads."}
+            </p>
+          </button>
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="home-rise h-full" style={riseDelay(160)}>
+          <Tile className="card-hover flex h-full flex-col">
+            <div className="flex items-center gap-3">
+              <ColorIconTile tone="violet">
+                <Coins size={18} />
+              </ColorIconTile>
+              <p className="text-[13px] font-medium text-secondary">Tokens</p>
+              {capExhausted ? <Badge tone="warning">Limit reached</Badge> : null}
+              <span className="ml-auto min-w-0 truncate text-xs text-muted">{personalWorkspaceLabel}</span>
+            </div>
+            <div className="mt-3">
+              <p className="text-[28px] font-semibold tabular-nums leading-none text-primary">{balanceLabel}</p>
+              <p className="mt-1 text-[13px] text-secondary">Available to spend right now</p>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="rounded-lg bg-inset px-3 py-2.5">
+                <p className="text-[13px] text-secondary">Plan tokens</p>
+                <p className="text-lg font-semibold tabular-nums text-primary">
+                  {tierBalance == null ? "…" : tierBalance.toLocaleString()}
+                </p>
+                <p className="text-xs text-muted">Plan tokens follow your plan. Top-up tokens stay until you use them.</p>
+              </div>
+              <div className="rounded-lg bg-inset px-3 py-2.5">
+                <p className="text-[13px] text-secondary">Top-up tokens</p>
+                <p className="text-lg font-semibold tabular-nums text-primary">
+                  {permanentBalance == null ? "…" : permanentBalance.toLocaleString()}
+                </p>
+                <p className="text-xs text-muted">Never expire</p>
+              </div>
+            </div>
+            <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+              {capExhausted ? (
+                <Button variant="secondary" size="sm" onClick={raiseCap}>
+                  {isPoolOwner ? "Raise workspace limit" : "Ask the owner for more"}
+                </Button>
+              ) : null}
+              {tokensLoading || planLoading ? null : personalShopifyBilled ? (
+                <p className="text-xs leading-relaxed text-muted">
+                  Token packs aren&apos;t sold on Shopify billing — tokens refresh with your plan.
+                </p>
+              ) : isPoolOwner ? (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setShowAddTokens(true)}
+                  leadingIcon={<Plus size={16} />}
+                >
+                  Add tokens
+                </Button>
+              ) : (
+                <p className="text-xs leading-relaxed text-muted">
+                  Tokens come from the workspace owner&apos;s pool.
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => go("/app/profile?tab=billing")}
+                className={linkClass}
+              >
+                Plans and billing
+              </button>
+            </div>
+          </Tile>
+          </div>
+
+          <WalkthroughTutorialsCard
+            teamId={teamId}
+            brandDone={(wave2?.stats.brands ?? 0) > 0}
+            templateDone={recent?.renderedFromTemplate === true}
+            libraryDone={(wave2?.stats.adsGenerated ?? 0) > 0 || wave2?.hasVideoAd === true}
+            stepsKnown={wave2 != null && recent != null}
+            style={riseDelay(200)}
+          />
+        </div>
+
+        <Tile className="home-rise" style={riseDelay(280)}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <ColorIconTile tone="orange">
+                <Rocket size={18} />
+              </ColorIconTile>
+              <div>
+                <h2 className="text-sm font-medium text-primary">Get more done</h2>
+                <p className="text-[13px] text-secondary">More renders every month, the moment you need them.</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => go("/app/profile?tab=billing")}
+              className={cn(linkClass, "inline-flex items-center gap-1")}
+            >
+              Open billing
+              <ArrowRight size={16} />
+            </button>
+          </div>
+          {tiers == null ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="h-28 animate-pulse rounded-xl bg-soft" />
+              ))}
+            </div>
+          ) : highlightTiers.length > 0 ? (
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {highlightTiers.map((row) => {
+                const popular = row.name === POPULAR_TIER_NAME;
+                const current = tier?.name === row.name;
+                const output = paidTierMonthlyOutputLine(row.name);
+                return (
+                  <li key={row.id}>
+                    <button
+                      type="button"
+                      onClick={() => go("/app/profile?tab=billing")}
+                      className="card-hover flex h-full w-full flex-col rounded-xl border border-default bg-inset px-3.5 py-3 text-left"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-medium text-primary">{row.name}</p>
+                        <p className="text-sm tabular-nums text-primary">
+                          ${row.price_monthly.toFixed(0)}
+                          <span className="text-xs text-muted">/mo</span>
+                        </p>
+                      </div>
+                      <div className="mt-2 flex min-h-5 flex-wrap items-center gap-1.5">
+                        {current ? <Badge tone="success">Your plan</Badge> : null}
+                        {popular && !current ? <Badge>Most popular</Badge> : null}
+                      </div>
+                      {output ? <p className="mt-1.5 text-xs leading-relaxed text-secondary">{output}</p> : null}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : null}
+        </Tile>
+
+        {useAgainVisible ? (
+          <section className={cn(cardClass, "home-rise space-y-4 p-5")}>
+            <SectionHeading
+              tone="blue"
+              icon={<ArrowCounterClockwise size={18} />}
+              title="Use again"
+              subtitle="Templates you rendered recently — one click back into the duplicator."
+            />
+            {showImageAgain ? (
+              <SubRow label="Image">
+                {recent == null ? (
+                  <TemplateSkeletonRow />
+                ) : (
+                  <div className={TEMPLATE_GRID}>
+                    {recent.image.map((card) => (
+                      <TemplateCard key={card.id} card={card} tone="blue" />
+                    ))}
+                  </div>
+                )}
+              </SubRow>
+            ) : null}
+            {showVideoAgain ? (
+              <SubRow label="Video">
+                {recent == null ? (
+                  <TemplateSkeletonRow />
+                ) : (
+                  <div className={TEMPLATE_GRID}>
+                    {recent.video.map((card) => (
+                      <TemplateCard key={card.id} card={card} tone="emerald" />
+                    ))}
+                  </div>
+                )}
+              </SubRow>
+            ) : null}
+          </section>
+        ) : null}
+
+        {inspired == null || inspired.image.length > 0 || inspired.video.length > 0 ? (
+          <section className={cn(cardClass, "home-rise space-y-4 p-5")}>
+            <SectionHeading
+              tone="violet"
+              icon={<Lightbulb size={18} />}
+              title="Get inspired"
+              subtitle="Fresh ads from brands that are winning right now."
+            />
+            {inspired == null ? (
+              <>
+                <SubRow label="Image">
+                  <TemplateSkeletonRow />
+                </SubRow>
+                <SubRow label="Video">
+                  <TemplateSkeletonRow />
+                </SubRow>
+              </>
+            ) : (
+              <>
+                {inspired.image.length > 0 ? (
+                  <SubRow
+                    label="Image"
+                    action={
+                      <button type="button" onClick={() => goTemplates("image")} className={cn(linkClass, "inline-flex items-center gap-1 text-sm")}>
+                        View all
+                        <ArrowRight size={16} />
+                      </button>
+                    }
+                  >
+                    <div className={TEMPLATE_GRID}>
+                      {inspired.image.map((card) => (
+                        <TemplateCard key={`inspired-${card.id}`} card={card} tone="violet" />
+                      ))}
+                    </div>
+                  </SubRow>
+                ) : null}
+                {inspired.video.length > 0 ? (
+                  <SubRow
+                    label="Video"
+                    action={
+                      <button type="button" onClick={() => goTemplates("video")} className={cn(linkClass, "inline-flex items-center gap-1 text-sm")}>
+                        View all
+                        <ArrowRight size={16} />
+                      </button>
+                    }
+                  >
+                    <div className={TEMPLATE_GRID}>
+                      {inspired.video.map((card) => (
+                        <TemplateCard key={`inspired-${card.id}`} card={card} tone="amber" />
+                      ))}
+                    </div>
+                  </SubRow>
+                ) : null}
+              </>
+            )}
+          </section>
+        ) : null}
+      </div>
+    </div>
+  );
+}

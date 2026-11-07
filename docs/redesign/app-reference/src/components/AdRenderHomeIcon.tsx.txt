@@ -1,0 +1,77 @@
+/**
+ * AdRender home mark. Line when idle, fill when selected.
+ * With no mode prop, follows the direct app theme (dark by default).
+ */
+import { useId } from "react";
+import { useTheme, type Theme } from "../context/ThemeContext";
+
+const HOME_PATH =
+  "M142.4,34.4 L112.3,38.8 L24.0,189.0 L40.2,221.6 L148.8,173.1 L175.2,217.7 L217.6,217.7 L232.0,192.6 Z M132.0,88.1 L158.9,138.1 L82.5,172.8 Z";
+
+const GRADIENT_STOPS: Record<Theme, readonly [string, string, string]> = {
+  dark: ["#4F8DF7", "#9B6BF2", "#FF8A3D"],
+  light: ["#1F5FD6", "#7340D4", "#E8650F"],
+};
+
+export default function AdRenderHomeIcon({
+  selected = false,
+  size = 20,
+  className,
+  mode,
+}: {
+  selected?: boolean;
+  size?: number;
+  className?: string;
+  mode?: Theme;
+}) {
+  // useId() includes colons (`:r1:`). Those break svg url(#id) references.
+  const gradientId = `adrender-home-${useId().replace(/:/g, "")}`;
+  const { theme } = useTheme();
+  const resolved = mode ?? theme;
+  const [stop0, stop50, stop100] = GRADIENT_STOPS[resolved];
+  const gradient = `url(#${gradientId})`;
+
+  return (
+    <svg
+      viewBox="0 0 256 256"
+      width={size}
+      height={size}
+      className={className}
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient
+          id={gradientId}
+          gradientUnits="userSpaceOnUse"
+          x1="24"
+          y1="40"
+          x2="232"
+          y2="216"
+        >
+          <stop offset="0" stopColor={stop0} />
+          <stop offset="0.5" stopColor={stop50} />
+          <stop offset="1" stopColor={stop100} />
+        </linearGradient>
+      </defs>
+      {selected ? (
+        <path
+          d={HOME_PATH}
+          fill={gradient}
+          fillRule="evenodd"
+          stroke={gradient}
+          strokeWidth={16}
+          strokeLinejoin="round"
+        />
+      ) : (
+        <path
+          d={HOME_PATH}
+          fill="none"
+          stroke={gradient}
+          strokeWidth={16}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
+    </svg>
+  );
+}

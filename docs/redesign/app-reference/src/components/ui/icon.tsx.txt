@@ -1,0 +1,26 @@
+/**
+ * Phosphor icon components and ready-made elements both show up as `icon` props.
+ * A component is rendered at the recipe size; an element is left as the caller built it.
+ */
+import type { ReactNode } from "react";
+import type { Icon } from "@phosphor-icons/react";
+
+function isIconComponent(icon: unknown): icon is Icon {
+  if (typeof icon === "function") return true;
+  if (typeof icon !== "object" || icon === null || !("$$typeof" in icon)) return false;
+  const kind = (icon as { $$typeof: symbol }).$$typeof;
+  return kind === Symbol.for("react.forward_ref") || kind === Symbol.for("react.memo");
+}
+
+export function renderIconNode(
+  icon: ReactNode | Icon | undefined,
+  size: number,
+  weight: "regular" | "fill" = "regular",
+): ReactNode {
+  if (icon == null || typeof icon === "boolean") return null;
+  if (isIconComponent(icon)) {
+    const IconComp = icon;
+    return <IconComp size={size} weight={weight} aria-hidden />;
+  }
+  return icon;
+}

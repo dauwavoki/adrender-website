@@ -1,0 +1,93 @@
+/**
+ * DESIGN.md §8.3. Track 32×18, knob 14px, 2px inset.
+ */
+import type { ReactNode } from "react";
+import type { Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+
+export function Toggle({
+  checked,
+  onChange,
+  disabled = false,
+  label,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+  disabled?: boolean;
+  label?: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className={cn(
+        "relative inline-flex h-[18px] w-8 shrink-0 rounded-full transition-colors duration-150 ease-out disabled:opacity-50",
+        checked ? "bg-accent" : "bg-soft",
+      )}
+    >
+      <span
+        className={cn(
+          "toggle-knob pointer-events-none absolute left-0 top-0.5 size-3.5 rounded-full transition-transform duration-150 ease-out",
+          checked ? "translate-x-4" : "translate-x-0.5",
+          !checked && "toggle-knob-off",
+        )}
+      />
+    </button>
+  );
+}
+
+export function ToggleRow({
+  label,
+  description,
+  note,
+  noteTone = "secondary",
+  icon: IconComp,
+  checked,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  description?: string;
+  /** 12px line under the label. Playground uses this for product-image availability. */
+  note?: string;
+  noteTone?: "success" | "muted" | "secondary";
+  /** 24px tile at the start of the row. */
+  icon?: Icon;
+  checked: boolean;
+  onChange: (next: boolean) => void;
+  disabled?: boolean;
+}) {
+  const noteClass =
+    noteTone === "success" ? "text-success" : noteTone === "muted" ? "text-muted" : "text-secondary";
+  return (
+    <div className="px-4">
+      <div className="flex min-h-11 items-center gap-3">
+        {IconComp ? (
+          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-md bg-soft text-secondary">
+            <IconComp size={14} weight="regular" aria-hidden />
+          </span>
+        ) : null}
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm leading-5 text-primary">{label}</p>
+          {description ? <p className="truncate text-xs leading-4 text-secondary">{description}</p> : null}
+        </div>
+        <Toggle checked={checked} onChange={onChange} disabled={disabled} label={label} />
+      </div>
+      {note ? (
+        <p className={cn("-mt-1 pb-2.5 text-xs leading-4", IconComp && "pl-9", noteClass)}>{note}</p>
+      ) : null}
+    </div>
+  );
+}
+
+export function ToggleCard({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={cn("overflow-hidden rounded-xl border border-default bg-surface [&>*+*]:border-t [&>*+*]:border-default", className)}>
+      {children}
+    </div>
+  );
+}

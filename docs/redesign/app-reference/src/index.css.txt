@@ -1,0 +1,1251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* DESIGN.md §1 — utilities read the runtime variables below. */
+  --color-page: var(--bg-page);
+  --color-canvas: var(--bg-canvas);
+  --color-sidebar: var(--bg-sidebar);
+  --color-surface: var(--bg-surface);
+  --color-raised: var(--bg-raised);
+  --color-inset: var(--bg-inset);
+  --color-input: var(--bg-input);
+  --color-hover: var(--bg-hover);
+  --color-selected: var(--bg-selected);
+  --color-soft: var(--bg-soft);
+  --color-segment: var(--bg-segment);
+  --color-default: var(--border);
+  --color-strong: var(--border-strong);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-btn-primary: var(--btn-primary-bg);
+  --color-btn-primary-text: var(--btn-primary-text);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-on-danger: var(--btn-danger-text);
+  --color-focus-ring: var(--focus-ring);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-success-soft: var(--success-soft);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-brand-from: var(--brand-from);
+  --color-brand-via: var(--brand-via);
+  --color-brand-to: var(--brand-to);
+  --shadow-menu: var(--menu-shadow);
+}
+
+/* Rotating Library Ready border. Must stay outside @layer so the angle can animate. */
+@property --library-ready-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* DESIGN.md §1. Dark is the default. Light overrides on html.light. */
+:root,
+html.dark {
+  --bg-canvas: #101010;
+  --bg-page: #161616;
+  --bg-sidebar: #191919;
+  --bg-surface: #191919;
+  --bg-raised: #1C1C1C;
+  --bg-inset: #202020;
+  --bg-input: #212121;
+  --bg-hover: #212121;
+  --bg-selected: #262626;
+  --bg-soft: #2A2928;
+  /* DESIGN.md §4: selected segment is lighter than the --bg-soft track. */
+  --bg-segment: #3A3836;
+  --border: #272727;
+  --border-strong: #353432;
+  --text-primary: #DAD8D3;
+  --text-secondary: #A39E98;
+  --text-muted: #807C78;
+  --btn-primary-bg: #F6F5F4;
+  --btn-primary-text: #161616;
+  --btn-danger-text: #FFFFFF;
+  --success: #52AD50;
+  --warning: #E5A33D;
+  --danger: #E5484D;
+  --focus-ring: #A39E98;
+  --accent: #8B6CF0;
+  --accent-soft: rgba(139, 108, 240, 0.14);
+  --success-soft: rgba(82, 173, 80, 0.14);
+  --warning-soft: rgba(229, 163, 61, 0.14);
+  --danger-soft: rgba(229, 72, 77, 0.14);
+  --info: #4F8DF7;
+  --info-soft: rgba(79, 141, 247, 0.14);
+  --brand-from: #4F8DF7;
+  --brand-via: #9B6BF2;
+  --brand-to: #FF8A3D;
+  --menu-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+html.light {
+  --bg-canvas: #E4E2DF;
+  --bg-page: #FAFAF9;
+  --bg-sidebar: #F4F3F1;
+  --bg-surface: #FFFFFF;
+  --bg-raised: #FFFFFF;
+  --bg-inset: #F4F3F1;
+  --bg-input: #F2F1EF;
+  --bg-hover: #EFEEEC;
+  --bg-selected: #E9E8E5;
+  --bg-soft: #ECEBE8;
+  /* DESIGN.md §4: selected segment is white in light, not --bg-selected. */
+  --bg-segment: #FFFFFF;
+  --border: #E6E4E1;
+  --border-strong: #D6D3CF;
+  --text-primary: #1F1E1D;
+  --text-secondary: #6B6763;
+  --text-muted: #8E8A85;
+  --btn-primary-bg: #1F1E1D;
+  --btn-primary-text: #FAFAF9;
+  --btn-danger-text: #FFFFFF;
+  --success: #2F8A3B;
+  --warning: #B9770E;
+  --danger: #C9353A;
+  --focus-ring: #6B6763;
+  --accent: #6A48D6;
+  --accent-soft: rgba(106, 72, 214, 0.10);
+  --success-soft: rgba(47, 138, 59, 0.10);
+  --warning-soft: rgba(185, 119, 14, 0.10);
+  --danger-soft: rgba(201, 53, 58, 0.10);
+  --info: #1F5FD6;
+  --info-soft: rgba(31, 95, 214, 0.14);
+  --brand-from: #1F5FD6;
+  --brand-via: #7340D4;
+  --brand-to: #E8650F;
+  --menu-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+}
+
+/* DESIGN.md §8.38. One height for Input, SelectTrigger, and Button size md. */
+:root {
+  --control-md: 36px;
+  --field-name: 360px;
+  --field-email: 480px;
+  --field-number: 160px;
+  --field-date: 180px;
+}
+
+/* DESIGN.md §4 — segmented shine. Unlayered so it wins over utility colors. */
+html.dark .segment-selected {
+  color: #f6f5f4;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+}
+html.dark .segment-selected svg {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
+}
+html.dark .segment-idle {
+  color: var(--text-muted);
+}
+html.light .segment-selected {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+.segment-highlight {
+  background: var(--bg-segment);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+html.light .segment-highlight {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+html.light .segment-selected svg {
+  filter: none;
+}
+html.light .segment-idle {
+  color: var(--text-secondary);
+}
+.segment-idle:hover {
+  color: var(--text-primary);
+}
+
+/* DESIGN.md §8.33 — resolution cost line. Own color so the selected-segment shine stays on line 1. */
+.segment-sublabel {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+/* DESIGN.md §8.33 — one work-panel width and one results grid on every tool screen. */
+.tool-work-panel {
+  width: clamp(460px, 36%, 600px);
+}
+
+.tool-results-pane {
+  container-type: inline-size;
+  container-name: tool-results;
+}
+
+.tool-results-grid {
+  display: grid;
+  align-items: stretch;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tool-results-grid > * {
+  min-width: 0;
+}
+
+@container tool-results (min-width: 660px) {
+  .tool-results-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container tool-results (min-width: 880px) {
+  .tool-results-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* DESIGN.md §8.3 — toggle knob. Not bg-white: light theme remaps that utility to ink. */
+.toggle-knob {
+  background: #f6f5f4;
+}
+html.light .toggle-knob {
+  background: #ffffff;
+}
+html.light .toggle-knob-off {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* DESIGN.md §8.9 overlay. */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+html.light .modal-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* DESIGN.md §8 — Sonner toasts. */
+[data-sonner-toaster] {
+  --normal-bg: var(--bg-raised);
+  --normal-text: var(--text-primary);
+  --normal-border: var(--border);
+  --border-radius: 12px;
+}
+[data-sonner-toast] {
+  background: var(--bg-raised) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--menu-shadow) !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+[data-sonner-toast] [data-title] {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+}
+[data-sonner-toast] [data-description] {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0a0b0d] text-zinc-100 antialiased;
+  }
+
+  /* Default dark scrollbars so dropdown/popover lists don't fall back to light OS styling. */
+  * {
+    scrollbar-color: rgba(113, 113, 122, 0.75) rgba(9, 9, 11, 0.55);
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(9, 9, 11, 0.55);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(113, 113, 122, 0.75);
+    border-radius: 9999px;
+    border: 1px solid rgba(24, 24, 27, 0.6);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(161, 161, 170, 0.85);
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Shimmer: a highlight band sweeps with transform. background-position
+     was restarting as a flat frame whenever the block scrolled offscreen. */
+  .shimmer-bg {
+    overflow: hidden;
+    background-color: rgb(255 255 255 / 0.08);
+    background-image: none;
+  }
+
+  .shimmer-bg:not(.absolute) {
+    position: relative;
+  }
+
+  .shimmer-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      100deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.07) 40%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(129, 140, 248, 0.35) 58%,
+      transparent 85%
+    );
+    transform: translateX(-100%);
+    animation: shimmer-sweep 1.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shimmer-sweep {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Neutral placeholder blocks for grid skeletons. No accent color — the
+     sweep is a soft light band. Light mode overrides the fill in light-theme.css. */
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(255 255 255 / 0.1);
+    pointer-events: none;
+  }
+
+  .skeleton-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.05) 42%,
+      rgba(255, 255, 255, 0.28) 50%,
+      rgba(255, 255, 255, 0.05) 58%,
+      transparent 80%
+    );
+    transform: translateX(-100%);
+    animation: shimmer-sweep 1.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Fade + rise used when the AI "fills in the blanks" after a scan. */
+  .reveal-fade-in {
+    animation: reveal-fade-in 360ms ease-out both;
+  }
+
+  @keyframes reveal-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* My Ads Library nav — subtle opacity + inset glow only (no motion). */
+  .nav-ads-library-pulse {
+    animation: nav-ads-library-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes nav-ads-library-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: inset 0 0 0 1px rgba(234 179 8 / 0.22);
+    }
+    50% {
+      opacity: 0.86;
+      box-shadow:
+        inset 0 0 0 1px rgba(250 204 21 / 0.38),
+        inset 0 0 14px rgba(234 179 8 / 0.12);
+    }
+  }
+
+  /* Ready badge attention: a soft green wash, plus one light travelling the border. */
+  @property --ready-badge-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .ready-badge-attention {
+    border-color: rgb(52 211 153 / 0.7) !important;
+    box-shadow:
+      0 0 0 1px rgb(16 185 129 / 0.35),
+      0 0 16px rgb(16 185 129 / 0.32);
+    background-image: linear-gradient(
+      105deg,
+      transparent 34%,
+      rgb(16 185 129 / 0.16) 50%,
+      transparent 66%
+    );
+    background-size: 220% 100%;
+    animation: ready-badge-shimmer 2.8s ease-in-out infinite;
+  }
+
+  .ready-badge-attention::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+      from var(--ready-badge-angle),
+      transparent 0deg,
+      transparent 292deg,
+      rgb(167 243 208) 328deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: ready-badge-orbit 2.8s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes ready-badge-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
+  @keyframes ready-badge-orbit {
+    to {
+      --ready-badge-angle: 360deg;
+    }
+  }
+
+  /* Login pending-URL hook — tilted infinite ad carousel (soft edge fade via mask). */
+  .tilted-ad-carousel-stage {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  }
+
+  @keyframes tilted-ad-carousel-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .tilted-ad-carousel-track {
+    animation: tilted-ad-carousel-scroll 48s linear infinite;
+    will-change: transform;
+  }
+
+  .tilted-ad-carousel-track.is-paused {
+    animation-play-state: paused;
+  }
+
+  /* One opacity fade for a whole grid. Never stagger individual cards.
+     `forwards` (not `both`) so a scroll replay cannot reapply opacity 0
+     before the one-shot lock in settleOneShotAnimations removes it. */
+  .grid-fade-in {
+    animation: grid-fade-in 180ms ease-out forwards;
+  }
+
+  /* One new segment's cards, after a plus pill or pick is mixed in. */
+  .segment-card-in {
+    animation: segment-card-in 220ms ease-out;
+  }
+
+  @keyframes segment-card-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes grid-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .render-ready-in {
+    animation: grid-fade-in 280ms ease-out both;
+  }
+
+  /* Dropdowns: 4px slide + fade. Transform and opacity only. */
+  .pop-slide {
+    animation: pop-slide 150ms ease-out forwards;
+  }
+
+  /* Direct Home section entrance. Sections, not cards; --rise-delay staggers
+     rows by a few frames at most. Settled by settleOneShotAnimations. */
+  .home-rise {
+    animation: home-rise 360ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--rise-delay, 0ms) both;
+  }
+
+  @keyframes home-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Set after the entrance finishes so scroll-into-view cannot replay it. */
+  .home-rise[data-anim-settled],
+  .grid-fade-in[data-anim-settled],
+  .pop-slide[data-anim-settled] {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes pop-slide {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Amber "rendering" surface. Light mode overrides this in light-theme.css. */
+  .rendering-well {
+    background-color: rgb(245 158 11 / 0.12);
+  }
+
+  .rendering-card {
+    background-color: rgb(245 158 11 / 0.06);
+  }
+
+  /* Media frame behind a thumbnail — not a photo scrim. */
+  .media-well {
+    background-color: rgb(0 0 0 / 0.4);
+  }
+
+  .skeleton-fill {
+    background-color: rgb(255 255 255 / 0.1);
+  }
+
+  .brand-card-lift {
+    position: relative;
+    border-radius: 1rem;
+  }
+
+  .brand-card-shadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    box-shadow: 0 10px 28px rgb(0 0 0 / 0.22);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* DESIGN.md §8.20. Seamless brand gradient (0% and 100% match) plus a wordmark-style shine, 10s. */
+  .home-quote-text {
+    max-width: 960px;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 768px) {
+    .home-quote-text {
+      font-size: 28px;
+    }
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .home-quote-text {
+      background-image: linear-gradient(
+        90deg,
+        var(--brand-from) 0%,
+        color-mix(in srgb, var(--brand-from) 62%, var(--brand-via)) 6%,
+        var(--brand-via) 12%,
+        color-mix(in srgb, var(--brand-via) 55%, var(--brand-to)) 18%,
+        var(--brand-to) 26%,
+        color-mix(in srgb, var(--brand-to) 50%, var(--brand-via)) 34%,
+        var(--brand-via) 40%,
+        color-mix(in srgb, var(--brand-via) 70%, var(--brand-from)) 45%,
+        color-mix(in srgb, #fff 28%, var(--brand-via)) 48%,
+        color-mix(in srgb, #fff 70%, var(--brand-via)) 50%,
+        color-mix(in srgb, #fff 28%, var(--brand-via)) 52%,
+        var(--brand-via) 56%,
+        color-mix(in srgb, var(--brand-via) 55%, var(--brand-from)) 62%,
+        var(--brand-from) 70%,
+        color-mix(in srgb, var(--brand-from) 60%, var(--brand-via)) 78%,
+        var(--brand-via) 86%,
+        color-mix(in srgb, var(--brand-via) 45%, var(--brand-from)) 94%,
+        var(--brand-from) 100%
+      );
+      background-size: 200% 100%;
+      background-repeat: repeat-x;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 28px rgba(139, 108, 240, 0.28));
+      animation: home-quote-shine 10s ease-in-out infinite;
+    }
+  }
+
+  @keyframes home-quote-shine {
+    to {
+      background-position: 200% 50%;
+    }
+  }
+
+  @keyframes home-quote-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes home-quote-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  .home-quote-in {
+    animation: home-quote-in 300ms ease-out;
+  }
+
+  .home-quote-out {
+    animation: home-quote-out 300ms ease-out forwards;
+  }
+
+  @keyframes sidebar-label-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes sidebar-label-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  .sidebar-panel.sidebar-opening .sidebar-label {
+    animation: sidebar-label-in 200ms ease-out;
+  }
+
+  .sidebar-panel.sidebar-closing .sidebar-label {
+    animation: sidebar-label-out 150ms ease-out forwards;
+  }
+
+  /* Web app sidebar wordmark ("AdRender", top left). Pure-CSS gradient clipped to
+     the letters. One tile = current text colour (white in dark, ink in light)
+     -> logo blue -> logo purple -> logo orange -> current text colour; the
+     tile starts and ends on the text colour so the loop is seamless, and the
+     text colour fills ~30% of every tile so the name is mostly plain.
+     Colours are real pixels sampled from public/logos/webapp_main_logo.png:
+       blue   #4380cf   purple #7d4ed4   orange #e17833
+     (each >= 3:1 against both the dark #0a0b0d and the white light background).
+     `currentColor` resolves from `color`, which is left alone; only the fill is
+     made transparent, and only where background-clip:text is supported, so text
+     can never become invisible. */
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .brand-wordmark {
+      background-image: linear-gradient(
+        90deg,
+        currentColor 0%,
+        currentColor 30%,
+        #4380cf 45%,
+        #7d4ed4 60%,
+        #e17833 75%,
+        currentColor 90%,
+        currentColor 100%
+      );
+      background-size: 200% 100%;
+      background-repeat: repeat-x;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: brand-wordmark-drift 9s linear infinite;
+    }
+  }
+
+  /* 200% position on a 200%-wide repeating tile = exactly one tile of travel. */
+  @keyframes brand-wordmark-drift {
+    to {
+      background-position: 200% 50%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-wordmark {
+      background-image: none;
+      animation: none;
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .brand-card-lift {
+      transition: transform 180ms ease;
+    }
+
+    .brand-card-lift:hover {
+      transform: translateY(-2px);
+    }
+
+    .brand-card-lift:hover .brand-card-shadow {
+      opacity: 1;
+    }
+  }
+
+  @media (hover: none) and (prefers-reduced-motion: no-preference) {
+    .brand-card-lift:active {
+      transform: scale(0.98);
+    }
+  }
+
+  /*
+   * Hover backlight for Browse Templates, Saved Templates, and Ads Library cards.
+   * Same technique as Home's tile glow: a tone class sets --glow, and hover paints
+   * a tinted border plus a soft colored drop shadow. Pure CSS — no per-frame JS.
+   * These grids already scale their media on hover, so this does not add a transform.
+   */
+  .card-glow {
+    --glow: var(--color-blue-500);
+    transition:
+      border-color 180ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .card-glow-blue { --glow: var(--color-blue-500); }
+  .card-glow-cyan { --glow: var(--color-cyan-500); }
+  .card-glow-emerald { --glow: var(--color-emerald-500); }
+  .card-glow-teal { --glow: var(--color-teal-500); }
+  .card-glow-amber { --glow: var(--color-amber-500); }
+  .card-glow-orange { --glow: var(--color-orange-500); }
+  .card-glow-rose { --glow: var(--color-rose-500); }
+  .card-glow-violet { --glow: var(--color-violet-500); }
+  .card-glow-fuchsia { --glow: var(--color-fuchsia-500); }
+
+  .card-glow:hover,
+  .card-glow:focus-visible {
+    border-color: color-mix(in srgb, var(--glow) 60%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--glow) 45%, transparent),
+      0 10px 36px -8px color-mix(in srgb, var(--glow) 55%, transparent);
+  }
+
+  /* Home tiles share the glow above and keep their original 2px lift. */
+  .card-glow-lift {
+    transition:
+      border-color 180ms ease,
+      box-shadow 220ms ease,
+      transform 180ms ease;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .card-glow-lift:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* DESIGN.md §5.4 — Library Ready border and rendering dots. */
+  .library-ready {
+    border: 1.5px solid transparent;
+    background-image:
+      linear-gradient(
+        var(--library-ready-fill, var(--bg-sidebar)),
+        var(--library-ready-fill, var(--bg-sidebar))
+      ),
+      conic-gradient(
+        from var(--library-ready-angle),
+        var(--brand-from),
+        var(--brand-via),
+        var(--brand-to),
+        var(--brand-from)
+      );
+    background-origin: border-box;
+    -webkit-background-clip: padding-box, border-box;
+    background-clip: padding-box, border-box;
+    animation: library-ready-spin 3s linear infinite;
+  }
+
+  .library-ready:hover {
+    --library-ready-fill: var(--bg-hover);
+  }
+
+  .library-ready.is-selected,
+  .library-ready.is-selected:hover {
+    --library-ready-fill: var(--bg-selected);
+  }
+
+  @keyframes library-ready-spin {
+    to {
+      --library-ready-angle: 360deg;
+    }
+  }
+
+  .rendering-dots {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .rendering-dots > span {
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--warning);
+    opacity: 0.3;
+    animation: rendering-dot 1.2s ease-in-out infinite;
+  }
+
+  .rendering-dots > span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .rendering-dots > span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes rendering-dot {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tilted-ad-carousel-track,
+    .shimmer-bg,
+    .shimmer-bg::after,
+    .skeleton-shimmer,
+    .skeleton-shimmer::after,
+    .reveal-fade-in,
+    .nav-ads-library-pulse,
+    .ready-badge-attention,
+    .ready-badge-attention::before,
+    .animate-pulse,
+    .animate-ping,
+    .animate-bounce,
+    .affiliate-announcement-new,
+    .grid-fade-in,
+    .segment-card-in,
+    .render-ready-in,
+    .pop-slide,
+    .home-rise,
+    .home-quote-text,
+    .home-quote-in,
+    .home-quote-out,
+    .sidebar-label,
+    .library-ready,
+    .rendering-dots > span {
+      animation: none !important;
+    }
+
+    .sidebar-panel,
+    [data-sidebar-slot] {
+      transition: none !important;
+    }
+
+    .rendering-dots > span {
+      opacity: 1;
+    }
+
+    .ready-badge-attention {
+      background-image: none;
+    }
+
+    .ready-badge-attention::before {
+      opacity: 0;
+    }
+
+    .card-glow-lift,
+    .card-glow-lift:hover {
+      transform: none !important;
+    }
+
+    .home-quote-text {
+      animation: none !important;
+      background-image: linear-gradient(90deg, var(--brand-from), var(--brand-via), var(--brand-to));
+      background-size: 100% 100%;
+      background-position: 0% 50%;
+    }
+
+    .brand-card-lift,
+    .brand-card-lift:hover,
+    .brand-card-lift:active {
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+/* New affiliate announcement: success border, soft ring, two gentle pulses. */
+.affiliate-announcement-new {
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: var(--success);
+  box-shadow: 0 0 0 4px var(--success-soft);
+  animation: affiliate-announcement-glow 1.4s ease-in-out 2;
+}
+
+.affiliate-announcement-new[data-anim-settled] {
+  animation: none;
+}
+
+@keyframes affiliate-announcement-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px var(--success-soft);
+  }
+  50% {
+    box-shadow: 0 0 0 8px var(--success-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .affiliate-announcement-new {
+    animation: none;
+  }
+}
+
+/* DESIGN.md §8.18. Unlayered so the hover border wins over utility border colors. */
+.card-hover {
+  transition:
+    transform 250ms ease-out,
+    border-color 250ms ease-out,
+    box-shadow 250ms ease-out;
+}
+
+.card-hover-media {
+  transition: transform 250ms ease-out;
+}
+
+.card-hover:hover,
+.card-hover:focus-visible {
+  border-color: var(--border-strong);
+  box-shadow:
+    0 0 0 1px var(--accent-soft),
+    0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+html.light .card-hover:hover,
+html.light .card-hover:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--accent-soft),
+    0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.card-hover.card-selected,
+.card-hover.card-selected:hover,
+.card-hover.card-selected:focus-visible {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.card-hover.card-selected:hover,
+.card-hover.card-selected:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+html.light .card-hover.card-selected:hover,
+html.light .card-hover.card-selected:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* Library cards use .card-glow (the template backlight) instead of .card-hover. */
+.card-glow.card-selected {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.card-glow.card-selected:hover,
+.card-glow.card-selected:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 10px 36px -8px color-mix(in srgb, var(--glow) 55%, transparent);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card-hover:hover,
+  .card-hover:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .card-hover:hover .card-hover-media,
+  .card-hover:focus-visible .card-hover-media {
+    transform: scale(1.04);
+  }
+}
+
+/* DESIGN.md §8.19. Colors are the existing brand / success / warning tokens. */
+.color-icon-tile {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: var(--tile, var(--brand-from));
+  background: color-mix(in srgb, var(--tile, var(--brand-from)) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tile, var(--brand-from)) 24%, transparent);
+  transition: background-color 250ms ease-out;
+}
+
+.color-icon-tile[data-tone="blue"] { --tile: var(--brand-from); }
+.color-icon-tile[data-tone="violet"] { --tile: var(--brand-via); }
+.color-icon-tile[data-tone="orange"] { --tile: var(--brand-to); }
+.color-icon-tile[data-tone="green"] { --tile: var(--success); }
+.color-icon-tile[data-tone="amber"] { --tile: var(--warning); }
+
+.card-hover:hover .color-icon-tile,
+.card-hover:focus-visible .color-icon-tile,
+.group:hover .color-icon-tile,
+.group:focus-visible .color-icon-tile,
+.color-icon-tile:hover,
+.color-icon-tile:focus-visible {
+  background: color-mix(in srgb, var(--tile, var(--brand-from)) 22%, transparent);
+}
+
+/* DESIGN.md §8.29. Unlayered so the bright hover wins over text-primary. */
+.brand-name-link {
+  color: var(--text-primary);
+  text-decoration-line: none;
+  text-underline-offset: 3px;
+  transition: color 150ms, text-decoration-color 150ms;
+}
+.brand-name-link:is(:hover, :focus-visible),
+:is(button, a):is(:hover, :focus-visible) > .brand-name-link {
+  color: #f6f5f4;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: #f6f5f4;
+  text-underline-offset: 3px;
+}
+html.light .brand-name-link:is(:hover, :focus-visible),
+html.light :is(button, a):is(:hover, :focus-visible) > .brand-name-link {
+  color: #000000;
+  text-decoration-color: #000000;
+}
+
+/* DESIGN.md §8.15. Dark scrim on media, in both themes. */
+.media-overlay {
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* First-load page skeleton. The sweep stays; the fill uses tokens. */
+.shimmer-token {
+  background-color: var(--bg-soft);
+}
+.shimmer-token::after {
+  background-image: linear-gradient(
+    100deg,
+    transparent 15%,
+    color-mix(in srgb, var(--text-primary) 12%, transparent) 40%,
+    color-mix(in srgb, var(--text-primary) 32%, transparent) 50%,
+    color-mix(in srgb, var(--accent) 28%, transparent) 58%,
+    transparent 85%
+  );
+}
+
+/* Select chrome around ThemedSelect / SaveToFolderSelect. Their markup stays put. */
+.lp-select {
+  position: relative;
+}
+
+.lp-ref-counter,
+.lp-ref-counter span {
+  color: var(--text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+.render-bar .lp-select > div {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.render-bar .lp-select label {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 0 6px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+.render-bar .lp-select button {
+  height: 40px !important;
+}
+
+.lp-select button {
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.lp-select button:hover {
+  border-color: var(--border-strong) !important;
+}
+
+.lp-select button:focus,
+.lp-select button:focus-visible {
+  border-color: var(--border-strong) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
+}
+
+/* Affiliate split slider: filled track and thumb use --accent, not blue. */
+input[type="range"].split-pool-range {
+  accent-color: var(--accent);
+  height: 18px;
+}
+
+.lp-select label {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* DESIGN.md §7. Phone frame. 768px and up is unchanged. */
+@media (width < 48rem) {
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  [data-phone-frame] {
+    max-width: 100%;
+  }
+
+  /* Vertical page scrollers must not become sideways scrollers. */
+  [data-phone-frame] .overflow-y-auto,
+  [data-phone-frame] .overflow-auto {
+    overflow-x: clip;
+  }
+
+  [data-phone-frame] .overflow-x-auto,
+  [data-phone-frame] .max-md\:overflow-x-auto {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  /* Collection rails set an inline pixel width. Cap it so the page stays in the screen. */
+  [data-phone-frame] aside {
+    width: min(256px, 42vw) !important;
+    min-width: 0 !important;
+    max-width: min(256px, 42vw) !important;
+  }
+
+  .tool-work-panel {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 1 1 auto !important;
+  }
+}
+
+@media (width < 48rem) and (prefers-reduced-motion: reduce) {
+  .phone-sheet {
+    transition: none !important;
+  }
+}
