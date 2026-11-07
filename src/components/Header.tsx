@@ -1,139 +1,78 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { List } from '@phosphor-icons/react'
 import { NavLink } from 'react-router-dom'
-import { BrandLogoLink } from './BrandLogoLink'
-import { MoreNav } from './MoreNav'
-import { SolutionsNav } from './SolutionsNav'
 import { useAppUrl } from '../hooks/useAppUrl'
 import { getSignupUrl } from '../lib/appUrl'
-
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `text-sm font-medium transition-colors ${
-    isActive ? 'text-[var(--accent-cyan)]' : 'text-zinc-400 hover:text-[var(--accent-cyan)]'
-  }`
+import { BrandLogoLink } from './BrandLogoLink'
+import { SolutionsNav } from './SolutionsNav'
+import { PrimaryLink } from './site/Buttons'
+import { cx } from './site/cx'
+import { PhoneSheet } from './site/PhoneSheet'
+import { ProductMenu } from './site/ProductMenu'
+import { ThemeToggle } from './site/ThemeToggle'
 
 export function Header() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const menuBtnRef = useRef<HTMLButtonElement>(null)
   const appUrl = useAppUrl()
   const signupUrl = getSignupUrl()
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const closeSheet = useCallback(() => {
+    setOpen(false)
+    menuBtnRef.current?.focus()
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/85 backdrop-blur-md">
-      <div className="relative mx-auto max-w-6xl px-4 py-4 md:px-6">
-        <div className="flex items-center">
-          <div className="flex min-w-0 flex-1 items-center">
-            <BrandLogoLink variant="nav" />
-          </div>
-
-          <nav
-            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-5 lg:flex xl:gap-8"
-            aria-label="Primary"
-          >
-            <a href="/#how-it-works" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
-              How It Works
-            </a>
-            <a href="/#features" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
-              Features
-            </a>
-            <a href="/#pricing" className="text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]">
-              Pricing
-            </a>
-            <NavLink to="/faq" className={navLinkClass}>
-              FAQ
-            </NavLink>
-            <SolutionsNav variant="desktop" />
-            <MoreNav />
-          </nav>
-
-          <div className="flex flex-1 items-center justify-end gap-3">
-            <a
-              href={appUrl}
-              className="hidden text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)] lg:inline-flex"
-            >
-              Sign In
-            </a>
-            <a
-              href={signupUrl}
-              className="btn-cta hidden rounded-lg px-4 py-2 text-sm font-semibold lg:inline-flex"
-            >
-              Start Free
-            </a>
-            <button
-              type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-300 transition hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_25%,transparent)] lg:hidden"
-              aria-expanded={open}
-              aria-label="Menu"
-              onClick={() => setOpen((v) => !v)}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                {open ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <nav
-          className={`mt-3 flex flex-col gap-1 border-t border-white/[0.06] pt-3 lg:hidden ${open ? 'flex' : 'hidden'}`}
-          aria-label="Mobile primary"
-        >
-          <a
-            href="/#how-it-works"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-            onClick={() => setOpen(false)}
-          >
-            How It Works
-          </a>
-          <a
-            href="/#features"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-            onClick={() => setOpen(false)}
-          >
-            Features
-          </a>
-          <a
-            href="/#pricing"
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-            onClick={() => setOpen(false)}
-          >
+    <header className={cx('site-header', scrolled && 'is-scrolled')}>
+      <div className="site-column site-header-inner">
+        <BrandLogoLink variant="nav" />
+        <nav className="site-header-nav" aria-label="Primary">
+          <ProductMenu />
+          <SolutionsNav />
+          <a className="site-nav-link" href="/#pricing">
             Pricing
           </a>
-          <NavLink
-            to="/faq"
-            className={({ isActive }) => `py-2 ${navLinkClass({ isActive })}`}
-            onClick={() => setOpen(false)}
-          >
-            FAQ
-          </NavLink>
-          <div className="py-2">
-            <SolutionsNav variant="mobile" onNavigate={() => setOpen(false)} />
-          </div>
-          <NavLink to="/blog" className={navLinkClass} onClick={() => setOpen(false)}>
+          <NavLink className="site-nav-link" to="/blog">
             Blog
           </NavLink>
-          <NavLink to="/about" className={navLinkClass} onClick={() => setOpen(false)}>
-            About
+          <NavLink className="site-nav-link" to="/faq">
+            FAQ
           </NavLink>
-          <NavLink to="/affiliates" className={navLinkClass} onClick={() => setOpen(false)}>
-            Affiliates
-          </NavLink>
-          <NavLink to="/contact" className={navLinkClass} onClick={() => setOpen(false)}>
-            Contact
-          </NavLink>
-          <a
-            href={appUrl}
-            className="py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-[var(--accent-cyan)]"
-            onClick={() => setOpen(false)}
-          >
-            Sign In
-          </a>
-          <a
-            href={signupUrl}
-            className="btn-cta mt-2 rounded-lg px-4 py-2.5 text-center text-sm font-semibold"
-            onClick={() => setOpen(false)}
-          >
-            Start Free
-          </a>
         </nav>
+        <div className="site-header-actions">
+          <ThemeToggle />
+          <a className="site-signin" href={appUrl}>
+            Sign in
+          </a>
+          <PrimaryLink href={signupUrl} size="header">
+            Start free
+          </PrimaryLink>
+        </div>
+        <div className="site-header-phone">
+          <PrimaryLink href={signupUrl} arrow={false} size="sm">
+            Start free
+          </PrimaryLink>
+          <button
+            ref={menuBtnRef}
+            type="button"
+            className="site-icon-btn site-menu-btn"
+            aria-expanded={open}
+            aria-label="Menu"
+            onClick={() => setOpen(true)}
+          >
+            <List size={20} />
+          </button>
+        </div>
       </div>
+      {open ? <PhoneSheet onClose={closeSheet} signInHref={appUrl} signupHref={signupUrl} /> : null}
     </header>
   )
 }

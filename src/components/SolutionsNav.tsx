@@ -1,121 +1,93 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
-import { solutions, solutionPath } from '../data/solutions'
+import { CaretDown, ArrowRight } from '@phosphor-icons/react'
+import { NavLink } from 'react-router-dom'
+import { blogIndexPath } from '../data/blog'
+import { comparisonPath, comparisons } from '../data/comparisons'
+import { solutionPath, solutions } from '../data/solutions'
+import { cx } from './site/cx'
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `text-sm font-medium transition-colors ${
-    isActive ? 'text-[var(--accent-cyan)]' : 'text-zinc-400 hover:text-[var(--accent-cyan)]'
-  }`
+const mid = Math.ceil(solutions.length / 2)
+const solutionCols = [solutions.slice(0, mid), solutions.slice(mid)]
 
-type SolutionsNavProps = {
-  variant: 'desktop' | 'mobile'
-  onNavigate?: () => void
-}
-
-export function SolutionsNav({ variant, onNavigate }: SolutionsNavProps) {
+/**
+ * Desktop Solutions mega menu. Phone uses the sheet in Header.
+ * Links stay in the HTML when the panel is closed.
+ */
+export function SolutionsNav() {
   const [open, setOpen] = useState(false)
-  const location = useLocation()
   const wrapRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
-  const onSolutions = location.pathname.startsWith('/solutions')
 
   useEffect(() => {
-    setOpen(false)
-  }, [location.pathname])
-
-  useEffect(() => {
-    if (!open || variant !== 'desktop') return
-    const onPointer = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false)
+    const panel = panelRef.current
+    const wrap = wrapRef.current
+    if (!panel || !wrap || !open) return
+    panel.style.marginLeft = '0px'
+    const rect = panel.getBoundingClientRect()
+    const pad = 16
+    if (rect.right > window.innerWidth - pad) {
+      panel.style.marginLeft = `${window.innerWidth - pad - rect.right}px`
+    } else if (rect.left < pad) {
+      panel.style.marginLeft = `${pad - rect.left}px`
     }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('mousedown', onPointer)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onPointer)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open, variant])
-
-  if (variant === 'mobile') {
-    return (
-      <div>
-        <div className="flex items-center justify-between">
-          <NavLink to="/solutions" className={navLinkClass} onClick={onNavigate}>
-            Solutions
-          </NavLink>
-          <button
-            type="button"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-zinc-400 transition hover:text-[var(--accent-cyan)]"
-            aria-expanded={open}
-            aria-controls={menuId}
-            aria-label={open ? 'Hide solutions' : 'Show solutions'}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
-          </button>
-        </div>
-        <div id={menuId} hidden={!open} className={`mt-1 flex flex-col gap-1 border-l border-white/[0.08] pl-3 ${open ? '' : 'hidden'}`}>
-          {solutions.map((s) => (
-            <NavLink
-              key={s.slug}
-              to={solutionPath(s.slug)}
-              className={navLinkClass}
-              onClick={onNavigate}
-            >
-              {s.navLabel}
-            </NavLink>
-          ))}
-        </div>
-      </div>
-    )
-  }
+  }, [open])
 
   return (
     <div
       ref={wrapRef}
-      className="relative"
+      className={cx('site-mega', open && 'is-open')}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') setOpen(false)
+      }}
     >
       <NavLink
         to="/solutions"
-        className={({ isActive }) =>
-          `inline-flex items-center gap-1 ${navLinkClass({ isActive: isActive || onSolutions })}`
-        }
+        className="site-nav-link"
         aria-expanded={open}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         aria-controls={menuId}
         onClick={() => setOpen(false)}
       >
         Solutions
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden />
+        <CaretDown size={14} aria-hidden />
       </NavLink>
-      <div
-        id={menuId}
-        role="menu"
-        hidden={!open}
-        className={`absolute left-1/2 top-full z-50 w-[36rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 pt-3 ${open ? '' : 'hidden'}`}
-      >
-        <div className="max-h-[min(70vh,32rem)] overflow-y-auto rounded-2xl border border-white/[0.08] bg-[#12121a] py-2 shadow-[0_16px_48px_-16px_rgba(0,0,0,0.8)]">
-          <div className="grid grid-cols-2">
-            {solutions.map((s) => (
-              <NavLink
-                key={s.slug}
-                to={solutionPath(s.slug)}
-                role="menuitem"
-                className={({ isActive }) =>
-                  `block px-4 py-2.5 text-sm font-medium transition-colors ${
-                    isActive ? 'text-[var(--accent-cyan)]' : 'text-zinc-400 hover:bg-white/[0.04] hover:text-white'
-                  }`
-                }
-              >
-                {s.navLabel}
-              </NavLink>
+      <div ref={panelRef} id={menuId} className="site-mega-panel">
+        <div className="site-mega-card">
+          <div className="site-solutions-grid">
+            {solutionCols.map((col, index) => (
+              <div key={index}>
+                {index === 0 ? <p className="site-menu-label">Solutions</p> : <p className="site-menu-label" aria-hidden>&nbsp;</p>}
+                {col.map((item) => (
+                  <NavLink key={item.slug} to={solutionPath(item.slug)} className="site-menu-simple" onClick={() => setOpen(false)}>
+                    {item.navLabel}
+                    <ArrowRight size={14} aria-hidden />
+                  </NavLink>
+                ))}
+              </div>
             ))}
+            <div>
+              <p className="site-menu-label">Compare</p>
+              <div className="site-menu-scroll">
+                {comparisons.map((item) => (
+                  <NavLink
+                    key={item.slug}
+                    to={comparisonPath(item.slug)}
+                    className="site-menu-simple"
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.competitor}
+                    <ArrowRight size={14} aria-hidden />
+                  </NavLink>
+                ))}
+                <NavLink to={blogIndexPath('comparisons')} className="site-menu-simple" onClick={() => setOpen(false)}>
+                  All comparisons
+                  <ArrowRight size={14} aria-hidden />
+                </NavLink>
+              </div>
+            </div>
           </div>
         </div>
       </div>

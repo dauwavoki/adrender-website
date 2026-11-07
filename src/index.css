@@ -1,16 +1,119 @@
 @import 'tailwindcss';
+@import './site.css';
 
+/* Legacy accent names. Removed in the cleanup phase with the old components. */
 :root {
   --accent-cyan: #00e5ff;
   --accent-purple: #7b4fd4;
   --accent-orange: #ff6b2b;
-  /* How It Works card-title gradients. Hero line 2 reuses these bright pairs plus three more. */
   --hiw-title-1-a: var(--accent-cyan);
   --hiw-title-1-b: #2f80ff;
   --hiw-title-2-a: var(--accent-purple);
   --hiw-title-2-b: #e23d9b;
   --hiw-title-3-a: #f5b031;
   --hiw-title-3-b: var(--accent-orange);
+}
+
+/* App tokens (DESIGN.md §1) plus site tokens (SITE-DESIGN.md §3.1). Light is the default. */
+:root,
+html.light {
+  color-scheme: light;
+  --bg-page: #fafaf9;
+  --bg-sidebar: #f4f3f1;
+  --bg-surface: #ffffff;
+  --bg-raised: #ffffff;
+  --bg-inset: #f4f3f1;
+  --bg-input: #f2f1ef;
+  --bg-hover: #efeeec;
+  --bg-selected: #e9e8e5;
+  --bg-soft: #ecebe8;
+  --bg-segment: #ffffff;
+  --border: #e6e4e1;
+  --border-strong: #d6d3cf;
+  --text-primary: #1f1e1d;
+  --text-secondary: #6b6763;
+  --text-muted: #8e8a85;
+  --btn-primary-bg: #1f1e1d;
+  --btn-primary-text: #fafaf9;
+  --success: #2f8a3b;
+  --warning: #b9770e;
+  --danger: #c9353a;
+  --info: #1f5fd6;
+  --focus-ring: #6b6763;
+  --accent: #6a48d6;
+  --accent-soft: rgba(106, 72, 214, 0.1);
+  --success-soft: rgba(47, 138, 59, 0.1);
+  --warning-soft: rgba(185, 119, 14, 0.1);
+  --danger-soft: rgba(201, 53, 58, 0.1);
+  --info-soft: rgba(31, 95, 214, 0.14);
+  --brand-from: #1f5fd6;
+  --brand-via: #7340d4;
+  --brand-to: #e8650f;
+  --tile-blue: #1f5fd6;
+  --tile-violet: #7340d4;
+  --tile-orange: #e8650f;
+  --tile-green: #2f8a3b;
+  --tile-amber: #b9770e;
+  --site-bg: #fbfaf7;
+  --text-faded: rgba(31, 30, 29, 0.45);
+  --hairline: rgba(93, 88, 76, 0.14);
+  --band-bg: #1b1a18;
+  --band-text: #f2f0ec;
+  --band-text-secondary: #a39e98;
+  --band-tint: #f3f1ec;
+  --stage-shadow: 0 24px 64px rgba(31, 30, 29, 0.14);
+  --menu-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --overlay: rgba(0, 0, 0, 0.3);
+}
+
+html.dark {
+  color-scheme: dark;
+  --bg-page: #161616;
+  --bg-sidebar: #191919;
+  --bg-surface: #191919;
+  --bg-raised: #1c1c1c;
+  --bg-inset: #202020;
+  --bg-input: #212121;
+  --bg-hover: #212121;
+  --bg-selected: #262626;
+  --bg-soft: #2a2928;
+  --bg-segment: #3a3836;
+  --border: #272727;
+  --border-strong: #353432;
+  --text-primary: #dad8d3;
+  --text-secondary: #a39e98;
+  --text-muted: #807c78;
+  --btn-primary-bg: #f6f5f4;
+  --btn-primary-text: #161616;
+  --success: #52ad50;
+  --warning: #e5a33d;
+  --danger: #e5484d;
+  --info: #4f8df7;
+  --focus-ring: #a39e98;
+  --accent: #8b6cf0;
+  --accent-soft: rgba(139, 108, 240, 0.14);
+  --success-soft: rgba(82, 173, 80, 0.14);
+  --warning-soft: rgba(229, 163, 61, 0.14);
+  --danger-soft: rgba(229, 72, 77, 0.14);
+  --info-soft: rgba(79, 141, 247, 0.14);
+  --brand-from: #4f8df7;
+  --brand-via: #9b6bf2;
+  --brand-to: #ff8a3d;
+  --tile-blue: #4f8df7;
+  --tile-violet: #9b6bf2;
+  --tile-orange: #ff8a3d;
+  --tile-green: #52ad50;
+  --tile-amber: #e5a33d;
+  --site-bg: #141413;
+  --text-faded: rgba(218, 216, 211, 0.42);
+  --hairline: rgba(255, 255, 255, 0.07);
+  --band-bg: #1e1d1b;
+  --band-text: #f2f0ec;
+  --band-text-secondary: #a39e98;
+  --band-tint: #1a1918;
+  --stage-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --menu-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --overlay: rgba(0, 0, 0, 0.6);
 }
 
 @theme {
@@ -22,28 +125,76 @@
   --color-text-muted: #8b8b9a;
   --color-accent: var(--accent-purple);
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Newsreader', Georgia, serif;
   --font-heading: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-hand: 'Caveat', ui-sans-serif, cursive;
+}
+
+@theme inline {
+  --color-page: var(--bg-page);
+  --color-sidebar: var(--bg-sidebar);
+  --color-surface: var(--bg-surface);
+  --color-raised: var(--bg-raised);
+  --color-inset: var(--bg-inset);
+  --color-input: var(--bg-input);
+  --color-hover: var(--bg-hover);
+  --color-selected: var(--bg-selected);
+  --color-soft: var(--bg-soft);
+  --color-border: var(--border);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-faded: var(--text-faded);
+  --color-btn: var(--btn-primary-bg);
+  --color-btn-text: var(--btn-primary-text);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-site: var(--site-bg);
+  --color-hairline: var(--hairline);
+  --color-band: var(--band-bg);
+  --color-band-text: var(--band-text);
+  --color-band-muted: var(--band-text-secondary);
+  --color-tint: var(--band-tint);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
     margin: 0;
     min-height: 100dvh;
-    background-color: var(--color-bg-base);
-    color: #f4f4f5;
+    background-color: var(--site-bg);
+    color: var(--text-primary);
     font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 26px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 150ms,
+      color 150ms,
+      border-color 150ms;
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--accent-cyan) 35%, transparent);
-    color: #fff;
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
@@ -540,15 +691,22 @@
 
   .reveal {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(12px);
     transition:
-      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
   }
 
   .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (scripting: none) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   @keyframes price-pop {
@@ -1294,8 +1452,8 @@
 
 .footer-badge-carousel {
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  background: var(--color-bg-base);
+  border-top: 1px solid var(--hairline);
+  background: var(--site-bg);
   padding: 1.25rem 0;
   mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
 }

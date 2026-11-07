@@ -5,20 +5,10 @@ type BrandLogoLinkProps = {
 }
 
 export function BrandLogoLink({ variant }: BrandLogoLinkProps) {
-  const isNav = variant === 'nav'
-
   return (
-    <Link
-      to="/"
-      className="inline-flex shrink-0 items-center gap-2.5 font-heading font-semibold tracking-tight text-white"
-    >
-      <img
-        src="/WebApp_Main_Logo.png"
-        alt=""
-        aria-hidden
-        className={`w-auto ${isNav ? 'h-[36px] nav-logo-glow' : 'h-[30px]'}`}
-      />
-      <span className={isNav ? 'text-[20px] leading-none' : 'text-[17px] leading-none'}>AdRender</span>
+    <Link to="/" className="site-logo" aria-label="AdRender">
+      <img src="/WebApp_Main_Logo.png" alt="" width={146} height={128} style={variant === 'footer' ? { height: 24 } : undefined} />
+      <span>AdRender</span>
     </Link>
   )
 }

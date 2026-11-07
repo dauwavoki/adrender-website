@@ -66,3 +66,66 @@ export function getManifestEntry(id: PlaceholderId): ImageManifestEntry {
   if (!entry) throw new Error(`Unknown placeholder id: ${id}`)
   return entry
 }
+
+/** Redesign slots. `src` set means a real file replaces the labeled placeholder. */
+export type SiteImageEntry = {
+  id: string
+  label: string
+  where: string
+  width: number
+  height: number
+  aspect: string
+  /** Public path to save the real file, e.g. `/site/f1-proven-templates.webp`. */
+  filename: string
+  src?: string
+  themeNote?: string
+}
+
+export const SITE_IMAGES: SiteImageEntry[] = [
+  {
+    id: 'H1',
+    label: 'Hero app preview',
+    where: 'Homepage hero poster',
+    width: 2560,
+    height: 1600,
+    aspect: '16:10',
+    filename: '/site/h1-hero-app-preview.webp',
+    themeNote: 'Optional -light / -dark if the frame should not follow the live preview',
+  },
+  { id: 'F1', label: 'Feature: proven templates', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f1-proven-templates.webp' },
+  { id: 'F2', label: 'Feature: easy to use', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f2-easy-to-use.webp' },
+  { id: 'F3', label: 'Feature: brand intelligence', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f3-brand-intelligence.webp' },
+  { id: 'F4', label: 'Feature: batch rendering', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f4-batch-rendering.webp' },
+  { id: 'F5', label: 'Feature: every size', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f5-every-size.webp' },
+  { id: 'F6', label: 'Feature: template library', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f6-template-library.webp' },
+  { id: 'F7', label: 'Feature: ad playground', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f7-ad-playground.webp' },
+  { id: 'F8', label: 'Feature: team workspaces', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f8-team-workspaces.webp' },
+  { id: 'A1', label: 'About: founder', where: '/about#founder-story', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a1-founder.webp' },
+  { id: 'A2', label: 'About: templates', where: '/about#templates', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a2-templates.webp' },
+  { id: 'A3', label: 'About: easy to use', where: '/about#easy-to-use', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a3-easy-to-use.webp' },
+  { id: 'A4', label: 'About: brands', where: '/about#brands', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a4-brands.webp' },
+  { id: 'A5', label: 'About: generation', where: '/about#generation', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a5-generation.webp' },
+  { id: 'A6', label: 'About: sizes', where: '/about#sizes', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a6-sizes.webp' },
+  { id: 'A7', label: 'About: library', where: '/about#library', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a7-library.webp' },
+  { id: 'A8', label: 'About: playground', where: '/about#playground', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a8-playground.webp' },
+  { id: 'A9', label: 'About: workspaces', where: '/about#workspaces', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a9-workspaces.webp' },
+  { id: 'C1', label: 'Contact side image', where: '/contact', width: 1200, height: 1500, aspect: '4:5', filename: '/site/c1-contact.webp', themeNote: 'Optional' },
+  { id: 'OG', label: 'Social share image', where: 'Open Graph', width: 1200, height: 630, aspect: '1.91:1', filename: '/site/og-share.webp' },
+]
+
+const siteImageById = new Map(SITE_IMAGES.map((entry) => [entry.id, entry]))
+
+export function getSiteImage(id: string): SiteImageEntry {
+  const entry = siteImageById.get(id)
+  if (!entry) throw new Error(`Unknown site image id: ${id}`)
+  return entry
+}
+
+/** Register a solution or blog placeholder the first time a page needs one. */
+export function ensureSiteImage(entry: SiteImageEntry): SiteImageEntry {
+  const existing = siteImageById.get(entry.id)
+  if (existing) return existing
+  SITE_IMAGES.push(entry)
+  siteImageById.set(entry.id, entry)
+  return entry
+}
