@@ -8,6 +8,7 @@ type LinkProps = {
   children: ReactNode
   className?: string
   onClick?: () => void
+  newTab?: boolean
 }
 
 function isExternal(href: string) {
@@ -21,6 +22,7 @@ export function PrimaryLink({
   onClick,
   arrow = true,
   size,
+  newTab = false,
 }: LinkProps & { arrow?: boolean; size?: 'header' | 'sm' }) {
   const classNames = cx(
     'site-btn site-btn-primary',
@@ -39,9 +41,9 @@ export function PrimaryLink({
       {children}
     </>
   )
-  if (isExternal(href)) {
+  if (isExternal(href) || newTab) {
     return (
-      <a href={href} className={classNames} onClick={onClick}>
+      <a href={href} className={classNames} onClick={onClick} target={newTab ? '_blank' : undefined} rel={newTab ? 'noopener noreferrer' : undefined}>
         {inner}
       </a>
     )

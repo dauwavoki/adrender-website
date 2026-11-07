@@ -1,6 +1,7 @@
-import type { CSSProperties, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { Coins, Image, VideoCamera } from '@phosphor-icons/react'
 import { getSignupUrl } from '../lib/appUrl'
-import { ScrollReveal } from './ScrollReveal'
+import { IconTile, type TileTone } from './site/IconTile'
 
 type Accent = {
   from: string
@@ -109,13 +110,6 @@ function formatPrice(amount: number) {
   return `$${amount.toLocaleString('en-US')}`
 }
 
-function accentStyle(accent: Accent): CSSProperties {
-  return {
-    '--accent-from': accent.from,
-    '--accent-to': accent.to,
-  } as CSSProperties
-}
-
 function exampleNote(video: TokenBuysContent['videoAds']) {
   const row = video.rows.find((entry) => entry.resolution === video.example.resolution)
   const rate = row ? (video.example.tier === 'pro' ? row.pro : row.standard) : 0
@@ -129,107 +123,78 @@ function durationNote(video: TokenBuysContent['videoAds']) {
   return `${columns.standard} up to ${duration.standardMaxSeconds}s, ${columns.pro} up to ${duration.proMaxSeconds}s. ${duration.minSeconds}s minimum.`
 }
 
-function TokenFigure({ value, minWidth }: { value: number; minWidth: string }) {
-  return (
-    <span
-      className="accent-card-gradient inline-block text-right font-heading text-3xl font-bold leading-none tracking-tight tabular-nums lg:text-2xl xl:text-3xl"
-      style={{ minWidth }}
-    >
-      {formatTokens(value)}
-    </span>
-  )
+function TokenFigure({ value }: { value: number }) {
+  return <span className="num">{formatTokens(value)}</span>
 }
 
 function BuyCard({
-  accent,
   title,
+  tone,
+  icon: Icon,
   signupUrl,
   children,
 }: {
-  accent: Accent
   title: string
+  tone: TileTone
+  icon: typeof Image
   signupUrl: string
   children: ReactNode
 }) {
   return (
-    <article
-      className="accent-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/[0.06]"
-      style={accentStyle(accent)}
-    >
-      <span className="accent-card-edge" aria-hidden="true" />
-      <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
-        <a href={signupUrl} className="accent-card-link flex min-h-0 flex-1 flex-col" aria-label={`${title}: start free`}>
-          <h4 className="font-heading text-xl font-bold tracking-tight">
-            <span className="accent-card-link-label accent-card-gradient">{title}</span>
-          </h4>
-          <div className="accent-card-copy flex min-w-0 flex-1 flex-col">{children}</div>
-        </a>
-      </div>
+    <article className="site-plan">
+      <a href={signupUrl} className="site-buy-link" aria-label={`${title}: start free`}>
+        <div className="site-plan-head">
+          <IconTile tone={tone} size={32}>
+            <Icon size={16} />
+          </IconTile>
+          <h3>{title}</h3>
+        </div>
+        {children}
+      </a>
     </article>
   )
 }
 
-function RateCard({ table, notes, signupUrl }: { table: RateTable; notes?: string[]; signupUrl: string }) {
+function RateCard({ table, notes, signupUrl, tone, icon }: { table: RateTable; notes?: string[]; signupUrl: string; tone: TileTone; icon: typeof Image }) {
   return (
-    <BuyCard accent={table.accent} title={table.title} signupUrl={signupUrl}>
-      <div className="mt-5 min-w-0">
-        <table className="w-full border-collapse text-left">
-          <caption className="sr-only">{`${table.title} by resolution, ${table.unitLabel}`}</caption>
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                className="pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
-              >
-                <span>{table.columns.resolution}</span>
-              </th>
-              <th
-                scope="col"
-                className="pb-1 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
-              >
-                <span>{table.columns.standard}</span>
-              </th>
-              <th
-                scope="col"
-                className="pb-1 pl-3 text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
-              >
-                <span>{table.columns.pro}</span>
-              </th>
+    <BuyCard title={table.title} signupUrl={signupUrl} tone={tone} icon={icon}>
+      <table className="site-table">
+        <caption className="sr-only">{`${table.title} by resolution, ${table.unitLabel}`}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{table.columns.resolution}</th>
+            <th scope="col" className="num">
+              {table.columns.standard}
+            </th>
+            <th scope="col" className="num">
+              {table.columns.pro}
+            </th>
+          </tr>
+          <tr>
+            <td />
+            <th scope="colgroup" colSpan={2} className="num">
+              {table.unitLabel}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row) => (
+            <tr key={row.resolution}>
+              <th scope="row">{row.resolution}</th>
+              <td className="num">
+                <TokenFigure value={row.standard} />
+              </td>
+              <td className="num">
+                <TokenFigure value={row.pro} />
+              </td>
             </tr>
-            <tr>
-              <td />
-              <th
-                scope="colgroup"
-                colSpan={2}
-                className="pb-1 text-right text-[11px] font-medium tracking-normal text-zinc-500 normal-case"
-              >
-                <span>{table.unitLabel}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {table.rows.map((row) => (
-              <tr key={row.resolution} className="border-t border-white/[0.06]">
-                <th scope="row" className="py-3 pr-3 text-sm font-medium text-zinc-300">
-                  <span>{row.resolution}</span>
-                </th>
-                <td className="py-3 text-right align-baseline">
-                  <TokenFigure value={row.standard} minWidth="2.5ch" />
-                </td>
-                <td className="py-3 pl-3 text-right align-baseline">
-                  <TokenFigure value={row.pro} minWidth="2.5ch" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
       {notes && notes.length > 0 ? (
-        <div className="mt-auto space-y-1.5 pt-4">
+        <div className="site-buy-notes">
           {notes.map((note) => (
-            <p key={note} className="text-sm leading-relaxed text-zinc-500">
-              <span>{note}</span>
-            </p>
+            <p key={note}>{note}</p>
           ))}
         </div>
       ) : null}
@@ -239,30 +204,26 @@ function RateCard({ table, notes, signupUrl }: { table: RateTable; notes?: strin
 
 function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps']; signupUrl: string }) {
   return (
-    <BuyCard accent={topUps.accent} title={topUps.title} signupUrl={signupUrl}>
-      <ul className="mt-5 min-w-0">
-        {topUps.packs.map((pack) => (
-          <li key={pack.price} className="topup-row border-b border-white/[0.06] py-3 last:border-b-0">
-            <span className="topup-row-price text-sm font-medium tabular-nums text-zinc-300">
-              {formatPrice(pack.price)} =
-            </span>
-            {pack.badge ? (
-              <span className="topup-row-badge rounded-full border border-white/15 bg-white/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-zinc-200">
-                {pack.badge}
-              </span>
-            ) : null}
-            <span className="topup-row-figure">
-              <TokenFigure value={pack.tokens} minWidth="6.5ch" />
-            </span>
-            <span className="topup-row-unit text-[11px] font-medium leading-none text-zinc-500">tokens</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-auto space-y-1.5 pt-4">
+    <BuyCard title={topUps.title} signupUrl={signupUrl} tone="amber" icon={Coins}>
+      <table className="site-table">
+        <caption className="sr-only">Token top-up packs</caption>
+        <tbody>
+          {topUps.packs.map((pack) => (
+            <tr key={pack.price}>
+              <th scope="row">
+                {formatPrice(pack.price)}
+                {pack.badge ? <span className="site-badge">{pack.badge}</span> : null}
+              </th>
+              <td className="num">
+                <TokenFigure value={pack.tokens} /> tokens
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="site-buy-notes">
         {topUps.notes.map((note) => (
-          <p key={note} className="text-sm leading-relaxed text-zinc-500">
-            <span>{note}</span>
-          </p>
+          <p key={note}>{note}</p>
         ))}
       </div>
     </BuyCard>
@@ -274,18 +235,14 @@ export function TokenBuys() {
   const videoNotes = [exampleNote(TOKEN_BUYS.videoAds), durationNote(TOKEN_BUYS.videoAds)]
 
   return (
-    <ScrollReveal>
-      <div className="mt-16 min-w-0 md:mt-20">
-        <h3 className="text-center font-heading text-2xl font-bold tracking-tight text-white md:text-3xl">
-          {TOKEN_BUYS.heading}
-        </h3>
-        <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">{TOKEN_BUYS.subline}</p>
-        <div className="mt-10 grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-3">
-          <RateCard table={TOKEN_BUYS.imageAds} signupUrl={signupUrl} />
-          <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} />
-          <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
-        </div>
+    <div className="site-token-buys">
+      <h3 className="site-h3">{TOKEN_BUYS.heading}</h3>
+      <p className="site-lead">{TOKEN_BUYS.subline}</p>
+      <div className="site-token-grid">
+        <RateCard table={TOKEN_BUYS.imageAds} signupUrl={signupUrl} tone="blue" icon={Image} />
+        <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} tone="violet" icon={VideoCamera} />
+        <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
       </div>
-    </ScrollReveal>
+    </div>
   )
 }

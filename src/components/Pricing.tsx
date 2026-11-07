@@ -1,13 +1,13 @@
-import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Check } from 'lucide-react'
-import { ScrollReveal } from './ScrollReveal'
+import { Check } from '@phosphor-icons/react'
 import type { Billing, Tier } from '../data/pricing'
 import { tiers } from '../data/pricing'
 import { getSignupUrl } from '../lib/appUrl'
 import { TokenBuys } from './TokenBuys'
 import { FAQ_TOKEN_ROLLOVER_ID } from './FaqSection'
+import { SplitTitle } from './site/SplitTitle'
+import { PrimaryLink, SecondaryLink, TextLink } from './site/Buttons'
 
 /** Landing pages still include the rollover FAQ. The homepage links to /faq. */
 function tokenRolloverHref(pathname: string): string {
@@ -16,145 +16,61 @@ function tokenRolloverHref(pathname: string): string {
   return `/faq#${FAQ_TOKEN_ROLLOVER_ID}`
 }
 
-const TIER_ACCENTS: Record<string, { from: string; to: string }> = {
-  free: { from: '#34d399', to: '#00e5ff' },
-  solo: { from: '#00e5ff', to: '#2f80ff' },
-  growth: { from: '#7b4fd4', to: '#e23d9b' },
-  pro: { from: '#f5b031', to: '#ff6b2b' },
-  scale: { from: '#e23d9b', to: '#f5b031' },
-}
-
-function accentStyle(accent: { from: string; to: string }): CSSProperties {
-  return {
-    '--accent-from': accent.from,
-    '--accent-to': accent.to,
-  } as CSSProperties
-}
-
-function splitAllowance(features: string[]) {
-  const [first, ...rest] = features
-  const match = first?.match(/^([\d,]+) tokens\/mo$/)
-  if (!match) return { allowance: null as string | null, features }
-  return { allowance: match[1], features: rest }
-}
-
 function PriceBlock({ billing, monthly, annual }: { billing: Billing; monthly: number; annual: number | null }) {
   const isMonthly = billing === 'monthly' || annual === null
   const display = isMonthly ? (monthly === 0 ? '$0' : `$${monthly}`) : `$${annual!.toLocaleString('en-US')}`
   const suffix = isMonthly ? '/mo' : '/yr'
 
   return (
-    <div className="flex items-baseline gap-1">
-      <span
-        key={`${billing}-${display}`}
-        className="price-pop accent-card-gradient font-heading text-4xl font-bold tracking-tight tabular-nums"
-      >
-        {display}
-      </span>
-      <span key={`${billing}-suf`} className="price-pop text-sm text-zinc-500">
-        {suffix}
-      </span>
-    </div>
-  )
-}
-
-function FeatureList({ features, outputLine }: { features: string[]; outputLine?: string }) {
-  const rows = [
-    ...(outputLine ? [{ text: outputLine, accent: true }] : []),
-    ...features.map((text) => ({ text, accent: false })),
-  ]
-
-  return (
-    <ul className="mt-6 flex flex-col">
-      {rows.map((row) => (
-        <li
-          key={row.text}
-          className="relative border-b border-white/[0.06] py-3 pl-6 text-sm font-medium text-zinc-200 last:border-b-0"
-        >
-          <Check
-            className="absolute top-3.5 left-0 h-4 w-4 text-[var(--accent-from)]"
-            aria-hidden="true"
-          />
-          <span className={row.accent ? 'text-[var(--accent-from)]' : undefined}>{row.text}</span>
-        </li>
-      ))}
-    </ul>
+    <p className="site-plan-price">
+      <span className="num">{display}</span>
+      <span className="site-plan-suffix">{suffix}</span>
+    </p>
   )
 }
 
 function TierCard({ tier, billing, signupUrl }: { tier: Tier; billing: Billing; signupUrl: string }) {
-  const accent = TIER_ACCENTS[tier.id] ?? TIER_ACCENTS.solo
-  const { allowance, features } = splitAllowance(tier.features)
-
   return (
-    <article
-      className={`accent-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/[0.06] ${
-        tier.popular ? 'plan-card--popular' : ''
-      }`}
-      style={accentStyle(accent)}
-    >
-      <span className="accent-card-edge" aria-hidden="true" />
-      <div className="flex min-h-0 flex-1 flex-col p-5 sm:p-6">
-        <a
-          href={signupUrl}
-          className="accent-card-link flex min-h-0 flex-1 flex-col"
-          aria-label={`${tier.name}: Start Free`}
-        >
-          <div className="accent-card-copy flex flex-1 flex-col">
-          <h3 className="font-heading text-2xl font-bold tracking-tight">
-            <span className="accent-card-gradient">{tier.name}</span>
-          </h3>
-          {tier.id === 'free' ? (
-            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent-from)]">
-              <span>Free plan</span>
-            </p>
-          ) : null}
-          {tier.tagline ? (
-            <p className="mt-1 text-sm text-zinc-500">
-              <span>{tier.tagline}</span>
-            </p>
-          ) : null}
-          {tier.id === 'free' ? (
-            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              <span>No card required. Spin up ads and see if AdRender fits your workflow.</span>
-            </p>
-          ) : null}
-
-          <div className="mt-4 flex min-h-6 items-center">
-            {tier.popular ? <span className="plan-popular-badge">Most Popular</span> : null}
-          </div>
-
-          <div className="min-h-[3.25rem]">
-            {tier.annual === null && billing === 'annual' ? (
-              <p className="font-heading text-4xl font-bold text-zinc-500">
-                <span>—</span>
-              </p>
-            ) : (
-              <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
-            )}
-          </div>
-
-          {allowance ? (
-            <div className="mt-5">
-              <p className="font-heading text-4xl font-bold leading-none tracking-tight sm:text-5xl">
-                <span className="accent-card-gradient tabular-nums">{allowance}</span>
-              </p>
-              <p className="mt-2 text-sm text-zinc-500">
-                <span>tokens / month</span>
-              </p>
-            </div>
-          ) : null}
-
-            <FeatureList features={features} outputLine={tier.outputLine} />
-          </div>
-          <span
-            className={`accent-card-link-label mt-6 block rounded-xl py-3 text-center text-sm font-semibold ${
-              tier.popular ? 'btn-cta' : 'btn-outline-accent'
-            }`}
-          >
-            Start Free
-          </span>
-        </a>
+    <article className={tier.popular ? 'site-plan is-popular' : 'site-plan'}>
+      <div className="site-plan-head">
+        <h3>{tier.name}</h3>
+        {tier.popular ? <span className="site-badge">Most popular</span> : null}
+      </div>
+      {tier.tagline ? <p className="site-meta">{tier.tagline}</p> : null}
+      {tier.id === 'free' ? (
+        <p className="site-meta">No card required. Spin up ads and see if AdRender fits your workflow.</p>
+      ) : null}
+      <div className="site-plan-price-slot">
+        {tier.annual === null && billing === 'annual' ? (
+          <p className="site-plan-price">—</p>
+        ) : (
+          <PriceBlock billing={billing} monthly={tier.monthly} annual={tier.annual} />
+        )}
+      </div>
+      <ul>
+        {tier.outputLine ? (
+          <li>
+            <Check size={16} aria-hidden />
+            <span>{tier.outputLine}</span>
+          </li>
+        ) : null}
+        {tier.features.map((feature) => (
+          <li key={feature}>
+            <Check size={16} aria-hidden />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="site-plan-cta">
+        {tier.popular ? (
+          <PrimaryLink href={signupUrl} className="site-btn-block">
+            Start free
+          </PrimaryLink>
+        ) : (
+          <SecondaryLink href={signupUrl} className="site-btn-block">
+            Start free
+          </SecondaryLink>
+        )}
       </div>
     </article>
   )
@@ -167,51 +83,41 @@ export function Pricing() {
   const rolloverHref = tokenRolloverHref(pathname)
 
   return (
-    <section id="pricing" className="scroll-mt-28 px-4 py-24 md:py-28">
-      <div className="pricing-shell">
-        <ScrollReveal>
-          <p className="text-section-label text-center text-xs font-semibold uppercase tracking-[0.2em]">Pricing</p>
-          <h2 className="mt-3 text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Simple pricing. Serious output.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">Choose monthly or annual.</p>
-
-          <div className="mx-auto mt-10 flex max-w-full flex-wrap items-center justify-center gap-x-3 gap-y-1.5">
-            <span className={`text-sm font-medium ${billing === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>Monthly</span>
+    <section id="pricing" className="site-section scroll-mt-28">
+      <div className="site-column">
+        <SplitTitle as="h2" lead="Simple pricing." rest="Serious output." />
+        <p className="site-lead" style={{ marginTop: 12 }}>
+          Choose monthly or annual.
+        </p>
+        <div className="site-billing">
+          <div className="site-segment is-inline" role="radiogroup" aria-label="Billing period">
             <button
               type="button"
-              role="switch"
-              aria-checked={billing === 'annual'}
-              onClick={() => setBilling((b) => (b === 'monthly' ? 'annual' : 'monthly'))}
-              className="relative h-9 w-16 shrink-0 rounded-full border border-white/[0.1] bg-[#12121a] transition motion-reduce:transition-none hover:border-[color:color-mix(in_srgb,var(--accent-cyan)_35%,transparent)]"
+              role="radio"
+              aria-checked={billing === 'monthly'}
+              aria-pressed={billing === 'monthly'}
+              onClick={() => setBilling('monthly')}
             >
-              <span
-                className={`toggle-thumb-gradient absolute top-1 left-1 h-7 w-7 rounded-full shadow transition-transform duration-300 ease-out motion-reduce:transition-none ${
-                  billing === 'annual' ? 'translate-x-7' : ''
-                }`}
-              />
+              Monthly
             </button>
-            <span className={`text-sm font-medium ${billing === 'annual' ? 'text-white' : 'text-zinc-500'}`}>
-              Annual{' '}
-              <span className="text-gradient-accent font-semibold">(20% off)</span>
-            </span>
-            <a
-              href={rolloverHref}
-              className="text-xs font-medium text-[var(--accent-cyan)] underline decoration-[color:color-mix(in_srgb,var(--accent-cyan)_45%,transparent)] underline-offset-2 transition-colors hover:decoration-[var(--accent-cyan)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+            <button
+              type="button"
+              role="radio"
+              aria-checked={billing === 'annual'}
+              aria-pressed={billing === 'annual'}
+              onClick={() => setBilling('annual')}
             >
-              + 2 months token carry-over
-            </a>
+              Annual
+            </button>
           </div>
-        </ScrollReveal>
-
-        <div className="plan-grid mt-14">
+          <span className="site-badge">20% off</span>
+          <TextLink href={rolloverHref}>+ 2 months token carry-over</TextLink>
+        </div>
+        <div className="site-plan-grid">
           {tiers.map((tier) => (
-            <ScrollReveal key={tier.id} className="h-full min-w-0">
-              <TierCard tier={tier} billing={billing} signupUrl={signupUrl} />
-            </ScrollReveal>
+            <TierCard key={tier.id} tier={tier} billing={billing} signupUrl={signupUrl} />
           ))}
         </div>
-
         <TokenBuys />
       </div>
     </section>
