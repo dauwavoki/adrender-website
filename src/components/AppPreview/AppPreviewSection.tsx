@@ -1,93 +1,50 @@
-import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type RefObject, type UIEvent } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react'
 import {
-  ArrowUpRight,
-  Bookmark,
-  Briefcase,
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  ChevronsLeft,
-  Circle,
-  CircleCheck,
-  CirclePlay,
+  ArrowRight,
+  BookmarkSimple,
+  CaretDoubleLeft,
+  CaretUpDown,
+  Check,
+  CheckCircle,
   Coins,
   CreditCard,
-  Hexagon,
   House,
   Image as ImageIcon,
-  Layers,
-  LayoutGrid,
-  Library,
   Lightbulb,
-  LogOut,
-  MessageCircle,
-  Plus,
-  RefreshCw,
-  Sparkles,
-  Video,
-  type LucideIcon,
-} from 'lucide-react'
+  MagicWand,
+  Megaphone,
+  Rocket,
+  SquaresFour,
+  UserCircleCheck,
+  VideoCamera,
+} from '@phosphor-icons/react'
 import { getSignupUrl } from '../../lib/appUrl'
+import { IconTile, type TileTone } from '../site/IconTile'
 import {
   ACCOUNT,
-  APP_ADDRESS,
   GET_INSPIRED,
   KEEP_WORKING,
   MORE_DONE,
   PERSONAL,
   QUOTES,
-  RENDER_STATUS,
-  SIDEBAR_NAV,
   SIDE_TOKENS,
   TOKEN_SUMMARY,
   USE_AGAIN,
   WALKTHROUGH,
   WORK_TODAY,
   YOUR_PLAN,
-  YOUTUBE_CHANNEL_URL,
-  type NavId,
   type PreviewTemplate,
-  type StatId,
-  type WorkId,
 } from './appPreviewData'
 import './AppPreview.css'
 
 const DESIGN_WIDTH = 1280
-const WINDOW_HEIGHT = 768
+const WINDOW_HEIGHT = 800
 
-const NAV_ICONS: Record<NavId, LucideIcon> = {
-  home: House,
-  browse: LayoutGrid,
-  saved: Bookmark,
-  library: Library,
-  playground: Sparkles,
-  brands: Briefcase,
-}
+type ViewId = 'home' | 'library' | 'browse' | 'saved' | 'playground' | 'brands'
+type Mode = 'image' | 'video'
+type LibraryPhase = 'rendering' | 'ready'
 
-const WORK_ICONS: Record<WorkId, LucideIcon> = {
-  statics: ImageIcon,
-  videos: Video,
-  playground: Sparkles,
-}
-
-const STAT_ICONS: Record<StatId, LucideIcon> = {
-  ads: Layers,
-  saved: Bookmark,
-  brands: Hexagon,
-  progress: RefreshCw,
-  workspaces: LayoutGrid,
-}
-
-type MediaState = {
-  load: boolean
-  play: boolean
-}
-
-const MediaCtx = createContext<MediaState>({ load: false, play: false })
-
-function glow(accent: string): CSSProperties {
-  return { '--ap-glow': accent } as CSSProperties
-}
+const MediaCtx = createContext({ load: false, play: false })
 
 function cx(...parts: Array<string | false | undefined>) {
   return parts.filter(Boolean).join(' ')
@@ -106,7 +63,6 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
       slot.style.height = `${WINDOW_HEIGHT * scale}px`
     }
 
-    // clientWidth ignores CSS transforms, so a tilted hero parent doesn't inflate the scale.
     apply(slot.clientWidth)
     const observer = new ResizeObserver((entries) => {
       const width = entries[0]?.contentRect.width
@@ -117,7 +73,7 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
   }, [slotRef, frameRef])
 }
 
-function usePreviewMedia(sectionRef: RefObject<HTMLElement | null>): MediaState {
+function usePreviewMedia(sectionRef: RefObject<HTMLElement | null>) {
   const [near, setNear] = useState(false)
   const [inView, setInView] = useState(false)
   const [reduce, setReduce] = useState(false)
@@ -125,22 +81,17 @@ function usePreviewMedia(sectionRef: RefObject<HTMLElement | null>): MediaState 
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
-
     const nearObs = new IntersectionObserver(([entry]) => setNear(Boolean(entry?.isIntersecting)), {
       rootMargin: '480px 0px',
       threshold: 0,
     })
-    const viewObs = new IntersectionObserver(([entry]) => setInView(Boolean(entry?.isIntersecting)), {
-      threshold: 0,
-    })
+    const viewObs = new IntersectionObserver(([entry]) => setInView(Boolean(entry?.isIntersecting)), { threshold: 0 })
     nearObs.observe(el)
     viewObs.observe(el)
-
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const syncMotion = () => setReduce(motion.matches)
     syncMotion()
     motion.addEventListener('change', syncMotion)
-
     return () => {
       nearObs.disconnect()
       viewObs.disconnect()
@@ -148,23 +99,10 @@ function usePreviewMedia(sectionRef: RefObject<HTMLElement | null>): MediaState 
     }
   }, [sectionRef])
 
-  return {
-    load: (near || inView) && !reduce,
-    play: inView && !reduce,
-  }
+  return { load: (near || inView) && !reduce, play: inView && !reduce }
 }
 
-function PreviewVideo({
-  src,
-  poster,
-  width,
-  height,
-}: {
-  src: string
-  poster: string
-  width: number
-  height: number
-}) {
+function PreviewVideo({ src, poster, width, height }: { src: string; poster: string; width: number; height: number }) {
   const { load, play } = useContext(MediaCtx)
   const ref = useRef<HTMLVideoElement>(null)
   const loadedSrc = useRef<string | null>(null)
@@ -183,105 +121,21 @@ function PreviewVideo({
       el.src = src
       el.load()
     }
-    if (play) {
-      void el.play().catch(() => {
-        /* Autoplay can be blocked; the poster stays visible. */
-      })
-    } else {
-      el.pause()
-    }
+    if (play) void el.play().catch(() => undefined)
+    else el.pause()
   }, [load, play, src])
 
-  return (
-    <video
-      ref={ref}
-      className="ap-media"
-      poster={poster}
-      muted
-      loop
-      playsInline
-      preload="none"
-      width={width}
-      height={height}
-    />
-  )
+  return <video ref={ref} poster={poster} muted loop playsInline preload="none" width={width} height={height} />
 }
 
-function TemplateCard({ item, href }: { item: PreviewTemplate; href: string }) {
+function HomeIcon({ selected }: { selected: boolean }) {
   return (
-    <a
-      className="ap-card ap-template"
-      style={glow(item.accent)}
-      href={href}
-    >
-      {item.kind === 'video' ? (
-        <PreviewVideo src={item.videoSrc} poster={item.still.src} width={item.still.width} height={item.still.height} />
-      ) : (
-        <img
-          src={item.still.src}
-          alt=""
-          width={item.still.width}
-          height={item.still.height}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      )}
-      <span className="ap-template-meta">
-        <span>{item.label}</span>
-        <span className="ap-template-tag">{item.tag}</span>
-      </span>
-    </a>
-  )
-}
-
-function TemplateRows({
-  images,
-  videos,
-  href,
-  viewAll,
-}: {
-  images: readonly PreviewTemplate[]
-  videos: readonly PreviewTemplate[]
-  href: string
-  viewAll?: string
-}) {
-  return (
-    <>
-      <TemplateRow label="Image" items={images} href={href} viewAll={viewAll} />
-      <TemplateRow label="Video" items={videos} href={href} viewAll={viewAll} />
-    </>
-  )
-}
-
-function TemplateRow({
-  label,
-  items,
-  href,
-  viewAll,
-}: {
-  label: string
-  items: readonly PreviewTemplate[]
-  href: string
-  viewAll?: string
-}) {
-  return (
-    <div className="ap-row">
-      <div className="ap-row-head">
-        <span>{label}</span>
-        {viewAll ? (
-          <a className="ap-view-all" href={href}>
-            {viewAll}
-            <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
-          </a>
-        ) : null}
-      </div>
-      <div className="ap-template-grid">
-        {items.map((item) => (
-          <TemplateCard key={item.id} item={item} href={href} />
-        ))}
-      </div>
-    </div>
+    <span className={cx('ap-home-icon', selected && 'is-selected')} aria-hidden>
+      <img className="for-light for-line" src="/brand/adrender-home-line-light.svg" alt="" width={16} height={16} />
+      <img className="for-dark for-line" src="/brand/adrender-home-line-dark.svg" alt="" width={16} height={16} />
+      <img className="for-light for-fill" src="/brand/adrender-home-fill-light.svg" alt="" width={16} height={16} />
+      <img className="for-dark for-fill" src="/brand/adrender-home-fill-dark.svg" alt="" width={16} height={16} />
+    </span>
   )
 }
 
@@ -297,7 +151,7 @@ function QuoteBlock() {
     }
   }, [])
 
-  const onEnter = () => {
+  const advance = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setIndex((current) => (current + 1) % QUOTES.length)
       return
@@ -308,379 +162,413 @@ function QuoteBlock() {
       setIndex((current) => (current + 1) % QUOTES.length)
       setSwapping(false)
       timer.current = null
-    }, 150)
+    }, 300)
   }
 
   return (
-    <div className={swapping ? 'ap-quote is-swapping' : 'ap-quote'} onMouseEnter={onEnter}>
+    <div className={swapping ? 'ap-quote is-swapping' : 'ap-quote'} onMouseLeave={advance}>
       <p className="ap-quote-text">“{quote.text}”</p>
       <p className="ap-quote-by">— {quote.attribution}</p>
     </div>
   )
 }
 
-function Sidebar({ href }: { href: string }) {
+function RenderingDots() {
   return (
-    <aside className="ap-sidebar">
-      <div className="ap-brand-row">
-        <a className="ap-brand" href={href}>
-          <img src="/WebApp_Main_Logo.png" alt="" width={146} height={128} loading="lazy" decoding="async" />
-          <span>
-            <span className="ap-brand-name">{ACCOUNT.product}</span>
-            <span className="ap-brand-plan">
-              <CreditCard size={12} strokeWidth={1.75} aria-hidden />
-              {ACCOUNT.plan}
-            </span>
-          </span>
-        </a>
-        <a className="ap-collapse" href={href} aria-label={ACCOUNT.collapseLabel}>
-          <ChevronsLeft size={16} strokeWidth={1.75} aria-hidden />
-        </a>
-      </div>
+    <span className="rendering-dots" aria-hidden>
+      <span />
+      <span />
+      <span />
+    </span>
+  )
+}
 
-      <div className="ap-toggle" role="group" aria-label="Image or video">
-        <a className="ap-toggle-btn is-selected" href={href}>
-          <ImageIcon size={13} strokeWidth={1.75} aria-hidden />
-          Image
-        </a>
-        <a className="ap-toggle-btn" href={href}>
-          <Video size={13} strokeWidth={1.75} aria-hidden />
-          Video
-        </a>
-      </div>
+function Sidebar({
+  view,
+  mode,
+  libraryPhase,
+  href,
+  onView,
+  onMode,
+  onCollapse,
+}: {
+  view: ViewId
+  mode: Mode
+  libraryPhase: LibraryPhase
+  href: string
+  onView: (id: ViewId) => void
+  onMode: (mode: Mode) => void
+  onCollapse: () => void
+}) {
+  const librarySelected = view === 'library'
+  const libraryReady = libraryPhase === 'ready'
 
-      <p className="ap-status">
-        <span className="ap-pip ap-pip-amber" aria-hidden />
-        <b>{RENDER_STATUS.rendering}</b>
-        <span aria-hidden>/</span>
-        <span className="ap-pip ap-pip-green" aria-hidden />
-        <b>{RENDER_STATUS.ready}</b>
-        <span>{RENDER_STATUS.label}</span>
-      </p>
+  return (
+    <aside className="ap-sidebar" aria-label="App sidebar">
+      <div className="ap-top">
+        <div className="ap-segment" role="group" aria-label="Image or video">
+          <button type="button" aria-pressed={mode === 'image'} onClick={() => onMode('image')}>
+            <ImageIcon size={14} weight={mode === 'image' ? 'fill' : 'regular'} aria-hidden />
+            <span>Image</span>
+          </button>
+          <button type="button" aria-pressed={mode === 'video'} onClick={() => onMode('video')}>
+            <VideoCamera size={14} weight={mode === 'video' ? 'fill' : 'regular'} aria-hidden />
+            <span>Video</span>
+          </button>
+        </div>
+        <button type="button" className="ap-icon-btn" aria-label={ACCOUNT.collapseLabel} onClick={onCollapse}>
+          <CaretDoubleLeft size={16} aria-hidden />
+        </button>
+      </div>
 
       <nav className="ap-nav" aria-label="Workspace">
-        {SIDEBAR_NAV.map((item) => {
-          const Icon = NAV_ICONS[item.id]
-          return (
-            <a
-              key={item.id}
-              className={cx('ap-nav-link', item.active && 'is-active')}
-              href={href}
-              aria-current={item.active ? 'page' : undefined}
-            >
-              <span className="ap-nav-icon">
-                <Icon size={16} strokeWidth={1.75} aria-hidden />
-              </span>
-              <span className="ap-nav-label">{item.label}</span>
-            </a>
-          )
-        })}
+        <button type="button" className={cx('ap-nav-btn', view === 'home' && 'is-selected')} aria-current={view === 'home' ? 'page' : undefined} onClick={() => onView('home')}>
+          <HomeIcon selected={view === 'home'} />
+          <b className="ap-hide">AdRender</b>
+        </button>
+        <button
+          type="button"
+          className={cx('ap-nav-btn', librarySelected && 'is-selected', libraryReady && 'library-ready')}
+          aria-current={librarySelected ? 'page' : undefined}
+          onClick={() => onView('library')}
+        >
+          {libraryReady ? (
+            <CheckCircle size={16} weight={librarySelected ? 'fill' : 'regular'} aria-hidden />
+          ) : (
+            <RenderingDots />
+          )}
+          <span className="ap-hide">{libraryReady ? 'Ready' : 'Rendering'}</span>
+          {libraryReady ? <span className="ap-nav-count">2</span> : null}
+        </button>
+        <NavButton id="browse" label="Browse Templates" selected={view === 'browse'} onView={onView} icon={<SquaresFour size={16} weight={view === 'browse' ? 'fill' : 'regular'} />} />
+        <NavButton id="saved" label="Saved Templates" selected={view === 'saved'} onView={onView} icon={<BookmarkSimple size={16} weight={view === 'saved' ? 'fill' : 'regular'} />} />
+        <NavButton id="playground" label="Ad Playground" selected={view === 'playground'} onView={onView} icon={<MagicWand size={16} weight={view === 'playground' ? 'fill' : 'regular'} />} />
+        <NavButton id="brands" label="Brands & Campaigns" selected={view === 'brands'} onView={onView} icon={<Megaphone size={16} weight={view === 'brands' ? 'fill' : 'regular'} />} />
       </nav>
 
       <div className="ap-side-bottom">
-        <a className="ap-workspace" href={href}>
+        <a className="ap-side-btn" href={href}>
+          <UserCircleCheck size={16} aria-hidden />
+          <span className="ap-side-copy">
+            <strong>{ACCOUNT.workspace}</strong>
+            <small>{ACCOUNT.workspaceMeta}</small>
+          </span>
+          <CaretUpDown className="ap-caret" size={14} aria-hidden />
+        </a>
+        <div className="ap-tokens">
+          <Coins size={16} aria-hidden />
+          <span className="ap-hide">{TOKEN_SUMMARY.available} tokens</span>
+          <a href={href}>{SIDE_TOKENS.action}</a>
+        </div>
+        <a className="ap-side-btn ap-profile" href={href}>
           <span className="ap-avatar" aria-hidden>
             JL
           </span>
-          <span>
-            <span className="ap-workspace-name">{ACCOUNT.workspace}</span>
-            <span className="ap-workspace-sub">{ACCOUNT.workspaceMeta}</span>
+          <span className="ap-side-copy">
+            <strong>{ACCOUNT.name}</strong>
+            <small>{ACCOUNT.email}</small>
           </span>
-          <ChevronDown className="ap-workspace-chevron" size={14} strokeWidth={1.75} aria-hidden />
-        </a>
-        <a className="ap-token-box" href={href}>
-          <span className="ap-token-left">
-            <Coins size={16} strokeWidth={1.75} aria-hidden />
-            <span>
-              <span className="ap-token-label">{SIDE_TOKENS.label}</span>
-              <span className="ap-token-count">{TOKEN_SUMMARY.available}</span>
-            </span>
-          </span>
-          <span className="ap-token-action">{SIDE_TOKENS.action} →</span>
-        </a>
-        <a className="ap-user" href={href}>
-          <img src="/WebApp_Main_Logo.png" alt="" width={146} height={128} loading="lazy" decoding="async" />
-          <span className="ap-user-copy">
-            <span className="ap-user-name">{ACCOUNT.name}</span>
-            <span className="ap-user-email">{ACCOUNT.email}</span>
-          </span>
-        </a>
-        <a className="ap-signout" href={href}>
-          <LogOut size={13} strokeWidth={1.75} aria-hidden />
-          {ACCOUNT.signOut}
+          <CaretUpDown className="ap-caret" size={14} aria-hidden />
         </a>
       </div>
     </aside>
   )
 }
 
-function HomeColumn({ href }: { href: string }) {
+function NavButton({
+  id,
+  label,
+  selected,
+  icon,
+  onView,
+}: {
+  id: ViewId
+  label: string
+  selected: boolean
+  icon: ReactNode
+  onView: (id: ViewId) => void
+}) {
   return (
-    <div className="ap-home">
-      <QuoteBlock />
+    <button type="button" className={cx('ap-nav-btn', selected && 'is-selected')} aria-current={selected ? 'page' : undefined} onClick={() => onView(id)}>
+      {icon}
+      <span className="ap-hide">{label}</span>
+    </button>
+  )
+}
 
-      <div className="ap-top-grid">
-        <div className="ap-panel ap-work-panel">
-          <p className="ap-kicker">Work today</p>
-          <div className="ap-work-grid">
-            {WORK_TODAY.map((card) => {
-              const Icon = WORK_ICONS[card.id]
-              return (
-                <a
-                  key={card.id}
-                  className="ap-card ap-work-card"
-                  style={glow(card.accent)}
-                  href={href}
-                >
-                  <span className="ap-work-icon">
-                    <Icon size={16} strokeWidth={1.75} aria-hidden />
-                  </span>
-                  <span className="ap-work-title">{card.title}</span>
-                  <span className="ap-work-sub">{card.body}</span>
-                </a>
-              )
-            })}
-          </div>
-        </div>
-
-        <a className="ap-card ap-keep" style={glow(KEEP_WORKING.accent)} href={href}>
-          <p className="ap-kicker">{KEEP_WORKING.kicker}</p>
-          <span className="ap-thumb">
-            <img
-              src={KEEP_WORKING.still.src}
-              alt=""
-              width={KEEP_WORKING.still.width}
-              height={KEEP_WORKING.still.height}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-            />
+function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly PreviewTemplate[]; href: string; priorityFirst?: boolean }) {
+  return (
+    <div className="ap-tiles">
+      {items.map((item, index) => (
+        <a key={item.id} className="ap-tile" href={href}>
+          <span className="ap-tile-media">
+            {item.kind === 'video' ? (
+              <PreviewVideo src={item.videoSrc} poster={item.still.src} width={item.still.width} height={item.still.height} />
+            ) : (
+              <img
+                src={item.still.src}
+                alt=""
+                width={item.still.width}
+                height={item.still.height}
+                loading={priorityFirst && index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchPriority={priorityFirst && index === 0 ? 'high' : undefined}
+                draggable={false}
+              />
+            )}
           </span>
-          <span className="ap-keep-row">
-            <span>
-              <span className="ap-keep-title">{KEEP_WORKING.title}</span>
-              <span className="ap-keep-when">{KEEP_WORKING.when}</span>
-            </span>
-            <span className="ap-keep-arrow">
-              <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
-            </span>
+          <span className="ap-tile-meta">
+            <span>{item.label}</span>
+            <span className={cx('ap-badge', item.kind === 'video' ? 'is-warning' : 'is-success')}>{item.kind === 'video' ? 'Video' : 'Image'}</span>
           </span>
         </a>
-
-        <a className="ap-card ap-your-plan is-lit" style={glow(YOUR_PLAN.accent)} href={href}>
-          <span className="ap-kicker-row">
-            <span className="ap-mini-icon">
-              <CreditCard size={13} strokeWidth={1.75} aria-hidden />
-            </span>
-            <span className="ap-kicker">{YOUR_PLAN.kicker}</span>
-          </span>
-          <span className="ap-plan-title">{YOUR_PLAN.name}</span>
-          <span className="ap-plan-status">{YOUR_PLAN.status}</span>
-          <span className="ap-plan-renew">{YOUR_PLAN.renews}</span>
-          <span className="ap-output">{YOUR_PLAN.output}</span>
-        </a>
-      </div>
-
-      <div className="ap-mid-grid">
-        <a className="ap-card ap-tokens" style={glow(TOKEN_SUMMARY.accent)} href={href}>
-          <span className="ap-tokens-head">
-            <span className="ap-kicker-row">
-              <span className="ap-mini-icon">
-                <Coins size={13} strokeWidth={1.75} aria-hidden />
-              </span>
-              <span className="ap-kicker">{TOKEN_SUMMARY.kicker}</span>
-            </span>
-            <span className="ap-tokens-scope">{TOKEN_SUMMARY.scope}</span>
-          </span>
-          <span className="ap-tokens-num">{TOKEN_SUMMARY.available}</span>
-          <span className="ap-tokens-hint">{TOKEN_SUMMARY.availableLabel}</span>
-          <span className="ap-token-lines">
-            <span className="ap-token-line">
-              <span className="ap-token-line-label">{TOKEN_SUMMARY.planLabel}</span>
-              <span className="ap-token-line-num">{TOKEN_SUMMARY.plan}</span>
-              <span className="ap-token-line-note">
-                <span className="ap-token-dot" aria-hidden="true">·</span>
-                {TOKEN_SUMMARY.planNote}
-              </span>
-            </span>
-            <span className="ap-token-line">
-              <span className="ap-token-line-label">{TOKEN_SUMMARY.topUpLabel}</span>
-              <span className="ap-token-line-num">{TOKEN_SUMMARY.topUp}</span>
-              <span className="ap-token-line-note">
-                <span className="ap-token-dot" aria-hidden="true">·</span>
-                {TOKEN_SUMMARY.topUpNote}
-              </span>
-            </span>
-          </span>
-          <span className="ap-token-actions">
-            <span className="ap-btn">
-              <Plus size={14} strokeWidth={2} aria-hidden />
-              {TOKEN_SUMMARY.add}
-            </span>
-            <span className="ap-text-link">
-              {TOKEN_SUMMARY.billing}
-              <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
-            </span>
-          </span>
-        </a>
-
-        <div className="ap-card ap-walk" style={glow(WALKTHROUGH.accent)}>
-          <div className="ap-kicker-row">
-            <span className="ap-mini-icon">
-              <CirclePlay size={13} strokeWidth={1.75} aria-hidden />
-            </span>
-            <span className="ap-card-title">{WALKTHROUGH.title}</span>
-          </div>
-          <div className="ap-subhead">
-            <span>{WALKTHROUGH.section}</span>
-            <a className="ap-walk-hide" href={href}>
-              {WALKTHROUGH.hide}
-              <ChevronUp size={14} strokeWidth={1.75} aria-hidden />
-            </a>
-          </div>
-          <div className="ap-steps">
-            {WALKTHROUGH.steps.map((step) => (
-              <a key={step.id} className={cx('ap-step', step.done ? 'is-done' : 'is-todo')} href={href}>
-                <span className="ap-step-icon">
-                  {step.done ? (
-                    <CircleCheck size={16} strokeWidth={2} aria-hidden />
-                  ) : (
-                    <Circle size={16} strokeWidth={1.75} aria-hidden />
-                  )}
-                </span>
-                <span>{step.label}</span>
-                <ChevronRight className="ap-step-chevron" size={14} strokeWidth={1.75} aria-hidden />
-              </a>
-            ))}
-          </div>
-          <div className="ap-tutorial">
-            <div>
-              <p className="ap-tutorial-kicker">{WALKTHROUGH.tutorial}</p>
-              <p className="ap-tutorial-body">{WALKTHROUGH.body}</p>
-            </div>
-            <a className="ap-btn ap-btn-sm" href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener">
-              {WALKTHROUGH.youtube}
-              <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="ap-personal">
-        <p className="ap-kicker">{PERSONAL.kicker}</p>
-        <div className="ap-stats">
-          {PERSONAL.stats.map((stat) => {
-            const Icon = STAT_ICONS[stat.id]
-            return (
-              <a key={stat.id} className="ap-card ap-stat" style={glow(stat.accent)} href={href}>
-                <span className="ap-stat-top">
-                  <Icon size={14} strokeWidth={1.75} aria-hidden />
-                  <span className="ap-stat-label">{stat.label}</span>
-                  {stat.chevron ? <ChevronDown className="ap-stat-chevron" size={14} strokeWidth={1.75} aria-hidden /> : null}
-                </span>
-                <span className={stat.compact ? 'ap-stat-detail' : 'ap-stat-value'}>{stat.value}</span>
-              </a>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="ap-lower">
-        <section className="ap-panel" style={glow(MORE_DONE.accent)}>
-          <div className="ap-panel-head">
-            <div className="ap-panel-title-wrap">
-              <span className="ap-panel-icon">
-                <Sparkles size={15} strokeWidth={1.75} aria-hidden />
-              </span>
-              <div>
-                <p className="ap-panel-title">{MORE_DONE.title}</p>
-                <p className="ap-panel-sub">{MORE_DONE.subtitle}</p>
-              </div>
-            </div>
-            <a className="ap-btn ap-btn-sm" href={href}>
-              {MORE_DONE.billing}
-              <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
-            </a>
-          </div>
-          <div className="ap-plans">
-            {MORE_DONE.plans.map((plan) => (
-              <a
-                key={plan.id}
-                className="ap-card ap-plan"
-                style={glow(plan.accent)}
-                href={href}
-              >
-                <span className="ap-plan-kicker-slot">{plan.yours ? <span className="ap-you-pill">{MORE_DONE.yours}</span> : null}</span>
-                <span className="ap-plan-top">
-                  <span className="ap-plan-name">{plan.name}</span>
-                  <span className="ap-plan-price">
-                    {`$${plan.price}`}
-                    <span>/mo</span>
-                  </span>
-                </span>
-                <span className="ap-output">{plan.output}</span>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="ap-panel" style={glow(USE_AGAIN.accent)}>
-          <div className="ap-panel-title-wrap">
-            <span className="ap-panel-icon">
-              <RefreshCw size={15} strokeWidth={1.75} aria-hidden />
-            </span>
-            <div>
-              <p className="ap-panel-title">{USE_AGAIN.title}</p>
-              <p className="ap-panel-sub">{USE_AGAIN.subtitle}</p>
-            </div>
-          </div>
-          <div className="ap-lower" style={{ marginTop: 14 }}>
-            <TemplateRows images={USE_AGAIN.images} videos={USE_AGAIN.videos} href={href} />
-          </div>
-        </section>
-
-        <section className="ap-panel" style={glow(GET_INSPIRED.accent)}>
-          <div className="ap-panel-title-wrap">
-            <span className="ap-panel-icon">
-              <Lightbulb size={15} strokeWidth={1.75} aria-hidden />
-            </span>
-            <div>
-              <p className="ap-panel-title">{GET_INSPIRED.title}</p>
-              <p className="ap-panel-sub">{GET_INSPIRED.subtitle}</p>
-            </div>
-          </div>
-          <div className="ap-lower" style={{ marginTop: 14 }}>
-            <TemplateRows
-              images={GET_INSPIRED.images}
-              videos={GET_INSPIRED.videos}
-              href={href}
-              viewAll={GET_INSPIRED.viewAll}
-            />
-          </div>
-        </section>
-      </div>
+      ))}
     </div>
   )
 }
 
-function Chrome({ hintDismissed }: { hintDismissed: boolean }) {
+function HomeView({ href, mode }: { href: string; mode: Mode }) {
+  const stats = PERSONAL.stats.filter((stat) => stat.id !== 'workspaces')
+  const tones: TileTone[] = ['blue', 'violet', 'amber', 'green']
+  const workTones: Record<string, TileTone> = { statics: 'blue', videos: 'green', playground: 'amber' }
+
   return (
-    <div className="ap-chrome">
-      <span className="ap-traffic" aria-hidden>
-        <span className="ap-traffic-r" />
-        <span className="ap-traffic-y" />
-        <span className="ap-traffic-g" />
-      </span>
-      <span className="ap-url">{APP_ADDRESS}</span>
-      <span className={cx('ap-scroll-hint', hintDismissed && 'is-dismissed')} aria-hidden={hintDismissed || undefined}>
-        Scroll to explore ↓
-      </span>
+    <div className="ap-stack">
+      <QuoteBlock />
+      <div className="ap-page-head">
+        <IconTile tone="blue" size={36}>
+          <House size={18} />
+        </IconTile>
+        <div>
+          <h2>Home</h2>
+          <p>{ACCOUNT.workspace}</p>
+        </div>
+        <a href={href}>
+          <SquaresFour size={16} aria-hidden />
+          Browse templates
+        </a>
+      </div>
+
+      <div className="ap-stats">
+        {stats.map((stat, index) => (
+          <div key={stat.id} className="ap-stat">
+            <IconTile tone={tones[index] ?? 'blue'} size={36}>
+              <StatIcon id={stat.id} />
+            </IconTile>
+            <span>{stat.label}</span>
+            <b>{stat.value}</b>
+          </div>
+        ))}
+      </div>
+
+      <div className="ap-work">
+        <section className="ap-panel">
+          <h3>Work today</h3>
+          <div className="ap-work-grid">
+            {WORK_TODAY.map((card) => (
+              <a key={card.id} className="ap-mini" href={href} aria-current={mode === 'image' && card.id === 'statics' ? 'true' : undefined}>
+                <IconTile tone={workTones[card.id] ?? 'blue'} size={36}>
+                  <WorkIcon id={card.id} />
+                </IconTile>
+                <strong>{card.title}</strong>
+                <span>{card.body}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+        <a className="ap-panel ap-keep" href={href}>
+          <p className="ap-muted">{KEEP_WORKING.kicker}</p>
+          <img
+            src={KEEP_WORKING.still.src}
+            alt=""
+            width={KEEP_WORKING.still.width}
+            height={KEEP_WORKING.still.height}
+            fetchPriority="high"
+            decoding="async"
+          />
+          <span className="ap-keep-foot">
+            <span>
+              <b>{KEEP_WORKING.title}</b>
+              <span>{KEEP_WORKING.when}</span>
+            </span>
+            <ArrowRight size={16} aria-hidden />
+          </span>
+        </a>
+        <a className="ap-panel" href={href}>
+          <span className="ap-section-label">
+            <IconTile tone="green" size={32}>
+              <CreditCard size={16} />
+            </IconTile>
+            <span className="ap-muted">{YOUR_PLAN.kicker}</span>
+          </span>
+          <p className="ap-plan-name">{YOUR_PLAN.name}</p>
+          <p className="ap-muted">
+            {YOUR_PLAN.status} · {YOUR_PLAN.renews}
+          </p>
+          <p className="ap-muted">{YOUR_PLAN.output}</p>
+        </a>
+      </div>
+
+      <div className="ap-split">
+        <section className="ap-panel">
+          <span className="ap-section-label">
+            <IconTile tone="violet" size={32}>
+              <Coins size={16} />
+            </IconTile>
+            <span className="ap-muted">{TOKEN_SUMMARY.kicker}</span>
+            <span className="ap-muted" style={{ marginLeft: 'auto' }}>
+              {TOKEN_SUMMARY.scope}
+            </span>
+          </span>
+          <p className="ap-token-num">{TOKEN_SUMMARY.available}</p>
+          <p className="ap-muted">{TOKEN_SUMMARY.availableLabel}</p>
+          <div className="ap-token-pills">
+            <div>
+              <span className="ap-muted">{TOKEN_SUMMARY.planLabel}</span>
+              <b>{TOKEN_SUMMARY.plan}</b>
+              <span className="ap-muted">{TOKEN_SUMMARY.planNote}</span>
+            </div>
+            <div>
+              <span className="ap-muted">{TOKEN_SUMMARY.topUpLabel}</span>
+              <b>{TOKEN_SUMMARY.topUp}</b>
+              <span className="ap-muted">{TOKEN_SUMMARY.topUpNote}</span>
+            </div>
+          </div>
+        </section>
+        <section className="ap-panel">
+          <h3>{WALKTHROUGH.title}</h3>
+          <p className="ap-muted">{WALKTHROUGH.body}</p>
+          <div className="ap-steps">
+            {WALKTHROUGH.steps.map((step) => (
+              <a key={step.id} className="ap-step" href={href}>
+                <Check size={16} weight="bold" aria-hidden />
+                {step.label}
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section className="ap-panel">
+        <span className="ap-section-label">
+          <IconTile tone="orange" size={32}>
+            <Rocket size={16} />
+          </IconTile>
+          <span>
+            <h3>{MORE_DONE.title}</h3>
+            <p className="ap-muted">{MORE_DONE.subtitle}</p>
+          </span>
+        </span>
+        <div className="ap-plans">
+          {MORE_DONE.plans.map((plan) => (
+            <a key={plan.id} className="ap-plan" href={href}>
+              <span className="ap-plan-top">
+                <span>{plan.name}</span>
+                <span>${plan.price}/mo</span>
+              </span>
+              <span style={{ minHeight: 22, marginTop: 8 }}>
+                {plan.yours ? <span className="ap-badge is-success">{MORE_DONE.yours}</span> : null}
+              </span>
+              <p>{plan.output}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="ap-panel">
+        <span className="ap-section-label">
+          <IconTile tone="blue" size={32}>
+            <ArrowRight size={16} />
+          </IconTile>
+          <span>
+            <h3>{USE_AGAIN.title}</h3>
+            <p className="ap-muted">{USE_AGAIN.subtitle}</p>
+          </span>
+        </span>
+        <Row label="Image" items={USE_AGAIN.images} href={href} priority />
+        <Row label="Video" items={USE_AGAIN.videos} href={href} />
+      </section>
+
+      <section className="ap-panel">
+        <span className="ap-section-label">
+          <IconTile tone="violet" size={32}>
+            <Lightbulb size={16} />
+          </IconTile>
+          <span>
+            <h3>{GET_INSPIRED.title}</h3>
+            <p className="ap-muted">{GET_INSPIRED.subtitle}</p>
+          </span>
+        </span>
+        <Row label="Image" items={GET_INSPIRED.images} href={href} viewAll={GET_INSPIRED.viewAll} />
+        <Row label="Video" items={GET_INSPIRED.videos} href={href} viewAll={GET_INSPIRED.viewAll} />
+      </section>
+    </div>
+  )
+}
+
+function Row({
+  label,
+  items,
+  href,
+  viewAll,
+  priority = false,
+}: {
+  label: string
+  items: readonly PreviewTemplate[]
+  href: string
+  viewAll?: string
+  priority?: boolean
+}) {
+  return (
+    <div>
+      <div className="ap-row-head">
+        <span>{label}</span>
+        {viewAll ? (
+          <a href={href}>
+            {viewAll}
+            <ArrowRight size={14} aria-hidden />
+          </a>
+        ) : null}
+      </div>
+      <TemplateTiles items={items} href={href} priorityFirst={priority && label === 'Image'} />
+    </div>
+  )
+}
+
+function StatIcon({ id }: { id: string }) {
+  if (id === 'saved') return <BookmarkSimple size={18} />
+  if (id === 'brands') return <Megaphone size={18} />
+  if (id === 'progress') return <Rocket size={18} />
+  return <SquaresFour size={18} />
+}
+
+function WorkIcon({ id }: { id: string }) {
+  if (id === 'videos') return <VideoCamera size={18} />
+  if (id === 'playground') return <MagicWand size={18} />
+  return <ImageIcon size={18} />
+}
+
+function SimpleView({
+  title,
+  body,
+  items,
+  href,
+}: {
+  title: string
+  body: string
+  items: readonly PreviewTemplate[]
+  href: string
+}) {
+  return (
+    <div className="ap-stack">
+      <h2 className="ap-view-title">{title}</h2>
+      <p className="ap-muted">{body}</p>
+      <TemplateTiles items={items} href={href} />
     </div>
   )
 }
 
 type AppPreviewSectionProps = {
-  /** Hero column: the mockup only, without the section heading. */
   embedded?: boolean
 }
 
@@ -689,13 +577,22 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
   const sectionRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
-  const [hintDismissed, setHintDismissed] = useState(false)
   const media = usePreviewMedia(sectionRef)
   useFrameScale(slotRef, frameRef)
+  const [view, setView] = useState<ViewId>('home')
+  const [mode, setMode] = useState<Mode>('image')
+  const [collapsed, setCollapsed] = useState(false)
+  const [libraryPhase, setLibraryPhase] = useState<LibraryPhase>('rendering')
 
-  const onMainScroll = (event: UIEvent<HTMLDivElement>) => {
-    if (event.currentTarget.scrollTop > 0) setHintDismissed(true)
-  }
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setLibraryPhase('ready')
+      return
+    }
+    const timer = window.setTimeout(() => setLibraryPhase('ready'), 3000)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   const frameVars = {
     '--ap-design-w': `${DESIGN_WIDTH}px`,
@@ -706,21 +603,44 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
     <div className="ap-scaler">
       <div className="ap-slot" ref={slotRef}>
         <div className="ap-frame" ref={frameRef}>
-          <div className="ap-window" role="region" aria-label="AdRender app home screen">
-            <Chrome hintDismissed={hintDismissed} />
-            <div className="ap-body">
-              <Sidebar href={signupHref} />
-              <div className="ap-main">
-                <MediaCtx.Provider value={media}>
-                  <div className="ap-main-scroll" onScroll={onMainScroll}>
-                    <HomeColumn href={signupHref} />
+          <div className={cx('ap-window', collapsed && 'is-collapsed')} role="region" aria-label="AdRender app home">
+            <Sidebar
+              view={view}
+              mode={mode}
+              libraryPhase={libraryPhase}
+              href={signupHref}
+              onView={setView}
+              onMode={setMode}
+              onCollapse={() => setCollapsed((value) => !value)}
+            />
+            <div className="ap-content">
+              <MediaCtx.Provider value={media}>
+                <div className="ap-scroll">
+                  <div hidden={view !== 'home'}>
+                    <HomeView href={signupHref} mode={mode} />
                   </div>
-                </MediaCtx.Provider>
-                <div className="ap-fade" aria-hidden />
-                <a className="ap-chat" href={signupHref} aria-label="Chat">
-                  <MessageCircle size={18} strokeWidth={1.75} aria-hidden />
-                </a>
-              </div>
+                  {view === 'library' ? (
+                    <SimpleView
+                      title={libraryPhase === 'ready' ? 'Library' : 'Library'}
+                      body={libraryPhase === 'ready' ? 'Ready 2' : 'Rendering'}
+                      items={[...USE_AGAIN.images.slice(0, 2), ...USE_AGAIN.videos.slice(0, 2)]}
+                      href={signupHref}
+                    />
+                  ) : null}
+                  {view === 'browse' ? (
+                    <SimpleView title="Browse templates" body={GET_INSPIRED.subtitle} items={mode === 'video' ? GET_INSPIRED.videos : GET_INSPIRED.images} href={signupHref} />
+                  ) : null}
+                  {view === 'saved' ? (
+                    <SimpleView title="Saved templates" body={USE_AGAIN.subtitle} items={mode === 'video' ? USE_AGAIN.videos : USE_AGAIN.images} href={signupHref} />
+                  ) : null}
+                  {view === 'playground' ? (
+                    <SimpleView title="Ad Playground" body={WORK_TODAY[2]?.body ?? 'Restyle your own reference'} items={GET_INSPIRED.images.slice(0, 4)} href={signupHref} />
+                  ) : null}
+                  {view === 'brands' ? (
+                    <SimpleView title="Brands & Campaigns" body="Learns your brand once. Applies it to everything." items={USE_AGAIN.images} href={signupHref} />
+                  ) : null}
+                </div>
+              </MediaCtx.Provider>
             </div>
           </div>
         </div>
