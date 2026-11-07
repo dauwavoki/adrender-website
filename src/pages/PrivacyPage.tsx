@@ -1,4 +1,5 @@
 import { PageMeta } from '../components/PageMeta'
+import { LegalHeader } from '../components/LegalHeader'
 
 const TITLE = 'Privacy Policy — AdRender'
 const DESCRIPTION =
@@ -6,45 +7,9 @@ const DESCRIPTION =
 
 export function PrivacyPage() {
   return (
-    <div className="min-h-dvh bg-bg-base text-zinc-300">
+    <div className="legal-doc">
       <PageMeta title={TITLE} description={DESCRIPTION} path="/privacy" />
-      {/* Minimal standalone header */}
-      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-bg-base/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4 md:px-6">
-          <a
-            href="https://adrender.app"
-            className="inline-flex shrink-0 items-center gap-2.5 font-semibold tracking-tight text-white"
-            style={{ fontFamily: "'Syne', ui-sans-serif, system-ui, sans-serif" }}
-          >
-            <img
-              src="/WebApp_Main_Logo.png"
-              alt=""
-              aria-hidden
-              className="h-[32px] w-auto"
-            />
-            <span className="text-[18px] leading-none">AdRender</span>
-          </a>
-          <a
-            href="https://app.adrender.app"
-            className="flex items-center gap-1.5 text-sm text-zinc-400 transition hover:text-[#00e5ff]"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M19 12H5M5 12l7-7M5 12l7 7" />
-            </svg>
-            Back
-          </a>
-        </div>
-      </header>
+      <LegalHeader />
 
       {/* Content */}
       <main className="mx-auto max-w-4xl px-4 pb-24 pt-12 md:px-6">

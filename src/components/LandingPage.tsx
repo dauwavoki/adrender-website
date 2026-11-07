@@ -1,66 +1,49 @@
-import { ScrollReveal } from './ScrollReveal'
 import { PageMeta } from './PageMeta'
 import { Hero } from './Hero'
 import { ProofRow } from './ProofRow'
 import { HowItWorks } from './HowItWorks'
 import { FounderStory } from './FounderStory'
 import { Pricing } from './Pricing'
-import { FaqSection, landingSharedFaqGroups } from './FaqSection'
-import { ClosingCta } from './ClosingCta'
 import { landingPath, CTA_NOTE, type LandingPageConfig } from '../data/landingPages'
+import { landingSharedFaqGroups } from './FaqSection'
+import { SplitTitle } from './site/SplitTitle'
+import { FaqTwoColumn } from './site/FaqTwoColumn'
+import { ClosingCta } from './site/ClosingCta'
+import { IconTile, toneAt } from './site/IconTile'
+import { getSignupUrl } from '../lib/appUrl'
 
 type LandingPageProps = {
   config: LandingPageConfig
 }
 
-function sharedFaqForPage(items: LandingPageConfig['faq']) {
-  return landingSharedFaqGroups(new Set(items.map((item) => item.q)))
-}
-
 export function LandingPage({ config }: LandingPageProps) {
   const path = landingPath(config.slug)
-  const cols =
-    config.features.length === 3
-      ? 'sm:grid-cols-2 lg:grid-cols-3'
-      : 'sm:grid-cols-2 lg:grid-cols-4'
+  const groups = landingSharedFaqGroups(new Set(config.faq.map((item) => item.q)))
 
   return (
     <>
       <PageMeta title={config.documentTitle} description={config.metaDescription} path={path} />
-      <Hero
-        headline={config.headline}
-        subhead={config.subhead}
-        ctaNote={CTA_NOTE}
-        audienceLine={null}
-      />
-      <ProofRow stats={config.stats} />
+      <Hero headline={config.headline} subhead={config.subhead} ctaNote={CTA_NOTE} showcase />
+      <ProofRow stats={config.stats} clearStage />
       <HowItWorks />
 
-      <section id="features" className="scroll-mt-28 border-t border-white/[0.06] px-4 py-24 md:px-6 md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <ScrollReveal>
-            <p className="text-section-label text-center text-xs font-semibold uppercase tracking-[0.2em]">
-              Why AdRender
-            </p>
-            <h2 className="mx-auto mt-3 max-w-3xl text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-              {config.featuresHeading}
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-center text-zinc-500">{config.featuresSub}</p>
-          </ScrollReveal>
-
-          <div className={`mt-14 grid gap-5 ${cols}`}>
-            {config.features.map((f) => {
-              const Icon = f.icon
+      <section id="features" className="site-section scroll-mt-28">
+        <div className="site-column">
+          <SplitTitle as="h2" lead={config.featuresHeading} />
+          <p className="site-lead" style={{ marginTop: 12, maxWidth: 640 }}>
+            {config.featuresSub}
+          </p>
+          <div className="site-card-grid cols-3" style={{ marginTop: 28 }}>
+            {config.features.map((feature, index) => {
+              const Icon = feature.icon
               return (
-                <ScrollReveal key={f.heading}>
-                  <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-[#14141c] p-6">
-                    <div className={`flex items-center gap-2 ${f.accent}`}>
-                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                      <h3 className="font-heading text-base font-bold tracking-tight text-white">{f.heading}</h3>
-                    </div>
-                    <p className="mt-3 text-sm leading-relaxed text-zinc-500">{f.body}</p>
-                  </article>
-                </ScrollReveal>
+                <article key={feature.heading} className="site-plan">
+                  <IconTile tone={toneAt(index)} size={32}>
+                    <Icon className="h-4 w-4" />
+                  </IconTile>
+                  <h3>{feature.heading}</h3>
+                  <p className="site-body">{feature.body}</p>
+                </article>
               )
             })}
           </div>
@@ -69,11 +52,25 @@ export function LandingPage({ config }: LandingPageProps) {
 
       <FounderStory heading={config.founderHeading} paragraphs={config.founderParagraphs} />
       <Pricing />
-      <FaqSection leadingItems={config.faq} groups={sharedFaqForPage(config.faq)} intro={config.faqIntro} />
+
+      <section className="site-section" id="faq">
+        <div className="site-column">
+          <FaqTwoColumn items={config.faq} title="Questions" />
+          {config.faqIntro ? <p className="site-meta" style={{ marginTop: 16 }}>{config.faqIntro}</p> : null}
+          {groups.map((group) => (
+            <div key={group.label} style={{ marginTop: 48 }}>
+              <FaqTwoColumn items={group.items} title={group.label} />
+            </div>
+          ))}
+        </div>
+      </section>
+
       <ClosingCta
-        heading={config.ctaHeading}
-        sub={config.ctaSub}
-        ctaNote={CTA_NOTE}
+        lead={config.ctaHeading}
+        sentence={config.ctaSub}
+        note={CTA_NOTE}
+        href={getSignupUrl()}
+        label="Start free"
       />
     </>
   )

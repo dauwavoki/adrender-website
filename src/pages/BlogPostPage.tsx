@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Components } from 'react-markdown'
 import { PageMeta } from '../components/PageMeta'
-import { ScrollReveal } from '../components/ScrollReveal'
-import { blogPostPath, formatPostDate, getPostBySlug } from '../data/blog'
+import { blogPostPath, blogPosts, formatPostDate, getPostBySlug } from '../data/blog'
+import { LinkTable } from '../components/site/LinkTable'
+import { ClosingCta } from '../components/site/ClosingCta'
+import { getSignupUrl } from '../lib/appUrl'
 
 const SHOPIFY_APP_STORE_URL = 'https://apps.shopify.com/adrender'
 const SHOPIFY_APP_CTA_LABEL = 'Get the AdRender Shopify app'
@@ -56,40 +58,53 @@ export function BlogPostPage() {
 
   const path = blogPostPath(post.slug)
   const title = `${post.title} — AdRender Blog`
+  const related = blogPosts
+    .filter((item) => item.slug !== post.slug)
+    .slice(0, 4)
+    .map((item) => ({
+      title: item.title,
+      description: item.description,
+      to: blogPostPath(item.slug),
+    }))
 
   return (
-    <article className="px-4 py-20 md:px-6 md:py-28">
+    <>
       <PageMeta title={title} description={post.description} path={path} ogType="article" />
-      <div className="mx-auto max-w-2xl">
-        <ScrollReveal>
-          <p className="text-section-label text-xs font-semibold uppercase tracking-[0.2em]">
-            <Link to="/blog" className="transition hover:text-white">
-              Blog
-            </Link>
-          </p>
-          <h1 className="mt-3 font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">{post.title}</h1>
-          <time dateTime={post.publishedDate} className="mt-4 block text-sm text-zinc-500">
-            {formatPostDate(post.publishedDate)}
-            {post.updatedDate && post.updatedDate !== post.publishedDate && (
+      <article className="site-section">
+        <div className="site-blog-body">
+          <nav className="site-breadcrumb" aria-label="Breadcrumb">
+            <a href="/blog">Blog</a>
+            <span aria-hidden> / </span>
+            <span aria-current="page">{post.title}</span>
+          </nav>
+          <h1 className="site-blog-title">{post.title}</h1>
+          <p className="site-meta" style={{ marginTop: 12 }}>
+            <time dateTime={post.publishedDate}>{formatPostDate(post.publishedDate)}</time>
+            {post.updatedDate && post.updatedDate !== post.publishedDate ? (
               <span> · Updated {formatPostDate(post.updatedDate)}</span>
-            )}
-          </time>
-        </ScrollReveal>
-
-        <ScrollReveal>
-          <div className="blog-prose mt-10">
+            ) : null}
+          </p>
+          <div className="blog-prose" style={{ marginTop: 28 }}>
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {post.content}
             </ReactMarkdown>
           </div>
-        </ScrollReveal>
-
-        <div className="mt-14 border-t border-white/[0.06] pt-8">
-          <Link to="/blog" className="text-sm font-medium text-zinc-500 transition hover:text-[var(--accent-cyan)]">
-            ← All posts
-          </Link>
         </div>
-      </div>
-    </article>
+      </article>
+      <section className="site-section">
+        <div className="site-column">
+          <h2 className="site-h3">More notes</h2>
+          <div style={{ marginTop: 16 }}>
+            <LinkTable rows={related} label="More notes" />
+          </div>
+        </div>
+      </section>
+      <ClosingCta
+        lead="Stop stitching tools together."
+        sentence="Your brand goes in. Hundreds of ads come out. Free to start, no card required."
+        href={getSignupUrl()}
+        label="Start free"
+      />
+    </>
   )
 }

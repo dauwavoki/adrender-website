@@ -62,11 +62,17 @@ export function PrimaryLink({
   )
 }
 
-export function SecondaryLink({ href, children, className, onClick }: LinkProps) {
+export function SecondaryLink({ href, children, className, onClick, newTab = false }: LinkProps) {
   const classNames = cx('site-btn site-btn-secondary', className)
-  if (isExternal(href) || href.startsWith('/#') || href.startsWith('#')) {
+  if (isExternal(href) || newTab || href.startsWith('/#') || href.startsWith('#')) {
     return (
-      <a href={href} className={classNames} onClick={onClick}>
+      <a
+        href={href}
+        className={classNames}
+        onClick={onClick}
+        target={newTab ? '_blank' : undefined}
+        rel={newTab ? 'noopener noreferrer' : undefined}
+      >
         {children}
       </a>
     )

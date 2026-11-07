@@ -1808,6 +1808,7 @@ html.dark .site-segment button[aria-pressed='true'] {
   .site-table-stack,
   .site-table-stack tbody,
   .site-table-stack tr,
+  .site-table-stack th,
   .site-table-stack td {
     display: block;
     width: 100%;
@@ -2530,4 +2531,224 @@ html.dark .site-post-card:hover {
 .site-table tr.is-quiet td {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.site-cell {
+  display: inline-flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.site-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.site-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.site-pill.is-selected {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+.site-blog-body {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.site-blog-title {
+  margin: 16px 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .site-blog-title {
+    font-size: 48px;
+    line-height: 54px;
+  }
+
+  .site-card-grid.cols-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-card-grid.cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.contact-split {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .contact-split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 48px;
+  }
+}
+
+.contact-bullets {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-bullets li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 16px;
+}
+
+.site-field {
+  display: grid;
+  gap: 6px;
+}
+
+.site-field label {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.site-field input,
+.site-field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 15px;
+}
+
+.site-field input {
+  height: 44px;
+  padding: 0 12px;
+}
+
+.site-field textarea {
+  min-height: 120px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.legal-doc {
+  min-height: 100dvh;
+  background: var(--site-bg);
+  color: var(--text-secondary);
+}
+
+.legal-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  background: color-mix(in srgb, var(--site-bg) 92%, transparent);
+  border-bottom: 1px solid var(--hairline);
+  backdrop-filter: blur(12px);
+}
+
+.legal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.legal-header-actions a {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.legal-doc h1,
+.legal-doc h2 {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.legal-doc h1 {
+  font-size: 40px;
+  line-height: 44px;
+}
+
+.legal-doc h2 {
+  font-size: 30px;
+  line-height: 36px;
+}
+
+.legal-doc h3 {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.legal-doc a {
+  color: var(--text-primary);
+}
+
+.legal-doc .text-white,
+.legal-doc .text-zinc-200,
+.legal-doc .text-zinc-300,
+.legal-doc .text-zinc-400,
+.legal-doc .text-zinc-500,
+.legal-doc .text-zinc-600 {
+  color: var(--text-secondary);
+}
+
+.legal-doc h1.text-white,
+.legal-doc h2.text-white,
+.legal-doc h3.text-white,
+.legal-doc h3.text-zinc-200 {
+  color: var(--text-primary);
+}
+
+.legal-doc [class*='border-white'] {
+  border-color: var(--hairline);
+}
+
+@media (min-width: 768px) {
+  .legal-doc h1 {
+    font-size: 48px;
+    line-height: 54px;
+  }
 }

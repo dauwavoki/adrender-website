@@ -264,9 +264,9 @@ html.dark {
   }
 
   .blog-prose {
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: #a1a1aa;
+    font-size: 18px;
+    line-height: 30px;
+    color: var(--text-primary);
   }
 
   .blog-prose > * + * {
@@ -275,29 +275,32 @@ html.dark {
 
   .blog-prose h2 {
     margin-top: 2em;
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 36px;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--text-primary);
   }
 
   .blog-prose h3 {
     margin-top: 1.75em;
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 20px;
     font-weight: 600;
-    color: #fff;
+    line-height: 28px;
+    color: var(--text-primary);
   }
 
   .blog-prose a {
-    color: var(--accent-cyan);
+    color: var(--text-primary);
     text-decoration: underline;
+    text-decoration-color: var(--border-strong);
     text-underline-offset: 3px;
   }
 
   .blog-prose a:hover {
-    color: #fff;
+    color: var(--text-primary);
   }
 
   .blog-prose a.blog-cta {
@@ -314,23 +317,21 @@ html.dark {
     font-size: 1.0625rem;
     font-weight: 600;
     line-height: 1.25;
-    color: #fff;
+    color: var(--btn-primary-text);
     text-align: center;
     text-decoration: none;
-    background-image: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    background: var(--btn-primary-bg);
+    border-radius: 999px;
+    box-shadow: none;
     transition:
       background-image 0.2s ease,
       box-shadow 0.2s ease;
   }
 
   .blog-prose a.blog-cta:hover {
-    color: #fff;
+    color: var(--btn-primary-text);
     text-decoration: none;
-    background-image: linear-gradient(90deg, var(--accent-purple), var(--accent-orange));
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08),
-      0 0 24px -4px color-mix(in srgb, var(--accent-cyan) 25%, transparent);
+    opacity: 0.9;
   }
 
   @media (min-width: 640px) {
@@ -340,7 +341,7 @@ html.dark {
   }
 
   .blog-prose strong {
-    color: #e4e4e7;
+    color: var(--text-primary);
     font-weight: 600;
   }
 
@@ -355,17 +356,17 @@ html.dark {
 
   .blog-prose code {
     border-radius: 0.25rem;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--bg-inset);
     padding: 0.15em 0.35em;
     font-size: 0.9em;
-    color: #e4e4e7;
+    color: var(--text-primary);
   }
 
   .blog-prose pre {
     overflow-x: auto;
     border-radius: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: #12121a;
+    border: 1px solid var(--hairline);
+    background: var(--bg-inset);
     padding: 1rem 1.25rem;
   }
 
@@ -375,17 +376,17 @@ html.dark {
   }
 
   .blog-prose blockquote {
-    border-left: 2px solid color-mix(in srgb, var(--accent-cyan) 45%, transparent);
+    border-left: 2px solid var(--border-strong);
     padding-left: 1em;
-    color: #71717a;
+    color: var(--text-secondary);
   }
 
   .blog-prose .blog-table-wrap {
     margin: 1.75em 0;
     overflow-x: auto;
     border-radius: 0.875rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: #12121a;
+    border: 1px solid var(--hairline);
+    background: var(--bg-surface);
     box-shadow: 0 0 40px -28px color-mix(in srgb, var(--accent-cyan) 28%, transparent);
   }
 
@@ -400,7 +401,7 @@ html.dark {
   .blog-prose .blog-table-wrap th,
   .blog-prose .blog-table-wrap td {
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--hairline);
     padding: 0.8em 1em;
     text-align: left;
     vertical-align: top;
@@ -412,8 +413,8 @@ html.dark {
   }
 
   .blog-prose .blog-table-wrap thead th {
-    background: rgba(0, 229, 255, 0.06);
-    color: #e4e4e7;
+    background: var(--bg-inset);
+    color: var(--text-primary);
     font-size: 0.78em;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -423,13 +424,13 @@ html.dark {
   .blog-prose .blog-table-wrap tbody th,
   .blog-prose .blog-table-wrap tbody td:first-child {
     background: transparent;
-    color: #d4d4d8;
+    color: var(--text-primary);
     font-weight: 600;
     white-space: nowrap;
   }
 
   .blog-prose .blog-table-wrap td {
-    color: #a1a1aa;
+    color: var(--text-secondary);
   }
 
   .blog-prose .blog-table-wrap tbody tr:hover td,
