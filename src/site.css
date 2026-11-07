@@ -206,6 +206,43 @@ section[id],
   color: var(--text-primary);
 }
 
+.site-body p {
+  margin: 0;
+}
+
+.site-body p + p {
+  margin-top: 14px;
+}
+
+.about-jump {
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 10px 24px;
+  background: color-mix(in srgb, var(--site-bg) 92%, transparent);
+  border-bottom: 1px solid var(--hairline);
+  backdrop-filter: blur(12px);
+}
+
+.about-jump a {
+  flex: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.about-jump a:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
 @media (min-width: 768px) {
   .site-lead {
     font-size: 19px;
@@ -979,6 +1016,23 @@ html.dark .site-image-card:hover .site-image-card-media {
   color: var(--text-secondary);
   font-size: 14px;
   line-height: 20px;
+}
+
+.site-feature-copy .site-quote {
+  max-width: none;
+  margin-bottom: 20px;
+}
+
+.site-feature-copy .site-h3 {
+  margin: 8px 0 0;
+}
+
+.site-feature-copy .site-body {
+  margin-top: 16px;
+}
+
+.site-feature-copy .site-meta {
+  margin-top: 20px;
 }
 
 .site-closing {
