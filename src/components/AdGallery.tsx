@@ -23,16 +23,18 @@ export function AdGallery() {
         <div className="ad-arc-wrap">
           <div className="ad-arc">
             {ADS.map((ad, index) => (
-              <img
-                key={ad.src}
-                src={ad.src}
-                alt={ad.alt}
-                width={132}
-                height={176}
-                loading="lazy"
-                decoding="async"
-                style={arcStyle(index, ADS.length)}
-              />
+              <span key={ad.src} className="ad-arc-tile" style={arcStyle(index, ADS.length)}>
+                <span className="ad-arc-frame">
+                  <img
+                    src={ad.src}
+                    alt={ad.alt}
+                    width={120}
+                    height={160}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </span>
+              </span>
             ))}
           </div>
         </div>

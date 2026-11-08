@@ -64,7 +64,7 @@ const SECTIONS: FeatureSection[] = [
     imageLeft: true,
     paragraphs: [
       "Choose a proven format, choose your brand, hit render. AdRender produces a batch of on-brand static and video ads from that template — images in every size you selected, video matched to your reference's exact aspect ratio and length. No prompt engineering — the structure comes from the template, the styling comes from your brand, and the AI fills the gap.",
-      "Behind the scenes, rendering runs through a multi-provider fallback: if one AI provider is down or slow, it moves to the next automatically. You don't see the failure, you just get your ads.",
+      "Behind the scenes, rendering has automatic fallbacks: if one rendering route is down or slow, it moves to the next automatically. You don't see the failure, you just get your ads.",
     ],
   },
   {
@@ -162,11 +162,13 @@ export function AboutPage() {
         aside={<p className="site-lead">How AdRender replaces the stitched stack — and what each piece does.</p>}
       />
       <nav className="about-jump" aria-label="On this page">
-        {INDEX.map((item) => (
-          <a key={item.id} href={`#${item.id}`}>
-            {item.label}
-          </a>
-        ))}
+        <div className="about-jump-row">
+          {INDEX.map((item) => (
+            <a key={item.id} href={`#${item.id}`}>
+              {item.label}
+            </a>
+          ))}
+        </div>
       </nav>
       <FounderStory extended id="founder-story" />
       {SECTIONS.map((section, index) => (

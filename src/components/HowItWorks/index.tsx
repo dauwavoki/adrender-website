@@ -19,7 +19,7 @@ export function HowItWorks() {
 
   return (
     <section id="how-it-works" className="site-section scroll-mt-28">
-      <div className="site-wrap">
+      <div className="site-column">
         <SplitTitle as="h2" lead="How it works" />
         {/* PLACEHOLDER: intro video — insert the explainer video here when ready. Shared across homepage and all /lp/ landing pages. */}
         <div className="mt-14">

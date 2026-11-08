@@ -218,17 +218,40 @@ section[id],
   position: sticky;
   top: 64px;
   z-index: 20;
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding: 10px 24px;
   background: color-mix(in srgb, var(--site-bg) 92%, transparent);
   border-bottom: 1px solid var(--hairline);
   backdrop-filter: blur(12px);
 }
 
+.about-jump-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  box-sizing: border-box;
+  width: min(1120px, 100%);
+  margin-inline: auto;
+  padding: 10px 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+@media (min-width: 768px) {
+  .about-jump-row {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-jump-row {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+}
+
 .about-jump a {
   flex: none;
+  scroll-snap-align: start;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -244,6 +267,15 @@ section[id],
 .about-jump a:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
+}
+
+/* Both blog panels stay in the static HTML. #comparisons still opens without JavaScript. */
+.blog-panels:has(#comparisons:target) .blog-notes {
+  display: none !important;
+}
+
+#comparisons:target {
+  display: block !important;
 }
 
 @media (min-width: 768px) {
@@ -648,8 +680,14 @@ html.dark .site-placeholder::after {
 }
 
 @media (min-width: 768px) {
+  /* Section padding-bottom is 112px, so -232px lands the stage 120px into the next section. */
   .site-hero-stage.is-overlap {
-    margin-bottom: -120px;
+    margin-bottom: -232px;
+  }
+
+  .site-hero-stage > .site-stage.site-stage-pad-lg,
+  .site-hero-stage > .site-stage.site-stage-pad-md {
+    padding: 32px;
   }
 }
 
@@ -668,11 +706,17 @@ html.dark .site-placeholder::after {
   display: none;
 }
 
+.site-story,
+.site-story-steps {
+  min-width: 0;
+  max-width: 100%;
+}
+
 @media (min-width: 1024px) {
   .site-story.is-sticky {
     display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
-    gap: 48px;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 40px;
     align-items: start;
   }
 
@@ -975,6 +1019,15 @@ html.dark .site-image-card:hover .site-image-card-media {
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 22px;
+}
+
+.site-image-card p.site-image-card-sub {
+  margin: 0 0 6px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
 }
 
 .site-band {
@@ -2119,7 +2172,7 @@ html.dark .site-post-card:hover {
     transform: none;
   }
 
-  .ad-arc img {
+  .ad-arc-tile {
     transform: none !important;
   }
 }
@@ -2139,6 +2192,28 @@ html.dark .site-post-card:hover {
 
 .site-column.site-narrow {
   max-width: 760px;
+}
+
+.site-prose {
+  max-width: 720px;
+}
+
+.site-prose > h2,
+.site-prose > h3,
+.site-section.is-follow > .site-column > h2 {
+  margin: 0;
+}
+
+.site-prose > p {
+  margin: 12px 0 0;
+}
+
+.site-section.is-follow {
+  padding-top: 0;
+}
+
+.site-solution-steps {
+  margin-top: 28px;
 }
 
 .site-proof {
@@ -2251,16 +2326,32 @@ html.dark .site-post-card:hover {
   justify-content: center;
   gap: 14px;
   height: 280px;
+  min-width: 0;
+  max-width: 100%;
   padding-bottom: 8px;
 }
 
-.ad-arc img {
+.ad-arc-tile {
   width: 120px;
   height: 160px;
   flex: none;
+}
+
+.ad-arc-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   border-radius: 14px;
-  object-fit: cover;
+  background: var(--bg-soft);
   box-shadow: var(--stage-shadow);
+}
+
+.ad-arc img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 767px) {
@@ -2276,7 +2367,7 @@ html.dark .site-post-card:hover {
     padding-bottom: 8px;
   }
 
-  .ad-arc img {
+  .ad-arc-tile {
     scroll-snap-align: start;
     transform: none !important;
   }

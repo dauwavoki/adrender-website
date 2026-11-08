@@ -52,45 +52,47 @@ export function SolutionPage({ config }: SolutionPageProps) {
         actions={<PrimaryLink href={signupUrl}>Start free</PrimaryLink>}
       />
 
-      <section className="site-section">
-        <div className="site-column site-narrow">
-          <h2 className="site-h3">The problem</h2>
-          <p className="site-body" style={{ marginTop: 12 }}>
-            <EmphasizedText text={config.problem} />
-          </p>
-        </div>
-      </section>
-
-      <section className="site-section">
+      <section className="site-section is-follow">
         <div className="site-column">
-          <h2 className="site-h2">How AdRender solves it</h2>
-          <p className="site-lead" style={{ marginTop: 12, maxWidth: 720 }}>
-            {config.solution}
-          </p>
-          <div style={{ marginTop: 28 }}>
-            <NumberedStory
-              sticky={false}
-              steps={config.steps.map((step, index) => ({
-                id: `${config.slug}-step-${index + 1}`,
-                indexLabel: step.title,
-                title: step.title,
-                body: step.body,
-              }))}
-            />
+          <div className="site-prose">
+            <h2 className="site-h3">The problem</h2>
+            <p className="site-body">
+              <EmphasizedText text={config.problem} />
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="site-section">
-        <div className="site-column site-narrow">
-          <h2 className="site-h3">Why this works</h2>
-          <p className="site-body" style={{ marginTop: 12 }}>
-            {config.proof}
-          </p>
+      <section className="site-section is-follow">
+        <div className="site-column">
+          <div className="site-prose">
+            <h2 className="site-h2">How AdRender solves it</h2>
+            <p className="site-lead">{config.solution}</p>
+            <div className="site-solution-steps">
+              <NumberedStory
+                sticky={false}
+                steps={config.steps.map((step, index) => ({
+                  id: `${config.slug}-step-${index + 1}`,
+                  indexLabel: step.title,
+                  title: step.title,
+                  body: step.body,
+                }))}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="site-section">
+      <section className="site-section is-follow">
+        <div className="site-column">
+          <div className="site-prose">
+            <h2 className="site-h3">Why this works</h2>
+            <p className="site-body">{config.proof}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section is-follow">
         <div className="site-column">
           <h2 className="site-h3">Other solutions</h2>
           <div style={{ marginTop: 16 }}>

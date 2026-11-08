@@ -14,14 +14,14 @@ import { TextLink } from './site/Buttons'
 type TileIcon = ComponentType<{ className?: string; weight?: IconWeight; size?: number }>
 
 const WITHOUT: { icon: TileIcon; caption: string }[] = [
-  { icon: Target, caption: 'Finding a winner means testing losers.' },
+  { icon: Images, caption: 'Every test needs a finished creative.' },
   { icon: Hourglass, caption: 'Hiring means briefs, waiting and revisions.' },
-  { icon: Stack, caption: 'Doing it yourself means stitching six or more apps together.' },
+  { icon: Stack, caption: 'Doing it yourself means six or more apps.' },
 ]
 
 const WITH: { icon: TileIcon; caption: string }[] = [
-  { icon: CheckCircle, caption: 'Make testing cheap enough to actually do it.' },
-  { icon: Images, caption: 'Hundreds of on-brand ads in under 10 minutes.' },
+  { icon: CheckCircle, caption: 'On-brand ads from proven formats.' },
+  { icon: Images, caption: 'Hundreds of ads in under 10 minutes.' },
   { icon: Target, caption: 'Test every angle.' },
 ]
 

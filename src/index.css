@@ -485,6 +485,18 @@ html.dark {
 
 }
 
+.launch-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  line-height: 0;
+}
+
 .footer-badge-carousel {
   overflow: hidden;
   border-top: 1px solid var(--hairline);

@@ -291,7 +291,7 @@ export const landingPages: LandingPageConfig[] = [
     faqIntro: "Why this doesn't look like every other AI generator.",
     faq: [
       {
-        q: 'How is this different from just prompting ChatGPT or another AI generator?',
+        q: 'How is this different from just prompting a chat AI tool or another AI generator?',
         a: 'Those generate from your description of what you want. AdRender renders from a real, proven ad structure and applies your brand to it — a fundamentally different starting point.',
       },
       {

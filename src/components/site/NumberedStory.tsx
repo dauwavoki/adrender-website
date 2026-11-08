@@ -52,7 +52,7 @@ export function NumberedStory({ steps, sticky = true }: { steps: StoryStep[]; st
           ))}
         </ol>
       ) : null}
-      <div>
+      <div className="site-story-steps">
         {steps.map((step, index) => (
           <article key={step.id} id={step.id} className="site-step site-anchor">
             <p className="site-step-num">{String(index + 1).padStart(2, '0')}</p>

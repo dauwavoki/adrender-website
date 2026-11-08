@@ -44,8 +44,8 @@ export function BlogIndexPage() {
         </nav>
       </div>
 
-      {isNotes ? (
-        <section className="site-section">
+      <div className="blog-panels">
+        <section className="site-section blog-notes" hidden={!isNotes} suppressHydrationWarning>
           <div className="site-column">
             <div className="site-card-grid cols-3">
               {blogPosts.map((post) => {
@@ -75,8 +75,7 @@ export function BlogIndexPage() {
             </div>
           </div>
         </section>
-      ) : (
-        <section id="comparisons" className="site-section site-anchor">
+        <section id="comparisons" className="site-section site-anchor" hidden={isNotes} suppressHydrationWarning>
           <div className="site-column">
             <LinkTable
               label="Comparisons"
@@ -88,7 +87,7 @@ export function BlogIndexPage() {
             />
           </div>
         </section>
-      )}
+      </div>
     </>
   )
 }

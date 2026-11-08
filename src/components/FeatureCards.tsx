@@ -6,9 +6,13 @@ type FeatureCard = {
   anchor: string
   heading: string
   sub: string
-  highlights?: string[]
   body: string
   imageId: string
+}
+
+function withStop(text: string) {
+  const trimmed = text.trim()
+  return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`
 }
 
 const FEATURES: FeatureCard[] = [
@@ -16,7 +20,6 @@ const FEATURES: FeatureCard[] = [
     anchor: 'templates',
     heading: 'Proven templates',
     sub: '100M+ real ads. Searchable.',
-    highlights: ['Spy on competitor ads'],
     body: 'Not stock layouts — actual ads running right now, filterable by niche, platform, runtime, and market. Static and video, all searchable in one library.',
     imageId: 'F1',
   },
@@ -86,7 +89,8 @@ export function FeatureCards() {
               key={feature.anchor}
               media={<SitePlaceholder id={feature.imageId} />}
               title={feature.heading}
-              body={[feature.sub, ...(feature.highlights ?? []), feature.body].join(' ')}
+              sub={withStop(feature.sub)}
+              body={withStop(feature.body)}
               href={`/about#${feature.anchor}`}
             />
           ))}

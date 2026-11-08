@@ -13,7 +13,7 @@ const ADRENDER_PRICE = '$19/mo'
 const STATIC_ROWS: CostRow[] = [
   { tool: 'Design tool (Figma / Photoshop)', cost: '$15–60' },
   { tool: 'Ad research / swipe file tool', cost: '$49–99' },
-  { tool: 'AI writing (ChatGPT / Claude)', cost: '$20' },
+  { tool: 'AI writing tool', cost: '$20' },
   { tool: 'AI image generator', cost: '$20–99' },
   { tool: 'Subtotal', cost: STATIC_SUBTOTAL, emphasize: true },
   { tool: 'Time for 100 ads', cost: '~15 hours', emphasize: true },
@@ -24,7 +24,7 @@ const VIDEO_ROWS: CostRow[] = [
   { tool: 'Video editing (CapCut / Premiere Pro)', cost: '$10–60' },
   { tool: 'AI video generator', cost: '$39–220' },
   { tool: 'Voice & sound tool', cost: '$15–49' },
-  { tool: 'AI writing (ChatGPT / Claude)', cost: '$20' },
+  { tool: 'AI writing tool', cost: '$20' },
   { tool: 'Subtotal', cost: VIDEO_SUBTOTAL, emphasize: true },
   { tool: 'Time for 100 videos', cost: '~150 hours', emphasize: true },
 ]

@@ -6,6 +6,16 @@ import { BrandLogoLink } from './BrandLogoLink'
 import { SplitTitle } from './site/SplitTitle'
 import { ThemeToggle } from './site/ThemeToggle'
 
+const FOOTER_COMPARE = ['AdCreative.ai', 'Canva', 'Predis', 'Madgicx', 'Creatify', 'InVideo'] as const
+
+const footerComparisons = FOOTER_COMPARE.map((name) => {
+  const match = comparisons.find((item) => item.competitor === name)
+  if (!match) {
+    throw new Error(`Missing comparison for footer: ${name}`)
+  }
+  return match
+})
+
 function BadgeSet({ clone = false }: { clone?: boolean }) {
   return (
     <div className="flex shrink-0 items-center gap-8 pr-8" aria-hidden={clone || undefined} data-badge-clone={clone ? '' : undefined}>
@@ -13,7 +23,7 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
         href="https://www.producthunt.com/products/adrender?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-adrender"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block max-w-full shrink-0"
+        className="launch-badge inline-block max-w-full shrink-0"
       >
         <img
           alt="AdRender - Hundreds of real, on-brand ads in minutes — not AI slop | Product Hunt"
@@ -28,20 +38,20 @@ function BadgeSet({ clone = false }: { clone?: boolean }) {
         href="https://startupbase.io/products/adrender?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-dark"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block shrink-0"
+        className="launch-badge inline-block shrink-0"
       >
         <img src="https://statics.startupbase.io/site/badges/launched-on-sb-dark.svg" alt="Launched on StartupBase" height={55} className="h-[54px] w-auto object-contain" />
       </a>
-      <a href="https://easylaunch.dev/marketing/adrender" target="_blank" rel="noopener noreferrer" className="inline-block shrink-0">
+      <a href="https://easylaunch.dev/marketing/adrender" target="_blank" rel="noopener noreferrer" className="launch-badge inline-block shrink-0">
         <img src="https://easylaunch.dev/badge/easylaunch-badge-light.svg" alt="Featured on EasyLaunch" width={188} height={56} className="h-[54px] w-auto object-contain" />
       </a>
-      <a href="https://fazier.com/launches/adrender.app" target="_blank" rel="noopener noreferrer" className="inline-block shrink-0">
+      <a href="https://fazier.com/launches/adrender.app" target="_blank" rel="noopener noreferrer" className="launch-badge inline-block shrink-0">
         <img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=dark" width={120} alt="Fazier badge" className="h-[54px] w-auto object-contain" />
       </a>
-      <a href="https://saascity.io" target="_blank" rel="noopener noreferrer" className="inline-block shrink-0">
+      <a href="https://saascity.io" target="_blank" rel="noopener noreferrer" className="launch-badge inline-block shrink-0">
         <img src="https://saascity.io/badges/featured-dark.svg" alt="Featured on SaaSCity" width={150} height={54} className="h-[54px] w-auto object-contain" />
       </a>
-      <a href="https://smollaunch.com" target="_blank" rel="noopener noreferrer" className="inline-block shrink-0">
+      <a href="https://smollaunch.com" target="_blank" rel="noopener noreferrer" className="launch-badge inline-block shrink-0">
         <img
           src="https://smollaunch.com/badges/featured.svg"
           alt="AdRender — Featured on Smol Launch"
@@ -107,7 +117,7 @@ export function Footer() {
               </div>
               <div className="site-footer-col">
                 <h2>Compare</h2>
-                {comparisons.map((item) => (
+                {footerComparisons.map((item) => (
                   <Link key={item.slug} to={comparisonPath(item.slug)}>
                     {item.competitor}
                   </Link>

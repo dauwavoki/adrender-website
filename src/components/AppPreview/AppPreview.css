@@ -13,6 +13,7 @@
 
 .ap-section--embed {
   background: transparent;
+  overflow: hidden;
 }
 
 .ap-inner {
@@ -62,6 +63,24 @@
   height: var(--ap-window-h);
   transform-origin: top left;
   transform: scale(calc(100cqi / var(--ap-design-w)));
+}
+
+/* Phone: keep the window at least half size and crop to the left instead of shrinking it unreadably. */
+@media (max-width: 767px) {
+  .ap-section--embed .ap-slot {
+    height: calc(var(--ap-window-h) * max(0.5, 100cqi / var(--ap-design-w)));
+  }
+
+  .ap-section--embed .ap-frame {
+    transform: scale(max(0.5, 100cqi / var(--ap-design-w)));
+  }
+}
+
+@container (max-width: 639px) {
+  .ap-section--embed .ap-slot {
+    -webkit-mask-image: linear-gradient(to right, #000 68%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 68%, transparent 100%);
+  }
 }
 
 .ap-window {

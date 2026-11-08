@@ -58,7 +58,9 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
 
     const apply = (width: number) => {
       if (width < 8) return
-      const scale = width / DESIGN_WIDTH
+      const phone = window.matchMedia('(max-width: 767px)').matches
+      const fit = width / DESIGN_WIDTH
+      const scale = phone ? Math.max(fit, 0.5) : fit
       frame.style.transform = `scale(${scale})`
       slot.style.height = `${WINDOW_HEIGHT * scale}px`
     }
@@ -69,7 +71,13 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
       if (width) apply(width)
     })
     observer.observe(slot)
-    return () => observer.disconnect()
+    const phoneQuery = window.matchMedia('(max-width: 767px)')
+    const onPhone = () => apply(slot.clientWidth)
+    phoneQuery.addEventListener('change', onPhone)
+    return () => {
+      observer.disconnect()
+      phoneQuery.removeEventListener('change', onPhone)
+    }
   }, [slotRef, frameRef])
 }
 
