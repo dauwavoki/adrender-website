@@ -27,6 +27,9 @@ export function FaqTwoColumn({ items, lead, rest, title }: FaqTwoColumnProps) {
           const panelId = `${id}-panel`
           return (
             <div key={id} id={id} className="site-faq-item site-anchor">
+              {item.aliases?.map((alias) => (
+                <span key={alias} id={alias} className="site-faq-alias site-anchor" />
+              ))}
               <h3 style={{ margin: 0 }}>
                 <button
                   type="button"

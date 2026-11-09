@@ -52,27 +52,28 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: calc(var(--ap-window-h) * 100cqi / var(--ap-design-w));
+  height: calc(var(--ap-window-h) * min(1, 100cqi / var(--ap-design-w)));
 }
 
 .ap-frame {
   position: absolute;
   top: 0;
-  left: 0;
+  left: max(0px, calc((100% - min(100%, var(--ap-design-w))) / 2));
   width: var(--ap-design-w);
   height: var(--ap-window-h);
   transform-origin: top left;
-  transform: scale(calc(100cqi / var(--ap-design-w)));
+  transform: scale(min(1, 100cqi / var(--ap-design-w)));
 }
 
 /* Phone: keep the window at least half size and crop to the left instead of shrinking it unreadably. */
 @media (max-width: 767px) {
   .ap-section--embed .ap-slot {
-    height: calc(var(--ap-window-h) * max(0.5, 100cqi / var(--ap-design-w)));
+    height: calc(var(--ap-window-h) * max(0.5, min(1, 100cqi / var(--ap-design-w))));
   }
 
   .ap-section--embed .ap-frame {
-    transform: scale(max(0.5, 100cqi / var(--ap-design-w)));
+    left: 0;
+    transform: scale(max(0.5, min(1, 100cqi / var(--ap-design-w))));
   }
 }
 
@@ -674,10 +675,11 @@ html.dark .ap-home-icon.is-selected .for-dark.for-fill {
 .ap-keep img {
   display: block;
   width: 100%;
-  height: 120px;
+  height: auto;
   margin-top: 10px;
-  object-fit: cover;
-  border-radius: 8px 8px 0 0;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--bg-soft);
 }
 
 .ap-keep-foot {
@@ -821,6 +823,7 @@ html.dark .ap-home-icon.is-selected .for-dark.for-fill {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
+  align-items: start;
 }
 
 .ap-tile {
@@ -833,17 +836,21 @@ html.dark .ap-home-icon.is-selected .for-dark.for-fill {
 }
 
 .ap-tile-media {
-  aspect-ratio: 4 / 5;
+  position: relative;
+  display: block;
   overflow: hidden;
-  background: var(--bg-inset);
+  background: var(--bg-soft);
 }
 
 .ap-tile-media img,
 .ap-tile-media video {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: var(--bg-soft);
 }
 
 .ap-tile-meta {

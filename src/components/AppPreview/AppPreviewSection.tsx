@@ -60,8 +60,11 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
       if (width < 8) return
       const phone = window.matchMedia('(max-width: 767px)').matches
       const fit = width / DESIGN_WIDTH
-      const scale = phone ? Math.max(fit, 0.5) : fit
+      const scale = phone ? Math.min(1, Math.max(fit, 0.5)) : Math.min(fit, 1)
+      const scaledWidth = DESIGN_WIDTH * scale
+      const offset = scaledWidth < width - 0.5 ? (width - scaledWidth) / 2 : 0
       frame.style.transform = `scale(${scale})`
+      frame.style.left = `${offset}px`
       slot.style.height = `${WINDOW_HEIGHT * scale}px`
     }
 
@@ -309,7 +312,7 @@ function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly
     <div className="ap-tiles">
       {items.map((item, index) => (
         <a key={item.id} className="ap-tile" href={href}>
-          <span className="ap-tile-media">
+          <span className="ap-tile-media" style={{ aspectRatio: `${item.still.width} / ${item.still.height}` }}>
             {item.kind === 'video' ? (
               <PreviewVideo src={item.videoSrc} poster={item.still.src} width={item.still.width} height={item.still.height} />
             ) : (

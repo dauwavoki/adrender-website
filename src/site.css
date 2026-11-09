@@ -670,7 +670,15 @@ html.dark .site-placeholder::after {
 }
 
 .site-hero-stage {
+  width: min(1360px, calc(100% - 32px));
   margin-top: 36px;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .site-hero-stage {
+    width: min(1360px, calc(100% - 48px));
+  }
 }
 
 .site-hero-stage.is-overlap {
@@ -679,15 +687,94 @@ html.dark .site-placeholder::after {
   margin-bottom: -48px;
 }
 
+/* Thin edge around the hero preview only. Beats the shared stage padding. */
+.site-hero-stage > .site-stage.site-stage-pad-lg,
+.site-hero-stage > .site-stage.site-stage-pad-md,
+.site-hero-stage > .site-stage.site-stage-hero {
+  padding: 12px;
+  border-radius: 20px;
+}
+
 @media (min-width: 768px) {
   /* Section padding-bottom is 112px, so -232px lands the stage 120px into the next section. */
   .site-hero-stage.is-overlap {
     margin-bottom: -232px;
   }
+}
 
-  .site-hero-stage > .site-stage.site-stage-pad-lg,
-  .site-hero-stage > .site-stage.site-stage-pad-md {
-    padding: 32px;
+.site-hero.is-home .site-hero-lead {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.hero-rotator .site-split-lead {
+  display: block;
+}
+
+.hero-rotator .hero-line2 {
+  display: grid;
+  color: var(--text-faded);
+}
+
+.hero-line2 > span {
+  grid-area: 1 / 1;
+}
+
+.hero-line2 > .is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-line2 > .is-current {
+  animation: hero-line2-in 300ms ease both;
+}
+
+.hero-line2 > .is-outgoing {
+  animation: hero-line2-out 300ms ease both;
+}
+
+.hero-line2 > .is-idle {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@keyframes hero-line2-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-line2-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-hero.is-home .site-split-hero-top {
+    grid-template-columns: auto minmax(min-content, 1fr);
+    column-gap: 40px;
+    align-items: end;
+  }
+
+  .site-hero.is-home .site-hero-lead-line,
+  .hero-rotator .site-split-lead,
+  .hero-line2 > span {
+    white-space: nowrap;
+  }
+
+  .site-hero.is-home .site-hero-lead-line {
+    display: block;
   }
 }
 
@@ -1129,7 +1216,18 @@ html.dark .site-image-card:hover .site-image-card-media {
 }
 
 .site-faq-item {
+  position: relative;
   border-top: 1px solid var(--hairline);
+}
+
+.site-faq-alias {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .site-faq-item:last-child {
@@ -1916,6 +2014,16 @@ html.dark .site-segment button[aria-pressed='true'] {
   line-height: 28px;
 }
 
+.site-prose .site-step h3 {
+  margin: 8px 0 8px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
 .site-prose a {
   color: var(--text-primary);
   text-decoration: underline;
@@ -2175,6 +2283,10 @@ html.dark .site-post-card:hover {
   .ad-arc-tile {
     transform: none !important;
   }
+
+  .hero-line2 > span {
+    animation: none !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -2275,44 +2387,97 @@ html.dark .site-post-card:hover {
   padding: 0 22px;
 }
 
-.ww-row {
-  margin-top: 36px;
-}
-
-.ww-label {
-  margin: 0 0 12px;
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 18px;
-}
-
-.ww-tiles {
+.pbf-grid {
   display: grid;
-  gap: 12px;
+  gap: 16px;
+  align-items: stretch;
 }
 
 @media (min-width: 768px) {
-  .ww-tiles {
+  .pbf-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-.ww-tile {
-  min-height: 128px;
-  padding: 16px;
+.pbf-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
   border-radius: 16px;
-  background: var(--bg-inset);
-  color: var(--text-primary);
+  padding: 32px;
 }
 
-.ww-tile.is-with {
-  background: transparent;
+.pbf-card:not(.is-fix) {
+  background: var(--bg-surface);
 }
 
-.ww-tile p {
-  margin: 12px 0 0;
+.pbf-card.is-fix.site-stage {
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.pbf-card > .pbf-num {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 120px;
+  font-weight: 400;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+html.dark .pbf-card > .pbf-num {
+  color: color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.pbf-card > :not(.pbf-num) {
+  position: relative;
+  z-index: 2;
+}
+
+.pbf-eyebrow {
+  margin: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
   font-size: 14px;
+  font-weight: 500;
   line-height: 20px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pbf-title {
+  margin: 12px 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: -0.015em;
+}
+
+.pbf-body {
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.pbf-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
 }
 
 .ad-arc-wrap {
@@ -2338,6 +2503,7 @@ html.dark .site-post-card:hover {
 }
 
 .ad-arc-frame {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
@@ -2347,11 +2513,29 @@ html.dark .site-post-card:hover {
   box-shadow: var(--stage-shadow);
 }
 
-.ad-arc img {
+.ad-arc img,
+.ad-arc video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.ad-arc-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 @media (max-width: 767px) {

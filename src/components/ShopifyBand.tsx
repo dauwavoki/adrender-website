@@ -46,13 +46,12 @@ export function ShopifyBand() {
       <div className="shopify-band">
         <div>
           <SplitTitle as="h2" tone="band" lead="Using Shopify?" rest="Get the native app." />
-          <p className="site-lead">
-            A native Shopify app, separate from the web app but working in a similar way. It turns
-            your product catalog into on-brand image and video ads for Facebook and Instagram. Install
-            from the Shopify App Store, your products connect automatically, and billing goes through
-            Shopify. Unused plan tokens roll over on paid plans.
+          <p className="site-lead" style={{ marginTop: 16 }}>
+            Prefer to work inside Shopify? Install the native app and you&apos;re billed through Shopify.
+            Rather use the web app? Connect your Shopify store from Brands &amp; Campaigns and your catalog
+            syncs in, on every plan including Free. The Shopify app is just a preference.
           </p>
-          <div className="site-hero-actions">
+          <div className="site-hero-actions" style={{ marginTop: 24 }}>
             <PrimaryLink href={SHOPIFY_APP_URL} newTab>Get the Shopify app</PrimaryLink>
             <TextLink href={SHOPIFY_APP_POST_PATH}>How the Shopify app works</TextLink>
           </div>
