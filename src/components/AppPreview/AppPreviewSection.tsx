@@ -312,7 +312,7 @@ function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly
     <div className="ap-tiles">
       {items.map((item, index) => (
         <a key={item.id} className="ap-tile" href={href}>
-          <span className="ap-tile-media" style={{ aspectRatio: `${item.still.width} / ${item.still.height}` }}>
+          <span className={cx('ap-tile-media', item.kind === 'video' && 'is-video')}>
             {item.kind === 'video' ? (
               <PreviewVideo src={item.videoSrc} poster={item.still.src} width={item.still.width} height={item.still.height} />
             ) : (
@@ -327,10 +327,7 @@ function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly
                 draggable={false}
               />
             )}
-          </span>
-          <span className="ap-tile-meta">
-            <span>{item.label}</span>
-            <span className={cx('ap-badge', item.kind === 'video' ? 'is-warning' : 'is-success')}>{item.kind === 'video' ? 'Video' : 'Image'}</span>
+            {item.label ? <span className="ap-tile-label">{item.label}</span> : null}
           </span>
         </a>
       ))}

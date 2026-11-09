@@ -104,7 +104,6 @@ export function AdGallery() {
                   ) : (
                     <img src={ad.src} alt={ad.alt} width={120} height={160} loading="eager" decoding="async" />
                   )}
-                  <span className="ad-arc-label">{ad.kind === 'video' ? 'Video' : 'Static'}</span>
                 </span>
               </span>
             ))}

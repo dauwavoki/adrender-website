@@ -107,7 +107,7 @@ Every product visual (hero app preview, how-it-works visuals, feature visuals, p
 
 ### 3.4 Spacing, layout, radius
 
-- Content column: max-width **1120px**, side gutter 24px (16px phone).
+- Content column: max-width **1280px**, side gutter 24px (16px phone).
 - **Hairline rails** (desktop ≥1024px): the content column has 1px `--hairline` vertical lines on both sides running the full page height (Marketer's "ruled" look). Sections are separated by 1px `--hairline` horizontal rules that span the column. Full-bleed bands (stage CTA, inverted band) break through the rails.
 - Section vertical padding: 112px desktop, 72px phone. Title → content gap 48px (32 phone).
 - Radius: buttons full pill; inputs 12; small cards 12; large cards/frames 16; stages 20; badges 6.
@@ -173,6 +173,7 @@ Phosphor, Regular weight by default (Fill for selected states), 16–20px, color
 - Left: logo + two-part serif tagline built from existing copy (e.g. "Create more ads." / "Find more winners.") in 24px Newsreader.
 - 4 link columns, 14px, headers 13px `--text-muted`: Product (How it works, Features, Pricing, FAQ, Shopify app), Solutions (top 5 + All solutions), Compare (`/vs-*` + All comparisons), Company (About, Blog, Affiliates, Contact).
 - Bottom row after a hairline: the current copyright line on the left; Terms, Privacy, theme toggle on the right. Keep every link and line the current footer has.
+- Below the copyright line, one quiet row of launch badges (StartupBase, EasyLaunch, Fazier, SaaSCity, Smol Launch): 24px tall, 16px gap, grayscale at rest, full color on hover or focus. No Product Hunt badges. No full-width strip above the footer.
 
 ---
 
@@ -180,10 +181,10 @@ Phosphor, Regular weight by default (Fill for selected states), 16–20px, color
 
 Rebuild `src/components/AppPreview/*` (keep its file names and its data file `appPreviewData.ts` as the content source) so it looks like the **new app** at `app-reference/src/layouts/ClientShell.tsx.txt` + `app-reference/src/views/DirectHomeView.tsx.txt` + `app-reference/DESIGN.md` §5 and §8.
 
-- Fixed design size 1280×800, scaled to fit its container (keep the current scaling approach). On phones show it scaled (min scale ~0.32) inside the stage; never horizontally scroll.
-- Window: no fake browser chrome needed; a frame with radius 16, 1px `--border`, `--bg-page` inside, `--stage-shadow`.
-- **Floating sidebar** (DESIGN.md 5.1–5.8 & 5.9): 8px gap from frame edges, radius 16, `--bg-sidebar`, 1px `--border`, width 256. Top row: Image | Video segmented control (sliding highlight, dark-mode shine) + ghost `CaretDoubleLeft`. Then "AdRender" item with the Home icon (`app-reference/icons/*`, Fill when selected), Library (`Books`), Browse Templates (`SquaresFour`), Saved Templates (`BookmarkSimple`), Ad Playground (`MagicWand`), Brands & Campaigns (`Megaphone`). Bottom: workspace button (`UserCircleCheck` + "Personal" + "Workspace" + `CaretUpDown`), tokens row (`Coins` + "760 tokens" + ghost "Top up"), profile button (avatar, name, email, `CaretUpDown`). Selected item = `--bg-selected`, `--text-primary`, Fill icon.
-- **Content card** to the right (8px gaps, radius 16, `--bg-page`, 1px `--border`) showing the new **Home** view: the gradient welcome quote (8.20, cross-fading through `QUOTES`), "Keep working on" / "Use again" / "Get inspired" rows of ad tiles (media top corners rounded, 8.27), color icon tiles (8.19), badges (8.7). Reuse the existing media (`public/app-preview/*`, `public/how-it-works/*`).
+- Fixed design size 1280×800, scaled to fill the hero stage's inner width (keep the current scaling approach). On phones show it scaled (min scale 0.5, left crop, right-edge fade) inside the stage; never horizontally scroll.
+- The hero stage is the window: full width of the content column (1280px max, not a wider breakout), radius 20, padding 10px, the same gradient and grain, `--stage-shadow`, no border inside it. No separate app-window frame. The gradient shows in the 10px gaps around and between the sidebar and the content card.
+- **Floating sidebar** (DESIGN.md 5.1–5.8 & 5.9): 10px gap from the stage edge, radius 16, `--bg-sidebar`, 1px `--border`, width 256. Top row: Image | Video segmented control (sliding highlight, dark-mode shine) + ghost `CaretDoubleLeft`. Then "AdRender" item with the Home icon (`app-reference/icons/*`, Fill when selected), Library (`Books`), Browse Templates (`SquaresFour`), Saved Templates (`BookmarkSimple`), Ad Playground (`MagicWand`), Brands & Campaigns (`Megaphone`). Bottom: workspace button (`UserCircleCheck` + "Personal" + "Workspace" + `CaretUpDown`), tokens row (`Coins` + "760 tokens" + ghost "Top up"), profile button (avatar, name, email, `CaretUpDown`). Selected item = `--bg-selected`, `--text-primary`, Fill icon.
+- **Content card** to the right (10px gap, radius 16, `--bg-page`, 1px `--border`) showing the new **Home** view: the gradient welcome quote (8.20, cross-fading through `QUOTES`), "Keep working on" / "Use again" / "Get inspired" rows of ad tiles (4 equal columns, aspect 4:5, gap 12px, cover, media top corners rounded, 8.27; category label bottom-left on a soft dark gradient when the data has one), color icon tiles (8.19), badges (8.7). Reuse the existing media (`public/app-preview/*`, `public/how-it-works/*`).
 - Keep it interactive the way it is today (clicking nav items switches the content view; reuse whatever views the current preview has, restyled). Library item demonstrates its state: shows "Rendering" with the 3 amber dots for ~3s, then "Ready 2" with the rotating brand-gradient border (5.7). Reduced motion → static.
 - Uses app tokens from the **current site theme** (light app in light mode, dark app in dark mode). Phosphor icons only.
 - SSG: the Home view must be in the static HTML and look complete without JavaScript.
