@@ -32,6 +32,11 @@ function htmlOutPath(route) {
 /**
  * Pull React 19 document-metadata tags out of the rendered body so crawlers
  * see them in <head> without executing JS.
+ *
+ * JSON-LD (application/ld+json) is not hoisted. It must stay exactly where
+ * React renders it — moving the script would make the prerendered body differ
+ * from the client render and React would throw a hydration error. Search
+ * engines read JSON-LD anywhere in the page.
  * @param {string} appHtml
  */
 function hoistHeadTags(appHtml) {
@@ -42,7 +47,6 @@ function hoistHeadTags(appHtml) {
     /<title\b[^>]*>[\s\S]*?<\/title>/i,
     /<meta\b[^>]*>/gi,
     /<link\b[^>]*\brel=["']canonical["'][^>]*>/gi,
-    /<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi,
   ]
 
   for (const pattern of patterns) {

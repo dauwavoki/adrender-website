@@ -9,6 +9,10 @@ Read in this order:
 
 This folder is documentation. It is not part of the build.
 
+## Hydration check
+
+Before merging site work, run `npm run build` then `npm run check:hydration`. The check is a dev tool and is not part of the build: it serves `dist/` and fails if any prerendered page throws a React hydration error.
+
 ## Proof screenshots
 
 Proof screenshots are generated locally into `docs/redesign/proof/` and are not committed. After `npm run build`, run `npx playwright install chromium && node scripts/proof-screenshots.mjs`. The script and the Playwright dev dependency stay in the repo so the shots can be made again on a local machine.
