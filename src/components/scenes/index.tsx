@@ -4,6 +4,7 @@ import { BrandScene } from './BrandScene'
 import { EasyScene } from './EasyScene'
 import { LibraryScene } from './LibraryScene'
 import { PlaygroundScene } from './PlaygroundScene'
+import { ShopifyScene } from './ShopifyScene'
 import { SizesScene } from './SizesScene'
 import { TemplatesScene } from './TemplatesScene'
 import { WorkspacesScene } from './WorkspacesScene'
@@ -16,6 +17,7 @@ const SCENES: Record<string, ComponentType<{ size: SceneSize }>> = {
   generation: BatchScene,
   sizes: SizesScene,
   library: LibraryScene,
+  shopify: ShopifyScene,
   playground: PlaygroundScene,
   workspaces: WorkspacesScene,
 }

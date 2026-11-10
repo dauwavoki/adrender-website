@@ -1,12 +1,13 @@
+import { Tag } from '@phosphor-icons/react'
 import { SceneFrame, ScenePanel } from './SceneFrame'
 import { IconTile } from './parts/IconTile'
 import { Still } from './parts/Still'
-import { BRAND, BRAND_SOURCES, type SceneSize } from './sceneData'
+import { BRAND, BRAND_AD_COPY, BRAND_SOURCES, type SceneSize } from './sceneData'
 import { useHoldStep, useScenePhase } from './useSceneMotion'
 
 export function BrandScene({ size }: { size: SceneSize }) {
   return (
-    <SceneFrame size={size} label="YourBrand profile with colors, voice, and four products">
+    <SceneFrame size={size} label="YourBrand profile with colors, voice, four products, and ad copy">
       <BrandBody size={size} />
     </SceneFrame>
   )
@@ -16,7 +17,9 @@ function BrandBody({ size }: { size: SceneSize }) {
   const phase = useScenePhase()
   const swatches = BRAND.swatches
   const products = BRAND.products
-  const steps = swatches.length + products.length + 1
+  const copies = BRAND_AD_COPY
+  const copyStart = swatches.length + products.length
+  const steps = copyStart + copies.length + 1
   const step = useHoldStep(phase, steps, 520)
   const scanning = phase !== 'off' && step > 0 && step < steps - 1
 
@@ -92,6 +95,27 @@ function BrandBody({ size }: { size: SceneSize }) {
                 <span>{product.name}</span>
               </div>
             ))}
+          </div>
+        </div>
+        <div className="brand-block">
+          <div className="brand-kicker">Ad copy</div>
+          <div className="brand-copies">
+            {copies.map((line, index) => {
+              const on = step > copyStart + index
+              return (
+                <div
+                  key={line}
+                  className="brand-copy scene-reveal"
+                  style={{
+                    opacity: on ? 1 : 0,
+                    transform: on ? 'none' : 'translateY(6px)',
+                  }}
+                >
+                  <Tag size={12} />
+                  <span>{line}</span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </ScenePanel>

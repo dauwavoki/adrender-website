@@ -1,7 +1,7 @@
 import { Folder, Stack, Star } from '@phosphor-icons/react'
 import { SceneFrame, ScenePanel } from './SceneFrame'
 import { MiniCard } from './parts/MiniCard'
-import { BRAND, LIBRARY_FOLDERS, LIBRARY_SELECTED, TEMPLATE_CARDS, type SceneSize } from './sceneData'
+import { LIBRARY_FOLDERS, LIBRARY_SELECTED, TEMPLATE_CARDS, type SceneSize } from './sceneData'
 
 export function LibraryScene({ size }: { size: SceneSize }) {
   const cards = (size === 'wide' ? TEMPLATE_CARDS : TEMPLATE_CARDS.slice(0, 4)).map((card, index) => ({
@@ -38,7 +38,7 @@ export function LibraryScene({ size }: { size: SceneSize }) {
                 src={card.src}
                 width={card.width}
                 height={card.height}
-                title={BRAND.name}
+                title={card.label}
                 corner={
                   <span className="lib-star">
                     <Star size={18} />

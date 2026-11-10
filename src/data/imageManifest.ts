@@ -53,7 +53,7 @@ export const IMAGE_MANIFEST: ImageManifestEntry[] = [
   { id: '18', label: 'About: Generation expanded', where: '/about#generation', width: 1280, height: 800, aspect: '8:5' },
   { id: '19', label: 'About: Playground expanded', where: '/about#playground', width: 1280, height: 800, aspect: '8:5' },
   { id: '20', label: 'About: Sizes expanded', where: '/about#sizes', width: 1280, height: 800, aspect: '8:5' },
-  { id: '21', label: 'About: Shopify expanded', where: '/about#shopify', width: 1280, height: 800, aspect: '8:5' },
+  { id: '21', label: 'About: Shopify expanded (retired)', where: 'Unused. /about#shopify is built in code', width: 1280, height: 800, aspect: '8:5' },
   { id: '22', label: 'About: Workspaces expanded', where: '/about#workspaces', width: 1280, height: 800, aspect: '8:5' },
 ]
 
@@ -114,6 +114,7 @@ export const SITE_IMAGES: SiteImageEntry[] = [
   { id: 'A7', label: 'About: library', where: '/about#library', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a7-library.webp', built: BUILT },
   { id: 'A8', label: 'About: playground', where: '/about#playground', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a8-playground.webp', built: BUILT },
   { id: 'A9', label: 'About: workspaces', where: '/about#workspaces', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a9-workspaces.webp', built: BUILT },
+  { id: 'A10', label: 'About: shopify', where: '/about#shopify', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a10-shopify.webp', built: BUILT },
   { id: 'C1', label: 'Contact side image', where: '/contact', width: 1200, height: 1500, aspect: '4:5', filename: '/site/c1-contact.webp', themeNote: 'Optional' },
   { id: 'OG', label: 'Social share image', where: 'Open Graph', width: 1200, height: 630, aspect: '1.91:1', filename: '/site/og-share.webp' },
 ]

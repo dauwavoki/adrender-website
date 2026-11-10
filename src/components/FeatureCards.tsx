@@ -46,7 +46,7 @@ const FEATURES: FeatureCard[] = [
   },
   {
     anchor: 'sizes',
-    heading: 'Every size, automatically',
+    heading: 'Every size, ready.',
     sub: '11 formats. Every platform. Every video length up to 30 seconds. One render.',
     body: 'For images, choose 1K, 2K, or 4K resolution, and Standard or Pro rendering quality. Video renders up to 30 seconds today, with longer coming soon. No resizing, no re-exporting, no cropping by hand.',
     imageId: 'F5',

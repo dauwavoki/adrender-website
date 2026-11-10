@@ -3,23 +3,15 @@ import { SceneFrame, ScenePanel } from './SceneFrame'
 import { RenderingDots } from './parts/RenderingDots'
 import { Segmented } from './parts/Segmented'
 import { Still } from './parts/Still'
-import {
-  BRAND,
-  PLAYGROUND_PROMPT,
-  QUALITY,
-  RENDER_COST,
-  RESOLUTIONS,
-  RESULT_STILLS,
-  formatTokens,
-  type SceneSize,
-} from './sceneData'
+import { BRAND, QUALITY, RENDER_COST, RESOLUTIONS, RESULT_STILLS, formatTokens, type SceneSize } from './sceneData'
 import { useHoldStep, useScenePhase } from './useSceneMotion'
 
-const BEATS = 6
+const BEATS = 9
+const PROMPT_PLACEHOLDER = 'Optional. Your brand and template already set the direction.'
 
 export function PlaygroundScene({ size }: { size: SceneSize }) {
   return (
-    <SceneFrame size={size} label="Ad playground with a prompt, quality, and render button">
+    <SceneFrame size={size} label="Ad playground with an optional prompt and YourBrand results">
       <PlayBody size={size} />
     </SceneFrame>
   )
@@ -27,17 +19,15 @@ export function PlaygroundScene({ size }: { size: SceneSize }) {
 
 function PlayBody({ size }: { size: SceneSize }) {
   const phase = useScenePhase()
-  const step = useHoldStep(phase, BEATS, 1000)
-  const shown = step >= 3 ? PLAYGROUND_PROMPT.length : Math.ceil((PLAYGROUND_PROMPT.length * (step + 1)) / 4)
-  const typed = PLAYGROUND_PROMPT.slice(0, shown)
-  const pressed = step === 3
-  const ready = step >= BEATS - 1
+  const step = useHoldStep(phase, BEATS, 800)
+  const pressed = step === 1
   const rates = RESOLUTIONS.map((row) => ({
     value: row.id,
     label: row.id,
     sub: formatTokens(row.standard),
   }))
   const refs = BRAND.products.slice(0, 2)
+  const results = size === 'wide' ? RESULT_STILLS : RESULT_STILLS.slice(0, 1)
 
   return (
     <div className="play">
@@ -58,11 +48,8 @@ function PlayBody({ size }: { size: SceneSize }) {
           </div>
         </div>
         <div className="scene-field play-prompt-field">
-          <span className="scene-label">Prompt</span>
-          <div className="play-prompt">
-            <div className="sizer">{PLAYGROUND_PROMPT}</div>
-            <div className="typed">{typed}</div>
-          </div>
+          <span className="scene-label">Prompt (optional)</span>
+          <div className="play-prompt is-empty">{PROMPT_PLACEHOLDER}</div>
         </div>
         <div className="scene-field">
           <span className="scene-label">Model</span>
@@ -85,17 +72,22 @@ function PlayBody({ size }: { size: SceneSize }) {
             <div className={pressed ? 'scene-btn is-down' : 'scene-btn'}>Render</div>
           </div>
         </div>
-        {size === 'card' ? <Result still={RESULT_STILLS[0]} ready={ready} className="play-card-result" /> : null}
+        {size === 'card' ? <Result still={results[0]} ready={isReady(step, 0)} className="play-card-result" /> : null}
       </ScenePanel>
       {size === 'wide' ? (
         <ScenePanel className="play-results">
-          {RESULT_STILLS.map((still, index) => (
-            <Result key={still.src} still={still} ready={index === 0 ? ready : true} />
+          {results.map((still, index) => (
+            <Result key={still.src} still={still} ready={isReady(step, index)} />
           ))}
         </ScenePanel>
       ) : null}
     </div>
   )
+}
+
+/** Press, then dots, then each YourBrand result. The last step keeps every result finished. */
+function isReady(step: number, index: number) {
+  return step < 2 || step >= 4 + index
 }
 
 function Result({

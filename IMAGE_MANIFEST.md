@@ -4,9 +4,9 @@
 
 Save real files under `/public/site/`. Until a file exists, the site shows a labeled placeholder (`SitePlaceholder`). Sizes are the slot, not a crop of an old screenshot.
 
-F1–F8, A2–A9, and H1 are drawn in the page. They do not need image files. A1, C1, and OG stay image slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
+F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. A1, C1, and OG stay image slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
 
-No solution page references an image, so there are no S-* slots. `/about#shopify` still uses previous slot 21 (`img-21.png`).
+No solution page references an image, so there are no S-* slots. `/about#shopify` is drawn in code (A10). Previous slot 21 is no longer used.
 
 | ID | Filename to save as | Page + section | Size | Aspect | Theme note |
 |---|---|---|---|---|---|
@@ -28,6 +28,7 @@ No solution page references an image, so there are no S-* slots. `/about#shopify
 | A7 | Built in code (src/components/scenes) — no image needed | `/about#library` | 1600×1200 | 4:3 | |
 | A8 | Built in code (src/components/scenes) — no image needed | `/about#playground` | 1600×1200 | 4:3 | |
 | A9 | Built in code (src/components/scenes) — no image needed | `/about#workspaces` | 1600×1200 | 4:3 | |
+| A10 | Built in code (src/components/scenes) — no image needed | `/about#shopify` | 1600×1200 | 4:3 | |
 | B-adrender-shopify-app | `/site/b-adrender-shopify-app.webp` | Blog index card for `/blog/adrender-shopify-app` | 1600×900 | 16:9 | No cover in the post yet |
 | B-ai-ad-generators-shopify-comparison | `/site/b-ai-ad-generators-shopify-comparison.webp` | Blog index card for `/blog/ai-ad-generators-shopify-comparison` | 1600×900 | 16:9 | No cover in the post yet |
 | B-ai-ad-management-platforms-shopify | `/site/b-ai-ad-management-platforms-shopify.webp` | Blog index card for `/blog/ai-ad-management-platforms-shopify` | 1600×900 | 16:9 | No cover in the post yet |
@@ -94,7 +95,7 @@ Hero tabs: `src/components/AppPreview.tsx` via `placeholderSrc()`.
 | 18 | `img-18.png` | `image 18.png` | `/about#generation` | 1280×800 | 8:5 |
 | 19 | `img-19.png` | `image 19.png` | `/about#playground` | 1280×800 | 8:5 |
 | 20 | `img-20.png` | `image 20.png` | `/about#sizes` | 1280×800 | 8:5 |
-| 21 | `img-21.png` | `image 21.png` | `/about#shopify` | 1280×800 | 8:5 |
+| 21 | `img-21.png` | `image 21.png` | Retired. `/about#shopify` is drawn in code | 1280×800 | 8:5 |
 | 22 | `img-22.png` | `image 22.png` | `/about#workspaces` | 1280×800 | 8:5 |
 
 ---

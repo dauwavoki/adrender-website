@@ -109,17 +109,17 @@ try {
     await hideChrome()
     const features = page.locator('#features')
     await features.scrollIntoViewIfNeeded()
-    await page.waitForTimeout(400)
+    await page.waitForTimeout(8000)
     const featuresFile = path.join(outDir, `features-${theme}-1440.png`)
     await features.screenshot({ path: featuresFile })
     console.log('saved', path.relative(root, featuresFile))
 
     await page.goto(`http://127.0.0.1:${port}/about`, { waitUntil: 'networkidle' })
     await hideChrome()
-    const sectionIds = ['templates', 'easy-to-use', 'brands', 'generation', 'sizes', 'library', 'playground', 'workspaces']
+    const sectionIds = ['templates', 'easy-to-use', 'brands', 'generation', 'sizes', 'library', 'shopify', 'playground', 'workspaces']
     for (const id of sectionIds) {
       await page.locator(`#${id}`).scrollIntoViewIfNeeded()
-      await page.waitForTimeout(150)
+      await page.waitForTimeout(8000)
     }
     await page.evaluate((ids) => {
       const start = document.getElementById(ids[0])

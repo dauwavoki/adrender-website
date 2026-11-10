@@ -1,10 +1,8 @@
 import { CostTable } from '../components/CostTable'
 import { FounderStory } from '../components/FounderStory'
 import { PageMeta } from '../components/PageMeta'
-import { PlaceholderImage } from '../components/PlaceholderImage'
 import { SceneForAnchor } from '../components/scenes'
 import { SplitHero } from '../components/site/SplitHero'
-import { Stage } from '../components/site/Stage'
 import { ClosingCta } from '../components/site/ClosingCta'
 import { getSignupUrl } from '../lib/appUrl'
 
@@ -18,8 +16,7 @@ type FeatureSection = {
   paragraphs: string[]
   imageLeft: boolean
   alt?: string
-  siteImageId?: string
-  imageId?: '21'
+  siteImageId: string
 }
 
 const SECTIONS: FeatureSection[] = [
@@ -90,7 +87,7 @@ const SECTIONS: FeatureSection[] = [
   {
     id: 'shopify',
     heading: 'Shopify sync',
-    imageId: '21',
+    siteImageId: 'A10',
     imageLeft: false,
     paragraphs: [
       "Connect your Shopify store once and your entire product catalog is available inside AdRender — names, descriptions, images, variants, and pricing. Add a product to your store and it's there next time you render.",
@@ -139,13 +136,7 @@ function FeatureBlock({ section, number }: { section: FeatureSection; number: st
               ))}
             </div>
           </div>
-          {section.siteImageId ? (
-            <SceneForAnchor anchor={section.id} size="wide" />
-          ) : (
-            <Stage>
-              <PlaceholderImage id={section.imageId!} alt={section.alt} imgClassName="h-full w-full object-cover" />
-            </Stage>
-          )}
+          <SceneForAnchor anchor={section.id} size="wide" />
         </div>
       </div>
     </section>

@@ -50,7 +50,12 @@ if (!oneK) throw new Error('Image token rates are missing from TokenBuys')
 /** Standard 1K cost, the default render line. */
 export const RENDER_COST = `${formatTokens(oneK.standard)} · ${oneK.resolution}`
 
-export const PLAYGROUND_PROMPT = 'Same shoe on a wet running track at dawn, bold headline top left'
+/** Headlines already printed on the YourBrand sample ads. */
+export const BRAND_AD_COPY = [
+  'Run hard. Look sharp.',
+  'Retro style, modern speed.',
+  'Train with purpose.',
+] as const
 
 /**
  * Static sizes named in AboutPage #sizes.
@@ -101,12 +106,12 @@ export const AD_STILLS: Still[] = [
   { src: '/how-it-works/ads/ad-08.png', width: 824, height: 1024 },
 ]
 
-/** Smallest finished-ad posters for playground results. */
+/** Playground results are YourBrand ads only. Four distinct stills from /how-it-works/ads/. */
 export const RESULT_STILLS: Still[] = [
-  { src: '/app-preview/video-01.jpg', width: 540, height: 960 },
-  { src: '/app-preview/video-05.jpg', width: 540, height: 676 },
-  { src: '/app-preview/video-06.jpg', width: 540, height: 960 },
-  { src: '/app-preview/video-02.jpg', width: 540, height: 960 },
+  { src: '/how-it-works/ads/ad-04.png', width: 824, height: 1024 },
+  { src: '/how-it-works/ads/ad-06.png', width: 824, height: 1024 },
+  { src: '/how-it-works/ads/ad-02.png', width: 824, height: 1024 },
+  { src: '/how-it-works/ads/ad-05.png', width: 824, height: 1024 },
 ]
 
 export const LIBRARY_FOLDERS = [
