@@ -4,7 +4,7 @@
 
 Save real files under `/public/site/`. Until a file exists, the site shows a labeled placeholder (`SitePlaceholder`). Sizes are the slot, not a crop of an old screenshot.
 
-F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. A1, C1, and OG stay image slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
+F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. A1 uses the live site's founder photo (`public/placeholders/img-06.png`). C1 and OG stay empty slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
 
 No solution page references an image, so there are no S-* slots. `/about#shopify` is drawn in code (A10). Previous slot 21 is no longer used.
 
@@ -19,7 +19,7 @@ No solution page references an image, so there are no S-* slots. `/about#shopify
 | F6 | Built in code (src/components/scenes) — no image needed | Homepage features — template library | 1200×1500 | 4:5 | |
 | F7 | Built in code (src/components/scenes) — no image needed | Homepage features — ad playground | 1200×1500 | 4:5 | |
 | F8 | Built in code (src/components/scenes) — no image needed | Homepage features — team workspaces | 1200×1500 | 4:5 | |
-| A1 | `/site/a1-founder.webp` | `/about#founder-story` | 1600×1200 | 4:3 | |
+| A1 | `/placeholders/img-06.png` | Founder story (`/about#founder-story` and landing pages) | 1600×1200 | 4:3 | Using the live site's founder photo (public/placeholders/img-06.png) |
 | A2 | Built in code (src/components/scenes) — no image needed | `/about#templates` | 1600×1200 | 4:3 | |
 | A3 | Built in code (src/components/scenes) — no image needed | `/about#easy-to-use` | 1600×1200 | 4:3 | |
 | A4 | Built in code (src/components/scenes) — no image needed | `/about#brands` | 1600×1200 | 4:3 | |

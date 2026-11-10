@@ -17,37 +17,40 @@ import { LpPage } from './pages/LpPage'
 import { comparisons } from './data/comparisons'
 import { landingPages } from './data/landingPages'
 import { solutions } from './data/solutions'
+import { SiteThemeProvider } from './hooks/useSiteTheme'
 
 /** Shared route tree — used by the browser SPA and by SSG via StaticRouter. */
 export function AppRoutes() {
   return (
-    <Routes>
-      {/* Public standalone pages — no Layout chrome */}
-      <Route path="terms" element={<TermsPage />} />
-      <Route path="privacy" element={<PrivacyPage />} />
+    <SiteThemeProvider>
+      <Routes>
+        {/* Public standalone pages — no Layout chrome */}
+        <Route path="terms" element={<TermsPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
 
-      <Route element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="faq" element={<FaqPage />} />
-        <Route path="affiliates" element={<AffiliatesPage />} />
-        <Route path="contact" element={<ContactPage />} />
-        <Route path="blog" element={<BlogIndexPage />} />
-        <Route path="blog/:slug" element={<BlogPostPage />} />
-        {/* Explicit paths preserve /vs-adcreative URLs under StaticRouter + BrowserRouter. */}
-        {comparisons.map((c) => (
-          <Route key={c.slug} path={`vs-${c.slug}`} element={<VsPage slug={c.slug} />} />
-        ))}
-        <Route path="solutions" element={<SolutionsIndexPage />} />
-        {solutions.map((s) => (
-          <Route key={s.slug} path={`solutions/${s.slug}`} element={<SolutionRoutePage slug={s.slug} />} />
-        ))}
-        {landingPages.map((p) => (
-          <Route key={p.slug} path={`lp/${p.slug}`} element={<LpPage slug={p.slug} />} />
-        ))}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+        <Route element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="faq" element={<FaqPage />} />
+          <Route path="affiliates" element={<AffiliatesPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="blog" element={<BlogIndexPage />} />
+          <Route path="blog/:slug" element={<BlogPostPage />} />
+          {/* Explicit paths preserve /vs-adcreative URLs under StaticRouter + BrowserRouter. */}
+          {comparisons.map((c) => (
+            <Route key={c.slug} path={`vs-${c.slug}`} element={<VsPage slug={c.slug} />} />
+          ))}
+          <Route path="solutions" element={<SolutionsIndexPage />} />
+          {solutions.map((s) => (
+            <Route key={s.slug} path={`solutions/${s.slug}`} element={<SolutionRoutePage slug={s.slug} />} />
+          ))}
+          {landingPages.map((p) => (
+            <Route key={p.slug} path={`lp/${p.slug}`} element={<LpPage slug={p.slug} />} />
+          ))}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </SiteThemeProvider>
   )
 }
 

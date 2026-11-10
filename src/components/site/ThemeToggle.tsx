@@ -7,8 +7,9 @@ export function ThemeToggle() {
   const label = toDark ? 'Switch to dark mode' : 'Switch to light mode'
 
   return (
-    <button type="button" className="site-icon-btn" onClick={toggle} aria-label={label} data-tooltip={label}>
-      {toDark ? <Moon size={18} /> : <Sun size={18} />}
+    <button type="button" className="site-icon-btn site-theme-toggle" onClick={toggle} aria-label={label} data-tooltip={label}>
+      <Moon size={18} className="site-theme-icon site-theme-icon-moon" aria-hidden />
+      <Sun size={18} className="site-theme-icon site-theme-icon-sun" aria-hidden />
     </button>
   )
 }
@@ -18,10 +19,10 @@ export function ThemeSegment() {
 
   return (
     <div className="site-segment" role="group" aria-label="Color theme">
-      <button type="button" aria-pressed={theme === 'light'} onClick={() => setTheme('light')}>
+      <button type="button" data-theme="light" aria-pressed={theme === 'light'} onClick={() => setTheme('light')}>
         Light
       </button>
-      <button type="button" aria-pressed={theme === 'dark'} onClick={() => setTheme('dark')}>
+      <button type="button" data-theme="dark" aria-pressed={theme === 'dark'} onClick={() => setTheme('dark')}>
         Dark
       </button>
     </div>

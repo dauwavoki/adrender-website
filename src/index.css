@@ -147,6 +147,7 @@ html.dark {
   html {
     scroll-behavior: smooth;
     overflow-x: clip;
+    background-color: var(--site-bg);
   }
 
   body {

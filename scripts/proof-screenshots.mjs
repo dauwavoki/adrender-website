@@ -142,6 +142,64 @@ try {
     console.log('saved', path.relative(root, aboutFile))
     await context.close()
   }
+
+  for (const width of [1280, 1440]) {
+    const context = await browser.newContext({
+      viewport: { width, height: 900 },
+      deviceScaleFactor: 1,
+    })
+    await context.addInitScript(() => {
+      localStorage.setItem('adrender-site-theme', 'light')
+    })
+    const page = await context.newPage()
+    await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' })
+    await page.evaluate(() => document.fonts.ready)
+    await page.locator('#features').scrollIntoViewIfNeeded()
+    const rows = await page.evaluate(() => {
+      const lineCount = (el) => {
+        if (!el) return 0
+        const range = document.createRange()
+        range.selectNodeContents(el)
+        const tops = []
+        for (const rect of range.getClientRects()) {
+          if (rect.width < 1 || rect.height < 1) continue
+          if (!tops.some((top) => Math.abs(top - rect.top) < 2)) tops.push(rect.top)
+        }
+        return tops.length
+      }
+      const cards = [...document.querySelectorAll('#features .site-image-card')]
+      return cards.map((card, index) => {
+        const title = card.querySelector(':scope > h3')
+        const sub = card.querySelector(':scope > .site-image-card-sub')
+        const body = [...card.querySelectorAll(':scope > p')].find((node) => !node.classList.contains('site-image-card-sub'))
+        const link = card.querySelector(':scope > a')
+        const media = card.querySelector('.site-image-card-media')
+        const top = (el) => (el ? Math.round(el.getBoundingClientRect().top) : null)
+        return {
+          n: index + 1,
+          title: title ? title.textContent.trim() : '',
+          width: Math.round(card.getBoundingClientRect().width),
+          titleLines: lineCount(title),
+          subLines: lineCount(sub),
+          paraLines: lineCount(body),
+          tops: {
+            media: top(media),
+            title: top(title),
+            sub: top(sub),
+            para: top(body),
+            link: top(link),
+          },
+        }
+      })
+    })
+    console.log(`\nfeature cards @ ${width}px`)
+    for (const row of rows) {
+      console.log(
+        `${row.n} w=${row.width} title=${row.titleLines} sub=${row.subLines} para=${row.paraLines} tops=${JSON.stringify(row.tops)} ${row.title}`,
+      )
+    }
+    await context.close()
+  }
 } finally {
   await browser.close()
   server.close()

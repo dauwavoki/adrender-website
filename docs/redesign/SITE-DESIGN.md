@@ -34,24 +34,32 @@ Files next to this one:
 
 | Decision | Value |
 |---|---|
-| Theme | **Light is the default.** A light/dark toggle in the header switches the whole site. |
+| Theme | **Follows the device** until the visitor picks a mode (section 2). Light when the device has no dark preference. Toggle in the header, footer, phone menu, and legal pages. |
 | Headline font | **Serif** for display headlines (section 3). Inter for everything else. |
 | Main style reference | Marketer.com — copy its patterns (REFERENCES.md §2.2), built with AdRender's app tokens and colors. |
 | Icons | Phosphor (`@phosphor-icons/react`), same as the app. Remove `lucide-react` at the end. |
 | App preview | Must show the **new** app (floating sidebar, content card, Phosphor icons, warm neutrals). It follows the site theme (light app in light mode, dark app in dark mode). |
 | Feature images | Mark makes them later. Use clear placeholders + an updated `IMAGE_MANIFEST.md`. |
 
-Why light: there is no general rule that dark converts better; reading tests favour dark text on light backgrounds, the buyers (Shopify and small-business owners) live in light tools, and the main reference (Marketer, same buyer) is light. The toggle keeps dark one click away.
+Why light when the device has no preference: there is no general rule that dark converts better; reading tests favour dark text on light backgrounds, the buyers (Shopify and small-business owners) live in light tools, and the main reference (Marketer, same buyer) is light. The toggle is still one click away, and a dark device opens dark.
 
 ---
 
 ## 2. Theme system
 
-- Classes on `<html>`: `light` or `dark` (same as the app). Default `light`.
-- Saved per visitor in `localStorage` key `adrender-site-theme` (`"light"` | `"dark"`), every read/write in `try/catch`. Missing or unreadable → light. Do not follow the operating system setting.
-- **No flash**: a tiny inline script at the top of `<head>` in `index.html` reads the key and sets the class before paint. The SSG HTML is written with `class="light"` on `<html>`. (Inline scripts are allowed by the current CSP — `'unsafe-inline'` is present.)
-- Header toggle: ghost icon-only button, 36px, `Sun` icon shown in dark mode / `Moon` in light mode, `aria-label="Switch to dark mode"` / `"Switch to light mode"`, tooltip. Also a "Light | Dark" segmented control in the phone menu sheet.
-- Theme change is instant; colors use CSS variables, so only `transition: background-color 150ms, color 150ms, border-color 150ms` on body/surfaces.
+- Classes on `<html>`: `light` or `dark` (same as the app). The SSG HTML is written with `class="light"`. A no-flash script corrects the class before first paint.
+- Saved per visitor in `localStorage` key `adrender-site-theme` (`"light"` | `"dark"`). Every read and write is in `try/catch`. If storage throws, follow the device setting.
+- **First visit** (no saved key): follow the device with `matchMedia('(prefers-color-scheme: dark)')`. Dark → `html.dark`. Light, or no preference, → `html.light`.
+- **No flash**: the inline script at the top of `<head>` in `index.html` applies the same rule before paint: saved choice, then the device setting, then light. (Inline scripts are allowed by the current CSP — `'unsafe-inline'` is present.)
+- **Live follow**: while the key is absent, the open page listens for device setting changes and matches them. A saved choice stops that following.
+- **Toggle** (header, footer, phone menu, legal header): clicking saves the choice. If the chosen mode equals the current device setting, remove the key instead of storing it, so the site keeps following the device.
+- Header, footer, and legal toggles: ghost icon-only button, 36px, `Sun` icon shown in dark mode / `Moon` in light mode, `aria-label="Switch to dark mode"` / `"Switch to light mode"`, tooltip. The phone menu uses a "Light | Dark" segmented control. The icon shown follows the class on `<html>`, so it is correct before React paints.
+- **Theme change fades.** It does not fade on the first load.
+  - Toggle click: 600ms ease-in-out.
+  - Device setting change while following: 1200ms ease-in-out.
+  - `prefers-reduced-motion: reduce`: instant, no fade.
+  - Where `document.startViewTransition` exists, the whole page crossfades. `::view-transition-old(root)` and `::view-transition-new(root)` use that case's duration. The blend is `normal` (the default plus-lighter blend flashes gradients and grain). Scene and hero motion is paused for the capture, and color transitions are suspended so the new snapshot is the settled theme. The header (and the about jump bar, and the legal header) is its own view-transition group with a solid page background for the capture, because a `backdrop-filter` bar snapshots as empty glass and flashes.
+  - Where view transitions are missing: a temporary class on `<html>` sets `transition: background-color, color, border-color, fill, stroke, box-shadow` at the same duration on every element (and `::before` / `::after`), then the class is removed when the transition ends.
 
 ---
 

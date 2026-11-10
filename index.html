@@ -2,13 +2,21 @@
 <html lang="en" class="light">
   <head>
     <script>
-      try {
-        var t = localStorage.getItem('adrender-site-theme');
-        if (t === 'dark' || t === 'light') {
-          document.documentElement.classList.remove('light', 'dark');
-          document.documentElement.classList.add(t);
+      (function () {
+        var theme = 'light';
+        try {
+          var saved = localStorage.getItem('adrender-site-theme');
+          if (saved === 'dark' || saved === 'light') theme = saved;
+          else if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+        } catch (e) {
+          try {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+          } catch (e2) {}
         }
-      } catch (e) {}
+        var root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(theme);
+      })();
     </script>
 
     <!-- Google Analytics 4 -->

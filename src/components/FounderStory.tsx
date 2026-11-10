@@ -60,8 +60,8 @@ export function FounderStory({
 
 function StageImage() {
   return (
-    <div className="site-stage stage-fill site-stage-pad-md">
-      <SitePlaceholder id="A1" />
+    <div className="site-stage site-founder-photo">
+      <SitePlaceholder id="A1" alt="Marc Lawrence, founder of AdRender" priority />
     </div>
   )
 }

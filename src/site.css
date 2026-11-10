@@ -452,6 +452,15 @@ section[id],
   background: var(--bg-hover);
 }
 
+.site-theme-icon {
+  display: none;
+}
+
+html.light .site-theme-icon-moon,
+html.dark .site-theme-icon-sun {
+  display: block;
+}
+
 .site-icon-btn[data-tooltip]:hover::after,
 .site-icon-btn[data-tooltip]:focus-visible::after {
   content: attr(data-tooltip);
@@ -609,6 +618,30 @@ html.dark .site-placeholder::after {
   font-size: 13px;
   font-weight: 500;
   line-height: 18px;
+}
+
+.site-media-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 14px;
+  background: var(--bg-inset);
+}
+
+@media (min-width: 768px) {
+  .site-media-photo {
+    border-radius: 20px;
+  }
+}
+
+.site-founder-photo {
+  padding: 0;
+  background: var(--bg-inset);
+}
+
+.site-founder-photo .site-media-photo {
+  border-radius: inherit;
 }
 
 /* Hero */
@@ -1128,6 +1161,31 @@ html.dark .site-image-card:hover .site-image-card-media {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+}
+
+/* Four-up rows share one set of tracks so scene, title, subtitle, paragraph, and link line up. */
+@media (min-width: 1024px) {
+  .site-image-grid.cols-4 {
+    row-gap: 0;
+    column-gap: 20px;
+  }
+
+  .site-image-grid.cols-4 > .site-image-card {
+    display: grid;
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    align-items: start;
+    min-width: 0;
+  }
+
+  .site-image-grid.cols-4 > .site-image-card::after {
+    content: '';
+    height: 28px;
+  }
+
+  .site-image-grid.cols-4 > .site-image-card:nth-last-child(-n + 4)::after {
+    content: none;
+  }
 }
 
 .site-band {
@@ -1762,13 +1820,13 @@ html.dark .site-image-card:hover .site-image-card-media {
   cursor: pointer;
 }
 
-html.light .site-segment button[aria-pressed='true'] {
+html.light .site-segment button[data-theme='light'] {
   border-color: var(--border);
   background: #fff;
   color: var(--text-primary);
 }
 
-html.dark .site-segment button[aria-pressed='true'] {
+html.dark .site-segment button[data-theme='dark'] {
   border-color: var(--border-strong);
   background: #3a3836;
   color: #f6f5f4;
@@ -3077,5 +3135,104 @@ html.dark .pbf-card > .pbf-num {
   .legal-doc h1 {
     font-size: 48px;
     line-height: 54px;
+  }
+}
+
+/* Theme crossfade. Durations are set per case on <html data-theme-fade>. */
+html[data-theme-fade='toggle']::view-transition-old(root),
+html[data-theme-fade='toggle']::view-transition-new(root),
+html[data-theme-fade='toggle']::view-transition-old(site-chrome),
+html[data-theme-fade='toggle']::view-transition-new(site-chrome) {
+  animation-duration: 600ms;
+  animation-timing-function: ease-in-out;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-fade='device']::view-transition-old(root),
+html[data-theme-fade='device']::view-transition-new(root),
+html[data-theme-fade='device']::view-transition-old(site-chrome),
+html[data-theme-fade='device']::view-transition-new(site-chrome) {
+  animation-duration: 1200ms;
+  animation-timing-function: ease-in-out;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(site-chrome) {
+  z-index: 100;
+}
+
+/* Snap to the new colors for the snapshot. The view transition does the fade.
+   Pause scene and hero motion so the two snapshots share one frame. */
+html.theme-vt,
+html.theme-vt *,
+html.theme-vt *::before,
+html.theme-vt *::after {
+  transition: none !important;
+}
+
+html.theme-vt .scene,
+html.theme-vt .scene *,
+html.theme-vt .ap-section,
+html.theme-vt .ap-section *,
+html.theme-vt .hero-line2,
+html.theme-vt .hero-line2 * {
+  animation-play-state: paused !important;
+}
+
+/* Sticky bars with backdrop-filter snapshot as empty glass. Give each its own
+   group and a solid fill for the capture so the bar does not flash. */
+html.theme-vt .site-header,
+html.theme-vt .legal-header {
+  view-transition-name: site-chrome;
+  background-color: var(--site-bg);
+  backdrop-filter: none;
+}
+
+html.theme-vt .about-jump {
+  view-transition-name: about-jump;
+  background-color: var(--site-bg);
+  backdrop-filter: none;
+}
+
+html[data-theme-fade='toggle']::view-transition-old(about-jump),
+html[data-theme-fade='toggle']::view-transition-new(about-jump) {
+  animation-duration: 600ms;
+  animation-timing-function: ease-in-out;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-fade='device']::view-transition-old(about-jump),
+html[data-theme-fade='device']::view-transition-new(about-jump) {
+  animation-duration: 1200ms;
+  animation-timing-function: ease-in-out;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(about-jump) {
+  z-index: 90;
+}
+
+/* Browsers without View Transitions. Removed when the fade ends. */
+html.theme-color-transition,
+html.theme-color-transition *,
+html.theme-color-transition *::before,
+html.theme-color-transition *::after {
+  transition:
+    background-color var(--theme-fade, 600ms) ease-in-out,
+    color var(--theme-fade, 600ms) ease-in-out,
+    border-color var(--theme-fade, 600ms) ease-in-out,
+    fill var(--theme-fade, 600ms) ease-in-out,
+    stroke var(--theme-fade, 600ms) ease-in-out,
+    box-shadow var(--theme-fade, 600ms) ease-in-out !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(site-chrome),
+  ::view-transition-new(site-chrome),
+  ::view-transition-old(about-jump),
+  ::view-transition-new(about-jump) {
+    animation-duration: 0s !important;
   }
 }
