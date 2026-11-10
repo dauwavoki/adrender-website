@@ -4,7 +4,7 @@ import { IconTile, type TileTone } from '../site/IconTile'
 import type { ComponentType } from 'react'
 import type { IconWeight } from '@phosphor-icons/react'
 
-const BRAND_OPTIONS: {
+export const BRAND_OPTIONS: {
   label: string
   detail: string
   icon: ComponentType<{ className?: string; weight?: IconWeight; size?: number }>

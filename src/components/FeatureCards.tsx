@@ -1,4 +1,4 @@
-import { SitePlaceholder } from './site/SitePlaceholder'
+import { SceneForAnchor } from './scenes'
 import { ImageCard } from './site/ImageCard'
 import { SplitTitle } from './site/SplitTitle'
 
@@ -87,7 +87,7 @@ export function FeatureCards() {
           {FEATURES.map((feature) => (
             <ImageCard
               key={feature.anchor}
-              media={<SitePlaceholder id={feature.imageId} />}
+              media={<SceneForAnchor anchor={feature.anchor} size="card" />}
               title={feature.heading}
               sub={withStop(feature.sub)}
               body={withStop(feature.body)}

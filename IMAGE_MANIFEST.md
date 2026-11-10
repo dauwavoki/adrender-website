@@ -4,28 +4,30 @@
 
 Save real files under `/public/site/`. Until a file exists, the site shows a labeled placeholder (`SitePlaceholder`). Sizes are the slot, not a crop of an old screenshot.
 
+F1–F8, A2–A9, and H1 are drawn in the page. They do not need image files. A1, C1, and OG stay image slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
+
 No solution page references an image, so there are no S-* slots. `/about#shopify` still uses previous slot 21 (`img-21.png`).
 
 | ID | Filename to save as | Page + section | Size | Aspect | Theme note |
 |---|---|---|---|---|---|
-| H1 | `/site/h1-hero-app-preview.webp` | Product menu featured card | 2560×1600 | 16:10 | Optional -light / -dark if the poster should not follow the live preview |
-| F1 | `/site/f1-proven-templates.webp` | Homepage features — proven templates | 1200×1500 | 4:5 | |
-| F2 | `/site/f2-easy-to-use.webp` | Homepage features — easy to use | 1200×1500 | 4:5 | |
-| F3 | `/site/f3-brand-intelligence.webp` | Homepage features — brand intelligence | 1200×1500 | 4:5 | |
-| F4 | `/site/f4-batch-rendering.webp` | Homepage features — batch rendering | 1200×1500 | 4:5 | |
-| F5 | `/site/f5-every-size.webp` | Homepage features — every size | 1200×1500 | 4:5 | |
-| F6 | `/site/f6-template-library.webp` | Homepage features — template library | 1200×1500 | 4:5 | |
-| F7 | `/site/f7-ad-playground.webp` | Homepage features — ad playground | 1200×1500 | 4:5 | |
-| F8 | `/site/f8-team-workspaces.webp` | Homepage features — team workspaces | 1200×1500 | 4:5 | |
+| H1 | Built in code (src/components/scenes) — no image needed | Product menu featured card | 2560×1600 | 16:10 | Static Home view from `src/components/AppPreview` |
+| F1 | Built in code (src/components/scenes) — no image needed | Homepage features — proven templates | 1200×1500 | 4:5 | |
+| F2 | Built in code (src/components/scenes) — no image needed | Homepage features — easy to use | 1200×1500 | 4:5 | |
+| F3 | Built in code (src/components/scenes) — no image needed | Homepage features — brand intelligence | 1200×1500 | 4:5 | |
+| F4 | Built in code (src/components/scenes) — no image needed | Homepage features — batch rendering | 1200×1500 | 4:5 | |
+| F5 | Built in code (src/components/scenes) — no image needed | Homepage features — every size | 1200×1500 | 4:5 | |
+| F6 | Built in code (src/components/scenes) — no image needed | Homepage features — template library | 1200×1500 | 4:5 | |
+| F7 | Built in code (src/components/scenes) — no image needed | Homepage features — ad playground | 1200×1500 | 4:5 | |
+| F8 | Built in code (src/components/scenes) — no image needed | Homepage features — team workspaces | 1200×1500 | 4:5 | |
 | A1 | `/site/a1-founder.webp` | `/about#founder-story` | 1600×1200 | 4:3 | |
-| A2 | `/site/a2-templates.webp` | `/about#templates` | 1600×1200 | 4:3 | |
-| A3 | `/site/a3-easy-to-use.webp` | `/about#easy-to-use` | 1600×1200 | 4:3 | |
-| A4 | `/site/a4-brands.webp` | `/about#brands` | 1600×1200 | 4:3 | |
-| A5 | `/site/a5-generation.webp` | `/about#generation` | 1600×1200 | 4:3 | |
-| A6 | `/site/a6-sizes.webp` | `/about#sizes` | 1600×1200 | 4:3 | |
-| A7 | `/site/a7-library.webp` | `/about#library` | 1600×1200 | 4:3 | |
-| A8 | `/site/a8-playground.webp` | `/about#playground` | 1600×1200 | 4:3 | |
-| A9 | `/site/a9-workspaces.webp` | `/about#workspaces` | 1600×1200 | 4:3 | |
+| A2 | Built in code (src/components/scenes) — no image needed | `/about#templates` | 1600×1200 | 4:3 | |
+| A3 | Built in code (src/components/scenes) — no image needed | `/about#easy-to-use` | 1600×1200 | 4:3 | |
+| A4 | Built in code (src/components/scenes) — no image needed | `/about#brands` | 1600×1200 | 4:3 | |
+| A5 | Built in code (src/components/scenes) — no image needed | `/about#generation` | 1600×1200 | 4:3 | |
+| A6 | Built in code (src/components/scenes) — no image needed | `/about#sizes` | 1600×1200 | 4:3 | |
+| A7 | Built in code (src/components/scenes) — no image needed | `/about#library` | 1600×1200 | 4:3 | |
+| A8 | Built in code (src/components/scenes) — no image needed | `/about#playground` | 1600×1200 | 4:3 | |
+| A9 | Built in code (src/components/scenes) — no image needed | `/about#workspaces` | 1600×1200 | 4:3 | |
 | B-adrender-shopify-app | `/site/b-adrender-shopify-app.webp` | Blog index card for `/blog/adrender-shopify-app` | 1600×900 | 16:9 | No cover in the post yet |
 | B-ai-ad-generators-shopify-comparison | `/site/b-ai-ad-generators-shopify-comparison.webp` | Blog index card for `/blog/ai-ad-generators-shopify-comparison` | 1600×900 | 16:9 | No cover in the post yet |
 | B-ai-ad-management-platforms-shopify | `/site/b-ai-ad-management-platforms-shopify.webp` | Blog index card for `/blog/ai-ad-management-platforms-shopify` | 1600×900 | 16:9 | No cover in the post yet |

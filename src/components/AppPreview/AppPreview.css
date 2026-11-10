@@ -82,6 +82,38 @@
     -webkit-mask-image: linear-gradient(to right, #000 68%, transparent 100%);
     mask-image: linear-gradient(to right, #000 68%, transparent 100%);
   }
+
+  .ap-section--poster .ap-slot {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* Product-menu poster: the whole Home window, fitted, with no motion or crop. */
+.ap-section--poster {
+  height: 100%;
+  pointer-events: none;
+}
+
+.ap-section--poster .ap-scaler {
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .ap-section--poster.ap-section--embed .ap-slot {
+    height: calc(var(--ap-window-h) * min(1, 100cqi / var(--ap-design-w)));
+  }
+
+  .ap-section--poster.ap-section--embed .ap-frame {
+    left: 0;
+    transform: scale(min(1, 100cqi / var(--ap-design-w)));
+  }
+}
+
+.ap-section--poster .ap-nav-btn.library-ready,
+.ap-section--poster .rendering-dots span,
+.ap-section--poster .ap-quote-text {
+  animation: none;
 }
 
 .ap-window {

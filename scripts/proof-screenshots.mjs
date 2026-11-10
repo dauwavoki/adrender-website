@@ -89,6 +89,59 @@ try {
       await context.close()
     }
   }
+
+  for (const theme of themes) {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      deviceScaleFactor: 1,
+      reducedMotion: 'reduce',
+    })
+    await context.addInitScript((value) => {
+      localStorage.setItem('adrender-site-theme', value)
+    }, theme)
+    const page = await context.newPage()
+    const hideChrome = () =>
+      page.addStyleTag({
+        content: '.site-header, .about-jump { display: none !important; }',
+      })
+
+    await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' })
+    await hideChrome()
+    const features = page.locator('#features')
+    await features.scrollIntoViewIfNeeded()
+    await page.waitForTimeout(400)
+    const featuresFile = path.join(outDir, `features-${theme}-1440.png`)
+    await features.screenshot({ path: featuresFile })
+    console.log('saved', path.relative(root, featuresFile))
+
+    await page.goto(`http://127.0.0.1:${port}/about`, { waitUntil: 'networkidle' })
+    await hideChrome()
+    const sectionIds = ['templates', 'easy-to-use', 'brands', 'generation', 'sizes', 'library', 'playground', 'workspaces']
+    for (const id of sectionIds) {
+      await page.locator(`#${id}`).scrollIntoViewIfNeeded()
+      await page.waitForTimeout(150)
+    }
+    await page.evaluate((ids) => {
+      const start = document.getElementById(ids[0])
+      const end = document.getElementById(ids[ids.length - 1])
+      if (!start || !end || !start.parentElement) return
+      const parent = start.parentElement
+      const wrap = document.createElement('div')
+      wrap.id = 'proof-about-features'
+      parent.insertBefore(wrap, start)
+      let node = start
+      while (node) {
+        const next = node.nextElementSibling
+        wrap.appendChild(node)
+        if (node === end) break
+        node = next
+      }
+    }, sectionIds)
+    const aboutFile = path.join(outDir, `about-features-${theme}-1440.png`)
+    await page.locator('#proof-about-features').screenshot({ path: aboutFile })
+    console.log('saved', path.relative(root, aboutFile))
+    await context.close()
+  }
 } finally {
   await browser.close()
   server.close()

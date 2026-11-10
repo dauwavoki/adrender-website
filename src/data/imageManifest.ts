@@ -79,36 +79,41 @@ export type SiteImageEntry = {
   filename: string
   src?: string
   themeNote?: string
+  /** Set when the slot is drawn in code and does not need a file. */
+  built?: string
 }
+
+const BUILT = 'Built in code (src/components/scenes) — no image needed'
 
 export const SITE_IMAGES: SiteImageEntry[] = [
   {
     id: 'H1',
     label: 'Hero app preview',
-    where: 'Homepage hero poster',
+    where: 'Product menu featured card',
     width: 2560,
     height: 1600,
     aspect: '16:10',
     filename: '/site/h1-hero-app-preview.webp',
-    themeNote: 'Optional -light / -dark if the frame should not follow the live preview',
+    built: BUILT,
+    themeNote: 'Static Home view from src/components/AppPreview. No image file.',
   },
-  { id: 'F1', label: 'Feature: proven templates', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f1-proven-templates.webp' },
-  { id: 'F2', label: 'Feature: easy to use', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f2-easy-to-use.webp' },
-  { id: 'F3', label: 'Feature: brand intelligence', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f3-brand-intelligence.webp' },
-  { id: 'F4', label: 'Feature: batch rendering', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f4-batch-rendering.webp' },
-  { id: 'F5', label: 'Feature: every size', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f5-every-size.webp' },
-  { id: 'F6', label: 'Feature: template library', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f6-template-library.webp' },
-  { id: 'F7', label: 'Feature: ad playground', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f7-ad-playground.webp' },
-  { id: 'F8', label: 'Feature: team workspaces', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f8-team-workspaces.webp' },
+  { id: 'F1', label: 'Feature: proven templates', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f1-proven-templates.webp', built: BUILT },
+  { id: 'F2', label: 'Feature: easy to use', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f2-easy-to-use.webp', built: BUILT },
+  { id: 'F3', label: 'Feature: brand intelligence', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f3-brand-intelligence.webp', built: BUILT },
+  { id: 'F4', label: 'Feature: batch rendering', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f4-batch-rendering.webp', built: BUILT },
+  { id: 'F5', label: 'Feature: every size', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f5-every-size.webp', built: BUILT },
+  { id: 'F6', label: 'Feature: template library', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f6-template-library.webp', built: BUILT },
+  { id: 'F7', label: 'Feature: ad playground', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f7-ad-playground.webp', built: BUILT },
+  { id: 'F8', label: 'Feature: team workspaces', where: 'Homepage features', width: 1200, height: 1500, aspect: '4:5', filename: '/site/f8-team-workspaces.webp', built: BUILT },
   { id: 'A1', label: 'About: founder', where: '/about#founder-story', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a1-founder.webp' },
-  { id: 'A2', label: 'About: templates', where: '/about#templates', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a2-templates.webp' },
-  { id: 'A3', label: 'About: easy to use', where: '/about#easy-to-use', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a3-easy-to-use.webp' },
-  { id: 'A4', label: 'About: brands', where: '/about#brands', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a4-brands.webp' },
-  { id: 'A5', label: 'About: generation', where: '/about#generation', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a5-generation.webp' },
-  { id: 'A6', label: 'About: sizes', where: '/about#sizes', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a6-sizes.webp' },
-  { id: 'A7', label: 'About: library', where: '/about#library', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a7-library.webp' },
-  { id: 'A8', label: 'About: playground', where: '/about#playground', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a8-playground.webp' },
-  { id: 'A9', label: 'About: workspaces', where: '/about#workspaces', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a9-workspaces.webp' },
+  { id: 'A2', label: 'About: templates', where: '/about#templates', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a2-templates.webp', built: BUILT },
+  { id: 'A3', label: 'About: easy to use', where: '/about#easy-to-use', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a3-easy-to-use.webp', built: BUILT },
+  { id: 'A4', label: 'About: brands', where: '/about#brands', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a4-brands.webp', built: BUILT },
+  { id: 'A5', label: 'About: generation', where: '/about#generation', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a5-generation.webp', built: BUILT },
+  { id: 'A6', label: 'About: sizes', where: '/about#sizes', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a6-sizes.webp', built: BUILT },
+  { id: 'A7', label: 'About: library', where: '/about#library', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a7-library.webp', built: BUILT },
+  { id: 'A8', label: 'About: playground', where: '/about#playground', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a8-playground.webp', built: BUILT },
+  { id: 'A9', label: 'About: workspaces', where: '/about#workspaces', width: 1600, height: 1200, aspect: '4:3', filename: '/site/a9-workspaces.webp', built: BUILT },
   { id: 'C1', label: 'Contact side image', where: '/contact', width: 1200, height: 1500, aspect: '4:5', filename: '/site/c1-contact.webp', themeNote: 'Optional' },
   { id: 'OG', label: 'Social share image', where: 'Open Graph', width: 1200, height: 630, aspect: '1.91:1', filename: '/site/og-share.webp' },
 ]

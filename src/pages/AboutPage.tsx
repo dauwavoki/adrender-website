@@ -2,7 +2,7 @@ import { CostTable } from '../components/CostTable'
 import { FounderStory } from '../components/FounderStory'
 import { PageMeta } from '../components/PageMeta'
 import { PlaceholderImage } from '../components/PlaceholderImage'
-import { SitePlaceholder } from '../components/site/SitePlaceholder'
+import { SceneForAnchor } from '../components/scenes'
 import { SplitHero } from '../components/site/SplitHero'
 import { Stage } from '../components/site/Stage'
 import { ClosingCta } from '../components/site/ClosingCta'
@@ -139,13 +139,13 @@ function FeatureBlock({ section, number }: { section: FeatureSection; number: st
               ))}
             </div>
           </div>
-          <Stage>
-            {section.siteImageId ? (
-              <SitePlaceholder id={section.siteImageId} />
-            ) : (
+          {section.siteImageId ? (
+            <SceneForAnchor anchor={section.id} size="wide" />
+          ) : (
+            <Stage>
               <PlaceholderImage id={section.imageId!} alt={section.alt} imgClassName="h-full w-full object-cover" />
-            )}
-          </Stage>
+            </Stage>
+          )}
         </div>
       </div>
     </section>

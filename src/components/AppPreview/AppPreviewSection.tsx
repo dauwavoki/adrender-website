@@ -50,7 +50,7 @@ function cx(...parts: Array<string | false | undefined>) {
   return parts.filter(Boolean).join(' ')
 }
 
-function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefObject<HTMLDivElement | null>) {
+function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefObject<HTMLDivElement | null>, fit = false) {
   useEffect(() => {
     const slot = slotRef.current
     const frame = frameRef.current
@@ -58,11 +58,11 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
 
     const apply = (width: number) => {
       if (width < 8) return
-      const phone = window.matchMedia('(max-width: 767px)').matches
-      const fit = width / DESIGN_WIDTH
-      const scale = phone ? Math.min(1, Math.max(fit, 0.5)) : Math.min(fit, 1)
+      const phone = !fit && window.matchMedia('(max-width: 767px)').matches
+      const ratio = width / DESIGN_WIDTH
+      const scale = phone ? Math.min(1, Math.max(ratio, 0.5)) : Math.min(ratio, 1)
       const scaledWidth = DESIGN_WIDTH * scale
-      const offset = scaledWidth < width - 0.5 ? (width - scaledWidth) / 2 : 0
+      const offset = phone || fit ? 0 : scaledWidth < width - 0.5 ? (width - scaledWidth) / 2 : 0
       frame.style.transform = `scale(${scale})`
       frame.style.left = `${offset}px`
       slot.style.height = `${WINDOW_HEIGHT * scale}px`
@@ -81,7 +81,7 @@ function useFrameScale(slotRef: RefObject<HTMLDivElement | null>, frameRef: RefO
       observer.disconnect()
       phoneQuery.removeEventListener('change', onPhone)
     }
-  }, [slotRef, frameRef])
+  }, [slotRef, frameRef, fit])
 }
 
 function usePreviewMedia(sectionRef: RefObject<HTMLElement | null>) {
@@ -335,7 +335,7 @@ function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly
   )
 }
 
-function HomeView({ href, mode }: { href: string; mode: Mode }) {
+function HomeView({ href, mode, quiet = false }: { href: string; mode: Mode; quiet?: boolean }) {
   const stats = PERSONAL.stats.filter((stat) => stat.id !== 'workspaces')
   const tones: TileTone[] = ['blue', 'violet', 'amber', 'green']
   const workTones: Record<string, TileTone> = { statics: 'blue', videos: 'green', playground: 'amber' }
@@ -391,7 +391,8 @@ function HomeView({ href, mode }: { href: string; mode: Mode }) {
             alt=""
             width={KEEP_WORKING.still.width}
             height={KEEP_WORKING.still.height}
-            fetchPriority="high"
+            loading={quiet ? 'lazy' : 'eager'}
+            fetchPriority={quiet ? undefined : 'high'}
             decoding="async"
           />
           <span className="ap-keep-foot">
@@ -493,7 +494,7 @@ function HomeView({ href, mode }: { href: string; mode: Mode }) {
             <p className="ap-muted">{USE_AGAIN.subtitle}</p>
           </span>
         </span>
-        <Row label="Image" items={USE_AGAIN.images} href={href} priority />
+        <Row label="Image" items={USE_AGAIN.images} href={href} priority={!quiet} />
         <Row label="Video" items={USE_AGAIN.videos} href={href} />
       </section>
 
@@ -578,21 +579,25 @@ function SimpleView({
 
 type AppPreviewSectionProps = {
   embedded?: boolean
+  /** Static Home view for the product menu. No motion, no video, not focusable. */
+  poster?: boolean
 }
 
-export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) {
+export function AppPreviewSection({ embedded = false, poster = false }: AppPreviewSectionProps) {
   const signupHref = getSignupUrl()
   const sectionRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
   const media = usePreviewMedia(sectionRef)
-  useFrameScale(slotRef, frameRef)
+  const frameMedia = poster ? { load: false, play: false } : media
+  useFrameScale(slotRef, frameRef, poster)
   const [view, setView] = useState<ViewId>('home')
   const [mode, setMode] = useState<Mode>('image')
   const [collapsed, setCollapsed] = useState(false)
-  const [libraryPhase, setLibraryPhase] = useState<LibraryPhase>('rendering')
+  const [libraryPhase, setLibraryPhase] = useState<LibraryPhase>(poster ? 'ready' : 'rendering')
 
   useEffect(() => {
+    if (poster) return
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) {
       setLibraryPhase('ready')
@@ -600,7 +605,7 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
     }
     const timer = window.setTimeout(() => setLibraryPhase('ready'), 3000)
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [poster])
 
   const frameVars = {
     '--ap-design-w': `${DESIGN_WIDTH}px`,
@@ -611,7 +616,12 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
     <div className="ap-scaler">
       <div className="ap-slot" ref={slotRef}>
         <div className="ap-frame" ref={frameRef}>
-          <div className={cx('ap-window', collapsed && 'is-collapsed')} role="region" aria-label="AdRender app home">
+          <div
+            className={cx('ap-window', collapsed && 'is-collapsed')}
+            role={poster ? undefined : 'region'}
+            aria-label={poster ? undefined : 'AdRender app home'}
+            inert={poster ? true : undefined}
+          >
             <Sidebar
               view={view}
               mode={mode}
@@ -622,10 +632,10 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
               onCollapse={() => setCollapsed((value) => !value)}
             />
             <div className="ap-content">
-              <MediaCtx.Provider value={media}>
+              <MediaCtx.Provider value={frameMedia}>
                 <div className="ap-scroll">
                   <div hidden={view !== 'home'}>
-                    <HomeView href={signupHref} mode={mode} />
+                    <HomeView href={signupHref} mode={mode} quiet={poster} />
                   </div>
                   {view === 'library' ? (
                     <SimpleView
@@ -656,14 +666,15 @@ export function AppPreviewSection({ embedded = false }: AppPreviewSectionProps) 
     </div>
   )
 
-  if (embedded) {
+  if (poster || embedded) {
     return (
       <div
         ref={(node) => {
           sectionRef.current = node
         }}
-        className="ap-section ap-section--embed"
+        className={cx('ap-section ap-section--embed', poster && 'ap-section--poster stage-fill')}
         style={frameVars}
+        aria-hidden={poster ? true : undefined}
       >
         {frame}
       </div>

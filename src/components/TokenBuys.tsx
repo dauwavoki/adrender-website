@@ -102,6 +102,14 @@ const TOKEN_BUYS: TokenBuysContent = {
   },
 }
 
+/** Image rates and quality names for scenes that must match this table. */
+export const IMAGE_AD_RATES = TOKEN_BUYS.imageAds.rows
+export const IMAGE_QUALITY_LABELS = {
+  standard: TOKEN_BUYS.imageAds.columns.standard,
+  pro: TOKEN_BUYS.imageAds.columns.pro,
+} as const
+export const TOKEN_TOP_UPS = TOKEN_BUYS.topUps.packs
+
 function formatTokens(value: number) {
   return value.toLocaleString('en-US')
 }

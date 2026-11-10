@@ -3,8 +3,8 @@ import { CaretDown } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { cx } from './cx'
 import { IconTile } from './IconTile'
+import { AppPreviewSection } from '../AppPreview/AppPreviewSection'
 import { PRODUCT_BRAND, PRODUCT_MAKE, type ProductLink } from './navData'
-import { SitePlaceholder } from './SitePlaceholder'
 
 function ProductLinks({ items, onNavigate }: { items: ProductLink[]; onNavigate: () => void }) {
   return (
@@ -88,10 +88,18 @@ export function ProductMenu() {
               <p className="site-menu-label">Your brand</p>
               <ProductLinks items={PRODUCT_BRAND} onNavigate={() => setOpen(false)} />
             </div>
-            <Link to="/about" className="site-featured" onClick={() => setOpen(false)}>
-              <SitePlaceholder id="H1" />
-              <strong>See the full feature tour</strong>
-            </Link>
+            <div className="site-featured">
+              <div className="site-featured-preview" aria-hidden="true">
+                <AppPreviewSection poster />
+              </div>
+              <strong aria-hidden="true">See the full feature tour</strong>
+              <Link
+                to="/about"
+                className="site-featured-hit"
+                aria-label="See the full feature tour"
+                onClick={() => setOpen(false)}
+              />
+            </div>
           </div>
         </div>
       </div>
