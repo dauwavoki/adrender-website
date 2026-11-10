@@ -1,181 +1,99 @@
-import { Link } from 'react-router-dom'
-import {
-  Briefcase,
-  FolderHeart,
-  LayoutGrid,
-  Maximize2,
-  MousePointerClick,
-  Sparkles,
-  Users,
-  Wand2,
-  type LucideIcon,
-} from 'lucide-react'
-import { PlaceholderImage } from './PlaceholderImage'
-import { ScrollReveal } from './ScrollReveal'
-import type { PlaceholderId } from '../data/imageManifest'
+import { SceneForAnchor } from './scenes'
+import { ImageCard } from './site/ImageCard'
+import { SplitTitle } from './site/SplitTitle'
 
 type FeatureCard = {
   anchor: string
   heading: string
   sub: string
-  highlights?: string[]
   body: string
-  imageId?: PlaceholderId
-  imageSrc?: string
-  imageWidth?: number
-  imageHeight?: number
-  icon: LucideIcon
-  accent: string
-  alt?: string
+  imageId: string
+}
+
+function withStop(text: string) {
+  const trimmed = text.trim()
+  return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`
 }
 
 const FEATURES: FeatureCard[] = [
   {
     anchor: 'templates',
     heading: 'Proven templates',
-    sub: '100M+ real ads. Searchable.',
-    highlights: ['Spy on competitor ads'],
-    body: 'Not stock layouts — actual ads running right now, filterable by niche, platform, runtime, and market. Static and video, all searchable in one library.',
-    imageId: '07',
-    icon: LayoutGrid,
-    accent: 'text-[#B894F0]',
+    sub: '100M+ real ads, searchable by niche, platform and runtime.',
+    body: "Not stock layouts — actual ads running right now. Filter by niche, platform, runtime and market, and search static and video ads in one library. See what's working before you render.",
+    imageId: 'F1',
   },
   {
     anchor: 'easy-to-use',
-    heading: 'Easy to Use',
-    sub: 'No setup. Just three steps.',
-    body: "No prompting and no design skills needed. Nothing technical to set up and nothing to connect. It's self-explanatory — you click through three steps and render images and video.",
-    imageSrc: '/placeholders/easy-to-use.png',
-    imageWidth: 1024,
-    imageHeight: 590,
-    icon: MousePointerClick,
-    accent: 'text-[#00E5FF]',
-    alt: 'AdRender made simple: a few clicks to render ads',
+    heading: 'Easy to use',
+    sub: 'No setup and no prompting. Three steps from brand to ads.',
+    body: "No design skills and nothing technical to connect. Add your brand, choose a template and render. The same three clicks make image and video ads. It's self-explanatory from the first visit.",
+    imageId: 'F2',
   },
   {
     anchor: 'brands',
     heading: 'Brand intelligence',
-    sub: 'Learns your brand once. Applies it to everything.',
-    body: 'Drop in your URL or upload brand docs. AdRender pulls your colors, logo, voice, and audience — then every ad sounds like you, not like a template.',
-    imageId: '09',
-    icon: Briefcase,
-    accent: 'text-[#FF8F5C]',
+    sub: 'Learns your brand once and applies it to every ad.',
+    body: 'Drop in your URL or upload brand documents. AdRender pulls your colors, logo, voice and audience, then applies them to every ad, so it sounds like you, not like a template.',
+    imageId: 'F3',
   },
   {
     anchor: 'generation',
     heading: 'Batch rendering',
-    sub: 'Hundreds of ads. One click.',
-    body: 'Pick a proven format, hit render, get a batch. On-brand, ready to run, no prompt engineering required. The step that used to take three hours now ships hundreds of ads in under 10 minutes.',
-    imageId: '10',
-    icon: Sparkles,
-    accent: 'text-[#00E5FF]',
+    sub: 'Hundreds of on-brand ads from one template, in one click.',
+    body: 'Pick a proven format, choose your brand and hit render. On-brand ads ready to run, with no prompt engineering. What used to take three hours now ships hundreds of ads in under 10 minutes.',
+    imageId: 'F4',
   },
   {
     anchor: 'sizes',
-    heading: 'Every size, automatically',
-    sub: '11 formats. Every platform. Every video length up to 30 seconds. One render.',
-    body: 'For images, choose 1K, 2K, or 4K resolution, and Standard or Pro rendering quality. Video renders up to 30 seconds today, with longer coming soon. No resizing, no re-exporting, no cropping by hand.',
-    imageId: '12',
-    icon: Maximize2,
-    accent: 'text-[#5B9FFF]',
+    heading: 'Every size, ready.',
+    sub: '11 image formats and video up to 30 seconds, in one render.',
+    body: 'Choose 1K, 2K or 4K and Standard or Pro quality for images. Video renders at up to 30 seconds, with longer coming soon. No resizing, no re-exporting and no cropping by hand.',
+    imageId: 'F5',
   },
   {
     anchor: 'library',
     heading: 'Your template library',
-    sub: 'Save what works. Reuse it forever.',
-    body: 'Bookmark any template you like, and turn your own best-performing ads into reusable templates. Your winning formats become a library you build on instead of rebuilding.',
-    imageId: '08',
-    icon: FolderHeart,
-    accent: 'text-[#5B9FFF]',
+    sub: 'Save the ads that work and reuse them as templates forever.',
+    body: 'Bookmark any template you like and organize it into collections. Turn your own best-performing ads into templates too, so your winning formats become a library you build on.',
+    imageId: 'F6',
   },
   {
     anchor: 'playground',
-    heading: 'Ad Playground',
-    sub: 'Your canvas, not a template.',
-    body: "Upload your own templates or reference video, start from a blank slate, or riff on something halfway. Full creative control when you want it — for static or video, for the times a template isn't the answer.",
-    imageId: '11',
-    icon: Wand2,
-    accent: 'text-[#B894F0]',
+    heading: 'Ad playground',
+    sub: "Your own canvas for the times a template isn't the answer.",
+    body: 'Upload your own template or reference video, start from a blank slate, or riff on an existing ad. Full creative control for static and video, with your brand applied throughout.',
+    imageId: 'F7',
   },
   {
     anchor: 'workspaces',
     heading: 'Team workspaces',
-    sub: 'Built for agencies and teams.',
-    body: 'Separate workspaces per client or project, shared libraries, per-workspace limits. One subscription covers all of them.',
-    imageId: '14',
-    icon: Users,
-    accent: 'text-[#FF8F5C]',
+    sub: 'Separate workspaces for every client, brand or project.',
+    body: 'Each workspace has its own library, saved templates and brands. Invite teammates or clients, set an optional monthly token limit per workspace, and one subscription covers them all.',
+    imageId: 'F8',
   },
 ]
 
 export function FeatureCards() {
   return (
-    <section id="features" className="scroll-mt-28 border-t border-white/[0.06] px-4 py-24 md:px-6 md:py-28">
-      <div className="mx-auto max-w-6xl">
-        <ScrollReveal>
-          <h2 className="mx-auto max-w-3xl text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            <span className="block">A creative production system,</span>
-            <span className="block">not a collection of tools.</span>
-          </h2>
-        </ScrollReveal>
-
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map((f) => {
-            const Icon = f.icon
-            return (
-              <ScrollReveal key={f.anchor}>
-                <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-[#14141c]">
-                  <div className="flex flex-1 flex-col p-6 pb-4">
-                    <div className={`flex items-center gap-2 ${f.accent}`}>
-                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                      <Link
-                        to={`/about#${f.anchor}`}
-                        className="font-heading text-base font-bold tracking-tight hover:underline hover:underline-offset-4"
-                      >
-                        {f.heading}
-                      </Link>
-                    </div>
-                    <p className="mt-2 text-sm font-medium text-zinc-300">{f.sub}</p>
-                    {f.highlights?.map((line) => (
-                      <p key={line} className="mt-1 text-sm font-medium text-zinc-300">
-                        {line}
-                      </p>
-                    ))}
-                    <p className="mt-3 text-sm leading-relaxed text-zinc-500">{f.body}</p>
-                    <Link
-                      to={`/about#${f.anchor}`}
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition hover:text-white"
-                    >
-                      Learn more
-                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#96F07A] text-black">
-                        →
-                      </span>
-                    </Link>
-                  </div>
-                  {f.imageSrc ? (
-                    <div className="relative mt-auto aspect-[10/7] overflow-hidden border-t border-white/[0.04] bg-[#12121a]">
-                      <img
-                        src={f.imageSrc}
-                        alt={f.alt ?? 'AdRender made simple: a few clicks to render ads'}
-                        width={f.imageWidth}
-                        height={f.imageHeight}
-                        decoding="async"
-                        loading="lazy"
-                        className="h-full w-full object-cover object-top"
-                      />
-                    </div>
-                  ) : (
-                    <PlaceholderImage
-                      id={f.imageId!}
-                      alt={f.alt}
-                      className="mt-auto aspect-[10/7] border-t border-white/[0.04]"
-                      imgClassName="h-full w-full object-cover object-top"
-                    />
-                  )}
-                </article>
-              </ScrollReveal>
-            )
-          })}
+    <section id="features" className="site-section scroll-mt-28">
+      <div className="site-column">
+        <SplitTitle
+          as="h2"
+          lead="A creative production system."
+          rest="Not a collection of tools."
+        />
+        <div className="site-image-grid cols-4" style={{ marginTop: 36 }}>
+          {FEATURES.map((feature) => (
+            <ImageCard
+              key={feature.anchor}
+              media={<SceneForAnchor anchor={feature.anchor} size="card" />}
+              title={feature.heading}
+              sub={withStop(feature.sub)}
+              body={withStop(feature.body)}
+              href={`/about#${feature.anchor}`}
+            />
+          ))}
         </div>
       </div>
     </section>

@@ -1,0 +1,115 @@
+/**
+ * DESIGN.md §5.3 drop-up container and menu row.
+ */
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { Check, type Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+
+/** Anchored dropdown panel. Positioning stays with the caller via className. */
+export const menuPanelClass =
+  "absolute top-full z-[60] mt-2 max-h-80 overflow-y-auto rounded-xl border border-default bg-raised p-1.5 shadow-menu pop-slide";
+
+export const menuRowClass =
+  "flex h-8 w-full items-center justify-between gap-2 rounded-md px-2.5 text-left text-sm leading-5 text-primary transition-colors duration-150 ease-out hover:bg-hover";
+
+export function MenuCheck() {
+  return <Check size={16} className="shrink-0 text-secondary" aria-hidden />;
+}
+
+export function Menu({
+  children,
+  className,
+  id,
+  role,
+  ariaLabel,
+}: {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+  role?: string;
+  ariaLabel?: string;
+}) {
+  return (
+    <div
+      id={id}
+      role={role}
+      aria-label={ariaLabel}
+      className={cn(
+        "rounded-xl border border-default bg-raised p-1.5 shadow-menu",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function MenuDivider() {
+  return <div role="separator" className="my-1.5 border-t border-default" />;
+}
+
+const rowClass =
+  "flex min-h-8 w-full items-center gap-2 rounded-md px-2.5 py-1 text-sm leading-5 text-primary transition-colors duration-150 ease-out hover:bg-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring disabled:cursor-not-allowed disabled:opacity-60";
+
+export function MenuRow({
+  icon: IconComp,
+  children,
+  to,
+  onClick,
+  trailing,
+  disabled,
+  title,
+  className,
+  role,
+  selected,
+}: {
+  /** Accepted so lists can pass `key` under this project's JSX types. */
+  key?: string | number;
+  icon?: Icon;
+  children: ReactNode;
+  to?: string;
+  onClick?: () => void;
+  trailing?: ReactNode;
+  disabled?: boolean;
+  title?: string;
+  className?: string;
+  role?: string;
+  selected?: boolean;
+}) {
+  const inner = (
+    <>
+      {IconComp ? (
+        <IconComp size={16} weight="regular" className="shrink-0 text-secondary" aria-hidden />
+      ) : null}
+      <span className="min-w-0 flex-1 text-left">{children}</span>
+      {trailing}
+    </>
+  );
+
+  const classes = cn(rowClass, className);
+
+  if (to) {
+    return (
+      <Link to={to} title={title} onClick={onClick} className={classes}>
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      title={title}
+      role={role}
+      aria-selected={selected}
+      disabled={disabled}
+      onClick={onClick}
+      className={classes}
+    >
+      {inner}
+    </button>
+  );
+}
+
+export default Menu;

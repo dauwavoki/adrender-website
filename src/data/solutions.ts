@@ -1,33 +1,4 @@
-import {
-  Briefcase,
-  CameraOff,
-  CircleDollarSign,
-  Clock,
-  CreditCard,
-  FlaskConical,
-  Globe,
-  Image as ImageIcon,
-  Images,
-  KeyboardOff,
-  Layers,
-  LayoutTemplate,
-  MousePointerClick,
-  Package,
-  Paintbrush,
-  RefreshCw,
-  ShieldCheck,
-  ShoppingBag,
-  Smartphone,
-  Sparkles,
-  User,
-  Users,
-  Video,
-  Wand2,
-  type LucideIcon,
-} from 'lucide-react'
-
 export type SolutionStep = {
-  icon: LucideIcon
   title: string
   body: string
 }
@@ -62,17 +33,14 @@ export const solutions: SolutionConfig[] = [
       "Your brand is already set up — colors, voice, product catalog, all pulled in once. When a creative starts fading, you don't start from zero: browse the template library for a fresh structure, render a new batch in minutes, and get variants back into rotation before the dip turns into a real CPA problem. Static or video, rendered from templates sourced from ads that are actually converting right now — not the same tired layout reskinned.",
     steps: [
       {
-        icon: Paintbrush,
         title: 'Brand is already in',
         body: 'Colors, voice, and product catalog are pulled in once. Refreshing creative does not mean rebuilding your brand from scratch.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Pick a fresh structure',
         body: 'Browse templates sourced from ads that are actually converting right now — not the same tired layout reskinned.',
       },
       {
-        icon: RefreshCw,
         title: 'Render and rotate',
         body: 'A new batch in minutes, static or video, back into rotation before the dip turns into a real CPA problem.',
       },
@@ -95,17 +63,14 @@ export const solutions: SolutionConfig[] = [
       "Set your brand up once — from a URL, brand documents, or Shopify sync. From there, browsing templates, rendering the creative, and getting sized, on-brand output happens in one flow, not five. You're not exporting from one tool and importing to the next. One login, one subscription, one place your brand voice actually lives.",
     steps: [
       {
-        icon: Paintbrush,
         title: 'Set up once',
         body: 'Brand from a URL, documents, or Shopify sync. Colors, voice, and catalog live in one place.',
       },
       {
-        icon: Layers,
         title: 'Create in one flow',
         body: 'Browse templates and render the creative without exporting from one tool and importing to the next.',
       },
       {
-        icon: Sparkles,
         title: 'Sized and on-brand',
         body: 'Output ready for every platform. One login, one subscription, one place your brand voice actually lives.',
       },
@@ -128,17 +93,14 @@ export const solutions: SolutionConfig[] = [
       "There's no blank canvas here. Pick a template that's already a real, working ad structure, and your brand — colors, logo, product, voice — applies to it automatically. You're choosing from what's already good, not building from nothing. No prompt to write, no design theory to know, no manual layout decisions.",
     steps: [
       {
-        icon: MousePointerClick,
         title: 'Skip the blank canvas',
         body: "Pick a template that's already a real, working ad structure — not an empty artboard waiting for you to guess.",
       },
       {
-        icon: Paintbrush,
         title: 'Brand applies automatically',
         body: 'Colors, logo, product, and voice land on the template. No font pairing, no logo placement, no white-space theory.',
       },
       {
-        icon: Sparkles,
         title: 'Choose what already works',
         body: "You're recognizing a good ad, not building one from nothing. No prompt, no design degree, no drag-and-drop.",
       },
@@ -161,17 +123,14 @@ export const solutions: SolutionConfig[] = [
       "The starting point matters. AdRender doesn't render from a blank prompt guessing at what an ad \"should\" look like — it starts from a library of over 100 million ads that are actually running and converting right now, real creative structures that already work, then applies your brand to them. The output looks like an ad a human directed, because the structure came from one.",
     steps: [
       {
-        icon: LayoutTemplate,
         title: 'Start from real ads',
         body: 'A library of 100M+ ads that are actually running and converting right now — not a blank prompt guessing at "an ad."',
       },
       {
-        icon: ShieldCheck,
         title: 'Use proven structures',
         body: 'Real creative structures that already work in the feed, not generic layouts invented to look busy.',
       },
       {
-        icon: Paintbrush,
         title: 'Dress it in your brand',
         body: 'Your brand applies to a human-directed structure. The output reads as intentional because it is.',
       },
@@ -194,17 +153,14 @@ export const solutions: SolutionConfig[] = [
       "There's nothing to type. Browse real ad templates, pick the structure you want, and your brand — pulled automatically from your URL, documents, or Shopify catalog — applies to it. No prompt to write, no rewording, no guessing what phrase will finally get the AI to understand what you meant.",
     steps: [
       {
-        icon: KeyboardOff,
         title: "Browse, don't type",
         body: "There's nothing to prompt. Real ad templates are already there — you're looking, not describing.",
       },
       {
-        icon: LayoutTemplate,
         title: 'Pick the structure',
         body: "Choose the layout you want instead of trying to articulate it from scratch on the tenth rewrite.",
       },
       {
-        icon: Wand2,
         title: 'Brand fills it in',
         body: 'URL, documents, or Shopify catalog — your brand applies automatically. No rewording, no lucky phrasing.',
       },
@@ -227,17 +183,14 @@ export const solutions: SolutionConfig[] = [
       'Video rendering is part of the same flow as static ads — no camera required. Your brand and product apply to a video template automatically, and you get finished, on-brand video output without filming a single frame. Same brand setup, same template library, just a different output format.',
     steps: [
       {
-        icon: CameraOff,
         title: 'No camera required',
         body: 'Video lives in the same flow as static ads. No talent booking, no backdrop, no shoot.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Same templates, video out',
         body: 'Your brand and product apply to a video template automatically — same library, different output format.',
       },
       {
-        icon: Video,
         title: 'Finished, on-brand video',
         body: 'You get finished video without filming a single frame. Refresh it the same way you refresh a static ad.',
       },
@@ -260,17 +213,14 @@ export const solutions: SolutionConfig[] = [
       'You get the creative output without the retainer, the contract, or the account manager. Set up your brand once, render hundreds of on-brand ads from templates proven to work, and pay a flat monthly rate that has nothing to do with your ad spend or how many "campaigns" you\'re running. No multi-month commitment, cancel anytime.',
     steps: [
       {
-        icon: Briefcase,
         title: 'Output, not overhead',
         body: 'Creative without the retainer, the contract, or the account manager. No multi-month commitment.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Brand once, render hundreds',
         body: 'On-brand ads from templates proven to work — not a creative direction you wait months to test.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Flat monthly rate',
         body: 'Price has nothing to do with ad spend or how many campaigns you run. Cancel anytime.',
       },
@@ -293,17 +243,14 @@ export const solutions: SolutionConfig[] = [
       'Drop in a website URL, connect a Shopify store, or upload brand documents directly, and the brand profile builds itself — colors, logo, voice, product catalog, all pulled in automatically. From brand setup to a first batch of ads can happen in the same sitting, not across a week of back-and-forth.',
     steps: [
       {
-        icon: Globe,
         title: 'Drop in a source',
         body: 'Website URL, Shopify store, or brand documents. The profile starts building itself from there.',
       },
       {
-        icon: Paintbrush,
         title: 'Brand pulls in automatically',
         body: 'Colors, logo, voice, product catalog — no kit built by hand in a design tool.',
       },
       {
-        icon: Clock,
         title: 'Ads in the same sitting',
         body: 'First batch the same day, not a week of back-and-forth while a client asks where the ads are.',
       },
@@ -326,17 +273,14 @@ export const solutions: SolutionConfig[] = [
       "No handoffs, because there's no one to hand off to. Set up your brand once, render ads directly, and skip the parts of the workflow that assume a team exists to manage. It's built for exactly this: one person, running their own ads, without hiring anyone else to make them.",
     steps: [
       {
-        icon: User,
         title: 'No handoffs',
         body: "There's no one to brief or review. The flow assumes it's just you — because it is.",
       },
       {
-        icon: MousePointerClick,
         title: 'Brand once, render directly',
         body: 'Skip the parts of the workflow that assume a team exists to manage the process.',
       },
       {
-        icon: Sparkles,
         title: 'Run ads without hiring',
         body: 'One person, own ads, without hiring anyone else to make them.',
       },
@@ -359,17 +303,14 @@ export const solutions: SolutionConfig[] = [
       'The price is on the page. Free tier, paid tiers, what each one includes — all visible before you enter a card number, because the free tier doesn\'t require one. No sales call, no "contact us for pricing," no auto-charge surprise when a trial quietly ends.',
     steps: [
       {
-        icon: CircleDollarSign,
         title: 'Price on the page',
         body: 'Free tier, paid tiers, what each includes — visible before you enter a card number.',
       },
       {
-        icon: CreditCard,
         title: 'Free without a card',
         body: 'The free tier doesn\'t require a card. No sales call, no "contact us for pricing."',
       },
       {
-        icon: ShieldCheck,
         title: 'No surprise charge',
         body: 'No auto-charge when a trial quietly ends. What you see is what you pay.',
       },
@@ -392,17 +333,14 @@ export const solutions: SolutionConfig[] = [
       'Each client gets their own brand profile — colors, voice, product catalog, all set up independently and pulled in automatically per brand. Switch between client accounts without losing context, and render creative for each one from templates matched to their specific niche. The Scale tier supports unlimited brands and campaigns under one subscription, built for exactly this use case.',
     steps: [
       {
-        icon: Users,
         title: 'A profile per client',
         body: 'Colors, voice, and product catalog set up independently and pulled in automatically per brand.',
       },
       {
-        icon: RefreshCw,
         title: 'Switch without losing context',
         body: 'Render for each client from templates matched to their niche — not one voice stretched across six accounts.',
       },
       {
-        icon: Layers,
         title: 'Unlimited on Scale',
         body: 'Brands and campaigns under one subscription. Built for agencies and freelancers running multiple clients.',
       },
@@ -425,17 +363,14 @@ export const solutions: SolutionConfig[] = [
       'Skip the extra step. AdRender renders the complete ad — product imagery, layout, headline, and CTA — from a single template pulled from real ads that are actually running and converting. You\'re not left holding a nice photo and no ad around it.',
     steps: [
       {
-        icon: ImageIcon,
         title: 'Skip the extra step',
         body: "A complete ad, not a nice photo sitting alone. Layout, headline, and CTA come with the image.",
       },
       {
-        icon: LayoutTemplate,
         title: 'Start from a working ad',
         body: 'Templates pulled from real ads that are actually running and converting — not a photo with nowhere to go.',
       },
       {
-        icon: MousePointerClick,
         title: 'Copy and CTA included',
         body: "You're not left holding a nice photo and no ad around it. The structure is already the finished dish.",
       },
@@ -458,17 +393,14 @@ export const solutions: SolutionConfig[] = [
       'Connect your Shopify store once and the full catalog syncs automatically — every product, every image, every variant. Render ads across your whole product line without re-uploading anything per SKU, and without repeating the same manual steps hundreds of times.',
     steps: [
       {
-        icon: ShoppingBag,
         title: 'Connect Shopify once',
         body: 'The full catalog syncs automatically — every product, every image, every variant.',
       },
       {
-        icon: Package,
         title: 'No re-upload per SKU',
         body: 'Render across the whole product line without uploading a single image per product.',
       },
       {
-        icon: Layers,
         title: 'Catalog scale, not one-at-a-time',
         body: "Skip repeating the same manual steps hundreds of times. The workflow doesn't assume a handful of SKUs.",
       },
@@ -491,17 +423,14 @@ export const solutions: SolutionConfig[] = [
       'Rendering is fast and cheap enough that producing ten versions of an ad costs close to nothing. Test the angle you weren\'t sure about, because trying it barely costs anything to find out — the expensive part of testing was never supposed to be making the ad, it was supposed to be running it.',
     steps: [
       {
-        icon: FlaskConical,
         title: 'Produce enough to test',
         body: 'Ten versions, not two or three. Real testing means running multiple angles against each other.',
       },
       {
-        icon: Sparkles,
         title: 'Variants cost close to nothing',
         body: 'Rendering is fast and cheap enough that producing the test is no longer the expensive part.',
       },
       {
-        icon: CircleDollarSign,
         title: 'Spend on media, not production',
         body: "The expensive part of testing was never supposed to be making the ad. It was supposed to be running it.",
       },
@@ -524,17 +453,14 @@ export const solutions: SolutionConfig[] = [
       'Render ads specifically sized and structured for TikTok, static or video, from templates pulled from real ads that are actually running and performing on the platform, not repurposed from somewhere else. Your brand applies automatically, sized correctly from the start.',
     steps: [
       {
-        icon: Smartphone,
         title: 'Built for TikTok',
         body: "Sized and structured for the platform — not a Facebook creative resized to fit the dimensions.",
       },
       {
-        icon: Video,
         title: 'Static or video',
         body: 'Templates pulled from ads that are actually running and performing on TikTok, not repurposed from somewhere else.',
       },
       {
-        icon: Paintbrush,
         title: 'Brand, sized from the start',
         body: 'Your brand applies automatically, correctly sized from the first frame — not cropped after the fact.',
       },
@@ -557,17 +483,14 @@ export const solutions: SolutionConfig[] = [
       'Render ads sized correctly for feed, Stories, and Reels from the same brand setup, pulled from templates proven to work on Instagram specifically. No manual cropping or resizing per placement — the format is handled as part of the render.',
     steps: [
       {
-        icon: Images,
         title: 'Every placement',
         body: 'Feed, Stories, and Reels from the same brand setup — three shapes, one product.',
       },
       {
-        icon: LayoutTemplate,
         title: 'Instagram-proven templates',
         body: 'Pulled from formats that actually perform on Instagram, not a feed post squeezed into a Story.',
       },
       {
-        icon: MousePointerClick,
         title: 'No manual cropping',
         body: 'Format is handled as part of the render. No re-cropping per placement after the fact.',
       },

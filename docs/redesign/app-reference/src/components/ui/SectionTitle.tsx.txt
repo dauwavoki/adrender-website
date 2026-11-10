@@ -1,0 +1,41 @@
+/**
+ * DESIGN.md §8.38. Big groups inside a page.
+ * Type is Home's page header (`pageTitle`: 20px / 28 / 600). Icon is 18px accent.
+ * 32px above, 12px below. Card titles stay on Card / SectionHeader (14–16px).
+ */
+import type { ReactNode } from "react";
+import type { Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import { renderIconNode } from "./icon";
+import { pageTitle } from "./text";
+
+export default function SectionTitle({
+  icon,
+  title,
+  description,
+  actions,
+  className,
+  as = "h2",
+}: {
+  icon?: ReactNode | Icon;
+  title: ReactNode;
+  description?: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+  as?: "h2" | "h3";
+}) {
+  const Heading = as;
+  const iconNode = renderIconNode(icon, 18);
+  return (
+    <div className={cn("mb-3 mt-8 flex flex-wrap items-start justify-between gap-3", className)}>
+      <div className="min-w-0">
+        <Heading className={cn(pageTitle, "flex items-center gap-2")}>
+          {iconNode ? <span className="shrink-0 text-accent">{iconNode}</span> : null}
+          {title}
+        </Heading>
+        {description ? <p className="mt-1 text-[13px] leading-5 text-secondary">{description}</p> : null}
+      </div>
+      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+    </div>
+  );
+}

@@ -1,0 +1,43 @@
+/**
+ * DESIGN.md §8.7 and §8.36. Content-width, 22px, colored by meaning.
+ */
+import type { HTMLAttributes, ReactNode } from "react";
+import { cn } from "../../lib/utils";
+
+export type BadgeVariant = "neutral" | "success" | "warning" | "danger" | "accent" | "info";
+
+const VARIANTS: Record<BadgeVariant, string> = {
+  neutral: "bg-soft text-secondary",
+  success: "bg-success-soft text-success",
+  warning: "bg-warning-soft text-warning",
+  danger: "bg-danger-soft text-danger",
+  accent: "bg-accent-soft text-accent",
+  info: "bg-info-soft text-info",
+};
+
+export default function Badge({
+  variant,
+  tone,
+  className,
+  children,
+  ...rest
+}: HTMLAttributes<HTMLSpanElement> & {
+  variant?: BadgeVariant;
+  /** Same as `variant`. Kept so existing status badges can pass either name. */
+  tone?: BadgeVariant;
+  children: ReactNode;
+}) {
+  const look = variant ?? tone ?? "neutral";
+  return (
+    <span
+      className={cn(
+        "inline-flex h-[22px] w-fit max-w-full shrink-0 items-center gap-1 rounded-md px-1.5 text-xs font-medium leading-4",
+        VARIANTS[look],
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </span>
+  );
+}

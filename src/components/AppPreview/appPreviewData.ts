@@ -15,7 +15,9 @@
  * `video-01.mp4` through `video-08.mp4`, each with a matching poster
  * `video-01.jpg` through `video-08.jpg`.
  * Use again plays slots 01–04. Get inspired plays slots 05–08.
- * Each clip is used once.
+ * Each of those clips is used once.
+ * Keep working on uses a YourBrand clip from public/how-it-works/video-02.mp4
+ * (not one of the app-preview clips above).
  */
 
 export const ACCENT = {
@@ -156,13 +158,14 @@ export type PreviewTemplate = ImageTemplate | VideoTemplate
  */
 export const KEEP_WORKING = {
   kicker: 'Keep working on',
-  title: 'Image ad',
+  title: 'Video ad',
   when: '11m ago',
   accent: ACCENT.cyan,
+  videoSrc: '/how-it-works/video-02.mp4',
   still: {
-    src: '/how-it-works/ads/ad-08.png',
-    width: 824,
-    height: 1024,
+    src: '/how-it-works/video-02.jpg',
+    width: 540,
+    height: 960,
   } satisfies PreviewStill,
 }
 
@@ -222,10 +225,10 @@ export type StatItem = {
 export const PERSONAL = {
   kicker: 'Personal',
   stats: [
-    { id: 'ads', label: 'Ads generated', value: '47', accent: ACCENT.blue },
-    { id: 'saved', label: 'Templates saved', value: '12', accent: ACCENT.purple },
-    { id: 'brands', label: 'Brands', value: '3', accent: ACCENT.yellow },
-    { id: 'progress', label: 'In progress', value: '2', accent: ACCENT.green },
+    { id: 'ads', label: 'Ads generated', value: '2,847', accent: ACCENT.blue },
+    { id: 'saved', label: 'Templates saved', value: '186', accent: ACCENT.purple },
+    { id: 'brands', label: 'Brands', value: '14', accent: ACCENT.yellow },
+    { id: 'progress', label: 'In progress', value: '12', accent: ACCENT.green },
     {
       id: 'workspaces',
       label: 'Other workspaces',

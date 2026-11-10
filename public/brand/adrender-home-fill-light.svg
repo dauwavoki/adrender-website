@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" aria-hidden="true">
+  <defs>
+    <linearGradient id="adrender-home-fill-light" gradientUnits="userSpaceOnUse" x1="24" y1="40" x2="232" y2="216">
+      <stop offset="0" stop-color="#1F5FD6"/>
+      <stop offset="0.5" stop-color="#7340D4"/>
+      <stop offset="1" stop-color="#E8650F"/>
+    </linearGradient>
+  </defs>
+  <path d="M142.4,34.4 L112.3,38.8 L24.0,189.0 L40.2,221.6 L148.8,173.1 L175.2,217.7 L217.6,217.7 L232.0,192.6 Z M132.0,88.1 L158.9,138.1 L82.5,172.8 Z" fill="url(#adrender-home-fill-light)" fill-rule="evenodd" stroke="url(#adrender-home-fill-light)" stroke-width="16" stroke-linejoin="round"/>
+</svg>

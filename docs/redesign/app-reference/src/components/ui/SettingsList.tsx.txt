@@ -1,0 +1,51 @@
+/**
+ * Label/value rows used by template detail and library detail modals.
+ */
+import type { ReactNode } from "react";
+import { cn } from "../../lib/utils";
+
+export function SettingsRow({ label, value }: { key?: string | number; label: string; value: ReactNode }) {
+  return (
+    <div className="flex min-h-11 items-center justify-between gap-4 border-b border-default px-4 last:border-b-0">
+      <span className="shrink-0 text-[13px] leading-[18px] text-secondary">{label}</span>
+      <span className="min-w-0 text-right text-sm leading-5 text-primary">{value}</span>
+    </div>
+  );
+}
+
+/** Same row, previous name. */
+export const SettingRow = SettingsRow;
+
+export function SettingsCard({
+  rows,
+  children,
+  className,
+}: {
+  rows?: { label: string; value: ReactNode }[];
+  children?: ReactNode;
+  className?: string;
+}) {
+  if (rows) {
+    const visible = rows.filter((row) => {
+      if (typeof row.value === "string") {
+        const v = row.value.trim();
+        return v.length > 0 && v !== "—";
+      }
+      return row.value != null && row.value !== false;
+    });
+    if (!visible.length) return null;
+    return (
+      <div className={cn("overflow-hidden rounded-xl border border-default bg-surface", className)}>
+        {visible.map((row) => (
+          <SettingsRow key={row.label} label={row.label} value={row.value} />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div className={cn("overflow-hidden rounded-xl border border-default bg-surface", className)}>{children}</div>
+  );
+}
+
+/** Children-only card, previous name. */
+export const SettingCard = SettingsCard;

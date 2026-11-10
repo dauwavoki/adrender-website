@@ -1,51 +1,50 @@
+import type { ComponentType } from 'react'
+import type { IconWeight } from '@phosphor-icons/react'
 import {
-  ArrowLeftRight,
-  BarChart3,
+  ArrowsClockwise,
+  ArrowsLeftRight,
   Briefcase,
-  CameraOff,
-  CircleDollarSign,
-  Clapperboard,
+  CameraSlash,
+  ChartBar,
   CreditCard,
   Crop,
-  EyeOff,
-  Film,
-  FlaskConical,
-  Gamepad2,
+  CurrencyCircleDollar,
+  CursorClick,
+  EyeSlash,
+  FilmSlate,
+  FilmStrip,
+  Flask,
+  FrameCorners,
+  GameController,
   Handshake,
   Images,
-  KeyboardOff,
-  Layers,
-  LayoutGrid,
-  LayoutTemplate,
-  Maximize2,
+  Keyboard,
+  Layout,
+  Lightning,
+  MagicWand,
   Megaphone,
   Monitor,
-  MousePointerClick,
-  Music2,
+  MusicNotes,
   Package,
-  Paintbrush,
+  PaintBrush,
   Palette,
-  PenTool,
-  RectangleHorizontal,
-  RectangleVertical,
-  RefreshCw,
+  PenNib,
+  Rectangle,
   ShieldCheck,
-  Sparkles,
-  Store,
+  Sparkle,
+  SquaresFour,
+  Stack,
+  Storefront,
   Timer,
   User,
-  UserRound,
   Users,
-  Video,
-  Wand2,
-  Zap,
-  type LucideIcon,
-} from 'lucide-react'
+  VideoCamera,
+} from '@phosphor-icons/react'
 
 export type LandingFeature = {
   heading: string
   body: string
-  icon: LucideIcon
+  icon: ComponentType<{ className?: string; weight?: IconWeight; size?: number }>
   accent: string
 }
 
@@ -93,25 +92,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'No blank canvas',
         body: 'Pick a proven template instead of starting from nothing.',
-        icon: LayoutTemplate,
+        icon: Layout,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'No prompt to write',
         body: 'Your brand applies automatically — no prompt engineering required.',
-        icon: Sparkles,
+        icon: Sparkle,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'No manual resizing',
         body: 'Every platform size is handled for you in the same render.',
-        icon: Maximize2,
+        icon: FrameCorners,
         accent: 'text-[#5B9FFF]',
       },
       {
         heading: 'No tutorial required',
         body: 'If you can pick from a list, you can use AdRender.',
-        icon: MousePointerClick,
+        icon: CursorClick,
         accent: 'text-[#FF8F5C]',
       },
     ],
@@ -153,19 +152,19 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Template research, in the same place',
         body: 'No separate ad-spy subscription — proven structures live in the same flow as rendering.',
-        icon: Layers,
+        icon: Stack,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Brand voice and copy, automatic',
         body: 'No separate copywriting tool. Your voice is applied when you render.',
-        icon: Wand2,
+        icon: MagicWand,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Every platform size, same flow',
         body: 'No separate resizing step after you finish the ad.',
-        icon: Maximize2,
+        icon: FrameCorners,
         accent: 'text-[#5B9FFF]',
       },
       {
@@ -213,25 +212,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Brand already set up',
         body: 'No re-briefing anyone when a creative starts fading.',
-        icon: Paintbrush,
+        icon: PaintBrush,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'A fresh batch in minutes',
         body: 'Render from a different template without starting over.',
-        icon: LayoutTemplate,
+        icon: Layout,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Test multiple new angles at once',
         body: "Don't guess at one replacement — ship several and let the data pick.",
-        icon: FlaskConical,
+        icon: Flask,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Video and static both covered',
         body: "Fatigue doesn't force you into one format.",
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#5B9FFF]',
       },
     ],
@@ -285,14 +284,14 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'No prompt-guessing',
         body: "The structure is already proven. You're not hoping the AI interprets you correctly.",
-        icon: KeyboardOff,
+        icon: Keyboard,
         accent: 'text-[#00E5FF]',
       },
     ],
     faqIntro: "Why this doesn't look like every other AI generator.",
     faq: [
       {
-        q: 'How is this different from just prompting ChatGPT or another AI generator?',
+        q: 'How is this different from just prompting a chat AI tool or another AI generator?',
         a: 'Those generate from your description of what you want. AdRender renders from a real, proven ad structure and applies your brand to it — a fundamentally different starting point.',
       },
       {
@@ -327,7 +326,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Flat monthly pricing',
         body: 'Unrelated to ad spend or the number of "campaigns."',
-        icon: CircleDollarSign,
+        icon: CurrencyCircleDollar,
         accent: 'text-[#96F07A]',
       },
       {
@@ -387,13 +386,13 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Nothing to film',
         body: 'No camera, no crew, no talent booking. Video is rendered — not shot.',
-        icon: CameraOff,
+        icon: CameraSlash,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'Same brand setup, both formats',
         body: 'One brand profile powers static and video output. You do not set anything up twice.',
-        icon: Layers,
+        icon: Stack,
         accent: 'text-[#B894F0]',
       },
       {
@@ -405,7 +404,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Stay off camera',
         body: 'Full creative control without appearing in the ad yourself.',
-        icon: EyeOff,
+        icon: EyeSlash,
         accent: 'text-[#5B9FFF]',
       },
     ],
@@ -447,7 +446,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'No one to hand off to',
         body: "There's no designer waiting on a brief — and the product doesn't pretend there is.",
-        icon: UserRound,
+        icon: User,
         accent: 'text-[#FF8F5C]',
       },
       {
@@ -459,13 +458,13 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Render and approve yourself',
         body: "No review layer built in that you don't need. You render, you ship.",
-        icon: MousePointerClick,
+        icon: CursorClick,
         accent: 'text-[#B894F0]',
       },
       {
         heading: "Priced for a solo operator",
         body: "A solo founder's budget, not a team's. Start at $19/mo.",
-        icon: CircleDollarSign,
+        icon: CurrencyCircleDollar,
         accent: 'text-[#96F07A]',
       },
     ],
@@ -513,13 +512,13 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Switch without losing context',
         body: 'Move between client accounts without one brand bleeding into the next.',
-        icon: ArrowLeftRight,
+        icon: ArrowsLeftRight,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Unlimited brands on Scale',
         body: 'Unlimited brands and campaigns under one account — built for a multi-client roster.',
-        icon: Layers,
+        icon: Stack,
         accent: 'text-[#B894F0]',
       },
       {
@@ -567,25 +566,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Sourced from real TikTok ads',
         body: 'Templates pulled from currently-running TikTok ads — not repurposed Facebook creative.',
-        icon: Music2,
+        icon: MusicNotes,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Sized correctly from the start',
         body: 'Correct sizing and format when you render, not cropped or stretched after the fact.',
-        icon: Maximize2,
+        icon: FrameCorners,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Static and video, both TikTok',
         body: 'Both formats covered for TikTok specifically — not one format stretched to fit.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#5B9FFF]',
       },
       {
         heading: 'Same brand, this platform',
         body: 'Your brand applies automatically, the same way it does on every other platform.',
-        icon: Wand2,
+        icon: MagicWand,
         accent: 'text-[#FF8F5C]',
       },
     ],
@@ -626,7 +625,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'All three placements',
         body: 'Feed, Stories, and Reels sizing handled automatically from the same brand setup.',
-        icon: RectangleVertical,
+        icon: Rectangle,
         accent: 'text-[#B894F0]',
       },
       {
@@ -644,7 +643,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Static and video covered',
         body: "Both formats, including Reels' native vertical video.",
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#5B9FFF]',
       },
     ],
@@ -686,13 +685,13 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Full catalog sync',
         body: 'One connection pulls in products, images, variants, and pricing.',
-        icon: Store,
+        icon: Storefront,
         accent: 'text-[#96F07A]',
       },
       {
         heading: 'New SKUs flow in automatically',
         body: 'Add a product to your store and it shows up here — no re-export, no re-upload.',
-        icon: RefreshCw,
+        icon: ArrowsClockwise,
         accent: 'text-[#00E5FF]',
       },
       {
@@ -746,25 +745,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Every major placement',
         body: 'Feed, Stories, Reels, and right column — each sized correctly when you render.',
-        icon: LayoutGrid,
+        icon: SquaresFour,
         accent: 'text-[#5B9FFF]',
       },
       {
         heading: 'Sourced from real Meta ads',
         body: 'Templates pulled from currently-running Facebook and Instagram ads — not generic layouts.',
-        icon: LayoutTemplate,
+        icon: Layout,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Static and video covered',
         body: 'Both formats, across Meta placements, from the same rendering flow.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'One brand setup, every placement',
         body: 'Render for every Meta placement at once — not a separate pass per size.',
-        icon: Wand2,
+        icon: MagicWand,
         accent: 'text-[#FF8F5C]',
       },
     ],
@@ -807,7 +806,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Skip the blank canvas',
         body: 'Start from a proven structure instead of a blank frame, every time.',
-        icon: LayoutTemplate,
+        icon: Layout,
         accent: 'text-[#B894F0]',
       },
       {
@@ -819,13 +818,13 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Resizing done for you',
         body: 'Across platforms, not a manual export pass after you finish the layout.',
-        icon: Maximize2,
+        icon: FrameCorners,
         accent: 'text-[#5B9FFF]',
       },
       {
         heading: 'Full creative control still available',
         body: 'This removes the repetition, not the judgment. Rendering is a starting point.',
-        icon: PenTool,
+        icon: PenNib,
         accent: 'text-[#00E5FF]',
       },
     ],
@@ -868,7 +867,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Every odd size supported',
         body: 'Medium Rectangle, Half Page, Leaderboard, Wide Skyscraper, Mobile Banner, and more.',
-        icon: RectangleHorizontal,
+        icon: Rectangle,
         accent: 'text-[#B894F0]',
       },
       {
@@ -886,7 +885,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Same brand, every size',
         body: 'One brand setup renders every size automatically.',
-        icon: Wand2,
+        icon: MagicWand,
         accent: 'text-[#00E5FF]',
       },
     ],
@@ -987,7 +986,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Draft concepts before you film',
         body: 'Render multiple video angles from proven ad structures so the shoot day is spent on the one that already has a pulse.',
-        icon: Clapperboard,
+        icon: FilmSlate,
         accent: 'text-[#FF8F5C]',
       },
       {
@@ -999,7 +998,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Filmed stays the premium offer',
         body: 'Use rendered drafts for testing and lower-stakes rounds. Camera time goes to the work brands pay a creator rate for.',
-        icon: Film,
+        icon: FilmStrip,
         accent: 'text-[#B894F0]',
       },
       {
@@ -1046,25 +1045,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Dozens of variations per offer',
         body: 'Render a full test set in minutes — not one polished ad while the rest of the angles wait.',
-        icon: Layers,
+        icon: Stack,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'No brand constraints slowing you down',
         body: 'Apply the offer directly to proven templates. You are optimizing for conversion, not a locked brand kit.',
-        icon: Zap,
+        icon: Lightning,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Batch rendering for real volume',
         body: 'Built for the kind of testing schedule affiliates actually run — many variations, same offer, same session.',
-        icon: FlaskConical,
+        icon: Flask,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'Static and video, same flow',
         body: 'Both formats from the same rendering pass, so a winning static angle can become a video test without a second pipeline.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#5B9FFF]',
       },
     ],
@@ -1106,25 +1105,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Full creative sets in one batch',
         body: 'Ship a complete test set in one pass instead of trickling out one ad at a time and waiting on the next brief.',
-        icon: Layers,
+        icon: Stack,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Weekly refresh, actually achievable',
         body: 'The cadence platforms reward stops being aspirational when rendering takes minutes, not a production cycle.',
-        icon: RefreshCw,
+        icon: ArrowsClockwise,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: '90% net-new, same headcount',
         body: 'Match a modern creative-refresh mix — mostly new creative, not slight recrops — without hiring a bigger team.',
-        icon: BarChart3,
+        icon: ChartBar,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'Static and video from the same flow',
         body: 'Both formats in the same batch, so volume is not limited to whichever pipeline your team can staff this week.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#5B9FFF]',
       },
     ],
@@ -1166,25 +1165,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Test hook variations first',
         body: 'Render multiple angles before you spend on ads, so the funnel launches on a tested hook, not a guess.',
-        icon: FlaskConical,
+        icon: Flask,
         accent: 'text-[#B894F0]',
       },
       {
         heading: 'Testimonial-style video, no shoot',
         body: 'Video ads rendered from proven templates — no filming, no talent booking, no studio day.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Fresh batches every relaunch',
         body: "New creative for every launch cycle so the funnel doesn't keep running last quarter's ads.",
-        icon: RefreshCw,
+        icon: ArrowsClockwise,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: "Built for a solo creator's budget",
         body: 'Workflow and pricing that fit a one-person operation — not a retainer built for a team.',
-        icon: CircleDollarSign,
+        icon: CurrencyCircleDollar,
         accent: 'text-[#96F07A]',
       },
     ],
@@ -1225,19 +1224,19 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Full catalog sync via Shopify',
         body: 'Connect the store once and render ads across your entire beauty line — products, images, and variants stay current automatically.',
-        icon: Store,
+        icon: Storefront,
         accent: 'text-[#96F07A]',
       },
       {
         heading: 'UGC-style video, no shoot',
         body: 'Testimonial-style video from proven beauty templates — no filming, no creator booking, no wait.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Refresh fatigued creative in minutes',
         body: 'When performance starts to dip, render a new batch instead of waiting on the next production cycle.',
-        icon: RefreshCw,
+        icon: ArrowsClockwise,
         accent: 'text-[#FF8F5C]',
       },
       {
@@ -1284,25 +1283,25 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Batches sized for every network',
         body: "Render ad batches sized and formatted for whatever network you're running install campaigns on.",
-        icon: Maximize2,
+        icon: FrameCorners,
         accent: 'text-[#5B9FFF]',
       },
       {
         heading: 'Static and video app ads',
         body: 'Both formats from the same flow — install-driving static and video without a second pipeline.',
-        icon: Video,
+        icon: VideoCamera,
         accent: 'text-[#00E5FF]',
       },
       {
         heading: 'Refresh install creative fast',
         body: 'When performance starts to fade, render the next set in minutes instead of waiting on a production cycle.',
-        icon: RefreshCw,
+        icon: ArrowsClockwise,
         accent: 'text-[#FF8F5C]',
       },
       {
         heading: 'Built for UA testing volume',
         body: 'The volume app-install and game marketing actually require — not a handful of polished ads per quarter.',
-        icon: Gamepad2,
+        icon: GameController,
         accent: 'text-[#B894F0]',
       },
     ],
@@ -1343,7 +1342,7 @@ export const landingPages: LandingPageConfig[] = [
       {
         heading: 'Test before you commission',
         body: 'Run cheap variations yourself first, so billable time goes to what already tested well — not a first-guess brief.',
-        icon: FlaskConical,
+        icon: Flask,
         accent: 'text-[#B894F0]',
       },
       {

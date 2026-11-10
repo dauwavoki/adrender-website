@@ -5,10 +5,12 @@ import { Header } from './Header'
 
 export function Layout() {
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-base">
+    <div className="site-root">
+      <div className="site-rail site-rail-left" aria-hidden />
+      <div className="site-rail site-rail-right" aria-hidden />
       <BetaBanner />
       <Header />
-      <main className="flex-1">
+      <main className="site-main">
         <Outlet />
       </main>
       <Footer />

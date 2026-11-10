@@ -1,6 +1,9 @@
 import { useState, type FormEvent } from 'react'
-import { ScrollReveal } from '../components/ScrollReveal'
+import { ChatCircle, EnvelopeSimple, Storefront } from '@phosphor-icons/react'
 import { PageMeta } from '../components/PageMeta'
+import { SplitTitle } from '../components/site/SplitTitle'
+import { Stage } from '../components/site/Stage'
+import { IconTile } from '../components/site/IconTile'
 
 const MARKETING_CONTACT_URL =
   'https://oxxsgplmsqajhvjveact.supabase.co/functions/v1/marketing-contact'
@@ -10,6 +13,12 @@ const DESCRIPTION =
   'Questions about beta access, catalog sync, Shopify, or partnerships? Contact the AdRender team — we typically reply within 24 hours.'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
+
+const BULLETS = [
+  { icon: ChatCircle, tone: 'blue' as const, text: 'Beta access' },
+  { icon: Storefront, tone: 'amber' as const, text: 'Catalog sync and Shopify' },
+  { icon: EnvelopeSimple, tone: 'violet' as const, text: 'Partnerships' },
+]
 
 export function ContactPage() {
   const [name, setName] = useState('')
@@ -42,35 +51,48 @@ export function ContactPage() {
   }
 
   return (
-    <div className="px-4 py-20 md:px-6 md:py-28">
+    <section className="site-section">
       <PageMeta title={TITLE} description={DESCRIPTION} path="/contact" />
-      <div className="mx-auto max-w-lg">
-        <ScrollReveal>
-          <h1 className="text-center font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">Contact</h1>
-          <p className="mt-3 text-center text-zinc-500">
+      <div className="site-column contact-split">
+        <div>
+          <SplitTitle as="h1" lead="Contact" />
+          <p className="site-lead" style={{ marginTop: 12 }}>
             Questions about beta access, catalog sync, Shopify, or partnerships — send a note.
           </p>
-        </ScrollReveal>
+          <ul className="contact-bullets">
+            {BULLETS.map((item) => {
+              const Icon = item.icon
+              return (
+                <li key={item.text}>
+                  <IconTile tone={item.tone} size={32}>
+                    <Icon size={16} />
+                  </IconTile>
+                  <span>{item.text}</span>
+                </li>
+              )
+            })}
+          </ul>
+          <p className="site-body" style={{ marginTop: 20 }}>
+            Talk to us through the customer service chat or send us an email at{' '}
+            <a href="mailto:info@adrender.app">info@adrender.app</a>.
+          </p>
+          <address className="site-meta" style={{ marginTop: 24, fontStyle: 'normal' }}>
+            ADRENDER LLC
+            <br />
+            1065 SW 8th Street, Suite 2325
+            <br />
+            Miami, FL 33130
+          </address>
+        </div>
 
-        <ScrollReveal>
-          <form onSubmit={onSubmit} className="mt-12 space-y-5 rounded-2xl border border-white/[0.06] bg-[#12121a] p-6 md:p-8">
-            <div>
-              <label htmlFor="contact-name" className="mb-2 block text-sm font-medium text-zinc-300">
-                Name
-              </label>
-              <input
-                id="contact-name"
-                name="name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="focus-ring-brand w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
-              />
+        <Stage>
+          <form onSubmit={onSubmit} className="contact-form">
+            <div className="site-field">
+              <label htmlFor="contact-name">Name</label>
+              <input id="contact-name" name="name" required value={name} onChange={(e) => setName(e.target.value)} />
             </div>
-            <div>
-              <label htmlFor="contact-email" className="mb-2 block text-sm font-medium text-zinc-300">
-                Email
-              </label>
+            <div className="site-field">
+              <label htmlFor="contact-email">Email</label>
               <input
                 id="contact-email"
                 name="email"
@@ -79,13 +101,10 @@ export function ContactPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="focus-ring-brand w-full rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
-            <div>
-              <label htmlFor="contact-message" className="mb-2 block text-sm font-medium text-zinc-300">
-                Message
-              </label>
+            <div className="site-field">
+              <label htmlFor="contact-message">Message</label>
               <textarea
                 id="contact-message"
                 name="message"
@@ -93,44 +112,24 @@ export function ContactPage() {
                 rows={5}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="focus-ring-brand w-full resize-y rounded-xl border border-white/[0.1] bg-[#0a0a0f] px-4 py-3 text-white outline-none transition"
               />
             </div>
-            <button
-              type="submit"
-              disabled={status === 'submitting'}
-              className="btn-cta w-full rounded-xl py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
-            >
+            <button type="submit" className="site-btn site-btn-primary site-btn-block" disabled={status === 'submitting'}>
               {status === 'submitting' ? 'Sending…' : 'Submit'}
             </button>
-            {status === 'success' && (
-              <p className="text-center text-sm font-medium text-emerald-400" role="status">
-                Message sent! We&apos;ll get back to you within 24 hours.
+            {status === 'success' ? (
+              <p className="site-meta" role="status">
+                Message sent. We&apos;ll get back to you within 24 hours.
               </p>
-            )}
-            {status === 'error' && (
-              <p className="text-center text-sm font-medium text-red-400" role="alert">
+            ) : null}
+            {status === 'error' ? (
+              <p className="site-meta" role="alert">
                 Something went wrong — please try again.
               </p>
-            )}
+            ) : null}
           </form>
-        </ScrollReveal>
-
-        <div className="mt-12 border-t border-white/[0.08] pt-10 text-center">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-600">Business Address</p>
-          <address className="not-italic text-[13px] leading-relaxed text-[#737373]">
-            ADRENDER LLC
-            <br />
-            1065 SW 8th Street, Suite 2325
-            <br />
-            Miami, FL 33130
-            <br />
-            <a href="mailto:info@adrender.app" className="text-[#737373] transition hover:text-zinc-500">
-              info@adrender.app
-            </a>
-          </address>
-        </div>
+        </Stage>
       </div>
-    </div>
+    </section>
   )
 }

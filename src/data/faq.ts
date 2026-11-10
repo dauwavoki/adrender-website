@@ -1,7 +1,7 @@
 /** Hash target for the annual token carry-over note in Pricing. */
 export const FAQ_TOKEN_ROLLOVER_ID = 'faq-token-rollover'
 
-export type FaqEntry = { q: string; a: string; id?: string }
+export type FaqEntry = { q: string; a: string; id?: string; aliases?: string[] }
 
 export function faqAnchorId(entry: Pick<FaqEntry, 'q' | 'id'>): string {
   return entry.id ?? faqSlug(entry.q)
@@ -46,14 +46,17 @@ const VIDEO_COST = item(
   "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you render, so there's no surprise mid-render.",
 )
 
-const CONNECT_SHOPIFY = item(
-  'Can I connect my Shopify store if I have a Direct account?',
-  'Yes — from Brands & Campaigns, enter your store domain (your-store.myshopify.com), click Connect Shopify Store, and approve read_products access on Shopify. Your catalog syncs into that brand. This is separate from installing AdRender through the Shopify App Store — billing stays on your Direct account.',
-)
+const CONNECT_SHOPIFY: FaqEntry = {
+  ...item(
+    'Can I use my Shopify store without the Shopify app?',
+    'Yes — from Brands & Campaigns, enter your store domain (your-store.myshopify.com), click Connect Shopify Store, and approve read_products access on Shopify. Your catalog syncs into that brand. This is separate from installing AdRender through the Shopify App Store — billing stays on your Direct account. This works on every plan, including Free. The Shopify app is optional — choose it if you\'d rather install and be billed inside Shopify.',
+  ),
+  aliases: ['can-i-connect-my-shopify-store-if-i-have-a-direct-account'],
+}
 
 const SHOPIFY_APP = item(
   'Is there a Shopify app?',
-  'Yes. AdRender is also available as a native app on the Shopify App Store — install directly from your Shopify admin, billed through Shopify. Search AdRender in the Shopify App Store.',
+  'Yes. AdRender is also available as a native app on the Shopify App Store — install directly from your Shopify admin, billed through Shopify. Search AdRender in the Shopify App Store. It\'s optional: you can also connect your Shopify store from inside the web app.',
 )
 
 const MONTHLY_TOKENS_ROLLOVER = item(
@@ -166,13 +169,14 @@ export const FAQ_GROUPS: FaqGroup[] = [
   },
 ]
 
-/** The five questions that stay on the homepage, in display order. */
+/** Homepage questions, in display order. */
 export const HOME_FAQ_ITEMS: FaqEntry[] = [
   WHAT_IS_ADRENDER,
   CREDIT_CARD,
   DESIGN_SKILLS,
   VIDEO_SUPPORT,
   FAILED_RENDERS,
+  CONNECT_SHOPIFY,
 ]
 
 export function allFaqEntries(): FaqEntry[] {

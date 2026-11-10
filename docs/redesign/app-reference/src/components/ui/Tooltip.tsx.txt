@@ -1,0 +1,68 @@
+/**
+ * DESIGN.md §8.14. 300ms delay. Portaled so sidebar overflow cannot clip it.
+ */
+import { useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { cn } from "../../lib/utils";
+
+export default function Tooltip({
+  label,
+  children,
+  side = "top",
+  className,
+}: {
+  /** Accepted so lists can pass `key` under this project's JSX types. */
+  key?: string | number;
+  label: string;
+  children: ReactNode;
+  side?: "top" | "right";
+  className?: string;
+}) {
+  const [box, setBox] = useState<{ x: number; y: number } | null>(null);
+  const timer = useRef<number | null>(null);
+
+  const show = (el: HTMLElement) => {
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      if (side === "right") setBox({ x: r.right + 8, y: r.top + r.height / 2 });
+      else setBox({ x: r.left + r.width / 2, y: r.top - 8 });
+    }, 300);
+  };
+
+  const hide = () => {
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = null;
+    setBox(null);
+  };
+
+  return (
+    <span
+      className={cn("inline-flex", className)}
+      onMouseEnter={(e) => show(e.currentTarget)}
+      onMouseLeave={hide}
+      onFocus={(e) => show(e.currentTarget)}
+      onBlur={hide}
+    >
+      {children}
+      {box && typeof document !== "undefined"
+        ? createPortal(
+            <span
+              role="tooltip"
+              style={{
+                position: "fixed",
+                left: box.x,
+                top: box.y,
+                transform: side === "right" ? "translateY(-50%)" : "translate(-50%, -100%)",
+                zIndex: 100000,
+              }}
+              className="pointer-events-none whitespace-nowrap rounded-md border border-default bg-raised px-2 py-1 text-xs font-medium leading-4 text-primary shadow-menu"
+            >
+              {label}
+            </span>,
+            document.body,
+          )
+        : null}
+    </span>
+  );
+}

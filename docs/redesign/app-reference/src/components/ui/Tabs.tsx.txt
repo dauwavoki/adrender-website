@@ -1,0 +1,116 @@
+/**
+ * DESIGN.md §8.4. Underline tabs and pill tabs.
+ */
+import type { ReactNode } from "react";
+import type { Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import Badge from "./Badge";
+import { renderIconNode } from "./icon";
+
+export type UnderlineTab<T extends string = string> = {
+  id: T;
+  label: string;
+  icon?: ReactNode | Icon;
+  disabled?: boolean;
+  title?: string;
+};
+
+export function UnderlineTabs<T extends string>({
+  tabs,
+  value,
+  onChange,
+  ariaLabel,
+  className,
+}: {
+  tabs: readonly UnderlineTab<T>[];
+  value: T;
+  onChange: (id: T) => void;
+  ariaLabel: string;
+  className?: string;
+}) {
+  return (
+    <div role="tablist" aria-label={ariaLabel} className={cn("flex gap-5 border-b border-default", className)}>
+      {tabs.map((tab) => {
+        const active = tab.id === value && !tab.disabled;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            disabled={tab.disabled}
+            title={tab.title}
+            onClick={() => {
+              if (!tab.disabled) onChange(tab.id);
+            }}
+            className={cn(
+              "-mb-px inline-flex items-center gap-2 border-b-2 pb-2 text-[13px] leading-[18px] transition-colors duration-150 ease-out",
+              tab.disabled
+                ? "cursor-not-allowed border-transparent text-muted opacity-60"
+                : active
+                  ? "border-primary font-medium text-primary"
+                  : "border-transparent text-secondary hover:text-primary",
+            )}
+          >
+            {renderIconNode(tab.icon, 16)}
+            {tab.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export type PillTab<T extends string = string> = {
+  id: T;
+  label: string;
+  count?: number;
+  /** Color of the count when it is above zero. */
+  countTone?: "success" | "danger";
+};
+
+export function PillTabs<T extends string>({
+  tabs,
+  options,
+  value,
+  onChange,
+  ariaLabel,
+  className,
+}: {
+  tabs?: readonly PillTab<T>[];
+  /** Same as `tabs`. */
+  options?: readonly PillTab<T>[];
+  value: T;
+  onChange: (id: T) => void;
+  ariaLabel: string;
+  className?: string;
+}) {
+  const items = tabs ?? options ?? [];
+  return (
+    <div role="tablist" aria-label={ariaLabel} className={cn("flex shrink-0 flex-wrap items-center gap-1", className)}>
+      {items.map((tab) => {
+        const active = tab.id === value;
+        const count = tab.count;
+        const tone = count != null && count > 0 ? tab.countTone : undefined;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            onClick={() => onChange(tab.id)}
+            className={cn(
+              "inline-flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-[13px] leading-[18px] transition-colors duration-150 ease-out",
+              active ? "bg-selected font-medium text-primary" : "text-secondary hover:bg-hover hover:text-primary",
+            )}
+          >
+            {tab.label}
+            {count != null ? (
+              <Badge variant={tone === "success" ? "success" : tone === "danger" ? "danger" : "neutral"}>{count}</Badge>
+            ) : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}

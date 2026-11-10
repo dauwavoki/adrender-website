@@ -1,0 +1,57 @@
+/**
+ * DESIGN.md §8.10.
+ */
+import type { ReactNode } from "react";
+import type { Icon } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import { renderIconNode } from "./icon";
+
+export default function EmptyState({
+  icon,
+  title,
+  description,
+  body,
+  action,
+  className,
+}: {
+  icon?: ReactNode | Icon;
+  title: string;
+  description?: string;
+  /** Same as description. */
+  body?: string;
+  action?: ReactNode;
+  className?: string;
+}) {
+  const copy = description ?? body;
+  const iconNode = renderIconNode(icon, 20);
+  return (
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center rounded-xl border border-dashed border-default px-6 py-10 text-center",
+        className,
+      )}
+    >
+      {iconNode ? (
+        <div className="mb-3 flex size-10 items-center justify-center rounded-[10px] bg-soft text-secondary">{iconNode}</div>
+      ) : null}
+      <p className="text-base font-medium leading-6 text-primary">{title}</p>
+      {copy ? <p className="mt-1 max-w-sm text-[13px] leading-[18px] text-secondary">{copy}</p> : null}
+      {action ? <div className="mt-4">{action}</div> : null}
+    </div>
+  );
+}
+
+/** Library and playground empty panels use the same state with taller padding. */
+export function EmptyPanel({
+  icon,
+  title,
+  description,
+  action,
+}: {
+  icon: ReactNode | Icon;
+  title: string;
+  description?: string;
+  action?: ReactNode;
+}) {
+  return <EmptyState icon={icon} title={title} description={description} action={action} className="py-16" />;
+}

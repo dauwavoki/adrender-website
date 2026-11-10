@@ -1,0 +1,31 @@
+/**
+ * DESIGN.md §8.6. No shadow. Dense padding is 16px, default is 20px.
+ */
+import type { HTMLAttributes, ReactNode } from "react";
+import { cn } from "../../lib/utils";
+
+/** Surface only. Padding stays with the caller when a card already has its own. */
+export const cardClass = "rounded-xl border border-default bg-surface";
+
+export default function Card({
+  title,
+  description,
+  dense = false,
+  className,
+  children,
+  ...rest
+}: HTMLAttributes<HTMLDivElement> & {
+  title?: ReactNode;
+  description?: ReactNode;
+  dense?: boolean;
+}) {
+  return (
+    <div className={cn("rounded-xl border border-default bg-surface", dense ? "p-4" : "p-5", className)} {...rest}>
+      {title ? <p className="text-sm font-medium leading-5 text-primary">{title}</p> : null}
+      {description ? (
+        <p className={cn("text-[13px] leading-5 text-secondary", title && "mt-1")}>{description}</p>
+      ) : null}
+      {children}
+    </div>
+  );
+}

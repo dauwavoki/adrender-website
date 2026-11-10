@@ -293,7 +293,7 @@ export function TiltedCarousel({ items, paused = false, reverse = false }: Tilte
           {loop.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="hiw-tilted-card overflow-hidden bg-zinc-900"
+              className="hiw-tilted-card overflow-hidden bg-inset"
               aria-hidden={index >= items.length ? true : undefined}
             >
               <CarouselMedia item={item} mounted={mountVideos} />

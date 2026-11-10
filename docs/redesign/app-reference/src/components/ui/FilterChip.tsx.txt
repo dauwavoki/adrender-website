@@ -1,0 +1,50 @@
+/**
+ * DESIGN.md §8.5. Dropdown filter chip, or a toggle chip when `toggle` is set.
+ */
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { CaretDown } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+
+type FilterChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
+  label: ReactNode;
+  open?: boolean;
+  /** Applied dropdown filter: accent dot, label should already include the value. */
+  applied?: boolean;
+  /** Toggle chip (e.g. Active only). `on` uses the accent-soft fill. */
+  toggle?: boolean;
+  on?: boolean;
+};
+
+export default function FilterChip({
+  label,
+  open = false,
+  applied = false,
+  toggle = false,
+  on = false,
+  className,
+  type = "button",
+  ...rest
+}: FilterChipProps) {
+  const pressed = toggle && on;
+  return (
+    <button
+      type={type}
+      aria-pressed={toggle ? on : undefined}
+      aria-expanded={toggle ? undefined : open}
+      className={cn(
+        "inline-flex h-8 max-w-[280px] shrink-0 items-center gap-1.5 rounded-lg border px-3 text-[13px] leading-[18px] text-primary transition-colors duration-150 ease-out disabled:cursor-not-allowed disabled:opacity-50",
+        pressed
+          ? "border-transparent bg-accent-soft"
+          : open
+            ? "border-default bg-selected"
+            : "border-default bg-surface hover:border-strong hover:bg-hover",
+        className,
+      )}
+      {...rest}
+    >
+      {applied && !toggle ? <span className="size-1.5 shrink-0 rounded-full bg-accent" aria-hidden /> : null}
+      <span className="truncate">{label}</span>
+      {toggle ? null : <CaretDown size={14} className="shrink-0 text-secondary" aria-hidden />}
+    </button>
+  );
+}

@@ -1,0 +1,98 @@
+/**
+ * DESIGN.md §8.2. Input, textarea, search input, select trigger.
+ */
+import { forwardRef, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { CaretDown, MagnifyingGlass } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import { controlMdClass, fieldWidthClass, type FieldWidth } from "./controlSize";
+
+export const fieldClass =
+  "w-full rounded-lg border border-default bg-input text-sm leading-5 text-primary placeholder:text-muted transition-[border-color,box-shadow] duration-150 ease-out hover:border-strong focus:border-strong focus:outline-none focus:shadow-[0_0_0_3px_var(--accent-soft)] disabled:cursor-not-allowed disabled:opacity-50";
+
+/** Full single-line field. Height is --control-md (DESIGN.md §8.38), shared with Button md. */
+export const inputClass = cn(fieldClass, controlMdClass, "px-3");
+
+export { fieldWidthClass, controlMdClass };
+export type { FieldWidth };
+
+/** DESIGN.md textarea. Callers can still pass resize-none. */
+export const textareaClass = cn(fieldClass, "min-h-24 w-full resize-y px-3 py-2.5");
+
+/** Playground and duplicator prompts stay fixed-height. */
+export const promptTextareaClass = cn(fieldClass, "min-h-24 w-full resize-none px-3 py-2.5");
+
+type WidthProp = { width?: FieldWidth };
+
+export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & WidthProp>(
+  function Input({ className, width, ...rest }, ref) {
+    return (
+      <input
+        ref={ref}
+        className={cn(fieldClass, controlMdClass, "px-3", width && fieldWidthClass[width], className)}
+        {...rest}
+      />
+    );
+  },
+);
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement> & WidthProp>(
+  function Textarea({ className, width = "long", ...rest }, ref) {
+    return (
+      <textarea
+        ref={ref}
+        className={cn(fieldClass, "min-h-24 resize-y px-3 py-2.5", fieldWidthClass[width], className)}
+        {...rest}
+      />
+    );
+  },
+);
+
+export const SearchInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & WidthProp>(
+  function SearchInput({ className, width, ...rest }, ref) {
+    return (
+      <div className={cn("relative", width ? fieldWidthClass[width] : "w-full")}>
+        <MagnifyingGlass
+          size={16}
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+          aria-hidden
+        />
+        <input ref={ref} className={cn(fieldClass, controlMdClass, "w-full pl-9 pr-3", className)} {...rest} />
+      </div>
+    );
+  },
+);
+
+type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> &
+  WidthProp & {
+    open?: boolean;
+    placeholder?: boolean;
+    children?: ReactNode;
+  };
+
+export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(function SelectTrigger(
+  { open = false, placeholder = false, className, width, children, type = "button", ...rest },
+  ref,
+) {
+  return (
+    <button
+      ref={ref}
+      type={type}
+      className={cn(
+        fieldClass,
+        "flex items-center justify-between gap-2 px-3 text-left",
+        controlMdClass,
+        width && fieldWidthClass[width],
+        open && "border-strong bg-selected shadow-[0_0_0_3px_var(--accent-soft)]",
+        className,
+      )}
+      {...rest}
+    >
+      <span className={cn("min-w-0 flex-1 truncate", placeholder && "text-muted")}>{children}</span>
+      <CaretDown
+        size={14}
+        className={cn("shrink-0 text-secondary transition-transform duration-150 ease-out", open && "rotate-180")}
+        aria-hidden
+      />
+    </button>
+  );
+});

@@ -1,0 +1,79 @@
+/**
+ * DESIGN.md §5.2. Display only — the three states use the existing
+ * ready-attention flag and the existing generating / ready counts.
+ */
+import { Books, CheckCircle } from "@phosphor-icons/react";
+import NavItem from "../ui/NavItem";
+
+function RenderingDots() {
+  return (
+    <span className="rendering-dots" aria-hidden>
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
+
+export default function LibraryNavItem({
+  to,
+  readyTo,
+  collapsed,
+  unseenReady,
+  readyCount,
+  generatingCount,
+  onOpenReady,
+  onNavigate,
+  failedUnseen = false,
+}: {
+  to: string;
+  readyTo: string;
+  collapsed: boolean;
+  /** Same flag that turns on AdsStatusBadge's glow today. */
+  unseenReady: boolean;
+  readyCount: number;
+  generatingCount: number;
+  onOpenReady: () => void;
+  /** Closes a hover-peek after the click. */
+  onNavigate?: () => void;
+  /** Existing unseen-failed condition. Dot only — does not change the state. */
+  failedUnseen?: boolean;
+}) {
+  const rendering = !unseenReady && generatingCount > 0;
+  const label = unseenReady ? "Ready" : rendering ? "Rendering" : "Library";
+  const count = unseenReady ? readyCount : rendering ? generatingCount : null;
+
+  return (
+    <NavItem
+      to={unseenReady ? readyTo : to}
+      label={label}
+      collapsed={collapsed}
+      ready={unseenReady}
+      badge={count}
+      ariaLabel={
+        [count != null ? `${label}, ${count}` : label, failedUnseen ? "failed renders" : null]
+          .filter(Boolean)
+          .join(", ")
+      }
+      dot={failedUnseen ? "danger" : undefined}
+      onClick={() => {
+        onNavigate?.();
+        if (unseenReady) onOpenReady();
+      }}
+      trailing={
+        count != null ? (
+          <span className="text-xs font-medium leading-4 tabular-nums text-secondary">{count}</span>
+        ) : null
+      }
+      renderIcon={(selected) =>
+        unseenReady ? (
+          <CheckCircle size={16} weight={selected ? "fill" : "regular"} aria-hidden />
+        ) : rendering ? (
+          <RenderingDots />
+        ) : (
+          <Books size={16} weight={selected ? "fill" : "regular"} aria-hidden />
+        )
+      }
+    />
+  );
+}

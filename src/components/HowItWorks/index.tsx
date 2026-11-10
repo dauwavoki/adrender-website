@@ -1,151 +1,73 @@
-import { getSignupUrl } from '../../lib/appUrl'
 import { BrandScan } from './BrandScan'
 import { ResultsShowcase } from './ResultsShowcase'
 import { TemplateShowcase } from './TemplateShowcase'
+import { NumberedStory } from '../site/NumberedStory'
+import { Stage } from '../site/Stage'
+import { SplitTitle } from '../site/SplitTitle'
+import { PrimaryLink } from '../site/Buttons'
+import { getSignupUrl } from '../../lib/appUrl'
 
-const STEPS = [
-  {
-    num: '01' as const,
-    title: 'Add your brand',
-    tone: 'hiw-card--1',
-  },
-  {
-    num: '02' as const,
-    title: 'Choose winning templates',
-    subtitle: "Browse what's working, then render at scale",
-    tone: 'hiw-card--2',
-  },
-  {
-    num: '03' as const,
-    title: 'See your ads',
-    subtitle: 'Finished creatives, ready to launch',
-    tone: 'hiw-card--3',
-  },
-]
-
-const SHOPIFY_APP_URL = 'https://apps.shopify.com/adrender'
-const SHOPIFY_APP_POST_PATH = '/blog/adrender-shopify-app'
-
-function ClosingStartCard() {
+/**
+ * How it works — three steps, then the start line.
+ * Shared by the homepage and landing pages. Check captions are not used here.
+ */
+export function HowItWorks() {
   const signupUrl = getSignupUrl()
 
   return (
-    <div className="hiw-closing px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12">
-      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-2xl text-left">
-          <p className="inline-flex rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold tracking-[0.16em] text-zinc-300">
-            NOTHING TO SET UP
-          </p>
-          <h3 className="mt-5 font-heading text-3xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-4xl md:text-[2.75rem]">
-            Sign up free. Choose a template. Get your ads.
-          </h3>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-400 sm:text-base">
+    <section id="how-it-works" className="site-section scroll-mt-28">
+      <div className="site-column">
+        <SplitTitle as="h2" lead="How it works" />
+        {/* PLACEHOLDER: intro video — insert the explainer video here when ready. Shared across homepage and all /lp/ landing pages. */}
+        <div className="mt-14">
+          <NumberedStory
+            steps={[
+              {
+                id: 'how-add-your-brand',
+                indexLabel: 'Add your brand',
+                title: 'Add your brand',
+                body: 'Scan your website and AdRender pulls your brand voice, colors, logo, product images and ad copy automatically. Or upload your assets, or connect your Shopify store. No URL needed to start, and you can add your assets any time later.',
+                visual: (
+                  <Stage>
+                    <BrandScan />
+                  </Stage>
+                ),
+              },
+              {
+                id: 'how-choose-templates',
+                indexLabel: 'Choose winning templates',
+                title: 'Choose winning templates',
+                body: "Browse what's working, then render at scale. Filter 100M+ real ads running right now by longest-running, niche, platform, and more, to see exactly what’s working for your competitors.",
+                visual: (
+                  <Stage>
+                    <TemplateShowcase />
+                  </Stage>
+                ),
+              },
+              {
+                id: 'how-see-your-ads',
+                indexLabel: 'See your ads',
+                title: 'See your ads',
+                body: 'Finished creatives, ready to launch. Brand colors, products, and winning formats applied.',
+                visual: (
+                  <Stage>
+                    <ResultsShowcase />
+                  </Stage>
+                ),
+              },
+            ]}
+          />
+        </div>
+
+        <div className="mt-16 border-t border-border pt-8">
+          <SplitTitle as="h2" lead="Sign up free." rest="Choose a template. Get your ads." />
+          <p className="site-lead mt-4 max-w-xl">
             You don&apos;t need a website, photos or any design skills to start. Create a free account,
             pick a template and render your first ads.
           </p>
-        </div>
-        <a
-          href={signupUrl}
-          className="btn-cta inline-flex w-full shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-8 py-3.5 text-base font-semibold md:w-auto"
-        >
-          Start free →
-        </a>
-      </div>
-    </div>
-  )
-}
-
-function ShopifyAppCard() {
-  return (
-    <article className="hiw-card hiw-card--shopify px-6 py-7 sm:px-10 sm:py-9 md:px-12 md:py-10">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
-        <div className="min-w-0 max-w-xl text-left">
-          <h3 className="hiw-card-title hiw-shopify-title">Using Shopify? Get the native app</h3>
-          <div className="hiw-shopify-copy mt-3 space-y-1.5 text-sm leading-snug sm:text-[15px] sm:leading-relaxed">
-            <p>A native Shopify app, separate from the web app but working in a similar way.</p>
-            <p>
-              Install from the Shopify App Store, your products connect automatically, and billing goes through
-              Shopify.
-            </p>
-            <p>Unused plan tokens roll over on paid plans.</p>
+          <div className="mt-6">
+            <PrimaryLink href={signupUrl}>Start free</PrimaryLink>
           </div>
-        </div>
-        <div className="flex w-full min-w-0 flex-col items-stretch gap-1 md:w-auto md:shrink-0 md:items-end">
-          <a
-            href={SHOPIFY_APP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hiw-shopify-btn"
-          >
-            Get the Shopify app
-          </a>
-          <a href={SHOPIFY_APP_POST_PATH} className="hiw-shopify-link">
-            How the Shopify app works →
-          </a>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-/**
- * How It Works — three always-visible cards, a closing start-free card, then the Shopify app card.
- */
-export function HowItWorks() {
-  return (
-    <section
-      id="how-it-works"
-      className="relative scroll-mt-28 overflow-x-clip px-4 py-24 text-zinc-100 md:px-6 md:py-28"
-    >
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-[color:color-mix(in_srgb,var(--accent-cyan)_10%,transparent)] via-[color:color-mix(in_srgb,var(--accent-purple)_10%,transparent)] to-transparent blur-3xl"
-        aria-hidden
-      />
-
-      <div className="relative mx-auto max-w-6xl">
-        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
-            How It Works
-          </h2>
-          <a
-            href={SHOPIFY_APP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hiw-shopify-kicker"
-          >
-            On Shopify? Get the native app →
-          </a>
-        </div>
-
-        {/*
-          PLACEHOLDER: intro video — insert the explainer video here when ready.
-          This slot is shared across the homepage and all /lp/ landing pages.
-        */}
-        <div
-          aria-hidden
-          dangerouslySetInnerHTML={{
-            __html:
-              '<!-- PLACEHOLDER: intro video — insert the explainer video here when ready. Shared across homepage and all /lp/ landing pages. -->',
-          }}
-        />
-
-        <div className="flex flex-col gap-10 md:gap-14">
-          {STEPS.map((step) => (
-            <article key={step.num} className={`hiw-card ${step.tone} px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12`}>
-              <p className="hiw-card-num">{step.num}</p>
-              <h3 className="hiw-card-title">{step.title}</h3>
-              {step.num === '01' ? null : (
-                <p className="mt-3 text-sm text-white/50 sm:text-base">{step.subtitle}</p>
-              )}
-              <div className={step.num === '01' ? 'mt-3' : 'mt-6'}>
-                {step.num === '01' && <BrandScan />}
-                {step.num === '02' && <TemplateShowcase />}
-                {step.num === '03' && <ResultsShowcase />}
-              </div>
-            </article>
-          ))}
-          <ClosingStartCard />
-          <ShopifyAppCard />
         </div>
       </div>
     </section>

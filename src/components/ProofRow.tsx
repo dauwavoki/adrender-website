@@ -1,3 +1,5 @@
+import { StatRow } from './site/StatRow'
+
 const DEFAULT_STATS = [
   '100M+ proven ads benchmarked',
   'Hundreds of ads in under 10 minutes',
@@ -6,23 +8,16 @@ const DEFAULT_STATS = [
 
 type ProofRowProps = {
   stats?: readonly [string, string, string]
+  /** Extra top space when the hero stage overlaps this row. */
+  clearStage?: boolean
 }
 
-export function ProofRow({ stats = DEFAULT_STATS }: ProofRowProps) {
+export function ProofRow({ stats = DEFAULT_STATS, clearStage = false }: ProofRowProps) {
   return (
-    <section className="border-y border-white/[0.06] bg-[#0e0e14] px-4 py-8 md:px-6">
-      <p className="mx-auto max-w-5xl text-center text-sm font-medium tracking-wide text-zinc-400 md:text-base">
-        {stats.map((stat, i) => (
-          <span key={stat}>
-            {i > 0 && (
-              <span className="mx-3 text-zinc-700" aria-hidden>
-                ·
-              </span>
-            )}
-            <span className="text-zinc-200">{stat}</span>
-          </span>
-        ))}
-      </p>
+    <section className={clearStage ? 'site-after-overlap' : 'site-proof'}>
+      <div className="site-column">
+        <StatRow variant="text" items={stats.map((value) => ({ value }))} />
+      </div>
     </section>
   )
 }

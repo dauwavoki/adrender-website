@@ -32,6 +32,8 @@ AdRender turns your product catalog into image and video ads for Facebook and In
 
 AdRender is also available as a web app at [adrender.app](https://app.adrender.app/signup), and the two work in a similar way. You can sign in to the web app with the same email you used for the Shopify app. By default, each keeps its own plan and tokens.
 
+You don't need the Shopify app to use your Shopify products. In the web app, open Brands & Campaigns, click Connect Shopify Store, and your catalog syncs in, on every plan including Free. The Shopify app is simply a preference for people who'd rather install and pay inside Shopify.
+
 Choose the Shopify app if your store is on Shopify and you'd like billing and installation handled there. The web app is the better fit if you want team workspaces, token top-ups or the affiliate program. You can compare plans on the [pricing page](https://adrender.app/#pricing).
 
 Ready to try it?

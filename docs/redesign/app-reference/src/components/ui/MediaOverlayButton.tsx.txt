@@ -1,0 +1,35 @@
+/**
+ * DESIGN.md §8.15. 20px overlay control on image and video cards.
+ */
+import type { MouseEvent, ReactNode } from "react";
+import Button from "./Button";
+
+export function MediaOverlayButton({
+  label,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  disabled?: boolean;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  children: ReactNode;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      iconOnly
+      tooltip={label}
+      aria-label={label}
+      disabled={disabled}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick(event);
+      }}
+      className="media-overlay size-5 rounded-full p-0 text-white hover:bg-black/70 hover:text-white disabled:opacity-60"
+    >
+      {children}
+    </Button>
+  );
+}

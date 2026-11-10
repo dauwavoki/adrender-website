@@ -1,0 +1,195 @@
+/**
+ * DESIGN.md §5 nav row. Selected route uses Fill weight and --bg-selected.
+ * Collapsed: icon only, with a tooltip. Labels are never truncated.
+ */
+import type { ReactNode } from "react";
+import { NavLink } from "react-router-dom";
+import type { Icon } from "@phosphor-icons/react";
+import LayoutHighlight from "../motion/LayoutHighlight";
+import { cn } from "../../lib/utils";
+import Tooltip from "./Tooltip";
+
+/** One highlight shared by every item in this sidebar. */
+const NAV_HIGHLIGHT = "sidebar-nav-highlight";
+
+export type NavDot = "danger" | "warning" | "neutral" | "success";
+
+const DOT_CLASS: Record<NavDot, string> = {
+  danger: "bg-danger",
+  warning: "bg-warning",
+  neutral: "bg-secondary",
+  success: "bg-success",
+};
+
+function itemClass({
+  selected,
+  ready,
+  collapsed,
+}: {
+  selected: boolean;
+  ready: boolean;
+  collapsed: boolean;
+}) {
+  return cn(
+    "relative flex h-8 w-full items-center gap-2 rounded-lg px-2.5 text-sm font-normal leading-5 transition-colors duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring",
+    collapsed && "justify-center px-0",
+    ready
+      ? cn("library-ready", selected ? "text-primary" : "text-secondary hover:text-primary")
+      : selected
+        ? "text-primary"
+        : "text-secondary hover:bg-hover hover:text-primary",
+    selected && "is-selected",
+  );
+}
+
+export default function NavItem({
+  to,
+  end = false,
+  label,
+  icon: IconComp,
+  renderIcon,
+  collapsed = false,
+  onClick,
+  emphasis = false,
+  ready = false,
+  badge,
+  trailing,
+  ariaLabel,
+  dot,
+  quietCount,
+  quietCountWarning = false,
+  active,
+}: {
+  to?: string;
+  /** Exact path match. Home uses this. */
+  end?: boolean;
+  label: string;
+  icon?: Icon;
+  renderIcon?: (selected: boolean) => ReactNode;
+  collapsed?: boolean;
+  onClick?: () => void;
+  /** AdRender label is weight 500. Other nav items stay 400. */
+  emphasis?: boolean;
+  /** Animated brand border (Library Ready). */
+  ready?: boolean;
+  /** Collapsed count badge. Hidden when null or 0. */
+  badge?: number | null;
+  trailing?: ReactNode;
+  ariaLabel?: string;
+  /** 6px quiet dot. Expanded: right end. Collapsed: on the icon. */
+  dot?: NavDot;
+  /**
+   * Admin count badge. Expanded: soft pill. Collapsed: 6px dot.
+   * Hidden at 0 or null. Stuck Renders passes quietCountWarning.
+   */
+  quietCount?: number | null;
+  quietCountWarning?: boolean;
+  /**
+   * When set, this wins over the route match. The Affiliate item is selected
+   * only on `/app/profile?tab=affiliate`, not on every profile tab.
+   */
+  active?: boolean;
+}) {
+  const iconNode = (selected: boolean) => (
+    <span className="relative z-[1] inline-flex size-4 shrink-0 items-center justify-center">
+      {renderIcon ? (
+        renderIcon(selected)
+      ) : IconComp ? (
+        <IconComp size={16} weight={selected ? "fill" : "regular"} aria-hidden />
+      ) : null}
+      {collapsed && dot ? (
+        <span
+          data-nav-dot={dot}
+          className={cn("absolute -bottom-0.5 -right-1 size-1.5 rounded-full", DOT_CLASS[dot])}
+          aria-hidden
+        />
+      ) : null}
+      {collapsed && !dot && quietCount != null && quietCount > 0 ? (
+        <span
+          className={cn(
+            "absolute -right-0.5 -top-0.5 size-1.5 rounded-full",
+            quietCountWarning ? "bg-warning" : "bg-secondary",
+          )}
+          aria-hidden
+        />
+      ) : null}
+    </span>
+  );
+
+  const body = (selected: boolean) => (
+    <>
+      {iconNode(selected)}
+      {collapsed && badge != null && badge > 0 ? (
+        <span className="absolute right-0.5 top-0 z-10 flex h-4 min-w-4 items-center justify-center rounded-full border border-default bg-raised px-1 text-[10px] font-medium leading-none text-primary">
+          {badge > 99 ? "99+" : badge}
+        </span>
+      ) : null}
+      {!collapsed && (
+        <span className={cn("sidebar-label relative z-[1] whitespace-nowrap text-left", emphasis && "font-medium")}>
+          {label}
+        </span>
+      )}
+      {!collapsed && (trailing || dot || (quietCount != null && quietCount > 0)) ? (
+        <span className="sidebar-label relative z-[1] ml-auto flex items-center gap-2">
+          {trailing}
+          {quietCount != null && quietCount > 0 ? (
+            <span
+              className={cn(
+                "inline-flex h-5 items-center rounded-md bg-soft px-1.5 text-xs font-medium leading-4",
+                quietCountWarning ? "text-warning" : "text-secondary",
+              )}
+            >
+              {quietCount > 99 ? "99+" : quietCount}
+            </span>
+          ) : null}
+          {dot ? (
+            <span
+              data-nav-dot={dot}
+              className={cn("size-1.5 shrink-0 rounded-full", DOT_CLASS[dot])}
+              aria-hidden
+            />
+          ) : null}
+        </span>
+      ) : null}
+    </>
+  );
+
+  const accessible = collapsed ? (ariaLabel ?? label) : undefined;
+
+  const node = to ? (
+    <NavLink
+      to={to}
+      end={end}
+      aria-label={accessible}
+      onClick={onClick}
+      className={({ isActive }) => itemClass({ selected: active ?? isActive, ready, collapsed })}
+    >
+      {({ isActive }) => {
+        const selected = active ?? isActive;
+        return (
+          <>
+            {selected ? <LayoutHighlight layoutId={NAV_HIGHLIGHT} className="rounded-lg bg-selected" /> : null}
+            {body(selected)}
+          </>
+        );
+      }}
+    </NavLink>
+  ) : (
+    <button
+      type="button"
+      aria-label={accessible ?? label}
+      onClick={onClick}
+      className={itemClass({ selected: false, ready, collapsed })}
+    >
+      {body(false)}
+    </button>
+  );
+
+  return collapsed ? (
+    <Tooltip label={label} side="right" className="flex w-full">
+      {node}
+    </Tooltip>
+  ) : (
+    node
+  );
+}

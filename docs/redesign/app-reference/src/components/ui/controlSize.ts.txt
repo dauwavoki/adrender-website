@@ -1,0 +1,19 @@
+/**
+ * DESIGN.md §8.38. Input, select trigger, and Button size "md" share --control-md.
+ * Field caps are the same tokens. Narrow screens: width 100% up to the cap.
+ */
+export const controlMdClass = "h-[var(--control-md)]";
+export const controlMdBoxClass = "size-[var(--control-md)]";
+
+export type FieldWidth = "name" | "email" | "number" | "date" | "long";
+
+export const fieldWidthClass: Record<FieldWidth, string> = {
+  name: "w-[var(--field-name)] max-w-full min-w-0",
+  email: "w-[var(--field-email)] max-w-full min-w-0",
+  number: "w-[var(--field-number)] max-w-full min-w-0",
+  date: "w-[var(--field-date)] max-w-full min-w-0",
+  long: "w-full min-w-0",
+};
+
+/** Input and its button stay together on the left. 12px gap. */
+export const controlRowClass = "flex w-full max-w-full flex-wrap items-center gap-3";

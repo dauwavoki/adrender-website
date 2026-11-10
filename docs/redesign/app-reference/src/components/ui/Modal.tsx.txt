@@ -1,0 +1,135 @@
+/**
+ * DESIGN.md §8.9. Overlay, raised panel, header, body, footer.
+ */
+import { useEffect, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { X } from "@phosphor-icons/react";
+import { cn } from "../../lib/utils";
+import Button from "./Button";
+
+export const modalOverlayClass = "modal-overlay";
+
+export const modalPanelClass =
+  "w-full max-w-md overflow-hidden rounded-2xl border border-default bg-raised shadow-menu";
+
+export function Modal({
+  open,
+  onClose,
+  title,
+  subtitle,
+  children,
+  footer,
+  disableClose = false,
+  zClassName = "z-[99990]",
+  panelClassName,
+  ariaLabel,
+  titleId,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  disableClose?: boolean;
+  zClassName?: string;
+  panelClassName?: string;
+  ariaLabel?: string;
+  titleId?: string;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !disableClose) onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose, disableClose]);
+
+  if (!open || typeof document === "undefined") return null;
+
+  const close = () => {
+    if (!disableClose) onClose();
+  };
+
+  return createPortal(
+    <>
+      <div className={cn("modal-overlay fixed inset-0", zClassName)} onClick={close} />
+      <div className={cn("pointer-events-none fixed inset-0 flex items-center justify-center p-4 sm:p-6", zClassName)}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={ariaLabel}
+          aria-labelledby={title ? titleId : undefined}
+          className={cn(
+            "pointer-events-auto w-full max-w-md rounded-2xl border border-default bg-raised shadow-menu",
+            panelClassName,
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ModalHeader title={title} subtitle={subtitle} titleId={titleId} onClose={close} disableClose={disableClose} />
+          {children}
+          {footer}
+        </div>
+      </div>
+    </>,
+    document.body,
+  );
+}
+
+export function ModalHeader({
+  title,
+  subtitle,
+  titleId,
+  id,
+  onClose,
+  disableClose,
+  closeDisabled,
+}: {
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  titleId?: string;
+  /** Same as titleId. */
+  id?: string;
+  onClose?: () => void;
+  disableClose?: boolean;
+  /** Same as disableClose. */
+  closeDisabled?: boolean;
+}) {
+  const labelId = titleId ?? id;
+  const locked = disableClose || closeDisabled;
+  if (!title && !subtitle && !onClose) return null;
+  return (
+    <div className="flex items-start gap-3 px-5 pb-0 pt-5">
+      <div className="min-w-0 flex-1">
+        {title ? (
+          <h2 id={labelId} className="text-base font-semibold leading-6 text-primary">
+            {title}
+          </h2>
+        ) : null}
+        {subtitle ? <p className="mt-1 text-[13px] leading-[18px] text-secondary">{subtitle}</p> : null}
+      </div>
+      {onClose ? (
+        <Button
+          variant="ghost"
+          size="sm"
+          iconOnly
+          aria-label="Close"
+          title="Close"
+          disabled={locked}
+          onClick={onClose}
+        >
+          <X size={16} aria-hidden />
+        </Button>
+      ) : null}
+    </div>
+  );
+}
+
+export function ModalBody({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("px-5 py-5", className)}>{children}</div>;
+}
+
+export function ModalFooter({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("flex items-center justify-end gap-2 px-5 pb-5", className)}>{children}</div>;
+}

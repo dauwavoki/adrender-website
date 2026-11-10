@@ -1,5 +1,41 @@
 # Image Manifest — AdRender Landing Redesign
 
+## Redesign — Nov 2026
+
+Save real files under `/public/site/`. Until a file exists, the site shows a labeled placeholder (`SitePlaceholder`). Sizes are the slot, not a crop of an old screenshot.
+
+F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. Blog covers are built in code (`src/components/site/BlogCover.tsx`). A1 uses the live site's founder photo (`public/placeholders/img-06.png`). C1 and OG stay empty slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
+
+No solution page references an image, so there are no S-* slots. `/about#shopify` is drawn in code (A10). Previous slot 21 is no longer used.
+
+| ID | Filename to save as | Page + section | Size | Aspect | Theme note |
+|---|---|---|---|---|---|
+| H1 | Built in code (src/components/scenes) — no image needed | Product menu featured card | 2560×1600 | 16:10 | Static Home view from `src/components/AppPreview` |
+| F1 | Built in code (src/components/scenes) — no image needed | Homepage features — proven templates | 1200×1500 | 4:5 | |
+| F2 | Built in code (src/components/scenes) — no image needed | Homepage features — easy to use | 1200×1500 | 4:5 | |
+| F3 | Built in code (src/components/scenes) — no image needed | Homepage features — brand intelligence | 1200×1500 | 4:5 | |
+| F4 | Built in code (src/components/scenes) — no image needed | Homepage features — batch rendering | 1200×1500 | 4:5 | |
+| F5 | Built in code (src/components/scenes) — no image needed | Homepage features — every size | 1200×1500 | 4:5 | |
+| F6 | Built in code (src/components/scenes) — no image needed | Homepage features — template library | 1200×1500 | 4:5 | |
+| F7 | Built in code (src/components/scenes) — no image needed | Homepage features — ad playground | 1200×1500 | 4:5 | |
+| F8 | Built in code (src/components/scenes) — no image needed | Homepage features — team workspaces | 1200×1500 | 4:5 | |
+| A1 | `/placeholders/img-06.png` | Founder story (`/about#founder-story` and landing pages) | 1600×1200 | 4:3 | Using the live site's founder photo (public/placeholders/img-06.png) |
+| A2 | Built in code (src/components/scenes) — no image needed | `/about#templates` | 1600×1200 | 4:3 | |
+| A3 | Built in code (src/components/scenes) — no image needed | `/about#easy-to-use` | 1600×1200 | 4:3 | |
+| A4 | Built in code (src/components/scenes) — no image needed | `/about#brands` | 1600×1200 | 4:3 | |
+| A5 | Built in code (src/components/scenes) — no image needed | `/about#generation` | 1600×1200 | 4:3 | |
+| A6 | Built in code (src/components/scenes) — no image needed | `/about#sizes` | 1600×1200 | 4:3 | |
+| A7 | Built in code (src/components/scenes) — no image needed | `/about#library` | 1600×1200 | 4:3 | |
+| A8 | Built in code (src/components/scenes) — no image needed | `/about#playground` | 1600×1200 | 4:3 | |
+| A9 | Built in code (src/components/scenes) — no image needed | `/about#workspaces` | 1600×1200 | 4:3 | |
+| A10 | Built in code (src/components/scenes) — no image needed | `/about#shopify` | 1600×1200 | 4:3 | |
+| C1 | `/site/c1-contact.webp` | `/contact` side image | 1200×1500 | 4:5 | Reserved. Not placed on the page yet |
+| OG | `/site/og-share.webp` | Social share image | 1200×630 | 1.91:1 | Reserved. Not wired into meta tags yet |
+
+---
+
+# Previous (July 2026)
+
 Final assets live in `/public/placeholders/img-XX.png`. Sourced from
 `Adrender Marketing/Website Images/image N.png` (N = 1–22).
 
@@ -43,7 +79,7 @@ Hero tabs: `src/components/AppPreview.tsx` via `placeholderSrc()`.
 | 18 | `img-18.png` | `image 18.png` | `/about#generation` | 1280×800 | 8:5 |
 | 19 | `img-19.png` | `image 19.png` | `/about#playground` | 1280×800 | 8:5 |
 | 20 | `img-20.png` | `image 20.png` | `/about#sizes` | 1280×800 | 8:5 |
-| 21 | `img-21.png` | `image 21.png` | `/about#shopify` | 1280×800 | 8:5 |
+| 21 | `img-21.png` | `image 21.png` | Retired. `/about#shopify` is drawn in code | 1280×800 | 8:5 |
 | 22 | `img-22.png` | `image 22.png` | `/about#workspaces` | 1280×800 | 8:5 |
 
 ---

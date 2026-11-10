@@ -1,0 +1,470 @@
+/**
+ * Shell layout for the Client Portal (/app/*).
+ * Token balance lives in the sidebar — no separate top bar.
+ * Sidebar is collapsible — matches Admin shell collapse behavior.
+ */
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  BookmarkSimple,
+  CaretDoubleLeft,
+  Lifebuoy,
+  MagicWand,
+  Megaphone,
+  SignOut,
+  SquaresFour,
+  Warning,
+} from "@phosphor-icons/react";
+import { resolveDisplayLabel } from "../lib/displayName";
+import { useTokens } from "../context/TokenContext";
+import { useTeam } from "../context/TeamContext";
+import { useSubscription } from "../context/SubscriptionContext";
+import { AdsLibraryCountsProvider, useAdsLibraryCounts } from "../context/AdsLibraryCountsContext";
+import { VideoLibraryCountsProvider, useVideoLibraryCounts } from "../context/VideoLibraryCountsContext";
+import { ClientModeProvider, useClientMode } from "../context/ClientModeContext";
+import { NavShellProvider } from "../context/NavShellContext";
+import HoverPeekFrame from "../components/sidebar/HoverPeekFrame";
+import ContentCard from "../components/shell/ContentCard";
+import PhoneFrame from "../components/phone/PhoneFrame";
+import { usePhoneLayout } from "../lib/usePhoneLayout";
+import HelpChat from "../components/HelpChat";
+import NewUserOnboardingModal from "../components/NewUserOnboardingModal";
+import AdRenderHomeIcon from "../components/AdRenderHomeIcon";
+import { useReadyBadgeAttention } from "../hooks/useReadyBadgeAttention";
+import { browserReadyBadgeStorage, markReadyBadgeSeen, readyBadgeStorageKey } from "../lib/readyBadgeSeen";
+import ClientModeToggle from "../components/ClientModeToggle";
+import { runClientTopUp } from "../components/phone/clientTopUp";
+import WorkspaceSwitcher from "../components/WorkspaceSwitcher";
+import AffiliateNavItem from "../components/sidebar/AffiliateNavItem";
+import LibraryNavItem from "../components/sidebar/LibraryNavItem";
+import ProfileMenu from "../components/sidebar/ProfileMenu";
+import TokensRow from "../components/sidebar/TokensRow";
+import Button from "../components/ui/Button";
+import NavItem from "../components/ui/NavItem";
+import AppToaster from "../components/ui/Toaster";
+import { useAnimatedTokenCount } from "../components/motion/AnimatedTokenCount";
+import BillingTab from "../views/BillingTab";
+import { consumeOpenHelpChatAfterHandoff } from "../lib/pendingBrandUrlNav";
+import { isApprovedAffiliateStatus, readMyAffiliateOnce } from "../lib/affiliateAccess";
+import { useLoadAffiliateAnnouncement } from "../lib/affiliateAnnouncement";
+import { supabase } from "../lib/supabase";
+import {
+  memberPlanSidebarLabel,
+  viewerCanOpenShopifyBilling,
+} from "../lib/shopifyBilling";
+import type { User } from "@supabase/supabase-js";
+
+const PRODUCT_NAV = [
+  { icon: SquaresFour, label: "Browse Templates", path: "/app/templates" },
+  { icon: BookmarkSimple, label: "Saved Templates", path: "/app/my-templates" },
+  { icon: MagicWand, label: "Ad Playground", path: "/app/ad-playground" },
+  { icon: Megaphone, label: "Brands & Campaigns", path: "/app/brands" },
+] as const;
+
+function Sidebar({
+  user,
+  onSignOut,
+  collapsed,
+  pinned,
+  onCollapse,
+  onNavigate,
+}: {
+  user: User;
+  onSignOut: () => void;
+  collapsed: boolean;
+  pinned: boolean;
+  onCollapse: () => void;
+  onNavigate: () => void;
+}) {
+  const { billingTeamId, extraWorkspaceMemberPlan, members, memberships, userId, teamId } = useTeam();
+  const { mode, setMode } = useClientMode();
+  const adsCounts = useAdsLibraryCounts();
+  const videoCounts = useVideoLibraryCounts();
+  const generatingCount =
+    mode === "video" ? (videoCounts?.generatingCount ?? 0) : (adsCounts?.generatingCount ?? 0);
+  const readyCount = mode === "video" ? (videoCounts?.readyCount ?? 0) : (adsCounts?.readyCount ?? 0);
+  const readyMedia = mode === "video" ? "video" : "image";
+  const readyIds = readyMedia === "video" ? (videoCounts?.readyIds ?? []) : (adsCounts?.readyIds ?? []);
+  const readyLoaded =
+    readyMedia === "video" ? Boolean(videoCounts?.readyIdsLoaded) : Boolean(adsCounts?.readyIdsLoaded);
+  const readyAttention = useReadyBadgeAttention({
+    userId: user.id,
+    teamId,
+    media: readyMedia,
+    readyIds,
+    loaded: readyLoaded,
+  });
+  const selfMember = members.find((m) => m.user_id === userId);
+  const displayName = resolveDisplayLabel(selfMember?.display_name, user?.email ?? null);
+  const email = user?.email ?? "";
+  const initials = displayName
+    .split(" ")
+    .map((w: string) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+  const navigate = useNavigate();
+  // affiliates.status via getMyAffiliate() — same approved check as ProfileView.
+  // The shell does not already have this row, so one cached read per user.
+  const [affiliateStatus, setAffiliateStatus] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    void readMyAffiliateOnce(user.id).then((row) => {
+      if (live) setAffiliateStatus(row?.status ?? null);
+    });
+    return () => {
+      live = false;
+    };
+  }, [user.id]);
+  // Every page, not only the Affiliate tab. Focus reads again; nothing polls.
+  useLoadAffiliateAnnouncement(isApprovedAffiliateStatus(affiliateStatus) ? user.id : null);
+  const { balance, loading, capExhausted, isPoolOwner } = useTokens();
+  const { isShopifyBilled } = useSubscription();
+  const canOpenShopifyBilling = viewerCanOpenShopifyBilling(billingTeamId, memberships);
+
+  const handleTopUpClick = () => {
+    runClientTopUp({
+      capExhausted,
+      isPoolOwner,
+      isShopifyBilled,
+      canOpenShopifyBilling,
+      navigate,
+    });
+  };
+
+  const [planSubtitle, setPlanSubtitle] = useState<
+    "loading" | { kind: "plan"; label: string } | { kind: "cta" }
+  >("loading");
+
+  useEffect(() => {
+    if (extraWorkspaceMemberPlan) {
+      setPlanSubtitle({
+        kind: "plan",
+        label: memberPlanSidebarLabel(extraWorkspaceMemberPlan),
+      });
+      return;
+    }
+    if (!billingTeamId) return;
+    let cancelled = false;
+    void (async () => {
+      // Plan badge follows the billing workspace: the active Shopify store, or
+      // the personal workspace for Direct/Stripe.
+      const { data, error } = await supabase.rpc("get_team_subscription", {
+        p_team_id: billingTeamId,
+      });
+      if (cancelled) return;
+      if (error) {
+        setPlanSubtitle({ kind: "cta" });
+        return;
+      }
+      const res = data as {
+        subscription?: { status?: string } | null;
+        tier?: { name?: string } | null;
+        is_free?: boolean;
+      } | null;
+      const tierName = res?.tier?.name?.trim();
+      if (res?.is_free === true || tierName?.toLowerCase() === "free") {
+        setPlanSubtitle({ kind: "plan", label: "Free Plan" });
+        return;
+      }
+      if (!tierName) {
+        setPlanSubtitle({ kind: "cta" });
+        return;
+      }
+      const st = res?.subscription?.status;
+      const baseName = tierName.toLowerCase().endsWith("plan") ? tierName : `${tierName} Plan`;
+      const stillEntitled =
+        st === "active" || st === "trialing" || st === "past_due" || st === "frozen" || st === "cancelled";
+      const label = stillEntitled ? baseName : `${baseName} (pending)`;
+      setPlanSubtitle({ kind: "plan", label });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [billingTeamId, extraWorkspaceMemberPlan]);
+
+  const tokenLabel = useAnimatedTokenCount(balance, loading);
+  const lowTokens = !loading && balance !== null && balance > 0 && balance < 20;
+  const failedUnseen = mode === "image" && Boolean(adsCounts?.hasFailedUnseen);
+  const planLabel =
+    planSubtitle === "loading"
+      ? "…"
+      : planSubtitle.kind === "plan"
+        ? planSubtitle.label
+        : "Start a plan";
+
+  const acknowledgeReady = () => {
+    if (!teamId || !readyLoaded) return;
+    const storage = browserReadyBadgeStorage();
+    if (!storage) return;
+    markReadyBadgeSeen(storage, readyBadgeStorageKey(user.id, teamId, readyMedia), readyIds);
+  };
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className={collapsed ? "flex w-full flex-col items-center gap-2" : "flex w-full items-center gap-1"}>
+        <div className={collapsed ? "" : "min-w-0 flex-1"}>
+          <ClientModeToggle mode={mode} onChange={setMode} collapsed={collapsed} />
+        </div>
+        {!collapsed && pinned ? (
+          <Button
+            variant="ghost"
+            size="md"
+            iconOnly
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+            onClick={onCollapse}
+          >
+            <CaretDoubleLeft size={16} aria-hidden />
+          </Button>
+        ) : null}
+      </div>
+
+      <nav className="mt-2 flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div className="flex flex-col gap-1">
+          <NavItem
+            to="/app/home"
+            end
+            label="AdRender"
+            emphasis
+            collapsed={collapsed}
+            onClick={onNavigate}
+            renderIcon={(selected) => <AdRenderHomeIcon selected={selected} size={16} />}
+          />
+          <LibraryNavItem
+            to="/app/ads-library"
+            readyTo="/app/ads-library?tab=ready"
+            collapsed={collapsed}
+            unseenReady={readyAttention}
+            readyCount={readyCount}
+            generatingCount={generatingCount}
+            onOpenReady={acknowledgeReady}
+            onNavigate={onNavigate}
+            failedUnseen={failedUnseen}
+          />
+          {PRODUCT_NAV.map((item) => (
+            <NavItem
+              key={item.path}
+              to={item.path}
+              label={item.label}
+              icon={item.icon}
+              collapsed={collapsed}
+              onClick={onNavigate}
+            />
+          ))}
+        </div>
+        <AffiliateNavItem
+          status={affiliateStatus}
+          collapsed={collapsed}
+          onNavigate={onNavigate}
+          userId={user.id}
+        />
+      </nav>
+
+      <div className="mt-2 flex shrink-0 flex-col gap-2">
+        <WorkspaceSwitcher collapsed={collapsed} />
+        <TokensRow
+          collapsed={collapsed}
+          label={`${tokenLabel} tokens`}
+          onTopUp={handleTopUpClick}
+          warning={lowTokens}
+        />
+        <ProfileMenu
+          collapsed={collapsed}
+          displayName={displayName}
+          email={email}
+          avatarUrl={avatarUrl}
+          initials={initials}
+          profileTo="/app/profile"
+          billingTo="/app/profile?tab=billing"
+          planLabel={planLabel}
+          tokenLabel={tokenLabel}
+          tokenNoun="tokens"
+          onTopUp={handleTopUpClick}
+          onSignOut={onSignOut}
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Blocked layout shown when the workspace is suspended (payment failed past the
+ * 3-day grace period). Everything is blocked EXCEPT the two escape hatches the
+ * owner needs: the Billing/Plans tab (to update their payment method) and the
+ * support chat (mounted as the floating HelpChat, same as the normal shell).
+ */
+function SuspendedShell({ user, onSignOut }: { user: User; onSignOut: () => void }) {
+  return (
+    <>
+      <div className="min-h-screen bg-page font-sans text-primary">
+        <header className="sticky top-0 z-10 border-b border-default bg-sidebar">
+          <div className="mx-auto flex w-full max-w-4xl items-center gap-3 px-6 py-4 max-md:flex-wrap max-md:px-4">
+            <img
+              src="/logos/webapp_main_logo.png"
+              alt=""
+              aria-hidden
+              className="h-8 w-8 object-contain shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-semibold leading-none text-primary">
+                AdRender
+              </h1>
+              <span className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-semibold text-danger">
+                <Warning className="size-3" aria-hidden />
+                Suspended — payment failed
+              </span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={onSignOut} leadingIcon={<SignOut size={14} aria-hidden />}>
+              Sign out
+            </Button>
+          </div>
+        </header>
+
+        <main className="mx-auto w-full max-w-[1920px] space-y-6 bg-page px-6 py-4 max-md:px-4">
+          <div className="space-y-3 rounded-xl border border-default bg-inset p-6">
+            <div className="flex items-start gap-3">
+              <Warning className="mt-0.5 size-5 shrink-0 text-danger" aria-hidden />
+              <div className="space-y-2">
+                <h2 className="text-base font-semibold text-primary">
+                  Your workspace is suspended
+                </h2>
+                <p className="text-sm leading-relaxed text-secondary">
+                  A subscription payment failed and wasn&apos;t resolved within 3 days, so
+                  access to ad generation, templates, your library, and brands &amp; campaigns is paused.
+                  Update your payment method below to restore access — it comes back
+                  automatically once a payment succeeds. Need help? Use the support chat
+                  in the bottom-right corner and our team will assist you there.
+                </p>
+                <p className="inline-flex items-center gap-1.5 text-xs text-muted">
+                  <Lifebuoy className="size-3.5" aria-hidden />
+                  Billing and support remain available while suspended.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <BillingTab />
+        </main>
+      </div>
+      <HelpChat user={user} isPlatformAdmin={false} />
+      <AppToaster />
+    </>
+  );
+}
+
+export default function ClientShell({
+  user,
+  onSignOut,
+  isAdminPreview = false,
+}: {
+  user: User;
+  onSignOut: () => void;
+  isAdminPreview?: boolean;
+}) {
+  const [openChatForOnboarding, setOpenChatForOnboarding] = useState(false);
+  const { showClientOnboarding, dismissClientOnboarding, accountStatus, teamId } = useTeam();
+
+  // Suspended workspaces get the carved-out block: Billing + support only.
+  // (Admin preview keeps accountStatus "active", so this never hits previewers.)
+  if (accountStatus === "suspended") {
+    return <SuspendedShell user={user} onSignOut={onSignOut} />;
+  }
+
+  return (
+    <ClientModeProvider>
+      <AdsLibraryCountsProvider teamId={teamId}>
+        <VideoLibraryCountsProvider teamId={teamId}>
+          <NavShellProvider>
+            <ClientShellLayout
+              user={user}
+              onSignOut={onSignOut}
+              isAdminPreview={isAdminPreview}
+              showClientOnboarding={showClientOnboarding}
+              dismissClientOnboarding={dismissClientOnboarding}
+              openChatForOnboarding={openChatForOnboarding}
+              setOpenChatForOnboarding={setOpenChatForOnboarding}
+            />
+          </NavShellProvider>
+        </VideoLibraryCountsProvider>
+      </AdsLibraryCountsProvider>
+    </ClientModeProvider>
+  );
+}
+
+function ClientShellLayout({
+  user,
+  onSignOut,
+  isAdminPreview,
+  showClientOnboarding,
+  dismissClientOnboarding,
+  openChatForOnboarding,
+  setOpenChatForOnboarding,
+}: {
+  user: User;
+  onSignOut: () => void;
+  isAdminPreview: boolean;
+  showClientOnboarding: boolean;
+  dismissClientOnboarding: () => void;
+  openChatForOnboarding: boolean;
+  setOpenChatForOnboarding: (open: boolean) => void;
+}) {
+  const location = useLocation();
+  const phone = usePhoneLayout();
+
+  // Pending-URL signup handoff suppresses the welcome modal, so open HelpChat
+  // once we actually land on the new brand (same forceOpen path as Start Setup).
+  useEffect(() => {
+    if (!location.pathname.startsWith("/app/brands/")) return;
+    if (!consumeOpenHelpChatAfterHandoff()) return;
+    setOpenChatForOnboarding(true);
+  }, [location.pathname, setOpenChatForOnboarding]);
+
+  return (
+    <>
+      <NewUserOnboardingModal
+        open={showClientOnboarding}
+        onSkip={dismissClientOnboarding}
+        onStartSetup={() => {
+          dismissClientOnboarding();
+          setOpenChatForOnboarding(true);
+        }}
+      />
+      <div className="flex h-screen flex-col overflow-hidden bg-canvas font-sans text-primary selection:bg-accent-soft max-md:bg-page">
+        {isAdminPreview && <div className="h-9 shrink-0" />}
+        <div className="flex min-h-0 min-w-0 flex-1">
+          {phone ? null : (
+            <HoverPeekFrame topInset={isAdminPreview ? 36 : 0}>
+              {({ collapsed, pinned, onCollapse, onNavigate }) => (
+                <Sidebar
+                  user={user}
+                  onSignOut={onSignOut}
+                  collapsed={collapsed}
+                  pinned={pinned}
+                  onCollapse={onCollapse}
+                  onNavigate={onNavigate}
+                />
+              )}
+            </HoverPeekFrame>
+          )}
+          <ContentCard flush={phone}>
+            {phone ? (
+              <PhoneFrame user={user} onSignOut={onSignOut} topInset={isAdminPreview ? 36 : 0}>
+                <Outlet />
+              </PhoneFrame>
+            ) : (
+              <Outlet />
+            )}
+          </ContentCard>
+        </div>
+      </div>
+      <HelpChat
+        user={user}
+        isPlatformAdmin={isAdminPreview}
+        forceOpen={openChatForOnboarding}
+      />
+      <AppToaster />
+    </>
+  );
+}

@@ -1,0 +1,51 @@
+/**
+ * DESIGN.md §8.15 platform marks on template cards.
+ */
+import type { Icon } from "@phosphor-icons/react";
+import {
+  FacebookLogo,
+  Globe,
+  InstagramLogo,
+  LinkedinLogo,
+  MessengerLogo,
+  TiktokLogo,
+  YoutubeLogo,
+} from "@phosphor-icons/react";
+import { sentenceCase } from "../../lib/sentenceCase";
+
+function platformIcon(platform: string): Icon {
+  const p = platform.toLowerCase();
+  if (p.includes("facebook")) return FacebookLogo;
+  if (p.includes("instagram")) return InstagramLogo;
+  if (p.includes("youtube")) return YoutubeLogo;
+  if (p.includes("linkedin")) return LinkedinLogo;
+  if (p.includes("tiktok")) return TiktokLogo;
+  if (p.includes("messenger")) return MessengerLogo;
+  return Globe;
+}
+
+export function PlatformMarks({
+  platforms,
+  placement = "overlay",
+}: {
+  platforms: readonly string[];
+  placement?: "overlay" | "inline";
+}) {
+  if (!platforms.length) return null;
+  return (
+    <div className={placement === "overlay" ? "absolute left-3 top-3 z-[2] flex gap-1" : "flex gap-1"}>
+      {platforms.map((platform) => {
+        const IconComp = platformIcon(platform);
+        return (
+          <div
+            key={platform}
+            title={sentenceCase(platform)}
+            className="media-overlay flex size-5 items-center justify-center rounded-full text-white"
+          >
+            <IconComp size={12} weight="fill" aria-hidden />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
