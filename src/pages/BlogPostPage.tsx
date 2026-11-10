@@ -7,6 +7,7 @@ import { PageMeta } from '../components/PageMeta'
 import { blogPostPath, blogPosts, formatPostDate, getPostBySlug } from '../data/blog'
 import { LinkTable } from '../components/site/LinkTable'
 import { ClosingCta } from '../components/site/ClosingCta'
+import { BlogCover } from '../components/site/BlogCover'
 import { getSignupUrl } from '../lib/appUrl'
 
 const SHOPIFY_APP_STORE_URL = 'https://apps.shopify.com/adrender'
@@ -70,21 +71,21 @@ export function BlogPostPage() {
   return (
     <>
       <PageMeta title={title} description={post.description} path={path} ogType="article" />
-      <article className="site-section">
+      <article className="site-section blog-post">
+        <div className="site-column">
+          <BlogCover
+            slug={post.slug}
+            variant="banner"
+            title={post.title}
+            dateTime={post.publishedDate}
+            dateLabel={formatPostDate(post.publishedDate)}
+            updatedLabel={
+              post.updatedDate && post.updatedDate !== post.publishedDate ? formatPostDate(post.updatedDate) : undefined
+            }
+          />
+        </div>
         <div className="site-blog-body">
-          <nav className="site-breadcrumb" aria-label="Breadcrumb">
-            <a href="/blog">Blog</a>
-            <span aria-hidden> / </span>
-            <span aria-current="page">{post.title}</span>
-          </nav>
-          <h1 className="site-blog-title">{post.title}</h1>
-          <p className="site-meta" style={{ marginTop: 12 }}>
-            <time dateTime={post.publishedDate}>{formatPostDate(post.publishedDate)}</time>
-            {post.updatedDate && post.updatedDate !== post.publishedDate ? (
-              <span> · Updated {formatPostDate(post.updatedDate)}</span>
-            ) : null}
-          </p>
-          <div className="blog-prose" style={{ marginTop: 28 }}>
+          <div className="blog-prose">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {post.content}
             </ReactMarkdown>

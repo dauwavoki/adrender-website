@@ -249,7 +249,7 @@ function Sidebar({
             <RenderingDots />
           )}
           <span className="ap-hide">{libraryReady ? 'Ready' : 'Rendering'}</span>
-          {libraryReady ? <span className="ap-nav-count">2</span> : null}
+          <span className="ap-nav-count">{libraryReady ? '2' : '12'}</span>
         </button>
         <NavButton id="browse" label="Browse Templates" selected={view === 'browse'} onView={onView} icon={<SquaresFour size={16} weight={view === 'browse' ? 'fill' : 'regular'} />} />
         <NavButton id="saved" label="Saved Templates" selected={view === 'saved'} onView={onView} icon={<BookmarkSimple size={16} weight={view === 'saved' ? 'fill' : 'regular'} />} />
@@ -335,6 +335,32 @@ function TemplateTiles({ items, href, priorityFirst = false }: { items: readonly
   )
 }
 
+function KeepWorkingMedia({ quiet = false }: { quiet?: boolean }) {
+  const media = useContext(MediaCtx)
+  const showVideo = !quiet && media.load
+
+  return (
+    <span className="ap-keep-media">
+      {showVideo ? (
+        <PreviewVideo
+          src={KEEP_WORKING.videoSrc}
+          poster={KEEP_WORKING.still.src}
+          width={KEEP_WORKING.still.width}
+          height={KEEP_WORKING.still.height}
+        />
+      ) : (
+        <img
+          src={KEEP_WORKING.still.src}
+          alt=""
+          width={KEEP_WORKING.still.width}
+          height={KEEP_WORKING.still.height}
+          decoding="async"
+        />
+      )}
+    </span>
+  )
+}
+
 function HomeView({ href, mode, quiet = false }: { href: string; mode: Mode; quiet?: boolean }) {
   const stats = PERSONAL.stats.filter((stat) => stat.id !== 'workspaces')
   const tones: TileTone[] = ['blue', 'violet', 'amber', 'green']
@@ -363,7 +389,7 @@ function HomeView({ href, mode, quiet = false }: { href: string; mode: Mode; qui
             <IconTile tone={tones[index] ?? 'blue'} size={36}>
               <StatIcon id={stat.id} />
             </IconTile>
-            <span>{stat.label}</span>
+            <span className="ap-stat-label">{stat.label}</span>
             <b>{stat.value}</b>
           </div>
         ))}
@@ -386,15 +412,7 @@ function HomeView({ href, mode, quiet = false }: { href: string; mode: Mode; qui
         </section>
         <a className="ap-panel ap-keep" href={href}>
           <p className="ap-muted">{KEEP_WORKING.kicker}</p>
-          <img
-            src={KEEP_WORKING.still.src}
-            alt=""
-            width={KEEP_WORKING.still.width}
-            height={KEEP_WORKING.still.height}
-            loading={quiet ? 'lazy' : 'eager'}
-            fetchPriority={quiet ? undefined : 'high'}
-            decoding="async"
-          />
+          <KeepWorkingMedia quiet={quiet} />
           <span className="ap-keep-foot">
             <span>
               <b>{KEEP_WORKING.title}</b>

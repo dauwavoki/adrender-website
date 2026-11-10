@@ -4,8 +4,7 @@ import { blogIndexPath, blogPostPath, blogPosts, formatPostDate, parseBlogTab } 
 import { comparisonPath, comparisons } from '../data/comparisons'
 import { SplitHero } from '../components/site/SplitHero'
 import { LinkTable } from '../components/site/LinkTable'
-import { SitePlaceholder } from '../components/site/SitePlaceholder'
-import { ensureSiteImage } from '../data/imageManifest'
+import { BlogCover } from '../components/site/BlogCover'
 
 const TITLE = 'AdRender Blog — AI Ads & Shopify Creatives'
 const DESCRIPTION =
@@ -49,19 +48,9 @@ export function BlogIndexPage() {
           <div className="site-column">
             <div className="site-card-grid cols-3">
               {blogPosts.map((post) => {
-                const id = `B-${post.slug}`
-                ensureSiteImage({
-                  id,
-                  label: post.title,
-                  where: blogPostPath(post.slug),
-                  width: 1600,
-                  height: 900,
-                  aspect: '16:9',
-                  filename: `/site/b-${post.slug}.webp`,
-                })
                 return (
                   <Link key={post.slug} to={blogPostPath(post.slug)} className="site-post-card">
-                    <SitePlaceholder id={id} />
+                    <BlogCover slug={post.slug} variant="card" />
                     <div className="copy">
                       <time dateTime={post.publishedDate} className="site-meta">
                         {formatPostDate(post.publishedDate)}

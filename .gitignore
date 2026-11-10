@@ -32,3 +32,6 @@ supabase/.temp/
 *.njsproj
 *.sln
 *.sw?
+
+# Local redesign proof screenshots. Regenerate with scripts/proof-screenshots.mjs
+docs/redesign/proof/

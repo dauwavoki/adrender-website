@@ -200,6 +200,42 @@ try {
     }
     await context.close()
   }
+
+  for (const theme of themes) {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      deviceScaleFactor: 1,
+    })
+    await context.addInitScript((value) => {
+      localStorage.setItem('adrender-site-theme', value)
+    }, theme)
+    const page = await context.newPage()
+    await page.goto(`http://127.0.0.1:${port}/blog`, { waitUntil: 'networkidle' })
+    await page.evaluate(() => document.fonts.ready)
+    const grid = page.locator('.blog-notes .site-card-grid')
+    await grid.scrollIntoViewIfNeeded()
+    const coversFile = path.join(outDir, `blog-covers-${theme}-1440.png`)
+    await grid.screenshot({ path: coversFile })
+    console.log('saved', path.relative(root, coversFile))
+    await context.close()
+  }
+
+  const headerContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1,
+  })
+  await headerContext.addInitScript(() => {
+    localStorage.setItem('adrender-site-theme', 'light')
+  })
+  const headerPage = await headerContext.newPage()
+  await headerPage.goto(`http://127.0.0.1:${port}/blog/why-i-created-adrender`, { waitUntil: 'networkidle' })
+  await headerPage.evaluate(() => document.fonts.ready)
+  const header = headerPage.locator('.blog-cover.is-banner')
+  await header.scrollIntoViewIfNeeded()
+  const headerFile = path.join(outDir, 'blog-header-light-1440.png')
+  await header.screenshot({ path: headerFile })
+  console.log('saved', path.relative(root, headerFile))
+  await headerContext.close()
 } finally {
   await browser.close()
   server.close()

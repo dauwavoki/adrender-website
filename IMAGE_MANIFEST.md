@@ -4,7 +4,7 @@
 
 Save real files under `/public/site/`. Until a file exists, the site shows a labeled placeholder (`SitePlaceholder`). Sizes are the slot, not a crop of an old screenshot.
 
-F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. A1 uses the live site's founder photo (`public/placeholders/img-06.png`). C1 and OG stay empty slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
+F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. Blog covers are built in code (`src/components/site/BlogCover.tsx`). A1 uses the live site's founder photo (`public/placeholders/img-06.png`). C1 and OG stay empty slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
 
 No solution page references an image, so there are no S-* slots. `/about#shopify` is drawn in code (A10). Previous slot 21 is no longer used.
 
@@ -29,22 +29,6 @@ No solution page references an image, so there are no S-* slots. `/about#shopify
 | A8 | Built in code (src/components/scenes) — no image needed | `/about#playground` | 1600×1200 | 4:3 | |
 | A9 | Built in code (src/components/scenes) — no image needed | `/about#workspaces` | 1600×1200 | 4:3 | |
 | A10 | Built in code (src/components/scenes) — no image needed | `/about#shopify` | 1600×1200 | 4:3 | |
-| B-adrender-shopify-app | `/site/b-adrender-shopify-app.webp` | Blog index card for `/blog/adrender-shopify-app` | 1600×900 | 16:9 | No cover in the post yet |
-| B-ai-ad-generators-shopify-comparison | `/site/b-ai-ad-generators-shopify-comparison.webp` | Blog index card for `/blog/ai-ad-generators-shopify-comparison` | 1600×900 | 16:9 | No cover in the post yet |
-| B-ai-ad-management-platforms-shopify | `/site/b-ai-ad-management-platforms-shopify.webp` | Blog index card for `/blog/ai-ad-management-platforms-shopify` | 1600×900 | 16:9 | No cover in the post yet |
-| B-ai-product-photography-tools-comparison | `/site/b-ai-product-photography-tools-comparison.webp` | Blog index card for `/blog/ai-product-photography-tools-comparison` | 1600×900 | 16:9 | No cover in the post yet |
-| B-ai-ugc-ads-creator-scaling | `/site/b-ai-ugc-ads-creator-scaling.webp` | Blog index card for `/blog/ai-ugc-ads-creator-scaling` | 1600×900 | 16:9 | No cover in the post yet |
-| B-canva-enough-for-shopify-ads | `/site/b-canva-enough-for-shopify-ads.webp` | Blog index card for `/blog/canva-enough-for-shopify-ads` | 1600×900 | 16:9 | No cover in the post yet |
-| B-creative-volume-agency-testing | `/site/b-creative-volume-agency-testing.webp` | Blog index card for `/blog/creative-volume-agency-testing` | 1600×900 | 16:9 | No cover in the post yet |
-| B-freelance-ad-designer-scale-clients | `/site/b-freelance-ad-designer-scale-clients.webp` | Blog index card for `/blog/freelance-ad-designer-scale-clients` | 1600×900 | 16:9 | No cover in the post yet |
-| B-hiring-a-freelancer-or-agency-adrender-fits-in | `/site/b-hiring-a-freelancer-or-agency-adrender-fits-in.webp` | Blog index card for `/blog/hiring-a-freelancer-or-agency-adrender-fits-in` | 1600×900 | 16:9 | No cover in the post yet |
-| B-how-much-does-adrender-actually-save-you | `/site/b-how-much-does-adrender-actually-save-you.webp` | Blog index card for `/blog/how-much-does-adrender-actually-save-you` | 1600×900 | 16:9 | No cover in the post yet |
-| B-prompting-optional-90-percent-no-prompt | `/site/b-prompting-optional-90-percent-no-prompt.webp` | Blog index card for `/blog/prompting-optional-90-percent-no-prompt` | 1600×900 | 16:9 | No cover in the post yet |
-| B-static-vs-video-ads-what-actually-wins | `/site/b-static-vs-video-ads-what-actually-wins.webp` | Blog index card for `/blog/static-vs-video-ads-what-actually-wins` | 1600×900 | 16:9 | No cover in the post yet |
-| B-ui-ux-of-adrender | `/site/b-ui-ux-of-adrender.webp` | Blog index card for `/blog/ui-ux-of-adrender` | 1600×900 | 16:9 | No cover in the post yet |
-| B-who-needs-an-ai-ad-generator | `/site/b-who-needs-an-ai-ad-generator.webp` | Blog index card for `/blog/who-needs-an-ai-ad-generator` | 1600×900 | 16:9 | No cover in the post yet |
-| B-why-adrender-doesnt-feel-like-figma | `/site/b-why-adrender-doesnt-feel-like-figma.webp` | Blog index card for `/blog/why-adrender-doesnt-feel-like-figma` | 1600×900 | 16:9 | No cover in the post yet |
-| B-why-i-created-adrender | `/site/b-why-i-created-adrender.webp` | Blog index card for `/blog/why-i-created-adrender` | 1600×900 | 16:9 | No cover in the post yet |
 | C1 | `/site/c1-contact.webp` | `/contact` side image | 1200×1500 | 4:5 | Reserved. Not placed on the page yet |
 | OG | `/site/og-share.webp` | Social share image | 1200×630 | 1.91:1 | Reserved. Not wired into meta tags yet |
 

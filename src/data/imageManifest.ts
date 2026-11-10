@@ -85,6 +85,8 @@ export type SiteImageEntry = {
 
 const BUILT = 'Built in code (src/components/scenes) — no image needed'
 
+// Blog covers are built in code (src/components/site/BlogCover.tsx). No B-* slots.
+
 export const SITE_IMAGES: SiteImageEntry[] = [
   {
     id: 'H1',

@@ -8,3 +8,7 @@ Read in this order:
 5. `app-reference/icons/` — AdRender Home icon (line/fill, dark/light).
 
 This folder is documentation. It is not part of the build.
+
+## Proof screenshots
+
+Proof screenshots are generated locally into `docs/redesign/proof/` and are not committed. After `npm run build`, run `npx playwright install chromium && node scripts/proof-screenshots.mjs`. The script and the Playwright dev dependency stay in the repo so the shots can be made again on a local machine.
