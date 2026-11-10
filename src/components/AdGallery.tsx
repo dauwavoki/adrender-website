@@ -5,6 +5,14 @@ type ArcAd =
   | { kind: 'static'; src: string; alt: string }
   | { kind: 'video'; src: string; poster: string; alt: string }
 
+/**
+ * Tile 10 (index 9) would be ad-10.png, which has a cream frame in the file.
+ * ad-03.png is a YourBrand still that is not already in this arc.
+ */
+const ARC_STILL_SRC: Partial<Record<number, string>> = {
+  9: '/how-it-works/ads/ad-03.png',
+}
+
 /** Tiles 3, 4, 7 and 8 (left to right) play the YourBrand clips. */
 const VIDEO_SLOTS: Record<number, { src: string; poster: string }> = {
   2: { src: '/how-it-works/video-01.mp4', poster: '/how-it-works/video-01.jpg' },
@@ -26,7 +34,7 @@ const ADS: ArcAd[] = Array.from({ length: 12 }, (_, index) => {
   const n = String(index + 1).padStart(2, '0')
   return {
     kind: 'static',
-    src: `/how-it-works/ads/ad-${n}.png`,
+    src: ARC_STILL_SRC[index] ?? `/how-it-works/ads/ad-${n}.png`,
     alt: `YourBrand rendered ad ${index + 1}`,
   }
 })

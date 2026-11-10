@@ -90,13 +90,14 @@ export const TEMPLATE_CARDS: TemplateCard[] = [
   { id: 'food', label: 'Food and drink', days: 41, src: '/how-it-works/templates/template-07.png', width: 768, height: 1024 },
 ]
 
-/** Ads, smallest files first. Card uses 9, wide uses 12. */
+/** Batch-grid stills in display order. Card uses the first 9, wide uses all 12. */
 export const AD_STILLS: Still[] = [
   { src: '/how-it-works/ads/ad-02.png', width: 824, height: 1024 },
   { src: '/how-it-works/ads/ad-06.png', width: 824, height: 1024 },
   { src: '/how-it-works/ads/ad-01.png', width: 824, height: 1024 },
   { src: '/how-it-works/ads/ad-09.png', width: 824, height: 1024 },
-  { src: '/how-it-works/ads/ad-10.png', width: 824, height: 1024 },
+  // ad-10.png is unused: the file has a cream frame. This poster is not otherwise in the grid.
+  { src: '/how-it-works/video-01.jpg', width: 540, height: 960 },
   { src: '/how-it-works/ads/ad-12.png', width: 824, height: 1024 },
   { src: '/how-it-works/ads/ad-11.png', width: 824, height: 1024 },
   { src: '/how-it-works/ads/ad-05.png', width: 824, height: 1024 },

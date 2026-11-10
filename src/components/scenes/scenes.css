@@ -414,6 +414,13 @@ html.dark .scene-segment > span.scene-ready.is-on {
   justify-content: space-between;
 }
 
+/* Brand content can be taller than the panel. The clip shows the bottom
+   (products and ad copy) until playback translates the stack. */
+.brand {
+  justify-content: flex-start;
+  gap: 0;
+}
+
 .tpl-tools,
 .chip-row {
   display: flex;
@@ -800,6 +807,39 @@ html.dark .scene-segment > span.scene-ready.is-on {
 }
 
 /* Brand */
+.brand-clip {
+  position: relative;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.brand-scroll {
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Wide content is taller than the panel, so the resting frame is the bottom. */
+.scene[data-size='wide'] .brand-scroll {
+  bottom: 0;
+}
+
+/* Card content fits. Stretch it so the header stays at the top and the last
+   line sits on the bottom edge, with the spare space between sections. */
+.scene[data-size='card'] .brand-scroll {
+  top: 0;
+  min-height: 100%;
+  justify-content: space-between;
+}
+
+.brand-scroll.is-instant .scene-reveal {
+  transition: none;
+}
+
 .brand-top {
   display: flex;
   align-items: center;
@@ -844,13 +884,13 @@ html.dark .scene-segment > span.scene-ready.is-on {
   min-width: 0;
 }
 
-.brand-product img {
-  height: 84px;
-  aspect-ratio: auto;
-}
-
-.scene[data-size='wide'] .brand-product img {
-  height: 68px;
+.scene .brand .brand-product img,
+.scene[data-size='wide'] .brand .brand-product img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
 }
 
 .brand-copies {
@@ -864,17 +904,18 @@ html.dark .scene-segment > span.scene-ready.is-on {
   min-width: 0;
   align-items: center;
   gap: 6px;
-  min-height: 28px;
-  padding: 4px 8px;
+  padding: 8px;
   border-radius: 8px;
   background: var(--bg-inset);
-  color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 16px;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 18px;
 }
 
 .brand-copy svg {
   flex: none;
+  width: 14px;
+  height: 14px;
 }
 
 .brand-copy span {
@@ -943,6 +984,9 @@ html.dark .scene-segment > span.scene-ready.is-on {
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity: 0;
   pointer-events: none;
+  transition:
+    top 420ms ease-out,
+    opacity 420ms ease-out;
 }
 
 .scene-reveal {
@@ -1842,5 +1886,9 @@ html.dark .scene-segment > span.scene-ready.is-on {
 
   .scene .rendering-dots span {
     opacity: 1;
+  }
+
+  .scene .brand-scroll {
+    transform: none !important;
   }
 }
