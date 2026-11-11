@@ -31,7 +31,7 @@ export function BetaBanner() {
     <div className="site-banner">
       <a href={banner.href}>
         <span aria-hidden>🎨 </span>
-        Render on-brand ads in minutes — 20% off your first month. <span className="site-inline-link">Start free</span>
+        Render on-brand ads in minutes — 20% off your first month on monthly plans. <span className="site-inline-link">Start free</span>
       </a>
     </div>
   )
