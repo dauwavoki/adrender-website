@@ -63,12 +63,35 @@ function hoistHeadTags(appHtml) {
 }
 
 /**
+ * Drop the shared logo preview tags when a page supplies its own image.
+ * Runs on the template before the page's tags are inserted, so the replacement
+ * is the only og:image / twitter:image left in <head>.
+ * @param {string} html
+ */
+function stripTemplateSocialImages(html) {
+  return html
+    .split('\n')
+    .filter((line) => {
+      if (!/<meta\b/i.test(line)) return true
+      if (/property=["']og:image["']/i.test(line)) return false
+      if (/property=["']og:image:(?:width|height|alt)["']/i.test(line)) return false
+      if (/name=["']twitter:image["']/i.test(line)) return false
+      return true
+    })
+    .join('\n')
+}
+
+/**
  * @param {string} template
  * @param {string} appHtml
  */
 function inject(template, appHtml) {
   const { body, head } = hoistHeadTags(appHtml)
   let html = template
+
+  if (/property=["']og:image["']/i.test(head)) {
+    html = stripTemplateSocialImages(html)
+  }
 
   if (head) {
     html = html.replace(/<title>[^<]*<\/title>/i, () => head)

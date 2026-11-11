@@ -10,7 +10,8 @@
     "ssg": "node scripts/ssg.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check:hydration": "node scripts/hydration-check.mjs"
+    "check:hydration": "node scripts/hydration-check.mjs",
+    "blog:cover": "node scripts/blog-cover.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

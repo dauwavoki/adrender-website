@@ -87,6 +87,7 @@ export function getAllRoutes() {
     ...solutionPaths,
     ...landingPaths,
     '/blog',
+    '/changelog',
     ...blogPaths,
   ]
 }

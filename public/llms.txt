@@ -20,3 +20,9 @@ Built for: Shopify and DTC brands, solo founders, freelancers, agencies managing
 - [Website](https://adrender.app)
 - [Pricing](https://adrender.app/#pricing)
 - [Compare AdRender to alternatives](https://adrender.app/blog#comparisons)
+- [Blog](https://adrender.app/blog)
+- [Changelog](https://adrender.app/changelog)
+
+## Feature releases
+
+- [AdRender for Shopify: Make Ads From Your Product Catalog, Right Inside Your Shopify Admin](https://adrender.app/blog/adrender-shopify-app): The AdRender Shopify app turns your product catalog into on-brand image and video ads for Facebook and Instagram. Install from the Shopify App Store and start free.

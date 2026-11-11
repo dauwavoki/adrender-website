@@ -8,13 +8,14 @@ type BlogCoverProps = {
   dateTime?: string
   dateLabel?: string
   updatedLabel?: string
+  feature?: boolean
 }
 
 /**
  * Code-built cover. Cards are decorative. The post banner carries the page's
  * only H1; the icon, mark and topic label stay aria-hidden.
  */
-export function BlogCover({ slug, variant, title, dateTime, dateLabel, updatedLabel }: BlogCoverProps) {
+export function BlogCover({ slug, variant, title, dateTime, dateLabel, updatedLabel, feature }: BlogCoverProps) {
   const cover = getBlogCover(slug)
   const Glyph = cover.icon
   const side = cover.side === 'left' ? 'is-left' : 'is-right'
@@ -53,11 +54,16 @@ export function BlogCover({ slug, variant, title, dateTime, dateLabel, updatedLa
             {cover.label}
           </p>
           <h1 className="blog-cover-title">{title}</h1>
-          {dateLabel ? (
-            <p className="site-meta blog-cover-date">
-              <time dateTime={dateTime}>{dateLabel}</time>
-              {updatedLabel ? <span> · Updated {updatedLabel}</span> : null}
-            </p>
+          {dateLabel || feature ? (
+            <div className="blog-cover-meta">
+              {dateLabel ? (
+                <p className="site-meta blog-cover-date">
+                  <time dateTime={dateTime}>{dateLabel}</time>
+                  {updatedLabel ? <span> · Updated {updatedLabel}</span> : null}
+                </p>
+              ) : null}
+              {feature ? <span className="site-badge">New feature</span> : null}
+            </div>
           ) : null}
         </div>
       </div>

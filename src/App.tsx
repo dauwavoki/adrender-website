@@ -2,8 +2,10 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { HashScroll } from './components/HashScroll'
 import { Layout } from './components/Layout'
 import { AffiliatesPage } from './pages/AffiliatesPage'
+import { BlogCoverShotPage } from './pages/BlogCoverShotPage'
 import { BlogIndexPage } from './pages/BlogIndexPage'
 import { BlogPostPage } from './pages/BlogPostPage'
+import { ChangelogPage } from './pages/ChangelogPage'
 import { ContactPage } from './pages/ContactPage'
 import { AboutPage } from './pages/AboutPage'
 import { FaqPage } from './pages/FaqPage'
@@ -24,6 +26,9 @@ export function AppRoutes() {
   return (
     <SiteThemeProvider>
       <Routes>
+        {/* Dev-only stage for npm run blog:cover. Not prerendered. */}
+        {import.meta.env.DEV ? <Route path="internal/blog-cover" element={<BlogCoverShotPage />} /> : null}
+
         {/* Public standalone pages — no Layout chrome */}
         <Route path="terms" element={<TermsPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
@@ -35,6 +40,7 @@ export function AppRoutes() {
           <Route path="affiliates" element={<AffiliatesPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="blog" element={<BlogIndexPage />} />
+          <Route path="changelog" element={<ChangelogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
           {/* Explicit paths preserve /vs-adcreative URLs under StaticRouter + BrowserRouter. */}
           {comparisons.map((c) => (

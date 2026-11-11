@@ -3,6 +3,9 @@ title: "AdRender for Shopify: Make Ads From Your Product Catalog, Right Inside Y
 slug: adrender-shopify-app
 description: "The AdRender Shopify app turns your product catalog into on-brand image and video ads for Facebook and Instagram. Install from the Shopify App Store and start free."
 publishedDate: 2026-10-15
+tags: "New feature"
+coverScene: "ShopifyScene"
+coverImage: "/blog/covers/adrender-shopify-app.png"
 ---
 
 If you run a Shopify store, the hard part of advertising usually isn't the budget. It's the creative: finding the time, the designer and the product shots to keep fresh ads coming. The AdRender Shopify app is built to take that step off your plate, and you can [install it from the Shopify App Store](https://apps.shopify.com/adrender).
