@@ -8,6 +8,7 @@ import { TokenBuys } from './TokenBuys'
 import { FAQ_TOKEN_ROLLOVER_ID } from '../data/faq'
 import { SplitTitle } from './site/SplitTitle'
 import { PrimaryLink, SecondaryLink, TextLink } from './site/Buttons'
+import { cx } from './site/cx'
 
 /** Landing pages still include the rollover FAQ. The homepage links to /faq. */
 function tokenRolloverHref(pathname: string): string {
@@ -91,6 +92,7 @@ export function Pricing() {
         </p>
         <div className="site-billing">
           <div className="site-segment is-inline" role="radiogroup" aria-label="Billing period">
+            <span className={cx('site-segment-thumb', billing === 'annual' && 'is-annual')} aria-hidden="true" />
             <button
               type="button"
               role="radio"
