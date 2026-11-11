@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { PageMeta } from '../components/PageMeta'
-import { blogIndexPath, blogPostPath, blogPosts, formatPostDate, parseBlogTab } from '../data/blog'
+import { blogIndexPath, blogPostPath, blogPosts, formatPostDate, isFeaturePost, parseBlogTab } from '../data/blog'
 import { comparisonPath, comparisons } from '../data/comparisons'
 import { SplitHero } from '../components/site/SplitHero'
 import { LinkTable } from '../components/site/LinkTable'
@@ -29,6 +29,11 @@ export function BlogIndexPage() {
         }
       />
       <div className="site-column">
+        <p className="blog-index-changelog">
+          <Link to="/changelog" className="site-inline-link">
+            See every feature release → Changelog
+          </Link>
+        </p>
         <nav className="site-pills" aria-label="Blog sections">
           <Link to={blogIndexPath('notes')} className={isNotes ? 'site-pill is-selected' : 'site-pill'} aria-current={isNotes ? 'page' : undefined}>
             Notes
@@ -52,9 +57,12 @@ export function BlogIndexPage() {
                   <Link key={post.slug} to={blogPostPath(post.slug)} className="site-post-card">
                     <BlogCover slug={post.slug} variant="card" />
                     <div className="copy">
-                      <time dateTime={post.publishedDate} className="site-meta">
-                        {formatPostDate(post.publishedDate)}
-                      </time>
+                      <div className="blog-card-kicker">
+                        <time dateTime={post.publishedDate} className="site-meta">
+                          {formatPostDate(post.publishedDate)}
+                        </time>
+                        {isFeaturePost(post) ? <span className="site-badge">New feature</span> : null}
+                      </div>
                       <h2>{post.title}</h2>
                       <p>{post.description}</p>
                     </div>

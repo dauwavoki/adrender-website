@@ -4,7 +4,9 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Components } from 'react-markdown'
 import { PageMeta } from '../components/PageMeta'
-import { blogPostPath, blogPosts, formatPostDate, getPostBySlug } from '../data/blog'
+import { SceneByName } from '../components/scenes'
+import { resolveSceneId } from '../components/scenes/sceneNames'
+import { blogPostingJsonLd, blogPostPath, blogPosts, formatPostDate, getPostBySlug, isFeaturePost } from '../data/blog'
 import { LinkTable } from '../components/site/LinkTable'
 import { ClosingCta } from '../components/site/ClosingCta'
 import { BlogCover } from '../components/site/BlogCover'
@@ -70,9 +72,22 @@ export function BlogPostPage() {
 
   return (
     <>
-      <PageMeta title={title} description={post.description} path={path} ogType="article" />
+      <PageMeta
+        title={title}
+        description={post.description}
+        path={path}
+        ogType="article"
+        image={post.coverImage}
+        imageAlt={post.title}
+      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: blogPostingJsonLd(post) }} />
       <article className="site-section blog-post">
         <div className="site-column">
+          {post.coverScene && resolveSceneId(post.coverScene) ? (
+            <div className="blog-feature-scene">
+              <SceneByName name={post.coverScene} size="wide" />
+            </div>
+          ) : null}
           <BlogCover
             slug={post.slug}
             variant="banner"
@@ -82,6 +97,7 @@ export function BlogPostPage() {
             updatedLabel={
               post.updatedDate && post.updatedDate !== post.publishedDate ? formatPostDate(post.updatedDate) : undefined
             }
+            feature={isFeaturePost(post)}
           />
         </div>
         <div className="site-blog-body">

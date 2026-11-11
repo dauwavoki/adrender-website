@@ -12,6 +12,7 @@ function metaForRoute(route) {
   if (route === '/contact') return { changefreq: 'monthly', priority: '0.5' }
   if (route === '/terms' || route === '/privacy') return { changefreq: 'yearly', priority: '0.3' }
   if (route === '/blog') return { changefreq: 'weekly', priority: '0.7' }
+  if (route === '/changelog') return { changefreq: 'weekly', priority: '0.6' }
   if (route.startsWith('/blog/')) {
     const slug = route.slice('/blog/'.length)
     const post = getBlogPostsMeta().find((p) => p.slug === slug)

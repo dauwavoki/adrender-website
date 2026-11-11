@@ -9,6 +9,15 @@
   ],
   "headers": [
     {
+      "source": "/blog/rss.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        }
+      ]
+    },
+    {
       "source": "/llms.txt",
       "headers": [
         {

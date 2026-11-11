@@ -70,6 +70,7 @@ export function Footer() {
                 <h2>Company</h2>
                 <Link to="/about">About</Link>
                 <Link to="/blog">Blog</Link>
+                <Link to="/changelog">Changelog</Link>
                 <Link to="/affiliates">Affiliates</Link>
                 <Link to="/contact">Contact</Link>
               </div>
