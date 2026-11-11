@@ -438,7 +438,9 @@ export function TermsPage() {
             <p className="mb-4 text-zinc-400">For questions about these Terms, billing, privacy, legal notices, or support:</p>
             <address className="not-italic space-y-1 text-zinc-300">
               <p className="font-medium text-white">ADRENDER LLC</p>
-              <p>Miami, Florida, United States</p>
+              <p>1065 SW 8th Street, Suite 2325</p>
+              <p>Miami, FL 33130</p>
+              <p>United States</p>
               <p>Talk to us through the customer service chat or send us an email at <a href="mailto:info@adrender.app" className="text-[#00e5ff] hover:underline">info@adrender.app</a>.</p>
             </address>
 

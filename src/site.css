@@ -1681,15 +1681,19 @@ html.dark .site-image-card:hover .site-image-card-media {
   font-weight: 500;
 }
 
-.site-tile {
-  display: inline-flex;
+/* Doubled class so parent rules like `.site-menu-link span` cannot
+   override centering, line-height, or the tile color. */
+.site-tile.site-tile {
+  display: inline-grid;
   flex: none;
+  place-items: center;
   align-items: center;
   justify-content: center;
+  line-height: 0;
   border: 1px solid transparent;
 }
 
-.site-tile svg {
+.site-tile.site-tile svg {
   display: block;
 }
 
@@ -1705,31 +1709,31 @@ html.dark .site-image-card:hover .site-image-card-media {
   border-radius: 10px;
 }
 
-.site-tile-blue {
+.site-tile.site-tile-blue {
   color: var(--tile-blue);
   background: color-mix(in srgb, var(--tile-blue) 14%, transparent);
   border-color: color-mix(in srgb, var(--tile-blue) 24%, transparent);
 }
 
-.site-tile-violet {
+.site-tile.site-tile-violet {
   color: var(--tile-violet);
   background: color-mix(in srgb, var(--tile-violet) 14%, transparent);
   border-color: color-mix(in srgb, var(--tile-violet) 24%, transparent);
 }
 
-.site-tile-orange {
+.site-tile.site-tile-orange {
   color: var(--tile-orange);
   background: color-mix(in srgb, var(--tile-orange) 14%, transparent);
   border-color: color-mix(in srgb, var(--tile-orange) 24%, transparent);
 }
 
-.site-tile-green {
+.site-tile.site-tile-green {
   color: var(--tile-green);
   background: color-mix(in srgb, var(--tile-green) 14%, transparent);
   border-color: color-mix(in srgb, var(--tile-green) 24%, transparent);
 }
 
-.site-tile-amber {
+.site-tile.site-tile-amber {
   color: var(--tile-amber);
   background: color-mix(in srgb, var(--tile-amber) 14%, transparent);
   border-color: color-mix(in srgb, var(--tile-amber) 24%, transparent);
@@ -2760,13 +2764,67 @@ html.dark .pbf-card > .pbf-num {
 }
 
 .site-segment.is-inline {
+  position: relative;
   display: inline-grid;
   width: max-content;
   min-width: 220px;
 }
 
+.site-segment-thumb {
+  position: absolute;
+  z-index: 0;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  pointer-events: none;
+  transition: transform 250ms ease;
+}
+
+html.dark .site-segment-thumb {
+  border-color: var(--border-strong);
+  background: #3a3836;
+}
+
+.site-segment-thumb.is-annual {
+  transform: translateX(100%);
+}
+
 .site-segment.is-inline button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 18px;
+  background: transparent;
+}
+
+html.light .site-segment.is-inline button {
+  color: var(--text-secondary);
+}
+
+html.dark .site-segment.is-inline button {
+  color: var(--text-muted);
+}
+
+html.light .site-segment.is-inline button[aria-checked='true'] {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+html.dark .site-segment.is-inline button[aria-checked='true'] {
+  color: #f6f5f4;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-segment-thumb {
+    transition: none;
+  }
 }
 
 .site-plan-grid,
