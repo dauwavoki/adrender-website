@@ -243,7 +243,7 @@ export function TermsPage() {
               </div>
               <div id="10-3" className="scroll-mt-24">
                 <h3 className="mb-1.5 font-medium text-zinc-200">10.3 Affiliates</h3>
-            <p>The affiliate program is for web app accounts and is paid through Stripe. It is not part of Shopify billing.</p>
+            <p>The affiliate program is for web app accounts and is paid through Stripe. It is not part of Shopify billing. While your affiliate account is suspended or your commission or payouts are on hold, you won't appear on the leaderboard and aren't eligible for prizes; suspended accounts' codes and links are paused.</p>
               </div>
             </div>
           </section>
