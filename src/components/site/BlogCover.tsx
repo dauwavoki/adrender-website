@@ -25,7 +25,7 @@ export function BlogCover({ slug, variant, title, dateTime, dateLabel, updatedLa
       <span className="blog-cover-icon">
         <Glyph weight="regular" />
       </span>
-      <img className="blog-cover-mark" src="/WebApp_Main_Logo.png" alt="" width={146} height={128} />
+      <img className="blog-cover-mark" src="/brand/logo/adrender-logo.svg" alt="" width={25} height={24} />
     </>
   )
 
