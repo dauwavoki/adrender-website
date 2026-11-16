@@ -1,0 +1,30 @@
+{
+  "frames": 112,
+  "fps": 30,
+  "columns": 12,
+  "rows": 10,
+  "duration_ms": 3733,
+  "sequence": "tilt back 0.7 s, then one slow full turn 3.0 s, ends exactly on the still logo (view A)",
+  "sheets": {
+    "192": {
+      "file": "adrender-logo-spin-sprite-192.webp",
+      "cell": 192,
+      "width": 2304,
+      "height": 1920
+    },
+    "96": {
+      "file": "adrender-logo-spin-sprite-96.webp",
+      "cell": 96,
+      "width": 1152,
+      "height": 960
+    }
+  },
+  "animated_webp": {
+    "192": "adrender-logo-spin-192.webp",
+    "96": "adrender-logo-spin-96.webp"
+  },
+  "still": {
+    "192": "adrender-logo-still-192.png",
+    "96": "adrender-logo-still-96.png"
+  }
+}
