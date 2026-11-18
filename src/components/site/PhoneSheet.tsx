@@ -70,6 +70,9 @@ export function PhoneSheet({ onClose, signInHref, signupHref }: PhoneSheetProps)
           <NavLink className="site-sheet-link" to="/faq" onClick={onClose}>
             FAQ
           </NavLink>
+          <NavLink className="site-sheet-link" to="/tutorials" onClick={onClose}>
+            Tutorials
+          </NavLink>
 
           <p className="site-sheet-label">Solutions</p>
           <NavLink className="site-sheet-link" to="/solutions" onClick={onClose}>

@@ -46,6 +46,7 @@ export function Footer() {
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <Link to="/faq">FAQ</Link>
+                <Link to="/tutorials">Tutorials</Link>
                 <Link to="/blog/adrender-shopify-app">Shopify app</Link>
               </div>
               <div className="site-footer-col">

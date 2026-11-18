@@ -46,6 +46,9 @@ export function Header() {
           <NavLink className="site-nav-link" to="/faq">
             FAQ
           </NavLink>
+          <NavLink className="site-nav-link" to="/tutorials">
+            Tutorials
+          </NavLink>
         </nav>
         <div className="site-header-actions">
           <ThemeToggle />
