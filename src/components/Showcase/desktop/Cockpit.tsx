@@ -23,10 +23,10 @@ import {
   CircleNotch,
 } from '@phosphor-icons/react'
 import { buildFrame, localTabPath, type FramePaths, type TabBox } from './flapShape'
-import { ACCOUNT, BRAND, PICKED_IMAGE, PICKED_VIDEO } from './showcaseData'
-import type { LibState, Mode, SceneState } from './script'
-import { balanceFor, offsetWithin, VIDEO_PRICE } from './layout'
-import { cx } from '../site/cx'
+import { ACCOUNT, BRAND, PICKED_IMAGE, PICKED_VIDEO } from '../showcaseData'
+import type { LibState, Mode, SceneState } from '../engine/story'
+import { balanceFor, offsetWithin, VIDEO_PRICE } from '../engine/layout'
+import { cx } from '../../site/cx'
 
 const EMPTY: FramePaths = { leftFill: '', rightFill: '', selected: [], outline: '', silhouette: '', details: [] }
 

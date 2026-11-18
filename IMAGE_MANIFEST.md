@@ -6,7 +6,7 @@ Save real files under `/public/site/`. Until a file exists, the site shows a lab
 
 F1–F8, A2–A10, and H1 are drawn in the page. They do not need image files. Blog covers are built in code (`src/components/site/BlogCover.tsx`). A1 uses the live site's founder photo (`public/placeholders/img-06.png`). C1 and OG stay empty slots. H1 is the static Home view from `src/components/AppPreview`, scaled into the product menu. The feature scenes live in `src/components/scenes`.
 
-The homepage hero is a looping walkthrough drawn in code (`src/components/Showcase`). Its pictures are small WebP copies in `public/showcase/`, made from `public/how-it-works/` and `public/app-preview/`; its clips reuse those folders' MP4s. To freeze it at one moment for a screenshot, open `/?showcase-t=12.5`.
+The homepage hero is a looping walkthrough drawn in code (`src/components/Showcase`). Its pictures are small WebP copies in `public/showcase/`, made from `public/how-it-works/` and `public/app-preview/`; its clips reuse those folders' MP4s. To freeze it at one moment for a screenshot, open `/?showcase-t=12.5`. Phones get the phone version of the same story. `/tutorials` holds the intro in three views (Desktop, Phone, TikTok ad); `/tutorials?view=tiktok` opens the ad view, and Full screen restarts it for screen recording.
 
 No solution page references an image, so there are no S-* slots. `/about#shopify` is drawn in code (A10). Previous slot 21 is no longer used.
 
