@@ -1,6 +1,6 @@
 import { createContext } from 'react'
-import { ACCOUNT } from './showcaseData'
-import type { SceneState } from './script'
+import { ACCOUNT } from '../showcaseData'
+import type { SceneState } from './story'
 
 /** True while the showcase is on screen and allowed to move. Videos only play then. */
 export const PlayingCtx = createContext(false)

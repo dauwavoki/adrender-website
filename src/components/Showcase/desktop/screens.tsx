@@ -49,10 +49,10 @@ import {
   VIDEO_RESULTS,
   VIDEO_TEMPLATES,
   type Media,
-} from './showcaseData'
-import type { SceneState } from './script'
-import { balanceFor, PlayingCtx } from './layout'
-import { cx } from '../site/cx'
+} from '../showcaseData'
+import type { SceneState } from '../engine/story'
+import { balanceFor, PlayingCtx } from '../engine/layout'
+import { cx } from '../../site/cx'
 
 
 type Tone = 'blue' | 'violet' | 'orange' | 'green' | 'amber'
@@ -341,13 +341,15 @@ export function HomeScreen({ state }: { state: SceneState }) {
 
 /* ── Brand page ─────────────────────────────────────────────── */
 
-export function BrandScreen({ state }: { state: SceneState }) {
+export function BrandScreen({ state, phone = false }: { state: SceneState; phone?: boolean }) {
   const stage = state.brandStage
+  const scanning = stage >= 1
   const named = stage >= 2
   const colors = Math.max(0, Math.min(BRAND.colors.length, stage - 2))
   const done = stage >= 13
+  const typed = state.url
   return (
-    <div className="sc-brand">
+    <div className={cx('sc-brand', phone && 'is-phone')}>
       <header className="sc-brand-header" data-sc="sc-brand-top">
         <div className="sc-brand-header-left">
           <span className="sc-icon-btn">
@@ -358,69 +360,97 @@ export function BrandScreen({ state }: { state: SceneState }) {
           ) : (
             <span className="sc-brand-head-logo is-letter">N</span>
           )}
-          <h2>{named ? BRAND.name : 'New brand or campaign'}</h2>
+          <h2 className="sc-truncate">{named ? BRAND.name : 'New brand or campaign'}</h2>
         </div>
-        <p className="sc-muted-sm">Changes save automatically</p>
+        {phone ? null : <p className="sc-muted-sm">Changes save automatically</p>}
       </header>
 
       <div className="sc-brand-body">
-        <div className={cx('sc-banner', done && 'is-done')} data-sc="sc-banner">
-          {done ? <CheckCircle size={18} weight="fill" className="sc-text-success" /> : <CircleNotch size={18} className="sc-spin" />}
-          <div>
-            <p className="sc-strong">
-              {done
-                ? `Brand ready — ${BRAND.products.length} products and ${BRAND.adCopies} ad copies found`
-                : 'Reading your website — building your brand or campaign profile now'}
-            </p>
-            <p className="sc-muted-sm">
-              {done
-                ? 'Review anything you like. It is ready to use in the cockpit.'
-                : 'Brain AI is scanning the site you shared and filling in name, voice, colors, and logo.'}
-            </p>
+        {scanning ? (
+          <div className={cx('sc-banner sc-rise-in', done && 'is-done')} data-sc="sc-banner">
+            {done ? <CheckCircle size={18} weight="fill" className="sc-text-success" /> : <CircleNotch size={18} className="sc-spin" />}
+            <div>
+              <p className="sc-strong">
+                {done
+                  ? `Brand ready — ${BRAND.products.length} products and ${BRAND.adCopies} ad copies found`
+                  : 'Reading your website — building your brand or campaign profile now'}
+              </p>
+              <p className="sc-muted-sm">
+                {done
+                  ? 'Review anything you like. It is ready to use in the cockpit.'
+                  : 'Brain AI is scanning the site you shared and filling in name, voice, colors, and logo.'}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <section className="sc-brand-section">
           <div className="sc-brand-section-head">
             <h3>Brand or campaign setup</h3>
             <Badge>Start here</Badge>
           </div>
-          <div className="sc-card sc-setup">
+          <div className="sc-card sc-setup" data-sc="sc-setup">
             <div className="sc-setup-row">
-              <span className="sc-soft-icon">
+              <span className="sc-soft-icon" data-sc="sc-scan-icon">
                 <Globe size={16} />
               </span>
               <div className="sc-grow">
                 <p className="sc-strong">Scan your website</p>
                 <p className="sc-muted-xs">Brain AI reads the site and fills in voice, colors, logo, tagline, and more.</p>
               </div>
-              <span className="sc-muted-xs">1/3</span>
+              <span className="sc-muted-xs">{scanning ? '1/3' : '0/3'}</span>
             </div>
             <div className="sc-setup-url">
-              <span className="sc-input is-wide">
-                <span className="sc-input-text">https://{BRAND.url}</span>
+              <span className={cx('sc-input is-wide', state.urlFocus && 'is-focus')} data-sc="sc-brand-url">
+                {scanning ? (
+                  <span className="sc-input-text">https://{BRAND.url}</span>
+                ) : typed ? (
+                  <span className="sc-input-text">{typed}</span>
+                ) : (
+                  <span className="sc-input-ph">https://yourwebsite.com</span>
+                )}
+                {state.urlFocus && !scanning ? <span className="sc-caret" /> : null}
               </span>
-              <Button icon={done ? <Check size={16} /> : <CircleNotch size={16} className="sc-spin" />}>{done ? 'Scanned' : 'Scanning…'}</Button>
+              <Button
+                sc="sc-brand-scan"
+                icon={done ? <Check size={16} /> : scanning ? <CircleNotch size={16} className="sc-spin" /> : <Scan size={16} />}
+              >
+                {done ? 'Scanned' : scanning ? 'Scanning…' : 'Scan'}
+              </Button>
             </div>
 
             <div className="sc-field-grid">
-              <div className="sc-field">
+              <div className="sc-field" data-sc="sc-name">
                 <p className="sc-label">Brand or Campaign Name</p>
-                <div className={cx('sc-field-box', !named && 'is-skeleton')}>{named ? <span className="sc-fade-in">{BRAND.name}</span> : null}</div>
+                <div className={cx('sc-field-box', scanning && !named && 'is-skeleton')}>{named ? <span className="sc-fade-in">{BRAND.name}</span> : null}</div>
               </div>
               <div className="sc-field">
                 <p className="sc-label">Logo</p>
                 <div className="sc-logo-box">
-                  {named ? <img src={BRAND.logo} alt="" className="sc-fade-in" /> : <span className="is-skeleton" />}
+                  {named ? <img src={BRAND.logo} alt="" className="sc-fade-in" /> : scanning ? <span className="is-skeleton" /> : null}
                 </div>
               </div>
-              <div className="sc-field sc-span-2">
+              <div className="sc-field sc-span-2" data-sc="sc-voice">
                 <p className="sc-label">Brand or Campaign voice</p>
-                <div className={cx('sc-field-box is-tall', stage < 8 && 'is-skeleton')}>
+                <div className={cx('sc-field-box is-tall', scanning && stage < 8 && 'is-skeleton')}>
                   {stage >= 8 ? <span className="sc-type-in">{BRAND.voice}</span> : null}
                 </div>
               </div>
               <div className="sc-field sc-span-2">
+                <p className="sc-label">Target audience</p>
+                <div className="sc-audience">
+                  {stage >= 8 ? (
+                    BRAND.audience.map((item, index) => (
+                      <span key={item} className="sc-badge is-chip sc-pop-in" style={{ animationDelay: `${index * 120}ms` }}>
+                        {item}
+                      </span>
+                    ))
+                  ) : (
+                    <span className={cx('sc-skel-chip', scanning && 'is-skeleton')} />
+                  )}
+                </div>
+              </div>
+              <div className="sc-field sc-span-2" data-sc="sc-colors">
                 <p className="sc-label">Colors</p>
                 <div className="sc-swatches">
                   {BRAND.colors.map((color, index) => (
@@ -453,14 +483,79 @@ export function BrandScreen({ state }: { state: SceneState }) {
                 </div>
               ) : (
                 <div key={product.id} className="sc-card sc-product is-skeleton-card">
-                  <div className="sc-product-media is-skeleton" />
-                  <span className="sc-skel-line" />
-                  <span className="sc-skel-line is-short" />
+                  <div className={cx('sc-product-media', scanning && 'is-skeleton')} />
+                  <span className={cx('sc-skel-line', !scanning && 'is-idle')} />
+                  <span className={cx('sc-skel-line is-short', !scanning && 'is-idle')} />
                 </div>
               ),
             )}
           </div>
         </section>
+      </div>
+    </div>
+  )
+}
+
+/* ── Brands & Campaigns ─────────────────────────────────────── */
+
+const OTHER_BRANDS = [
+  { id: 'b1', name: 'Summer Sale', kind: 'Campaign', products: 3, tint: '#e5a33d' },
+  { id: 'b2', name: 'Trail Collection', kind: 'Campaign', products: 6, tint: '#52ad50' },
+  { id: 'b3', name: 'Studio Line', kind: 'Brand', products: 9, tint: '#9b6bf2' },
+]
+
+export function BrandsScreen({ phone = false }: { state: SceneState; phone?: boolean }) {
+  return (
+    <div className={cx('sc-brands', phone && 'is-phone')}>
+      {phone ? (
+        <div className="sc-brands-phone-tools">
+          <span className="sc-search is-grow">
+            <MagnifyingGlass size={16} />
+            Search brands or campaigns…
+          </span>
+          <span className="sc-segmented is-icons">
+            <span className="is-on">All</span>
+            <span>
+              <Megaphone size={14} />
+            </span>
+          </span>
+        </div>
+      ) : (
+        <header className="sc-page-header">
+          <div className="sc-page-row">
+            <p className="cockpit-page-title">
+              <Megaphone size={16} />
+              <span className="cockpit-page-title-name">Brands &amp; Campaigns</span>
+            </p>
+          </div>
+          <div className="sc-page-tools">
+            <span className="sc-search" style={{ width: 300 }}>
+              <MagnifyingGlass size={16} />
+              Search brands or campaigns…
+            </span>
+            <Segmented options={['All', 'Brands', 'Campaigns']} value={0} />
+            <span className="sc-grow" />
+            <Button variant="primary" icon={<Plus size={16} />} sc="sc-add-brand">
+              Add brand or campaign
+            </Button>
+          </div>
+        </header>
+      )}
+      <div className="sc-brand-grid">
+        {OTHER_BRANDS.map((item) => (
+          <div key={item.id} className="sc-card sc-brand-card">
+            <span className="sc-brand-card-mark" style={{ background: item.tint }}>
+              {item.name.charAt(0)}
+            </span>
+            <div className="sc-grow">
+              <p className="sc-strong sc-truncate">{item.name}</p>
+              <div className="sc-brand-card-meta">
+                <Badge>{item.kind}</Badge>
+                <span className="sc-muted-sm">{item.products} products</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
