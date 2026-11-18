@@ -1,25 +1,29 @@
 import type { Story } from './engine/story'
-import { INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
+import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
 
 /**
  * The tutorials collection. The first entry is always the intro.
- * To add a tutorial: build its two stories (wide + phone), add an entry here with
- * `stories` filled in. Entries without `stories` show as "Coming soon".
+ * To add a tutorial: build its two stories (wide + phone), add `stories`, and it plays.
+ * Entries without `stories` show as "Coming soon". `learn` and `steps` are shown only when written.
  */
 export type Tutorial = {
   id: string
+  category: string
   title: string
   summary: string
   tags: string[]
-  /** Both views of the same walkthrough. Missing = coming soon. */
+  /** Both sizes of the same video: `desktop` is wide, `phone` is tall. Missing = coming soon. */
   stories?: { desktop: Story; phone: Story }
-  learn: string[]
-  steps: string[]
+  /** Ad-style video: hook, big captions and end card over the app. */
+  ad?: boolean
+  learn?: string[]
+  steps?: string[]
 }
 
 export const TUTORIALS: Tutorial[] = [
   {
     id: 'intro',
+    category: 'Getting started',
     title: 'Intro: from your website to finished ads',
     summary: 'Add your brand from its website, pick winning templates, render, and open your ads.',
     tags: ['getting started', 'brand', 'templates', 'render', 'library'],
@@ -38,84 +42,216 @@ export const TUTORIALS: Tutorial[] = [
     ],
   },
   {
-    id: 'brand-from-website',
-    title: 'Create a brand from your website, fast',
-    summary: 'The setup that makes every ad on-brand: scan, check, fix, save.',
-    tags: ['brand', 'setup', 'website scan', 'colors', 'audience'],
-    learn: ['What the scan fills in and what to double-check.', 'How to edit colors, voice, audience and products.'],
-    steps: ['Scan your website.', 'Check the profile.', 'Edit anything that looks off.', 'Add more products.'],
+    id: 'ad-remix',
+    category: 'Getting started',
+    title: 'Ad: remix winning ads into your brand',
+    summary: 'A short ad-style cut of the intro, with a hook, big captions and a closing call to action. Made for social.',
+    tags: ['ad', 'promo', 'social', 'tiktok', 'instagram'],
+    stories: { desktop: AD_WIDE, phone: AD_TALL },
+    ad: true,
   },
   {
-    id: 'brands-and-campaigns',
-    title: 'Brands vs campaigns: one product per campaign',
-    summary: 'Keep tests tidy: a brand for the company, a campaign for each product or set.',
-    tags: ['campaigns', 'brand', 'testing', 'products'],
-    learn: ['When to make a brand and when to make a campaign.', 'How to test one product per set.'],
-    steps: ['Create a brand.', 'Create a campaign from a product.', 'Render a set per campaign.', 'Compare results.'],
+    id: "must-do-setup",
+    category: "Getting started",
+    title: "Must-do setup when starting with AdRender",
+    summary: "The few things to set up first so every ad comes out right.",
+    tags: ["setup", "first", "steps"],
   },
   {
-    id: 'search-and-filters',
-    title: 'Find winning templates: search and filters',
-    summary: 'Search by niche, add more words, use related words and filters to narrow thousands of ads.',
-    tags: ['search', 'filters', 'templates', 'related words', 'niche'],
-    learn: ['How to search and narrow templates.', 'How related words widen a search.'],
-    steps: ['Search a niche.', 'Add more words.', 'Use related words.', 'Filter and add to the cockpit.'],
+    id: "playground",
+    category: "Getting started",
+    title: "Exploring the Playground",
+    summary: "Try ideas freely in the Playground.",
+    tags: ["playground", "explore"],
   },
   {
-    id: 'cockpit',
-    title: 'The cockpit: templates, brand, skill, render',
-    summary: 'Everything you need to render, in one place, for image and video.',
-    tags: ['cockpit', 'render', 'skills', 'sizes', 'video', 'image'],
-    learn: ['Add and remove templates.', 'Pick a brand and skill.', 'Choose sizes and render.'],
-    steps: ['Add templates.', 'Choose a brand.', 'Choose a skill.', 'Pick sizes.', 'Render.'],
+    id: "brand-from-website",
+    category: "Brands and campaigns",
+    title: "Create a brand from your website, fast",
+    summary: "Scan a website and get a full brand profile in seconds.",
+    tags: ["brand", "website", "scan", "setup"],
   },
   {
-    id: 'skills',
-    title: 'How to use skills',
-    summary: 'Skills decide what AdRender does with a template. Pick one and render.',
-    tags: ['skills', 'clone', 'templates'],
-    learn: ['What each skill does.', 'Which skill to use when.'],
-    steps: ['Open the skills list.', 'Pick a skill.', 'Render and compare.'],
+    id: "brands-and-campaigns",
+    category: "Brands and campaigns",
+    title: "Brands and campaigns: how it works",
+    summary: "Every feature in Brands & Campaigns, including targets and negative words.",
+    tags: ["brands", "campaigns", "targets", "negative", "words", "target", "marketing", "audience"],
   },
   {
-    id: 'refine-one-template',
-    title: 'Keep refining one ad until it is perfect',
-    summary: 'Use the Ad button to rework the same ad again and again, and save good ads as templates.',
-    tags: ['ad button', 'refine', 'reuse', 'templates'],
-    learn: ['How to rework a finished ad.', 'How to save your own ads as templates.'],
-    steps: ['Open a finished ad.', 'Use the Ad button.', 'Change and render again.', 'Save it as a template.'],
+    id: "campaign-per-product",
+    category: "Brands and campaigns",
+    title: "One product per campaign",
+    summary: "Test each product as its own campaign, one set per product.",
+    tags: ["campaigns", "products", "testing", "sets"],
   },
   {
-    id: 'characters',
-    title: 'Campaigns with your own characters (image and video)',
-    summary: 'Upload your characters and AdRender uses them every time, in images and in UGC-style video.',
-    tags: ['characters', 'UGC', 'campaigns', 'video', 'image'],
-    learn: ['How to upload a character.', 'How to keep the same character across a campaign.'],
-    steps: ['Upload a character.', 'Add it to a campaign.', 'Render image and video.', 'Review the set.'],
+    id: "ad-copies",
+    category: "Brands and campaigns",
+    title: "Automated ad copies",
+    summary: "AdRender takes your ad copies and creates more.",
+    tags: ["ad", "copy", "docs", "voice"],
   },
   {
-    id: 'ad-copies',
-    title: 'Automated ad copies',
-    summary: 'Start from your ad copies and let AdRender write more in the same voice.',
-    tags: ['ad copy', 'docs', 'brand voice'],
-    learn: ['Where ad copies live.', 'How AdRender creates more from the ones you have.'],
-    steps: ['Open a product.', 'Add or review ad copies.', 'Generate more.', 'Use them in renders.'],
+    id: "search-and-filters",
+    category: "Templates and creating ads",
+    title: "Find winning templates: search and filters",
+    summary: "Search, add more words, use related words, and filter.",
+    tags: ["search", "filters", "templates", "related", "words", "niche"],
   },
   {
-    id: 'library',
-    title: 'My Ads Library and folders',
-    summary: 'Find, group, download and reuse every ad you have made.',
-    tags: ['library', 'folders', 'download', 'ads'],
-    learn: ['How folders work.', 'How to open, download and reuse ads.'],
-    steps: ['Open My Ads Library.', 'Make a folder.', 'Move ads in.', 'Download.'],
+    id: "cockpit",
+    category: "Templates and creating ads",
+    title: "The cockpit: templates, brand, skill, render",
+    summary: "Add templates, choose a brand and skill, and render image and video.",
+    tags: ["cockpit", "render", "templates", "brand", "skill"],
   },
   {
-    id: 'affiliate',
-    title: 'Affiliate program: get approved and earn 50%',
-    summary: 'How to apply, get approved fast, and start earning commission.',
-    tags: ['affiliate', 'commission', 'earn', 'make money'],
-    learn: ['What the program pays.', 'What helps you get approved quickly.'],
-    steps: ['Apply.', 'Share your link.', 'Track earnings.'],
+    id: "refine-one-ad",
+    category: "Templates and creating ads",
+    title: "Keep refining one ad until it is perfect",
+    summary: "Use the Ad button to rework the same ad, and save your ads as templates.",
+    tags: ["ad", "button", "refine", "reuse", "templates"],
+  },
+  {
+    id: "characters",
+    category: "Templates and creating ads",
+    title: "Campaigns with your own characters",
+    summary: "Image and video campaigns that keep your characters, including UGC.",
+    tags: ["characters", "ugc", "video", "image", "campaigns"],
+  },
+  {
+    id: "prompts",
+    category: "Templates and creating ads",
+    title: "When to use prompts (and when not to)",
+    summary: "Most ads need no prompt. Here is when one helps.",
+    tags: ["prompts", "prompting"],
+  },
+  {
+    id: "library",
+    category: "Templates and creating ads",
+    title: "My Ads Library and folders",
+    summary: "Find, group, download and reuse every ad you made.",
+    tags: ["library", "folders", "download"],
+  },
+  {
+    id: "skills",
+    category: "Skills",
+    title: "How to use skills",
+    summary: "What skills are and how to pick one.",
+    tags: ["skills", "overview"],
+  },
+  {
+    id: "carousel-gallery",
+    category: "Skills",
+    title: "Carousel Gallery skill",
+    summary: "Make carousel and gallery ads with the Carousel Gallery skill.",
+    tags: ["carousel", "gallery", "skill"],
+  },
+  {
+    id: "workspaces-tokens-teams",
+    category: "Account",
+    title: "Workspaces, tokens and Teams",
+    summary: "How workspaces, tokens and Teams work.",
+    tags: ["workspaces", "tokens", "teams"],
+  },
+  {
+    id: "affiliates",
+    category: "Make money with AdRender",
+    title: "Affiliates: make money with AdRender",
+    summary: "Get approved and earn commission as an affiliate.",
+    tags: ["affiliate", "commission", "earn", "money"],
+  },
+  {
+    id: "start-an-agency",
+    category: "Make money with AdRender",
+    title: "Start an ad agency for free",
+    summary: "Build an agency portfolio in minutes and take on clients.",
+    tags: ["ad", "agency", "portfolio", "start", "free"],
+  },
+  {
+    id: "marketing-agencies",
+    category: "Make money with AdRender",
+    title: "Marketing agencies: use AdRender alongside your agency",
+    summary: "Add AdRender to the way your agency already works.",
+    tags: ["marketing", "agency", "alongside"],
+  },
+  {
+    id: "freelancers",
+    category: "Make money with AdRender",
+    title: "Freelancers: take on more clients",
+    summary: "Deliver more ads to more clients with AdRender.",
+    tags: ["freelancers", "clients"],
+  },
+  {
+    id: "ugc-creators",
+    category: "Make money with AdRender",
+    title: "UGC creators: scale brand deals",
+    summary: "Scale brand deals with on-brand UGC.",
+    tags: ["ugc", "creators", "brand", "deals"],
+  },
+  {
+    id: "affiliate-marketers",
+    category: "For your business",
+    title: "Affiliate marketers: fast ad testing",
+    summary: "Test many ads fast.",
+    tags: ["affiliate", "marketers", "testing"],
+  },
+  {
+    id: "media-buyers",
+    category: "For your business",
+    title: "Media buyers: why creative volume beats targeting",
+    summary: "More creatives beat tighter targeting.",
+    tags: ["media", "buyers", "creative", "volume", "targeting"],
+  },
+  {
+    id: "app-game-marketers",
+    category: "For your business",
+    title: "App and game marketers",
+    summary: "Ads for apps and games.",
+    tags: ["app", "game", "marketers"],
+  },
+  {
+    id: "beauty-skincare",
+    category: "For your business",
+    title: "Beauty and skincare brands",
+    summary: "Ads for beauty and skincare.",
+    tags: ["beauty", "skincare"],
+  },
+  {
+    id: "course-creators",
+    category: "For your business",
+    title: "Course creators: launch ads",
+    summary: "Launch ads for your course.",
+    tags: ["course", "creators", "launch"],
+  },
+  {
+    id: "funnel-ads",
+    category: "For your business",
+    title: "Funnel ads: storytelling",
+    summary: "Tell a story from cold to warm to hot audiences.",
+    tags: ["funnel", "ads", "storytelling"],
+  },
+  {
+    id: "tips-and-tricks",
+    category: "Compilations",
+    title: "Tips and Tricks",
+    summary: "Short clips of the best tricks.",
+    tags: ["tips", "tricks"],
+  },
+  {
+    id: "mistakes",
+    category: "Compilations",
+    title: "Mistakes you are making in AdRender",
+    summary: "Common mistakes and how to avoid them.",
+    tags: ["mistakes"],
+  },
+  {
+    id: "full-course",
+    category: "Compilations",
+    title: "The full AdRender course",
+    summary: "Every tutorial in order.",
+    tags: ["course", "full"],
   },
 ]
 
@@ -124,7 +260,7 @@ export function searchTutorials(query: string): Tutorial[] {
   if (!words.length) return TUTORIALS
   return TUTORIALS.filter((t, index) => {
     if (index === 0) return true // the intro is always first
-    const hay = `${t.title} ${t.summary} ${t.tags.join(' ')}`.toLowerCase()
+    const hay = `${t.title} ${t.summary} ${t.category} ${t.tags.join(' ')}`.toLowerCase()
     return words.every((w) => hay.includes(w))
   })
 }

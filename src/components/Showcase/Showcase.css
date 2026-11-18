@@ -4067,3 +4067,121 @@ html.light .sc-ph-browse-mark.is-on {
     padding-top: 16px;
   }
 }
+
+/* ── Wide (16:9) ad view: same overlay, sized for a 960×540 window ── */
+
+.sc.is-ad-wide .sc-window {
+  border-radius: 0;
+}
+
+.sc.is-ad-wide .sc-caption.is-ad {
+  top: 64px;
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.sc.is-ad-wide .sc-caption.is-ad .sc-caption-num {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+.sc.is-ad-wide .sc-ad-brandbar {
+  top: 16px;
+}
+
+.sc.is-ad-wide .sc-ad-hook {
+  padding-top: 120px;
+}
+
+.sc.is-ad-wide .sc-ad-hook-title {
+  max-width: 720px;
+  font-size: 46px;
+}
+
+.sc.is-ad-wide .sc-ad-hook-sub {
+  font-size: 20px;
+}
+
+.sc.is-ad-wide .sc-ad-cta {
+  gap: 12px;
+}
+
+.sc.is-ad-wide .sc-ad-cta-logo {
+  width: 72px;
+  height: 72px;
+}
+
+.sc.is-ad-wide .sc-ad-cta-title {
+  max-width: 760px;
+  font-size: 40px;
+}
+
+.sc.is-ad-wide .sc-ad-cta-sub {
+  max-width: 620px;
+  font-size: 18px;
+}
+
+.sc.is-ad-wide .sc-ad-cta-button {
+  margin-top: 6px;
+  padding: 12px 24px;
+  font-size: 18px;
+}
+
+/* ── Theater mode: bigger video, collection moves below with the info ── */
+
+.sc-tv.is-theater {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sc-tv.is-theater.is-view-desktop {
+  --tv-w: min(100%, calc((100vh - 170px) * 1.6));
+}
+
+.sc-tv.is-theater.is-view-phone {
+  --tv-w: min(100%, 520px, calc((100vh - 170px) * 0.4623));
+}
+
+.sc-tv.is-theater .sc-tutorial-bar,
+.sc-tv.is-theater .sc-tutorial-stage:not(.is-full) .sc-tutorial-frame,
+.sc-tv.is-theater .sc-tv-info,
+.sc-tv.is-theater .sc-tv-soon {
+  width: 100%;
+  max-width: var(--tv-w);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sc-tv.is-theater .sc-tv-side {
+  position: static;
+  max-height: 520px;
+  max-width: var(--tv-w);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.sc-tv-group {
+  padding: 14px 12px 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sc-tv-theater {
+  display: inline-flex;
+}
+
+@media (max-width: 1023px) {
+  .sc-tv-theater {
+    display: none;
+  }
+}
+
+.sc-tv-actions {
+  display: flex;
+  gap: 8px;
+}

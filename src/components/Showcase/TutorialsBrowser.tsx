@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ArrowsOut, Check, Clock, DeviceMobile, Desktop, MagnifyingGlass, X } from '@phosphor-icons/react'
+import { ArrowsOut, Check, Clock, Columns, DeviceMobile, Desktop, MagnifyingGlass, Rectangle, X } from '@phosphor-icons/react'
 import { Player } from './engine/Player'
 import { DesktopApp } from './desktop/DesktopApp'
 import { PhoneApp } from './phone/PhoneApp'
 import type { SceneState } from './engine/story'
 import { CAPTIONS } from './showcaseData'
+import { AdOverlay } from './AdOverlay'
+import { AD_TALL_VIEW, AD_WIDE_VIEW } from './stories/intro'
 import { DESKTOP_APP, PHONE_APP, usePhoneWidth, useWarmStills } from './engine/hooks'
 import { TUTORIALS, searchTutorials, type Tutorial } from './tutorials'
 import { cx } from '../site/cx'
@@ -20,6 +22,9 @@ const VIEWS: { id: View; label: string; icon: typeof Desktop }[] = [
 
 const desktopApp = (state: SceneState) => <DesktopApp state={state} />
 const phoneApp = (state: SceneState) => <PhoneApp state={state} />
+const adOverlay = (state: SceneState) => <AdOverlay state={state} />
+
+const AD_CAPTIONS = ['Add your brand', 'Pick winning ads', 'Get your ads'] as const
 
 const seconds = (value: number) => {
   const total = Math.round(value)
@@ -30,6 +35,24 @@ function TutorialPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view:
   const label = `${tutorial.title}. ${tutorial.summary}`
   const stories = tutorial.stories
   if (!stories) return null
+  if (tutorial.ad) {
+    const tall = view === 'phone'
+    return (
+      <Player
+        story={tall ? stories.phone : stories.desktop}
+        app={DESKTOP_APP}
+        view={tall ? AD_TALL_VIEW : AD_WIDE_VIEW}
+        renderApp={desktopApp}
+        overlay={adOverlay}
+        captions={AD_CAPTIONS}
+        captionVariant="ad"
+        follow={1.05}
+        contain={contain}
+        ariaLabel={label}
+        className={tall ? 'is-tiktok' : 'is-ad-wide'}
+      />
+    )
+  }
   if (view === 'phone') {
     return (
       <Player
@@ -58,6 +81,7 @@ export function TutorialsBrowser() {
   const [params, setParams] = useSearchParams()
   const [query, setQuery] = useState('')
   const [full, setFull] = useState(false)
+  const [theater, setTheater] = useState(false)
   const [run, setRun] = useState(0)
   const stageRef = useRef<HTMLDivElement>(null)
   useWarmStills()
@@ -113,7 +137,7 @@ export function TutorialsBrowser() {
   }, [])
 
   return (
-    <div className="sc-tv">
+    <div className={cx('sc-tv', theater && 'is-theater', `is-view-${view}`)}>
       <div className="sc-tv-main">
         <div className="sc-tutorial-bar">
           <div className="sc-tutorial-views" role="radiogroup" aria-label="Video size">
@@ -131,12 +155,18 @@ export function TutorialsBrowser() {
               </button>
             ))}
           </div>
+          <div className="sc-tv-actions">
+            <button type="button" className="sc-tutorial-full sc-tv-theater" onClick={() => setTheater((value) => !value)} aria-pressed={theater}>
+              {theater ? <Columns size={16} aria-hidden /> : <Rectangle size={16} aria-hidden />}
+              {theater ? 'Default view' : 'Theater mode'}
+            </button>
           {ready ? (
             <button type="button" className="sc-tutorial-full" onClick={enterFull}>
               <ArrowsOut size={16} aria-hidden />
               Full screen
             </button>
           ) : null}
+          </div>
         </div>
 
         {ready ? (
@@ -163,21 +193,29 @@ export function TutorialsBrowser() {
             {story ? `${seconds(story.duration)} · ${view === 'phone' ? 'Phone' : 'Desktop'} view` : 'Coming soon'}
           </p>
           <p className="sc-tv-summary">{tutorial.summary}</p>
-          <h3 className="sc-tv-h">What you will learn</h3>
-          <ul className="sc-tv-list">
-            {tutorial.learn.map((item) => (
-              <li key={item}>
-                <Check size={14} aria-hidden />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <h3 className="sc-tv-h">Steps</h3>
-          <ol className="sc-tv-steps">
-            {tutorial.steps.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ol>
+          {tutorial.learn ? (
+            <>
+              <h3 className="sc-tv-h">What you will learn</h3>
+              <ul className="sc-tv-list">
+                {tutorial.learn.map((item) => (
+                  <li key={item}>
+                    <Check size={14} aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {tutorial.steps ? (
+            <>
+              <h3 className="sc-tv-h">Steps</h3>
+              <ol className="sc-tv-steps">
+                {tutorial.steps.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
+            </>
+          ) : null}
         </div>
       </div>
 
@@ -193,10 +231,12 @@ export function TutorialsBrowser() {
           />
         </label>
         <ul className="sc-tv-items">
-          {results.map((item) => {
+          {results.map((item, index) => {
             const itemStory = item.stories?.[view]
+            const newGroup = !query && (index === 0 || results[index - 1].category !== item.category)
             return (
               <li key={item.id}>
+                {newGroup ? <p className="sc-tv-group">{item.category}</p> : null}
                 <button
                   type="button"
                   className={cx('sc-tv-item', item.id === tutorial.id && 'is-on', !item.stories && 'is-soon')}

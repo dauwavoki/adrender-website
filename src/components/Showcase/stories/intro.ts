@@ -16,10 +16,13 @@ function fillBrand(s: Script, scrollTo: (s: Script) => void) {
  * Desktop intro: Brands & Campaigns → add a brand → scan its website →
  * the profile fills in → templates → ads. `ad` adds the TikTok hook and end card.
  */
-/** TikTok view: 540×960 showing a 1280×800 app, so 1 app pixel = this many view pixels at zoom 1. */
-const TIKTOK_BASE = 540 / 1280
+/** Ad windows show the 1280×800 app inside a smaller window; 1 app pixel = this many window pixels at camera zoom 1. */
+export const AD_TALL_VIEW = { w: 540, h: 960 }
+export const AD_WIDE_VIEW = { w: 960, h: 540 }
+const baseFor = (view: { w: number; h: number }) => Math.min(view.w / 1280, view.h / 800)
 
-function introDesktop(s: Script, ad: boolean) {
+function introDesktop(s: Script, ad: boolean, view = AD_TALL_VIEW) {
+  const TIKTOK_BASE = baseFor(view)
   /** Desktop gets its zooms; the ad gets tighter framing on the left-aligned fields. */
   const adCam = (seconds: number, target: string | null, scale: number, ms: number) =>
     ad ? s.camera(seconds, target, scale / TIKTOK_BASE, ms) : s.after(seconds, {})
@@ -79,8 +82,13 @@ export const INTRO_DESKTOP = makeStory((s) => introDesktop(s, false), {
   stillWhen: (state) => state.screen === 'library',
 })
 
-/** Same story as the desktop intro, for a 9:16 ad: the camera follows the cursor. */
-export const INTRO_TIKTOK = makeStory((s) => introDesktop(s, true), {
+/** Same story as the desktop intro, as an ad: hook, big captions, end card. The camera follows the cursor. */
+export const AD_TALL = makeStory((s) => introDesktop(s, true, AD_TALL_VIEW), {
+  initial: { ...desktopStart, ad: 'hook' },
+  stillWhen: (state) => state.screen === 'library',
+})
+
+export const AD_WIDE = makeStory((s) => introDesktop(s, true, AD_WIDE_VIEW), {
   initial: { ...desktopStart, ad: 'hook' },
   stillWhen: (state) => state.screen === 'library',
 })
