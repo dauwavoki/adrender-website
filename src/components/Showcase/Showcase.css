@@ -4136,30 +4136,82 @@ html.light .sc-ph-browse-mark.is-on {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Wide: as wide as the page column. Phone: tall, so limited by the window height. */
 .sc-tv.is-theater.is-view-desktop {
-  --tv-w: min(100%, calc((100vh - 170px) * 1.6));
+  --tv-w: 100%;
 }
 
 .sc-tv.is-theater.is-view-phone {
-  --tv-w: min(100%, 520px, calc((100vh - 170px) * 0.4623));
+  --tv-w: min(100%, 520px, calc((100vh - 150px) * 0.4623));
 }
 
-.sc-tv.is-theater .sc-tutorial-bar,
-.sc-tv.is-theater .sc-tutorial-stage:not(.is-full) .sc-tutorial-frame,
-.sc-tv.is-theater .sc-tv-info,
-.sc-tv.is-theater .sc-tv-soon {
+/* Video on top; below it the title on the left, size and view buttons on the right. */
+.sc-tv.is-theater .sc-tv-main {
+  display: grid;
   width: 100%;
   max-width: var(--tv-w);
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'stage stage'
+    'info bar';
+  row-gap: 16px;
+  column-gap: 16px;
+  align-items: start;
+}
+
+.sc-tv.is-theater.is-view-phone .sc-tv-main {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'stage'
+    'info'
+    'bar';
+}
+
+.sc-tv.is-theater .sc-tutorial-stage,
+.sc-tv.is-theater .sc-tv-soon {
+  grid-area: stage;
+}
+
+.sc-tv.is-theater .sc-tutorial-stage:not(.is-full) .sc-tutorial-frame {
+  max-width: none;
+  margin: 0 auto;
+}
+
+.sc-tv.is-theater .sc-tutorial-bar {
+  grid-area: bar;
+  margin: 0;
+}
+
+.sc-tv.is-theater .sc-tv-info {
+  grid-area: info;
+  margin: 0;
+  border-top: 0;
+  padding: 4px 0 0;
+}
+
+.sc-tv.is-theater .sc-tv-title {
+  font-size: 20px;
+}
+
+.sc-tv.is-theater .sc-tv-summary,
+.sc-tv.is-theater .sc-tv-h,
+.sc-tv.is-theater .sc-tv-list,
+.sc-tv.is-theater .sc-tv-steps {
+  display: none;
 }
 
 .sc-tv.is-theater .sc-tv-side {
   position: static;
   max-height: 520px;
-  max-width: var(--tv-w);
   width: 100%;
+  max-width: var(--tv-w);
   margin: 0 auto;
+}
+
+/* Theater mode hides the discount banner for more room. */
+body.tv-theater .site-banner {
+  display: none;
 }
 
 .sc-tv-group {

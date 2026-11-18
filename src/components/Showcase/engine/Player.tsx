@@ -173,6 +173,8 @@ export type PlayerProps = {
   touch?: boolean
   /** Fill the slot's height too (full screen). Default fits the width only. */
   contain?: boolean
+  /** Scale up past the design size to fill the slot's width (theater mode). */
+  upscale?: boolean
   /** Always play while mounted, even off screen (full screen). */
   ariaLabel: string
   className?: string
@@ -193,6 +195,7 @@ export function Player({
   follow,
   touch = false,
   contain = false,
+  upscale = false,
   ariaLabel,
   className,
 }: PlayerProps) {
@@ -224,7 +227,7 @@ export function Player({
       const width = slot.clientWidth
       if (width < 8) return
       const height = contain ? slot.clientHeight : Infinity
-      const scale = Math.min(width / view.w, height / view.h, contain ? Infinity : 1)
+      const scale = Math.min(width / view.w, height / view.h, contain || upscale ? Infinity : 1)
       frame.style.transform = `scale(${scale})`
       frame.style.left = `${Math.max(0, (width - view.w * scale) / 2)}px`
       frame.style.top = contain ? `${Math.max(0, (slot.clientHeight - view.h * scale) / 2)}px` : '0px'
@@ -234,7 +237,7 @@ export function Player({
     const observer = new ResizeObserver(apply)
     observer.observe(slot)
     return () => observer.disconnect()
-  }, [view.w, view.h, contain])
+  }, [view.w, view.h, contain, upscale])
 
   useEffect(() => {
     const el = sectionRef.current

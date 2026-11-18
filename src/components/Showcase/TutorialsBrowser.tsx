@@ -1,42 +1,69 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { ArrowsOut, Check, Clock, Columns, DeviceMobile, Desktop, MagnifyingGlass, Rectangle, X } from '@phosphor-icons/react'
-import { Player } from './engine/Player'
-import { DesktopApp } from './desktop/DesktopApp'
-import { PhoneApp } from './phone/PhoneApp'
-import type { SceneState } from './engine/story'
-import { CAPTIONS } from './showcaseData'
-import { AdOverlay } from './AdOverlay'
-import { AD_TALL_VIEW, AD_WIDE_VIEW } from './stories/intro'
-import { DESKTOP_APP, PHONE_APP, usePhoneWidth, useWarmStills } from './engine/hooks'
-import { TUTORIALS, searchTutorials, type Tutorial } from './tutorials'
-import { cx } from '../site/cx'
-import './Showcase.css'
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import {
+  ArrowsOut,
+  Check,
+  Clock,
+  Columns,
+  DeviceMobile,
+  Desktop,
+  MagnifyingGlass,
+  Rectangle,
+  X,
+} from "@phosphor-icons/react";
+import { Player } from "./engine/Player";
+import { DesktopApp } from "./desktop/DesktopApp";
+import { PhoneApp } from "./phone/PhoneApp";
+import type { SceneState } from "./engine/story";
+import { CAPTIONS } from "./showcaseData";
+import { AdOverlay } from "./AdOverlay";
+import { AD_TALL_VIEW, AD_WIDE_VIEW } from "./stories/intro";
+import {
+  DESKTOP_APP,
+  PHONE_APP,
+  usePhoneWidth,
+  useWarmStills,
+} from "./engine/hooks";
+import { TUTORIALS, searchTutorials, type Tutorial } from "./tutorials";
+import { cx } from "../site/cx";
+import "./Showcase.css";
 
-type View = 'desktop' | 'phone'
+type View = "desktop" | "phone";
 
 const VIEWS: { id: View; label: string; icon: typeof Desktop }[] = [
-  { id: 'desktop', label: 'Desktop', icon: Desktop },
-  { id: 'phone', label: 'Phone', icon: DeviceMobile },
-]
+  { id: "desktop", label: "Desktop", icon: Desktop },
+  { id: "phone", label: "Phone", icon: DeviceMobile },
+];
 
-const desktopApp = (state: SceneState) => <DesktopApp state={state} />
-const phoneApp = (state: SceneState) => <PhoneApp state={state} />
-const adOverlay = (state: SceneState) => <AdOverlay state={state} />
+const desktopApp = (state: SceneState) => <DesktopApp state={state} />;
+const phoneApp = (state: SceneState) => <PhoneApp state={state} />;
+const adOverlay = (state: SceneState) => <AdOverlay state={state} />;
 
-const AD_CAPTIONS = ['Add your brand', 'Pick winning ads', 'Get your ads'] as const
+const AD_CAPTIONS = [
+  "Add your brand",
+  "Pick winning ads",
+  "Get your ads",
+] as const;
 
 const seconds = (value: number) => {
-  const total = Math.round(value)
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
-}
+  const total = Math.round(value);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+};
 
-function TutorialPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view: View; contain: boolean }) {
-  const label = `${tutorial.title}. ${tutorial.summary}`
-  const stories = tutorial.stories
-  if (!stories) return null
+function TutorialPlayer({
+  tutorial,
+  view,
+  contain,
+}: {
+  tutorial: Tutorial;
+  view: View;
+  contain: boolean;
+}) {
+  const label = `${tutorial.title}. ${tutorial.summary}`;
+  const stories = tutorial.stories;
+  if (!stories) return null;
   if (tutorial.ad) {
-    const tall = view === 'phone'
+    const tall = view === "phone";
     return (
       <Player
         story={tall ? stories.phone : stories.desktop}
@@ -48,12 +75,13 @@ function TutorialPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view:
         captionVariant="ad"
         follow={1.05}
         contain={contain}
+        upscale
         ariaLabel={label}
-        className={tall ? 'is-tiktok' : 'is-ad-wide'}
+        className={tall ? "is-tiktok" : "is-ad-wide"}
       />
-    )
+    );
   }
-  if (view === 'phone') {
+  if (view === "phone") {
     return (
       <Player
         story={stories.phone}
@@ -62,14 +90,23 @@ function TutorialPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view:
         captions={CAPTIONS}
         touch
         contain={contain}
+        upscale
         ariaLabel={label}
         className="is-phone"
       />
-    )
+    );
   }
   return (
-    <Player story={stories.desktop} app={DESKTOP_APP} renderApp={desktopApp} captions={CAPTIONS} contain={contain} ariaLabel={label} />
-  )
+    <Player
+      story={stories.desktop}
+      app={DESKTOP_APP}
+      renderApp={desktopApp}
+      captions={CAPTIONS}
+      contain={contain}
+      upscale
+      ariaLabel={label}
+    />
+  );
 }
 
 /**
@@ -77,77 +114,107 @@ function TutorialPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view:
  * Desktop/Phone switch and Full screen next to the video, info underneath.
  */
 export function TutorialsBrowser() {
-  const phone = usePhoneWidth()
-  const [params, setParams] = useSearchParams()
-  const [query, setQuery] = useState('')
-  const [full, setFull] = useState(false)
-  const [theater, setTheater] = useState(false)
-  const [run, setRun] = useState(0)
-  const stageRef = useRef<HTMLDivElement>(null)
-  useWarmStills()
+  const phone = usePhoneWidth();
+  const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useState("");
+  const [full, setFull] = useState(false);
+  const [theater, setTheater] = useState(false);
+  const [run, setRun] = useState(0);
+  const stageRef = useRef<HTMLDivElement>(null);
+  useWarmStills();
 
-  const tutorial = TUTORIALS.find((t) => t.id === params.get('v')) ?? TUTORIALS[0]
-  const wanted = params.get('view')
-  const view: View = wanted === 'desktop' || wanted === 'phone' ? wanted : phone ? 'phone' : 'desktop'
-  const results = useMemo(() => searchTutorials(query), [query])
-  const ready = Boolean(tutorial.stories)
-  const story = tutorial.stories?.[view]
+  const tutorial =
+    TUTORIALS.find((t) => t.id === params.get("v")) ?? TUTORIALS[0];
+  const wanted = params.get("view");
+  const view: View =
+    wanted === "desktop" || wanted === "phone"
+      ? wanted
+      : phone
+        ? "phone"
+        : "desktop";
+  const results = useMemo(() => searchTutorials(query), [query]);
+  const ready = Boolean(tutorial.stories);
+  const story = tutorial.stories?.[view];
 
   const update = useCallback(
     (next: { v?: string; view?: View }) => {
-      const merged = new URLSearchParams(params)
+      const merged = new URLSearchParams(params);
       if (next.v !== undefined) {
-        if (next.v === TUTORIALS[0].id) merged.delete('v')
-        else merged.set('v', next.v)
+        if (next.v === TUTORIALS[0].id) merged.delete("v");
+        else merged.set("v", next.v);
       }
-      if (next.view) merged.set('view', next.view)
-      setParams(merged, { replace: true, preventScrollReset: true })
+      if (next.view) merged.set("view", next.view);
+      setParams(merged, { replace: true, preventScrollReset: true });
     },
     [params, setParams],
-  )
+  );
 
+  // Theater mode hides the discount banner (CSS on body) to give the video more room.
   useEffect(() => {
-    const onChange = () => {
-      if (!document.fullscreenElement) setFull(false)
-    }
-    document.addEventListener('fullscreenchange', onChange)
-    return () => document.removeEventListener('fullscreenchange', onChange)
-  }, [])
+    document.body.classList.toggle("tv-theater", theater);
+    return () => document.body.classList.remove("tv-theater");
+  }, [theater]);
 
+  // "t" toggles theater mode, like YouTube.
   useEffect(() => {
-    if (!full) return
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setFull(false)
+      const target = event.target as HTMLElement | null
+      if (event.metaKey || event.ctrlKey || event.altKey || event.key.toLowerCase() !== 't') return
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return
+      setTheater((value) => !value)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [full])
+  }, [])
+
+  useEffect(() => {
+    const onChange = () => {
+      if (!document.fullscreenElement) setFull(false);
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!full) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFull(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [full]);
 
   const enterFull = useCallback(() => {
-    setRun((value) => value + 1)
-    setFull(true)
-    const el = stageRef.current
+    setRun((value) => value + 1);
+    setFull(true);
+    const el = stageRef.current;
     // iPhone Safari has no element full screen: the stage still fills the window.
-    if (el?.requestFullscreen) void el.requestFullscreen().catch(() => undefined)
-  }, [])
+    if (el?.requestFullscreen)
+      void el.requestFullscreen().catch(() => undefined);
+  }, []);
 
   const exitFull = useCallback(() => {
-    setFull(false)
-    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined)
-  }, [])
+    setFull(false);
+    if (document.fullscreenElement)
+      void document.exitFullscreen().catch(() => undefined);
+  }, []);
 
   return (
-    <div className={cx('sc-tv', theater && 'is-theater', `is-view-${view}`)}>
+    <div className={cx("sc-tv", theater && "is-theater", `is-view-${view}`)}>
       <div className="sc-tv-main">
         <div className="sc-tutorial-bar">
-          <div className="sc-tutorial-views" role="radiogroup" aria-label="Video size">
+          <div
+            className="sc-tutorial-views"
+            role="radiogroup"
+            aria-label="Video size"
+          >
             {VIEWS.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
                 role="radio"
                 aria-checked={view === id}
-                className={cx('sc-tutorial-view', view === id && 'is-on')}
+                className={cx("sc-tutorial-view", view === id && "is-on")}
                 onClick={() => update({ view: id })}
               >
                 <Icon size={16} aria-hidden />
@@ -156,32 +223,58 @@ export function TutorialsBrowser() {
             ))}
           </div>
           <div className="sc-tv-actions">
-            <button type="button" className="sc-tutorial-full sc-tv-theater" onClick={() => setTheater((value) => !value)} aria-pressed={theater}>
-              {theater ? <Columns size={16} aria-hidden /> : <Rectangle size={16} aria-hidden />}
-              {theater ? 'Default view' : 'Theater mode'}
+            <button
+              type="button"
+              className="sc-tutorial-full sc-tv-theater"
+              onClick={() => setTheater((value) => !value)}
+              aria-pressed={theater}
+            >
+              {theater ? (
+                <Columns size={16} aria-hidden />
+              ) : (
+                <Rectangle size={16} aria-hidden />
+              )}
+              {theater ? "Default view" : "Theater mode"}
             </button>
-          {ready ? (
-            <button type="button" className="sc-tutorial-full" onClick={enterFull}>
-              <ArrowsOut size={16} aria-hidden />
-              Full screen
-            </button>
-          ) : null}
+            {ready ? (
+              <button
+                type="button"
+                className="sc-tutorial-full"
+                onClick={enterFull}
+              >
+                <ArrowsOut size={16} aria-hidden />
+                Full screen
+              </button>
+            ) : null}
           </div>
         </div>
 
         {ready ? (
-          <div ref={stageRef} className={cx('sc-tutorial-stage', `is-${view}`, full && 'is-full')}>
+          <div
+            ref={stageRef}
+            className={cx("sc-tutorial-stage", `is-${view}`, full && "is-full")}
+          >
             {full ? (
-              <button type="button" className="sc-tutorial-close" onClick={exitFull} aria-label="Close full screen">
+              <button
+                type="button"
+                className="sc-tutorial-close"
+                onClick={exitFull}
+                aria-label="Close full screen"
+              >
                 <X size={18} aria-hidden />
               </button>
             ) : null}
             <div className="sc-tutorial-frame">
-              <TutorialPlayer key={`${tutorial.id}-${view}-${run}-${full ? 'full' : 'inline'}`} tutorial={tutorial} view={view} contain={full} />
+              <TutorialPlayer
+                key={`${tutorial.id}-${view}-${run}-${full ? "full" : "inline"}`}
+                tutorial={tutorial}
+                view={view}
+                contain={full}
+              />
             </div>
           </div>
         ) : (
-          <div className={cx('sc-tv-soon', view === 'phone' && 'is-phone')}>
+          <div className={cx("sc-tv-soon", view === "phone" && "is-phone")}>
             <Clock size={28} aria-hidden />
             <p>This tutorial is being recorded.</p>
           </div>
@@ -190,7 +283,9 @@ export function TutorialsBrowser() {
         <div className="sc-tv-info">
           <h2 className="sc-tv-title">{tutorial.title}</h2>
           <p className="sc-tv-meta">
-            {story ? `${seconds(story.duration)} · ${view === 'phone' ? 'Phone' : 'Desktop'} view` : 'Coming soon'}
+            {story
+              ? `${seconds(story.duration)} · ${view === "phone" ? "Phone" : "Desktop"} view`
+              : "Coming soon"}
           </p>
           <p className="sc-tv-summary">{tutorial.summary}</p>
           {tutorial.learn ? (
@@ -232,26 +327,38 @@ export function TutorialsBrowser() {
         </label>
         <ul className="sc-tv-items">
           {results.map((item, index) => {
-            const itemStory = item.stories?.[view]
-            const newGroup = !query && (index === 0 || results[index - 1].category !== item.category)
+            const itemStory = item.stories?.[view];
+            const newGroup =
+              !query &&
+              (index === 0 || results[index - 1].category !== item.category);
             return (
               <li key={item.id}>
-                {newGroup ? <p className="sc-tv-group">{item.category}</p> : null}
+                {newGroup ? (
+                  <p className="sc-tv-group">{item.category}</p>
+                ) : null}
                 <button
                   type="button"
-                  className={cx('sc-tv-item', item.id === tutorial.id && 'is-on', !item.stories && 'is-soon')}
+                  className={cx(
+                    "sc-tv-item",
+                    item.id === tutorial.id && "is-on",
+                    !item.stories && "is-soon",
+                  )}
                   onClick={() => update({ v: item.id })}
-                  aria-current={item.id === tutorial.id ? 'true' : undefined}
+                  aria-current={item.id === tutorial.id ? "true" : undefined}
                 >
                   <span className="sc-tv-item-title">{item.title}</span>
-                  <span className="sc-tv-item-meta">{itemStory ? seconds(itemStory.duration) : 'Coming soon'}</span>
+                  <span className="sc-tv-item-meta">
+                    {itemStory ? seconds(itemStory.duration) : "Coming soon"}
+                  </span>
                 </button>
               </li>
-            )
+            );
           })}
-          {results.length === 1 && query ? <li className="sc-tv-none">No other tutorials match “{query}”.</li> : null}
+          {results.length === 1 && query ? (
+            <li className="sc-tv-none">No other tutorials match “{query}”.</li>
+          ) : null}
         </ul>
       </aside>
     </div>
-  )
+  );
 }
