@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Globe } from '@phosphor-icons/react'
-import { AppPreviewSection } from './AppPreview/AppPreviewSection'
+import { HomeShowcase } from './Showcase/HomeShowcase'
 import { getSignupUrl } from '../lib/appUrl'
 import { PrimaryLink, SecondaryLink } from './site/Buttons'
 import { SplitTitle } from './site/SplitTitle'
@@ -172,7 +172,7 @@ export function Hero({
       {showcase ? (
         <div className="site-hero-stage is-overlap">
           <Stage className="site-stage-hero">
-            <AppPreviewSection embedded />
+            <HomeShowcase />
           </Stage>
         </div>
       ) : null}
