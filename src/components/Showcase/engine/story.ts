@@ -4,7 +4,8 @@
  * "now", so any moment can be shown exactly (?showcase-t=12.5 freezes it).
  */
 
-export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library'
+export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library' | 'saved' | 'profile'
+export type ProfileTab = 'account' | 'billing' | 'workspace' | 'affiliate' | 'stats'
 export type Mode = 'image' | 'video'
 
 /** A named element (data-sc="name") or a point in app coordinates. */
@@ -44,7 +45,7 @@ export type SceneState = {
   // Cockpit
   cockpitOpen: boolean
   sheet: Sheet
-  route: 'browse' | 'library' | null
+  route: 'browse' | 'library' | 'saved' | null
   templates: { image: number; video: number }
   added: { text: string; key: number } | null
   hover: string | null
@@ -59,6 +60,29 @@ export type SceneState = {
 
   // Ad overlays
   ad: AdCard
+
+  // Account pages (tutorials)
+  ptab: ProfileTab
+  /** Profile menu (desktop) or workspace menu (phone) is open. */
+  menu: boolean
+  modal: 'tokens' | 'workspace' | null
+  /** Affiliate: 0 empty form · 1–3 fields filled · 4 terms ticked · 5 sending · 6 received · 7 payouts · 8 dashboard. */
+  aff: number
+  /** Workspace: 0 Personal only · 1 Studio Team created and active. */
+  ws: number
+  /** Workspace page: 0 base · 1 invite link · 2 member joined · 3 token cap set. */
+  team: number
+  /** Add tokens: picked pack, and tokens added so far. */
+  pack: number
+  bonus: number
+  /** Library: selected collection, ads ticked, and new-collection stage (0 none · 1 dialog · 2 made · 3 moved). */
+  folder: number
+  picks: number
+  shelf: number
+  /** Saved templates: 0 as is · 1 new template saved. */
+  saved: number
+  /** Ad spot scene (the creative ad). */
+  spot: number
 }
 
 export const INITIAL: SceneState = {
@@ -93,6 +117,19 @@ export const INITIAL: SceneState = {
   },
   wiggle: null,
   ad: null,
+  ptab: 'account',
+  menu: false,
+  modal: null,
+  aff: 0,
+  ws: 0,
+  team: 0,
+  pack: 2,
+  bonus: 0,
+  folder: 0,
+  picks: 0,
+  shelf: 0,
+  saved: 0,
+  spot: 0,
 }
 
 export type Patch = Partial<SceneState> | ((state: SceneState) => Partial<SceneState>)

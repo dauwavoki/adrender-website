@@ -23,7 +23,7 @@ export const VIDEO_PRICE = 168
 
 /** Token balance as the story spends it. */
 export function balanceFor(state: SceneState) {
-  let balance = ACCOUNT.tokens
+  let balance = ACCOUNT.tokens + state.bonus
   if (state.lib.video.rendering > 0 || state.lib.video.ready > 0) balance -= VIDEO_PRICE
   if (state.lib.image.rendering > 0 || state.lib.image.ready > 0) balance -= 4
   return balance

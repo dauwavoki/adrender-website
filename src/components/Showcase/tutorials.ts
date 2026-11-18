@@ -1,4 +1,6 @@
 import type { Story } from './engine/story'
+import { AFFILIATES_CAPTIONS, AFFILIATES_DESKTOP, AFFILIATES_PHONE, LIBRARY_CAPTIONS, LIBRARY_DESKTOP, LIBRARY_PHONE, WORKSPACES_CAPTIONS, WORKSPACES_DESKTOP, WORKSPACES_PHONE } from './stories/account'
+import { SPOT_CAPTIONS, SPOT_TALL, SPOT_WIDE } from './stories/spot'
 import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
 
 /**
@@ -16,6 +18,10 @@ export type Tutorial = {
   stories?: { desktop: Story; phone: Story }
   /** Ad-style video: hook, big captions and end card over the app. */
   ad?: boolean
+  /** Creative ad drawn from scratch (SpotScene), not the app. */
+  spot?: boolean
+  /** Step captions shown over the video. */
+  captions?: readonly string[]
   learn?: string[]
   steps?: string[]
 }
@@ -49,6 +55,17 @@ export const TUTORIALS: Tutorial[] = [
     tags: ['ad', 'promo', 'social', 'tiktok', 'instagram'],
     stories: { desktop: AD_WIDE, phone: AD_TALL },
     ad: true,
+  },
+  {
+    id: 'spot-one-second',
+    category: 'Getting started',
+    title: 'Ad: you get one second',
+    summary: 'A 29-second creative ad about why winning ads matter and how AdRender remixes them into your brand. Captions on, ready for music.',
+    tags: ['ad', 'promo', 'creative', 'social', 'tiktok', 'instagram', 'youtube'],
+    stories: { desktop: SPOT_WIDE, phone: SPOT_TALL },
+    spot: true,
+    ad: true,
+    captions: SPOT_CAPTIONS,
   },
   {
     id: "must-do-setup",
@@ -131,8 +148,10 @@ export const TUTORIALS: Tutorial[] = [
     id: "library",
     category: "Templates and creating ads",
     title: "My Ads Library and folders",
-    summary: "Find, group, download and reuse every ad you made.",
-    tags: ["library", "folders", "download"],
+    summary: "Group your ads into collections, save an ad as a template, and use saved templates and past ads in the cockpit.",
+    tags: ["library", "folders", "collections", "saved templates", "download"],
+    stories: { desktop: LIBRARY_DESKTOP, phone: LIBRARY_PHONE },
+    captions: LIBRARY_CAPTIONS,
   },
   {
     id: "skills",
@@ -152,15 +171,19 @@ export const TUTORIALS: Tutorial[] = [
     id: "workspaces-tokens-teams",
     category: "Account",
     title: "Workspaces, tokens and Teams",
-    summary: "How workspaces, tokens and Teams work.",
-    tags: ["workspaces", "tokens", "teams"],
+    summary: "Create a workspace, top up tokens, invite your team and set a token cap.",
+    tags: ["workspaces", "tokens", "teams", "invite", "top up"],
+    stories: { desktop: WORKSPACES_DESKTOP, phone: WORKSPACES_PHONE },
+    captions: WORKSPACES_CAPTIONS,
   },
   {
     id: "affiliates",
     category: "Make money with AdRender",
     title: "Affiliates: make money with AdRender",
-    summary: "Get approved and earn commission as an affiliate.",
+    summary: "Apply to the affiliate program, connect payouts, then share your code and track what you earn.",
     tags: ["affiliate", "commission", "earn", "money"],
+    stories: { desktop: AFFILIATES_DESKTOP, phone: AFFILIATES_PHONE },
+    captions: AFFILIATES_CAPTIONS,
   },
   {
     id: "start-an-agency",

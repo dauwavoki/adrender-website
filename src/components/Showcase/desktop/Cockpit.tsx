@@ -417,8 +417,8 @@ export function Cockpit({ state }: { state: SceneState }) {
                     <Megaphone size={16} aria-hidden />
                     <span className="cockpit-tab-text">Brands &amp; Campaigns</span>
                   </StripTab>
-                  <StripTab side="right">
-                    <BookmarkSimple size={16} aria-hidden />
+                  <StripTab side="right" selected={state.route === 'saved'} sc="sc-flap-saved">
+                    <BookmarkSimple size={16} weight={state.route === 'saved' ? 'fill' : 'regular'} aria-hidden />
                     <span className="cockpit-tab-text">Saved Templates</span>
                   </StripTab>
                   <LibraryFlap lib={state.lib[mode]} selected={state.route === 'library'} />
@@ -585,7 +585,7 @@ export function Cockpit({ state }: { state: SceneState }) {
       {state.cockpitOpen ? (
         <div className="cockpit-mini sc-mini">
           <div className="sc-mini-top">
-            <span className="sc-mini-tokens tabular-nums">
+            <span className="sc-mini-tokens tabular-nums" data-sc="sc-mini-tokens">
               <Coins size={16} aria-hidden />
               {balance}
             </span>
@@ -597,7 +597,7 @@ export function Cockpit({ state }: { state: SceneState }) {
             <span className="cockpit-orb" data-sc="sc-home-orb">
               <HomeGlyph selected={state.screen === 'home'} />
             </span>
-            <span className="cockpit-orb">
+            <span className="cockpit-orb" data-sc="sc-profile-orb">
               <span className="cockpit-avatar-fallback">{ACCOUNT.initial}</span>
             </span>
             <span className="cockpit-orb">

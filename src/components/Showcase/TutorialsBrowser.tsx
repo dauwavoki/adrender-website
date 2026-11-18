@@ -16,6 +16,7 @@ import { DesktopApp } from "./desktop/DesktopApp";
 import { PhoneApp } from "./phone/PhoneApp";
 import type { SceneState } from "./engine/story";
 import { CAPTIONS } from "./showcaseData";
+import { SpotScene } from "./SpotScene";
 import { AdOverlay } from "./AdOverlay";
 import { AD_TALL_VIEW, AD_WIDE_VIEW } from "./stories/intro";
 import {
@@ -37,6 +38,12 @@ const VIEWS: { id: View; label: string; icon: typeof Desktop }[] = [
 
 const desktopApp = (state: SceneState) => <DesktopApp state={state} />;
 const phoneApp = (state: SceneState) => <PhoneApp state={state} />;
+const spotOverlay = () => (
+  <div className="sc-ad-brandbar">
+    <img src="/brand/icons/icon-color.svg" alt="" />
+    <span>AdRender</span>
+  </div>
+);
 const adOverlay = (state: SceneState) => <AdOverlay state={state} />;
 
 const AD_CAPTIONS = [
@@ -62,6 +69,24 @@ function TutorialPlayer({
   const label = `${tutorial.title}. ${tutorial.summary}`;
   const stories = tutorial.stories;
   if (!stories) return null;
+  if (tutorial.spot) {
+    const tall = view === "phone";
+    const size = tall ? AD_TALL_VIEW : AD_WIDE_VIEW;
+    return (
+      <Player
+        story={tall ? stories.phone : stories.desktop}
+        app={size}
+        renderApp={(state) => <SpotScene state={state} tall={tall} />}
+        overlay={spotOverlay}
+        captions={tutorial.captions ?? AD_CAPTIONS}
+        captionVariant="ad"
+        contain={contain}
+        upscale
+        ariaLabel={label}
+        className={tall ? "is-tiktok" : "is-ad-wide"}
+      />
+    );
+  }
   if (tutorial.ad) {
     const tall = view === "phone";
     return (
@@ -87,7 +112,7 @@ function TutorialPlayer({
         story={stories.phone}
         app={PHONE_APP}
         renderApp={phoneApp}
-        captions={CAPTIONS}
+        captions={tutorial.captions ?? CAPTIONS}
         touch
         contain={contain}
         upscale
@@ -101,7 +126,7 @@ function TutorialPlayer({
       story={stories.desktop}
       app={DESKTOP_APP}
       renderApp={desktopApp}
-      captions={CAPTIONS}
+      captions={tutorial.captions ?? CAPTIONS}
       contain={contain}
       upscale
       ariaLabel={label}

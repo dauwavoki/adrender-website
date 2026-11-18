@@ -26,15 +26,18 @@ import {
   TextT,
   UserCircle,
   UserCircleCheck,
+  UsersFour,
+  FolderSimple,
   VideoCamera,
   X,
   Check,
   Star,
-  Trash,
 } from '@phosphor-icons/react'
 import type { LibState, SceneState } from '../engine/story'
 import { PlayingCtx, VIDEO_PRICE, balanceFor } from '../engine/layout'
 import { BrandScreen, BrandsScreen } from '../desktop/screens'
+import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toast } from '../desktop/pages'
+import { COLLECTIONS, SAVED_NEW, collectionCount } from '../desktop/pagesData'
 import {
   ACCOUNT,
   BRAND,
@@ -128,9 +131,9 @@ function Header({ state }: { state: SceneState }) {
   const showMode = state.screen === 'browse' || state.screen === 'library'
   return (
     <header className="sc-ph-header">
-      <span className="sc-ph-workspace">
-        <UserCircleCheck size={16} />
-        <span>{ACCOUNT.workspace}</span>
+      <span className="sc-ph-workspace" data-sc="sc-ph-workspace">
+        {state.ws >= 1 ? <UsersFour size={16} /> : <UserCircleCheck size={16} />}
+        <span>{state.ws >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
         <CaretDown size={14} />
       </span>
       {showMode ? <ModeToggle state={state} /> : null}
@@ -139,7 +142,7 @@ function Header({ state }: { state: SceneState }) {
           <Plus size={16} />+ Add
         </span>
       ) : (
-        <span className="sc-ph-tokens">
+        <span className="sc-ph-tokens" data-sc="sc-ph-tokens">
           <Coins size={16} />
           <span className="tabular-nums">{balanceFor(state)}</span>
         </span>
@@ -156,7 +159,7 @@ function libraryDot(lib: LibState) {
 
 function TabBar({ state }: { state: SceneState }) {
   const tab =
-    state.screen === 'library' ? 'library' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' ? 'brands' : null
+    state.screen === 'library' ? 'library' : state.screen === 'saved' ? 'saved' : state.screen === 'profile' ? 'profile' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' ? 'brands' : null
   const dot = libraryDot(state.lib.image) ?? libraryDot(state.lib.video)
   const item = (id: string, label: string, icon: ReactNode, extra?: ReactNode) => (
     <span className={cx('sc-ph-tab', tab === id && 'is-on')} data-sc={`sc-tab-${id}`}>
@@ -621,34 +624,99 @@ function PhoneBrowse({ state }: { state: SceneState }) {
 
 function PhoneLibrary({ state }: { state: SceneState }) {
   const video = state.mode === 'video'
-  const results = video ? VIDEO_RESULTS : IMAGE_RESULTS
+  const all = video ? VIDEO_RESULTS : IMAGE_RESULTS
+  const results = state.folder === 2 ? all.slice(0, 2) : state.folder === 1 && state.shelf >= 3 ? all.slice(2) : all
+  const names = COLLECTIONS.slice(0, state.shelf >= 2 ? 3 : 2)
   return (
     <div className="sc-ph-library">
       <div className="sc-ph-quick">
         <span className="sc-chip">Library</span>
         <span className="sc-chip is-on">
-          Ready <b className="sc-count is-ready">{results.length}</b>
+          Ready <b className="sc-count is-ready">{all.length}</b>
         </span>
         <span className="sc-chip">Rendering</span>
         <span className="sc-chip">Failed</span>
       </div>
-      <div className="sc-ph-grid" key={state.mode}>
+      <div className="sc-ph-quick sc-ph-colls" data-sc="sc-collections">
+        {names.map((name, index) => (
+          <span key={name} className={cx('sc-chip', state.folder === index && 'is-on', index === 2 && 'sc-rise-in')} data-sc={`sc-coll-${index}`}>
+            {index > 0 ? <FolderSimple size={14} /> : null}
+            {name} <b className="sc-count">{collectionCount(state, index, all.length)}</b>
+          </span>
+        ))}
+        <span className="sc-chip is-new" data-sc="sc-new-collection">
+          <Plus size={14} />
+          New
+        </span>
+      </div>
+      {state.picks > 0 && state.shelf < 3 ? (
+        <div className="sc-ph-selbar sc-rise-in" data-sc="sc-selbar">
+          <b>{state.picks} selected</b>
+          <span className="sc-btn is-secondary is-sm" data-sc="sc-save-to">
+            <FolderSimple size={14} />
+            Save to collection
+          </span>
+        </div>
+      ) : null}
+      <div className="sc-ph-grid" key={`${state.mode}-${state.folder}`}>
         {results.map((item, index) => (
-          <div key={item.id} className="sc-ready-card sc-rise-in" style={{ animationDelay: `${index * 90}ms` }}>
+          <div key={item.id} className={cx('sc-ready-card sc-rise-in', state.picks > index && state.shelf < 3 && 'is-picked')} style={{ animationDelay: `${index * 90}ms` }} data-sc={`sc-ad-${index}`}>
             <div className={cx('sc-ready-media', video && 'is-tall', !video && 'ratio' in item && item.ratio === '1:1' && 'is-square')}>
               {'video' in item ? <Clip src={item.src} video={item.video} play /> : <img src={item.src} alt="" className="sc-cover" />}
-              <span className="sc-ready-star">
-                <Star size={14} />
-              </span>
+              {state.picks > index && state.shelf < 3 ? (
+                <span className="sc-ready-pick">
+                  <Check size={12} weight="bold" />
+                </span>
+              ) : (
+                <span className="sc-ready-star">
+                  <Star size={14} />
+                </span>
+              )}
             </div>
             <div className="sc-ph-ready-foot">
-              <span className="sc-btn is-secondary is-xs">
-                <Check size={14} className="sc-text-success" />
-                Approve
+              <span className="sc-btn is-secondary is-xs" data-sc={`sc-use-ad-${index}`}>
+                <Lightning size={14} className="sc-text-accent" />
+                Use
               </span>
-              <span className="sc-btn is-ghost is-icon">
-                <Trash size={16} />
+              <span className="sc-btn is-ghost is-icon" data-sc={`sc-save-tpl-${index}`}>
+                <BookmarkSimple size={16} />
               </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PhoneSaved({ state }: { state: SceneState }) {
+  const items = [...(state.saved >= 1 ? [SAVED_NEW] : []), IMAGE_TEMPLATES[0], IMAGE_TEMPLATES[2], IMAGE_TEMPLATES[1], IMAGE_TEMPLATES[3]]
+  return (
+    <div className="sc-ph-browse">
+      <div className="sc-ph-quick">
+        <span className="sc-chip is-on">All templates</span>
+        <span className="sc-chip">Winning hooks</span>
+      </div>
+      <div className="sc-ph-grid">
+        {items.map((item) => (
+          <div key={item.id} className={cx('sc-tpl sc-ph-tpl', item.id === 'saved-new' && 'sc-rise-in')} data-sc={`sc-card-${item.id}`}>
+            <div className="sc-tpl-media">
+              <Clip src={item.src} play={false} />
+              <div className="sc-ph-tpl-actions">
+                <span className="sc-btn is-ghost is-icon">
+                  <BookmarkSimple size={16} weight="fill" />
+                </span>
+                <span className="sc-btn is-secondary is-sm" data-sc={`sc-use-${item.id}`}>
+                  <Lightning size={16} className="sc-text-accent" />
+                  {state.templates[state.mode] > 0 ? '+ Use' : 'Use'}
+                </span>
+              </div>
+            </div>
+            <div className="sc-ph-tpl-foot">
+              <span className="sc-letter" style={{ background: item.tint }}>
+                {item.niche.charAt(0)}
+              </span>
+              <span className="sc-truncate">{item.niche}</span>
             </div>
           </div>
         ))}
@@ -659,7 +727,7 @@ function PhoneLibrary({ state }: { state: SceneState }) {
 
 /** The phone web app: header, one page, folded cockpit bar, tab bar and sheets. */
 export function PhoneApp({ state }: { state: SceneState }) {
-  const cockpit = state.screen !== 'brands' && state.screen !== 'brand'
+  const cockpit = state.screen !== 'brands' && state.screen !== 'brand' && state.screen !== 'profile'
   return (
     <div className={cx('sc-ph', cockpit && 'has-cockpit')}>
       <div className="sc-ph-viewport">
@@ -669,15 +737,21 @@ export function PhoneApp({ state }: { state: SceneState }) {
           {state.screen === 'brand' ? <BrandScreen state={state} phone /> : null}
           {state.screen === 'browse' ? <PhoneBrowse state={state} /> : null}
           {state.screen === 'library' ? <PhoneLibrary state={state} /> : null}
+          {state.screen === 'saved' ? <PhoneSaved state={state} /> : null}
+          {state.screen === 'profile' ? <ProfileScreen state={state} phone /> : null}
         </div>
       </div>
       <Header state={state} />
+      {state.menu ? <PhoneWorkspaceMenu state={state} /> : null}
       {cockpit ? <CockpitBar state={state} /> : null}
       <TabBar state={state} />
       <div className={cx('sc-ph-scrim', state.sheet && 'is-on')} />
       {state.sheet === 'cockpit' || state.sheet === 'brand' || state.sheet === 'settings' ? <CockpitSheet state={state} /> : null}
       {state.sheet === 'brand' ? <BrandSheet /> : null}
       {state.sheet === 'settings' ? <SettingsSheet state={state} /> : null}
+      <NewCollectionDialog state={state} />
+      <Toast state={state} />
+      <ModalLayer state={state} />
     </div>
   )
 }

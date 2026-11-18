@@ -53,6 +53,7 @@ import {
 import type { SceneState } from '../engine/story'
 import { balanceFor, PlayingCtx } from '../engine/layout'
 import { cx } from '../../site/cx'
+import { CollectionNav, NewCollectionDialog, SelectionBar, Toast } from './pages'
 
 
 type Tone = 'blue' | 'violet' | 'orange' | 'green' | 'amber'
@@ -65,7 +66,7 @@ function IconTile({ tone, children }: { tone: Tone; children: ReactNode }) {
   )
 }
 
-function Clip({ src, video, play }: { src: string; video?: string; play: boolean }) {
+export function Clip({ src, video, play }: { src: string; video?: string; play: boolean }) {
   const playing = useContext(PlayingCtx)
   const ref = useRef<HTMLVideoElement>(null)
   const loaded = useRef(false)
@@ -89,7 +90,7 @@ function Clip({ src, video, play }: { src: string; video?: string; play: boolean
   return <video ref={ref} poster={src} muted loop playsInline preload="none" className="sc-cover" />
 }
 
-function Button({
+export function Button({
   variant = 'secondary',
   icon,
   children,
@@ -110,7 +111,7 @@ function Button({
   )
 }
 
-function Badge({ children, tone }: { children: ReactNode; tone?: 'success' }) {
+export function Badge({ children, tone }: { children: ReactNode; tone?: 'success' }) {
   return <span className={cx('sc-badge', tone === 'success' && 'is-success')}>{children}</span>
 }
 
@@ -563,7 +564,7 @@ export function BrandsScreen({ phone = false }: { state: SceneState; phone?: boo
 
 /* ── Browse ─────────────────────────────────────────────────── */
 
-function TemplateCard({ item, kind, hover }: { item: Media; kind: 'image' | 'video'; hover: boolean }) {
+export function TemplateCard({ item, kind, hover }: { item: Media; kind: 'image' | 'video'; hover: boolean }) {
   return (
     <div className={cx('sc-tpl', hover && 'is-hover')} data-sc={`sc-card-${item.id}`}>
       <div className="sc-tpl-media">
@@ -599,7 +600,7 @@ function TemplateCard({ item, kind, hover }: { item: Media; kind: 'image' | 'vid
   )
 }
 
-function Segmented({ options, value }: { options: ReactNode[]; value: number }) {
+export function Segmented({ options, value }: { options: ReactNode[]; value: number }) {
   return (
     <span className="sc-segmented">
       {options.map((option, index) => (
@@ -664,7 +665,8 @@ function StatusTabs({ ready }: { ready: number }) {
 
 export function LibraryScreen({ state }: { state: SceneState }) {
   const video = state.mode === 'video'
-  const results = video ? VIDEO_RESULTS : IMAGE_RESULTS
+  const all = video ? VIDEO_RESULTS : IMAGE_RESULTS
+  const results = state.folder === 2 ? all.slice(0, 2) : state.folder === 1 && state.shelf >= 3 ? all.slice(2) : all
   return (
     <div className="sc-library">
       <header className="sc-page-header">
@@ -675,55 +677,69 @@ export function LibraryScreen({ state }: { state: SceneState }) {
           <Button icon={<Check size={16} />}>Approve all</Button>
         </div>
         <div className="sc-page-tools">
-          <StatusTabs ready={results.length} />
+          <StatusTabs ready={all.length} />
           <span className="sc-grow" />
+          <SelectionBar state={state} />
           <Button icon={<Download size={16} />}>Download</Button>
         </div>
       </header>
-      <div className={cx('sc-ready-grid', video && 'is-video')} key={state.mode}>
-        {results.map((item, index) => (
-          <div key={item.id} className="sc-ready-card sc-rise-in" style={{ animationDelay: `${index * 90}ms` }}>
-            <div className={cx('sc-ready-media', !video && 'ratio' in item && item.ratio === '1:1' && 'is-square')}>
-              {'video' in item ? <Clip src={item.src} video={item.video} play /> : <img src={item.src} alt="" className="sc-cover" />}
-              <span className="sc-ready-star">
-                <Star size={16} />
-              </span>
-            </div>
-            <div className="sc-ready-body">
-              <p className="sc-strong sc-truncate">
-                {BRAND.name} · {video ? 'Video ad' : 'Image ad'}
-              </p>
-              <span className="sc-tpl-badges">
-                {video ? (
-                  <>
-                    <Badge>720p</Badge>
-                    <Badge>Clone</Badge>
-                  </>
+      <div className="sc-lib-body">
+        <CollectionNav state={state} total={all.length} />
+        <div className={cx('sc-ready-grid', video && 'is-video')} key={`${state.mode}-${state.folder}`}>
+          {results.map((item, index) => (
+            <div key={item.id} className={cx('sc-ready-card sc-rise-in', state.picks > index && state.shelf < 3 && 'is-picked')} style={{ animationDelay: `${index * 90}ms` }} data-sc={`sc-ad-${index}`}>
+              <div className={cx('sc-ready-media', !video && 'ratio' in item && item.ratio === '1:1' && 'is-square')}>
+                {'video' in item ? <Clip src={item.src} video={item.video} play /> : <img src={item.src} alt="" className="sc-cover" />}
+                {state.picks > index && state.shelf < 3 ? (
+                  <span className="sc-ready-pick">
+                    <Check size={12} weight="bold" />
+                  </span>
                 ) : (
-                  <>
-                    <Badge>{'ratio' in item ? item.ratio : '4:5'}</Badge>
-                    <Badge>1K</Badge>
-                    <Badge>Clone</Badge>
-                  </>
+                  <span className="sc-ready-star">
+                    <Star size={16} />
+                  </span>
                 )}
-              </span>
-              <div className="sc-ready-foot">
-                <span className="sc-muted-xs">Just now</span>
-                <span className="sc-ready-actions">
-                  <span className="sc-btn is-secondary is-xs">
-                    <Check size={14} className="sc-text-success" />
-                    Approve
-                  </span>
-                  <span className="sc-btn is-ghost is-icon">
-                    <Trash size={16} />
-                  </span>
+              </div>
+              <div className="sc-ready-body">
+                <p className="sc-strong sc-truncate">
+                  {BRAND.name} · {video ? 'Video ad' : 'Image ad'}
+                </p>
+                <span className="sc-tpl-badges">
+                  {video ? (
+                    <>
+                      <Badge>720p</Badge>
+                      <Badge>Clone</Badge>
+                    </>
+                  ) : (
+                    <>
+                      <Badge>{'ratio' in item ? item.ratio : '4:5'}</Badge>
+                      <Badge>1K</Badge>
+                      <Badge>Clone</Badge>
+                    </>
+                  )}
                 </span>
+                <div className="sc-ready-foot">
+                  <span className="sc-muted-xs">Just now</span>
+                  <span className="sc-ready-actions">
+                    <span className="sc-btn is-secondary is-xs" data-sc={`sc-use-ad-${index}`}>
+                      <Lightning size={14} className="sc-text-accent" />
+                      Use
+                    </span>
+                    <span className="sc-btn is-ghost is-icon" data-sc={`sc-save-tpl-${index}`}>
+                      <BookmarkSimple size={16} />
+                    </span>
+                    <span className="sc-btn is-ghost is-icon">
+                      <Trash size={16} />
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+      <NewCollectionDialog state={state} />
+      <Toast state={state} />
     </div>
   )
 }
-
