@@ -514,6 +514,7 @@ html.light .sc {
   display: flex;
   height: 36px;
   min-width: 0;
+  overflow: hidden;
   align-items: center;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -529,6 +530,14 @@ html.light .sc {
 
 .sc-input.is-wide {
   flex: 1 1 auto;
+}
+
+.sc-input-ph,
+.sc-input-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sc-input-ph {
