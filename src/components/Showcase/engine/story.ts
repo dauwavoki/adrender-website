@@ -88,6 +88,85 @@ export type SceneState = {
   /** Workspace: which one is active (0 Personal · 1 Studio Team), and which picker dropdown is open. */
   wsCur: number
   wsPick: 'home' | 'cockpit' | null
+  /** Saved Templates tutorial: page state and the label tag. */
+  sv: SavedState
+  tag: Tag | null
+}
+
+/** Saved Templates page (tutorial). */
+export type SavedState = {
+  /** 0 All templates · 1 Winning hooks · 2 Summer promos */
+  coll: number
+  menu: boolean
+  q: string
+  /** 0 All sizes · 1 Portrait 4:5 */
+  size: number
+  sizeOpen: boolean
+  /** Grid columns on desktop. */
+  cols: number
+  /** Label on each saved template (id -> text). */
+  labels: Record<string, string>
+  /** Which template's label is being edited, where, and the text typed so far. */
+  editId: string | null
+  editIn: 'card' | 'detail' | null
+  draft: string
+  starred: boolean
+  /** Template whose detail panel is open. */
+  detail: string | null
+  sel: string[]
+  move: boolean
+  /** Cockpit thumbnails: spread side by side, and the one opened large. */
+  stack: boolean
+  preview: string | null
+  /** Template ids sent to the cockpit with Use, in order. */
+  used: string[]
+}
+
+/** A label tag pinned next to something on screen. */
+export type Tag = { anchor: string; side: 'left' | 'right' | 'top' | 'bottom'; text: string; key: number }
+
+export const INITIAL_SAVED: SavedState = {
+  coll: 0,
+  menu: false,
+  q: '',
+  size: 0,
+  sizeOpen: false,
+  cols: 4,
+  labels: { i1: 'Hook test', i2: 'Best performer' },
+  editId: null,
+  editIn: null,
+  draft: '',
+  starred: false,
+  detail: null,
+  sel: [],
+  move: false,
+  stack: false,
+  preview: null,
+  used: [],
+}
+
+export function sv(patch: Partial<SavedState> | ((saved: SavedState) => Partial<SavedState>)) {
+  return (s: SceneState): Partial<SceneState> => ({
+    sv: { ...s.sv, ...(typeof patch === 'function' ? patch(s.sv) : patch) },
+  })
+}
+
+export function tag(anchor: string, side: Tag['side'], text: string) {
+  return (s: SceneState): Partial<SceneState> => ({ tag: { anchor, side, text, key: (s.tag?.key ?? 0) + 1 } })
+}
+
+export const noTag: Partial<SceneState> = { tag: null }
+
+/** Send a saved template to the cockpit (Use). */
+export function addSaved(id: string) {
+  return (s: SceneState): Partial<SceneState> => {
+    const used = s.sv.used.includes(id) ? s.sv.used : [...s.sv.used, id]
+    return {
+      sv: { ...s.sv, used },
+      templates: { ...s.templates, image: used.length },
+      added: { text: `Added · ${used.length} ${used.length === 1 ? 'template' : 'templates'}`, key: s.click },
+    }
+  }
 }
 
 export const INITIAL: SceneState = {
@@ -138,6 +217,8 @@ export const INITIAL: SceneState = {
   focus: null,
   wsCur: 0,
   wsPick: null,
+  sv: INITIAL_SAVED,
+  tag: null,
 }
 
 export type Patch = Partial<SceneState> | ((state: SceneState) => Partial<SceneState>)

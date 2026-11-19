@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import {
-  BookmarkSimple,
   ChartBar,
   Check,
   CheckCircle,
@@ -22,14 +21,13 @@ import {
   UsersFour,
   Users,
   X,
-  Stack,
 } from '@phosphor-icons/react'
-import { ACCOUNT, IMAGE_TEMPLATES } from '../showcaseData'
+import { ACCOUNT } from '../showcaseData'
 import type { ProfileTab, SceneState } from '../engine/story'
 import { balanceFor } from '../engine/layout'
 import { cx } from '../../site/cx'
-import { Badge, Segmented, TemplateCard } from './screens'
-import { COLLECTIONS, PACKS, SAVED_NEW, collectionCount } from './pagesData'
+import { Badge, Segmented } from './screens'
+import { COLLECTIONS, PACKS, collectionCount } from './pagesData'
 
 
 const ME = { name: 'Jordan Lee', email: 'jordan@yourbrand.com' }
@@ -523,43 +521,6 @@ export function ProfileScreen({ state, phone = false }: { state: SceneState; pho
 
 /* ── Saved Templates ────────────────────────────────────────────────── */
 
-
-export function SavedScreen({ state }: { state: SceneState }) {
-  const items = [...(state.saved >= 1 ? [SAVED_NEW] : []), IMAGE_TEMPLATES[0], IMAGE_TEMPLATES[2], IMAGE_TEMPLATES[1], IMAGE_TEMPLATES[3]]
-  return (
-    <div className="sc-browse">
-      <header className="sc-page-header">
-        <div className="sc-page-row">
-          <p className="cockpit-page-title">
-            <BookmarkSimple size={16} />
-            <span className="cockpit-page-title-name">Saved Templates</span>
-          </p>
-        </div>
-      </header>
-      <div className="sc-lib-body">
-        <nav className="sc-collections" aria-label="Collections">
-          <span className="sc-coll is-on">
-            <SquaresFour size={16} />
-            All templates
-            <b>{items.length}</b>
-          </span>
-          <span className="sc-coll">
-            <Stack size={16} />
-            Winning hooks
-            <b>3</b>
-          </span>
-        </nav>
-        <div className="sc-tpl-grid is-three">
-          {items.map((item) => (
-            <div key={item.id} className={cx(item.id === 'saved-new' && state.saved === 1 && 'sc-rise-in')}>
-              <TemplateCard item={item} kind="image" hover={state.hover === item.id} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ── Library collections ────────────────────────────────────────────── */
 

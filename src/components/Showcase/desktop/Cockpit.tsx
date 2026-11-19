@@ -28,6 +28,7 @@ import { ACCOUNT, BRAND, PICKED_IMAGE, PICKED_VIDEO } from '../showcaseData'
 import type { LibState, Mode, SceneState } from '../engine/story'
 import { balanceFor, offsetWithin, VIDEO_PRICE } from '../engine/layout'
 import { WsDropdown } from './pages'
+import { SAVED_ITEMS, ThumbStrip } from './saved'
 import { cx } from '../../site/cx'
 
 const EMPTY: FramePaths = { leftFill: '', rightFill: '', selected: [], outline: '', silhouette: '', details: [] }
@@ -375,7 +376,8 @@ export function Cockpit({ state }: { state: SceneState }) {
   const { mode } = state
   const other: Mode = mode === 'image' ? 'video' : 'image'
   const count = state.templates[mode]
-  const picked = (mode === 'video' ? PICKED_VIDEO : PICKED_IMAGE).slice(0, count)
+  const usedItems = state.sv.used.map((id) => SAVED_ITEMS.find((entry) => entry.id === id)).filter((entry): entry is NonNullable<typeof entry> => Boolean(entry)).map((entry) => ({ id: entry.id, src: entry.media.src }))
+  const picked = mode === 'image' && usedItems.length > 0 ? usedItems : (mode === 'video' ? PICKED_VIDEO : PICKED_IMAGE).slice(0, count)
   const ads = mode === 'video' ? count : count * state.sizes
   const sizeLabel = state.sizes === 0 ? 'Size' : state.sizes === 1 ? '4:5' : '2 sizes'
   const summary =
@@ -505,7 +507,10 @@ export function Cockpit({ state }: { state: SceneState }) {
                       <Plus size={22} aria-hidden />
                     </span>
                     <div className="cockpit-bundles">
-                      <Stack items={picked} />
+                      <span className="sc-rel" data-sc="sc-stack">
+                        <Stack items={picked} />
+                        <ThumbStrip state={state} />
+                      </span>
                       {state.added && state.added.text.length > 0 && count > 0 ? (
                         <span key={state.added.key} className="cockpit-added sc-added">
                           {state.added.text}

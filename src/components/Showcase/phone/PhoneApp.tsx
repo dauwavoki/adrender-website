@@ -37,7 +37,8 @@ import type { LibState, SceneState } from '../engine/story'
 import { PlayingCtx, VIDEO_PRICE, balanceFor } from '../engine/layout'
 import { BrandScreen, BrandsScreen } from '../desktop/screens'
 import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toast, WsDropdown } from '../desktop/pages'
-import { COLLECTIONS, SAVED_NEW, collectionCount } from '../desktop/pagesData'
+import { COLLECTIONS, collectionCount } from '../desktop/pagesData'
+import { SAVED_ITEMS, SavedScreen, ThumbPreview, ThumbStrip } from '../desktop/saved'
 import {
   ACCOUNT,
   BRAND,
@@ -205,6 +206,12 @@ function lit(state: SceneState) {
 }
 
 function picked(state: SceneState) {
+  if (state.mode === 'image' && state.sv.used.length > 0) {
+    return state.sv.used.flatMap((id) => {
+      const entry = SAVED_ITEMS.find((item) => item.id === id)
+      return entry ? [{ id: entry.id, src: entry.media.src }] : []
+    })
+  }
   return (state.mode === 'video' ? PICKED_VIDEO : PICKED_IMAGE).slice(0, state.templates[state.mode])
 }
 
@@ -217,12 +224,13 @@ function CockpitBar({ state }: { state: SceneState }) {
   const sub = empty ? 'Add a template to start' : !lit(state) ? 'Pick a size in Settings' : summary(state)
   return (
     <div className="cockpit sc-ph-bar" data-sc="sc-pbar">
+      <ThumbStrip state={state} />
       {empty ? (
         <span className="sc-ph-plus cockpit-need-ring">
           <Plus size={18} />
         </span>
       ) : (
-        <span className="sc-ph-thumbs">
+        <span className="sc-ph-thumbs" data-sc="sc-stack">
           {items.map((item, index) => (
             <span key={item.id} className="sc-ph-thumb sc-drop-in" style={{ marginLeft: index === 0 ? 0 : -12, zIndex: 3 - index }}>
               <img src={item.src} alt="" className="sc-cover" />
@@ -692,42 +700,6 @@ function PhoneLibrary({ state }: { state: SceneState }) {
   )
 }
 
-function PhoneSaved({ state }: { state: SceneState }) {
-  const items = [...(state.saved >= 1 ? [SAVED_NEW] : []), IMAGE_TEMPLATES[0], IMAGE_TEMPLATES[2], IMAGE_TEMPLATES[1], IMAGE_TEMPLATES[3]]
-  return (
-    <div className="sc-ph-browse">
-      <div className="sc-ph-quick">
-        <span className="sc-chip is-on">All templates</span>
-        <span className="sc-chip">Winning hooks</span>
-      </div>
-      <div className="sc-ph-grid">
-        {items.map((item) => (
-          <div key={item.id} className={cx('sc-tpl sc-ph-tpl', item.id === 'saved-new' && 'sc-rise-in')} data-sc={`sc-card-${item.id}`}>
-            <div className="sc-tpl-media">
-              <Clip src={item.src} play={false} />
-              <div className="sc-ph-tpl-actions">
-                <span className="sc-btn is-ghost is-icon">
-                  <BookmarkSimple size={16} weight="fill" />
-                </span>
-                <span className="sc-btn is-secondary is-sm" data-sc={`sc-use-${item.id}`}>
-                  <Lightning size={16} className="sc-text-accent" />
-                  {state.templates[state.mode] > 0 ? '+ Use' : 'Use'}
-                </span>
-              </div>
-            </div>
-            <div className="sc-ph-tpl-foot">
-              <span className="sc-letter" style={{ background: item.tint }}>
-                {item.niche.charAt(0)}
-              </span>
-              <span className="sc-truncate">{item.niche}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 /** The phone web app: header, one page, folded cockpit bar, tab bar and sheets. */
 export function PhoneApp({ state }: { state: SceneState }) {
   const cockpit = state.screen !== 'brands' && state.screen !== 'brand' && state.screen !== 'profile'
@@ -740,7 +712,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
           {state.screen === 'brand' ? <BrandScreen state={state} phone /> : null}
           {state.screen === 'browse' ? <PhoneBrowse state={state} /> : null}
           {state.screen === 'library' ? <PhoneLibrary state={state} /> : null}
-          {state.screen === 'saved' ? <PhoneSaved state={state} /> : null}
+          {state.screen === 'saved' ? <SavedScreen state={state} phone /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} phone /> : null}
         </div>
       </div>
@@ -755,6 +727,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
       <NewCollectionDialog state={state} />
       <Toast state={state} />
       <ModalLayer state={state} />
+      <ThumbPreview state={state} />
     </div>
   )
 }

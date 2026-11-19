@@ -1,5 +1,6 @@
 import type { Story } from './engine/story'
 import { AFFILIATES_CAPTIONS, AFFILIATES_DESKTOP, AFFILIATES_PHONE, WORKSPACES_CAPTIONS, WORKSPACES_DESKTOP, WORKSPACES_PHONE } from './stories/account'
+import { SAVED_CAPTIONS, SAVED_DESKTOP, SAVED_PHONE } from './stories/saved'
 import { SPOT_CAPTIONS, SPOT_TALL, SPOT_WIDE } from './stories/spot'
 import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
 
@@ -143,6 +144,15 @@ export const TUTORIALS: Tutorial[] = [
     title: "When to use prompts (and when not to)",
     summary: "Most ads need no prompt. Here is when one helps.",
     tags: ["prompts", "prompting"],
+  },
+  {
+    id: "saved-templates",
+    category: "Templates and creating ads",
+    title: "Saved Templates",
+    summary: "Search, label, star and organize your saved templates, then send them to the cockpit.",
+    tags: ["saved templates", "collections", "search", "labels", "star", "download", "move", "use"],
+    stories: { desktop: SAVED_DESKTOP, phone: SAVED_PHONE },
+    captions: SAVED_CAPTIONS,
   },
   {
     id: "library",

@@ -128,6 +128,37 @@ function Spotlight({ state, instant }: { state: SceneState; instant: boolean }) 
   return <div ref={ref} className="sc-spotlight" aria-hidden />
 }
 
+/** A big bright label beside whatever is being shown. */
+function TagLabel({ state, instant }: { state: SceneState; instant: boolean }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const tag = state.tag
+  useLayoutEffect(() => {
+    const el = ref.current
+    const app = el?.closest<HTMLElement>('.sc-app')
+    if (!el || !app || !tag) return
+    const box = boxOf(tag.anchor, app)
+    if (!box) return
+    const w = el.offsetWidth
+    const h = el.offsetHeight
+    const gap = 22
+    let x = box.x + box.w / 2 - w / 2
+    let y = box.y + box.h / 2 - h / 2
+    if (tag.side === 'right') x = box.x + box.w + gap
+    else if (tag.side === 'left') x = box.x - w - gap
+    else if (tag.side === 'bottom') y = box.y + box.h + gap
+    else y = box.y - h - gap
+    x = Math.max(12, Math.min(app.offsetWidth - w - 12, x))
+    y = Math.max(12, Math.min(app.offsetHeight - h - 12, y))
+    el.style.transform = `translate(${x}px, ${y}px)`
+  }, [tag, instant, state.screen, state.sv, state.cockpitOpen, state.templates])
+  if (!tag) return null
+  return (
+    <div ref={ref} key={tag.key} className={`sc-tag is-${tag.side}`} data-sc="sc-tag">
+      <span className="sc-tag-text">{tag.text}</span>
+    </div>
+  )
+}
+
 type Ring = { id: number; x: number; y: number }
 
 /** Cursor and click rings. Position is written straight to the DOM; rings are state. */
@@ -459,6 +490,7 @@ export function Player({
               <div ref={appRef} className="sc-app" style={{ width: app.w, height: app.h }} data-screen={state.screen}>
                 {renderApp(state)}
                 <Spotlight state={state} instant={instant} />
+                <TagLabel state={state} instant={instant} />
                 <Cursor state={state} instant={instant} scale={cursorScale} touch={touch} />
               </div>
             </div>
