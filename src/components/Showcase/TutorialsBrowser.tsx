@@ -157,7 +157,21 @@ export function TutorialsBrowser() {
       : phone
         ? "phone"
         : "desktop";
-  const results = useMemo(() => searchTutorials(query), [query]);
+  const [genre, setGenre] = useState("All");
+  const genres = useMemo(
+    () => ["All", ...Array.from(new Set(TUTORIALS.map((t) => t.category)))],
+    [],
+  );
+  // Finished tutorials first (in catalog order), "coming soon" after them.
+  const results = useMemo(() => {
+    const found = searchTutorials(query).filter(
+      (t, i) => i === 0 || genre === "All" || t.category === genre,
+    );
+    return [
+      ...found.filter((t) => t.stories),
+      ...found.filter((t) => !t.stories),
+    ];
+  }, [query, genre]);
   const ready = Boolean(tutorial.stories);
   const story = tutorial.stories?.[view];
 
@@ -340,6 +354,20 @@ export function TutorialsBrowser() {
       </div>
 
       <aside className="sc-tv-side" aria-label="All tutorials">
+        <div className="sc-tv-genres" role="tablist" aria-label="Tutorial groups">
+          {genres.map((name) => (
+            <button
+              key={name}
+              type="button"
+              role="tab"
+              aria-selected={genre === name}
+              className={cx("sc-tv-genre", genre === name && "is-on")}
+              onClick={() => setGenre(name)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
         <label className="sc-tv-search">
           <MagnifyingGlass size={16} aria-hidden />
           <input
@@ -351,16 +379,10 @@ export function TutorialsBrowser() {
           />
         </label>
         <ul className="sc-tv-items">
-          {results.map((item, index) => {
+          {results.map((item) => {
             const itemStory = item.stories?.[view];
-            const newGroup =
-              !query &&
-              (index === 0 || results[index - 1].category !== item.category);
             return (
               <li key={item.id}>
-                {newGroup ? (
-                  <p className="sc-tv-group">{item.category}</p>
-                ) : null}
                 <button
                   type="button"
                   className={cx(
@@ -373,7 +395,9 @@ export function TutorialsBrowser() {
                 >
                   <span className="sc-tv-item-title">{item.title}</span>
                   <span className="sc-tv-item-meta">
-                    {itemStory ? seconds(itemStory.duration) : "Coming soon"}
+                    {itemStory
+                      ? `${seconds(itemStory.duration)} · ${item.category}`
+                      : `Coming soon · ${item.category}`}
                   </span>
                 </button>
               </li>

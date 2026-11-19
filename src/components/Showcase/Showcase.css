@@ -5466,3 +5466,30 @@ body.tv-theater .site-banner {
 .sc-spot.is-tall .sp-grid { top: 340px; }
 .sc-pg-card > .sc-badge,
 .sc-pg-card > span.sc-badge { align-self: flex-start; }
+
+.sc-tv-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sc-tv-genre {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  padding: 4px 11px;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sc-tv-genre:hover {
+  color: var(--text-primary);
+}
+
+.sc-tv-genre.is-on {
+  border-color: transparent;
+  background: var(--text-primary);
+  color: var(--bg-surface);
+}
