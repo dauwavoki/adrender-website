@@ -4,7 +4,7 @@
  * "now", so any moment can be shown exactly (?showcase-t=12.5 freezes it).
  */
 
-export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library' | 'saved' | 'profile'
+export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library' | 'saved' | 'adslib' | 'profile'
 export type ProfileTab = 'account' | 'billing' | 'workspace' | 'affiliate' | 'stats'
 export type Mode = 'image' | 'video'
 
@@ -91,6 +91,54 @@ export type SceneState = {
   /** Saved Templates tutorial: page state and the label tag. */
   sv: SavedState
   tag: Tag | null
+  /** Ads Library tutorial: page state. */
+  lt: LibTutState
+}
+
+/** My Ads Library page (tutorial). */
+export type LibTutState = {
+  tab: 'library' | 'ready' | 'rendering' | 'failed'
+  /** 0 All ads · 1 Spring launch · 2 Retargeting */
+  coll: number
+  menu: boolean
+  q: string
+  size: number
+  sizeOpen: boolean
+  cols: number
+  starred: boolean
+  /** Ready ads approved into the Library so far. */
+  approved: string[]
+  detail: string | null
+  /** Save as template dialog, and the collection ticked in it. */
+  saveDlg: boolean
+  saveColl: number
+  sel: string[]
+  move: boolean
+  retried: boolean
+}
+
+export const INITIAL_LIB: LibTutState = {
+  tab: 'library',
+  coll: 0,
+  menu: false,
+  q: '',
+  size: 0,
+  sizeOpen: false,
+  cols: 4,
+  starred: false,
+  approved: [],
+  detail: null,
+  saveDlg: false,
+  saveColl: 0,
+  sel: [],
+  move: false,
+  retried: false,
+}
+
+export function lt(patch: Partial<LibTutState> | ((lib: LibTutState) => Partial<LibTutState>)) {
+  return (s: SceneState): Partial<SceneState> => ({
+    lt: { ...s.lt, ...(typeof patch === 'function' ? patch(s.lt) : patch) },
+  })
 }
 
 /** Saved Templates page (tutorial). */
@@ -218,6 +266,7 @@ export const INITIAL: SceneState = {
   wsCur: 0,
   wsPick: null,
   sv: INITIAL_SAVED,
+  lt: INITIAL_LIB,
   tag: null,
 }
 

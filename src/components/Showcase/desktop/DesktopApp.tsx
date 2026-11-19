@@ -1,6 +1,7 @@
 import type { SceneState } from '../engine/story'
 import { Cockpit } from './Cockpit'
 import { AccountMenu, ModalLayer, ProfileScreen } from './pages'
+import { LibraryTutScreen } from './adslib'
 import { SavedScreen, ThumbPreview } from './saved'
 import { BrandScreen, BrandsScreen, BrowseScreen, HomeScreen, LibraryScreen } from './screens'
 
@@ -15,6 +16,7 @@ export function DesktopApp({ state }: { state: SceneState }) {
           {state.screen === 'brand' ? <BrandScreen state={state} /> : null}
           {state.screen === 'browse' ? <BrowseScreen state={state} /> : null}
           {state.screen === 'library' ? <LibraryScreen state={state} /> : null}
+          {state.screen === 'adslib' ? <LibraryTutScreen state={state} /> : null}
           {state.screen === 'saved' ? <SavedScreen state={state} /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} /> : null}
         </div>

@@ -21,6 +21,7 @@ import {
 import { IMAGE_TEMPLATES, type Media } from '../showcaseData'
 import type { SceneState } from '../engine/story'
 import { cx } from '../../site/cx'
+import { LIB_ADS } from './adslib'
 
 /** Saved templates shown in the tutorial. `kw` feeds the search box. */
 export type SavedItem = { id: string; media: Media; coll: number; ratio: '4:5' | '1:1' | '9:16'; kw: string }
@@ -36,6 +37,11 @@ export const SAVED_ITEMS: SavedItem[] = IMAGE_TEMPLATES.map((media, index) => ({
   ratio: ratioOf[index],
   kw: `${media.niche} ${kwOf[index]}`.toLowerCase(),
 }))
+
+/** Picture for any id sent to the cockpit: a saved template or a library ad. */
+export function usedSrc(id: string): string | undefined {
+  return SAVED_ITEMS.find((entry) => entry.id === id)?.media.src ?? LIB_ADS.find((entry) => entry.id === id)?.src
+}
 
 export const SAVED_COLLECTIONS = ['Winning hooks', 'Summer promos']
 
@@ -360,11 +366,11 @@ export function ThumbStrip({ state }: { state: SceneState }) {
   return (
     <div className="sc-thumbstrip sc-rise-in" data-sc="sc-thumbstrip">
       {used.map((id) => {
-        const item = SAVED_ITEMS.find((entry) => entry.id === id)
-        if (!item) return null
+        const src = usedSrc(id)
+        if (!src) return null
         return (
           <span key={id} className="sc-thumb" data-sc={`sc-thumb-${id}`}>
-            <img src={item.media.src} alt="" className="sc-cover" />
+            <img src={src} alt="" className="sc-cover" />
           </span>
         )
       })}
@@ -373,12 +379,12 @@ export function ThumbStrip({ state }: { state: SceneState }) {
 }
 
 export function ThumbPreview({ state }: { state: SceneState }) {
-  const item = SAVED_ITEMS.find((entry) => entry.id === state.sv.preview)
-  if (!item) return null
+  const src = state.sv.preview ? usedSrc(state.sv.preview) : undefined
+  if (!src) return null
   return (
     <div className="sc-preview" data-sc="sc-preview">
       <div className="sc-preview-card sc-rise-in">
-        <img src={item.media.src} alt="" />
+        <img src={src} alt="" />
         <span className="sc-btn is-ghost is-icon sc-preview-x">
           <X size={16} />
         </span>

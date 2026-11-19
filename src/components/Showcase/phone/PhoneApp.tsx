@@ -38,7 +38,8 @@ import { PlayingCtx, VIDEO_PRICE, balanceFor } from '../engine/layout'
 import { BrandScreen, BrandsScreen } from '../desktop/screens'
 import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toast, WsDropdown } from '../desktop/pages'
 import { COLLECTIONS, collectionCount } from '../desktop/pagesData'
-import { SAVED_ITEMS, SavedScreen, ThumbPreview, ThumbStrip } from '../desktop/saved'
+import { LibraryTutScreen } from '../desktop/adslib'
+import { SavedScreen, usedSrc, ThumbPreview, ThumbStrip } from '../desktop/saved'
 import {
   ACCOUNT,
   BRAND,
@@ -160,7 +161,7 @@ function libraryDot(lib: LibState) {
 
 function TabBar({ state }: { state: SceneState }) {
   const tab =
-    state.screen === 'library' ? 'library' : state.screen === 'saved' ? 'saved' : state.screen === 'profile' ? 'profile' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' ? 'brands' : null
+    state.screen === 'library' || state.screen === 'adslib' ? 'library' : state.screen === 'saved' ? 'saved' : state.screen === 'profile' ? 'profile' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' ? 'brands' : null
   const dot = libraryDot(state.lib.image) ?? libraryDot(state.lib.video)
   const item = (id: string, label: string, icon: ReactNode, extra?: ReactNode) => (
     <span className={cx('sc-ph-tab', tab === id && 'is-on')} data-sc={`sc-tab-${id}`}>
@@ -208,8 +209,8 @@ function lit(state: SceneState) {
 function picked(state: SceneState) {
   if (state.mode === 'image' && state.sv.used.length > 0) {
     return state.sv.used.flatMap((id) => {
-      const entry = SAVED_ITEMS.find((item) => item.id === id)
-      return entry ? [{ id: entry.id, src: entry.media.src }] : []
+      const src = usedSrc(id)
+      return src ? [{ id, src }] : []
     })
   }
   return (state.mode === 'video' ? PICKED_VIDEO : PICKED_IMAGE).slice(0, state.templates[state.mode])
@@ -713,6 +714,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
           {state.screen === 'browse' ? <PhoneBrowse state={state} /> : null}
           {state.screen === 'library' ? <PhoneLibrary state={state} /> : null}
           {state.screen === 'saved' ? <SavedScreen state={state} phone /> : null}
+          {state.screen === 'adslib' ? <LibraryTutScreen state={state} phone /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} phone /> : null}
         </div>
       </div>

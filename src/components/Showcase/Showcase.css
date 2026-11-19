@@ -6193,3 +6193,193 @@ body.tv-theater .site-banner {
   font-size: 19px;
   line-height: 24px;
 }
+
+/* ── Ads Library tutorial ───────────────────────────────────────────── */
+.sc-lb .sc-sv-media {
+  aspect-ratio: 1 / 1;
+}
+
+.sc-lb .sc-sv-media.is-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.sc-lb .sc-sv-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-lb-grid {
+  align-items: start;
+}
+
+.sc-lb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px 14px;
+}
+
+.sc-lb-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sc-lb-brand {
+  color: var(--text-secondary, var(--text-primary));
+  font-size: 12.5px;
+}
+
+.sc-lb-copy {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary, var(--text-primary));
+  font-size: 12px;
+}
+
+.sc-lb-badges {
+  display: flex;
+  gap: 6px;
+}
+
+.sc-lb-badges i {
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-sunken, transparent);
+  color: var(--text-secondary, var(--text-primary));
+  font-size: 11px;
+  font-style: normal;
+}
+
+.sc-lb-badges i.is-warn {
+  border-color: transparent;
+  background: rgba(245, 158, 11, 0.18);
+  color: #b45309;
+}
+
+.sc-lb-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sc-lb-spin,
+.sc-lb-bad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-sunken, rgba(0, 0, 0, 0.05));
+}
+
+.sc-lb-bad {
+  color: #dc2626;
+}
+
+.sc-lb-spinner {
+  color: #f59e0b;
+  animation: sc-lb-turn 1s linear infinite;
+}
+
+@keyframes sc-lb-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sc-lb-failed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 24px 200px;
+}
+
+.sc-lb-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  color: var(--text-secondary, var(--text-primary));
+  font-size: 13px;
+}
+
+.sc-lb-banner-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.sc-lb-failed .sc-sv-grid {
+  padding: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sc-lb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 48px 0;
+  color: var(--text-secondary, var(--text-primary));
+  font-size: 13px;
+}
+
+.sc-lb-empty b {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.sc-sv-detail-foot.is-wrap {
+  flex-wrap: wrap;
+}
+
+.sc-lb.is-phone .sc-lb-failed {
+  padding: 4px 12px 220px;
+}
+
+.sc-lb.is-phone .sc-lb-banner {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sc-lb.is-phone .sc-lb-failed .sc-sv-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sc-lb.is-phone .sc-lb-tabs {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.sc-lb.is-phone .sc-lb-body {
+  padding: 10px 10px 12px;
+}
+
+.sc-lb {
+  position: relative;
+  height: var(--sc-h);
+  overflow: hidden;
+}
+
+.sc-lb.is-phone .sc-lb-tabs > span {
+  padding: 5px 6px;
+  font-size: 11.5px;
+  gap: 3px;
+}
+
+.sc-lb.is-phone .sc-lb-tabs .sc-count {
+  min-width: 0;
+  padding: 0 4px;
+  font-size: 10.5px;
+}

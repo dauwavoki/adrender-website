@@ -487,7 +487,7 @@ export function Player({
         <div ref={frameRef} className="sc-window" style={{ width: view.w, height: view.h }}>
           <PlayingCtx.Provider value={playing}>
             <div ref={cameraRef} className="sc-camera">
-              <div ref={appRef} className="sc-app" style={{ width: app.w, height: app.h }} data-screen={state.screen}>
+              <div ref={appRef} className="sc-app" style={{ width: app.w, height: app.h, ['--sc-h' as string]: `${app.h}px` }} data-screen={state.screen}>
                 {renderApp(state)}
                 <Spotlight state={state} instant={instant} />
                 <TagLabel state={state} instant={instant} />
