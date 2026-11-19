@@ -4,6 +4,7 @@ import { SAVED_CAPTIONS, SAVED_DESKTOP, SAVED_PHONE } from './stories/saved'
 import { ADSLIB_CAPTIONS, ADSLIB_DESKTOP, ADSLIB_PHONE } from './stories/adslib'
 import { SPOT_CAPTIONS, SPOT_TALL, SPOT_WIDE } from './stories/spot'
 import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
+import { BRANDSITE_DESKTOP, BRANDSITE_PHONE, COCKPIT_DESKTOP, COCKPIT_PHONE, MORE_CAPTIONS, MUSTDO_DESKTOP, MUSTDO_PHONE } from './stories/more'
 import { ADCOPIES_DESKTOP, ADCOPIES_PHONE, BRANDS_DESKTOP, BRANDS_PHONE, KIT_CAPTIONS, ONEPRODUCT_DESKTOP, ONEPRODUCT_PHONE } from './stories/kit'
 
 /**
@@ -76,6 +77,10 @@ export const TUTORIALS: Tutorial[] = [
     title: "Must-do setup when starting with AdRender",
     summary: "The few things to set up first so every ad comes out right.",
     tags: ["setup", "first", "steps"],
+    stories: { desktop: MUSTDO_DESKTOP, phone: MUSTDO_PHONE },
+    captions: MORE_CAPTIONS,
+    learn: ['Four quick steps make every ad come out on brand.','Your website fills in the brand for you. You only check it.','Audience and negative words are set once and used every time.'],
+    steps: ['Add your website to a new brand and press Scan.','Pick your audience.','Add words AdRender must never use.','Pick the brand in the cockpit before you render.'],
   },
   {
     id: "playground",
@@ -90,6 +95,10 @@ export const TUTORIALS: Tutorial[] = [
     title: "Create a brand from your website, fast",
     summary: "Scan a website and get a full brand profile in seconds.",
     tags: ["brand", "website", "scan", "setup"],
+    stories: { desktop: BRANDSITE_DESKTOP, phone: BRANDSITE_PHONE },
+    captions: MORE_CAPTIONS,
+    learn: ['One website address gives you a full brand profile.','Products are found too, with ad copy written for each.','Nothing is saved until you review it.'],
+    steps: ['Open Brands & Campaigns and add a brand.','Type your website and press Scan.','Check the name, logo, voice and colors.','Edit anything you want to change. Changes save automatically.'],
   },
   {
     id: "brands-and-campaigns",
@@ -170,6 +179,10 @@ export const TUTORIALS: Tutorial[] = [
     title: "The cockpit: templates, brand, skill, render",
     summary: "Add templates, choose a brand and skill, and render image and video.",
     tags: ["cockpit", "render", "templates", "brand", "skill"],
+    stories: { desktop: COCKPIT_DESKTOP, phone: COCKPIT_PHONE },
+    captions: MORE_CAPTIONS,
+    learn: ['The cockpit is the bar at the bottom of the window.','Pick image or video, add templates, choose a brand and press Render.','Finished ads appear in My Ads Library.'],
+    steps: ['Open the cockpit and choose image or video.','Browse templates and press Use on the ones you like.','Pick your brand.','Choose sizes in Settings, then press Render.'],
   },
   {
     id: "refine-one-ad",

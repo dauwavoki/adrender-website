@@ -2,15 +2,15 @@ import { INITIAL_KIT, bk, makeStory, noTag, tag, type KitState, type SceneState,
 import { DOC_NAME, SHOP_DOMAIN } from '../desktop/kit'
 
 /** A brand-page patch plus any extra scene fields, as one step. */
-const K = (patch: Partial<KitState> | ((kit: KitState) => Partial<KitState>), extra: Partial<SceneState> = {}) =>
+export const K = (patch: Partial<KitState> | ((kit: KitState) => Partial<KitState>), extra: Partial<SceneState> = {}) =>
   (s: SceneState): Partial<SceneState> => ({ ...bk(patch)(s), ...extra })
 
 /** A toast at the bottom of the window. */
-const toast = (text: string, busy = false) => K((kit) => ({ toast: { text, busy, key: (kit.toast?.key ?? 0) + 1 } }))
-const noToast = K({ toast: null })
+export const toast = (text: string, busy = false) => K((kit) => ({ toast: { text, busy, key: (kit.toast?.key ?? 0) + 1 } }))
+export const noToast = K({ toast: null })
 
 /** Type into a field of the brand page, one character at a time. */
-function typeKit(s: Script, key: 'web' | 'shopDraft' | 'impUrl' | 'negDraft' | 'kwDraft' | 'nameDraft' | 'q', text: string, perChar: number) {
+export function typeKit(s: Script, key: 'web' | 'shopDraft' | 'impUrl' | 'negDraft' | 'kwDraft' | 'nameDraft' | 'q', text: string, perChar: number) {
   for (let i = 1; i <= text.length; i += 1) {
     s.after(i === 1 ? 0.2 : perChar, K({ [key]: text.slice(0, i) } as Partial<KitState>))
   }
@@ -30,7 +30,7 @@ const phoneStart = (screen: 'kit' | 'kitlist') => ({
 })
 
 /** Shared moves: light up a control, label it, glide there and rest before the click. */
-function helpers(s: Script, phone: boolean) {
+export function helpers(s: Script, phone: boolean) {
   const tap = phone ? 'Tap' : 'Click'
   const point = (anchor: string, side: Tag['side'], text: string, hold = 1.6, ms = 1000) => {
     s.after(0.15, { focus: anchor })
