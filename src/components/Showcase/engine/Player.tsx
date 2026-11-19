@@ -416,12 +416,25 @@ export function Player({
     setZoom((prev) => (Math.abs(prev - z) < 0.001 ? prev : z))
   }, [state.camera, state.screen, state.cursor.target, state.cursor.ms, state.sheet, instant, base, follow, view.w, view.h, app.w, app.h])
 
+  // Controls (and the mouse pointer) fade out after a few seconds without movement.
+  const [active, setActive] = useState(false)
+  const idleTimer = useRef<number | undefined>(undefined)
+  const wake = () => {
+    setActive(true)
+    window.clearTimeout(idleTimer.current)
+    idleTimer.current = window.setTimeout(() => setActive(false), 2500)
+  }
+  useEffect(() => () => window.clearTimeout(idleTimer.current), [])
+
   const cursorScale = 1 / Math.sqrt(Math.max(1, zoom / base))
 
   return (
     <div
       ref={sectionRef}
-      className={cx('sc', className, controls && !instant && 'has-controls', clock.paused && 'is-paused')}
+      className={cx('sc', className, controls && !instant && 'has-controls', clock.paused && 'is-paused', active && 'is-active')}
+      onPointerMove={controls ? wake : undefined}
+      onPointerDown={controls ? wake : undefined}
+      onPointerLeave={controls ? () => { window.clearTimeout(idleTimer.current); setActive(false) } : undefined}
       role={controls ? 'group' : 'img'}
       aria-label={ariaLabel}
       tabIndex={controls ? 0 : undefined}
@@ -429,6 +442,7 @@ export function Player({
       onKeyDown={
         controls
           ? (event) => {
+              wake()
               if (event.key === 'k' || event.key === ' ') {
                 event.preventDefault()
                 clock.setPaused((value) => !value)

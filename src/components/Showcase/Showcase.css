@@ -5518,16 +5518,13 @@ body.tv-theater .site-banner {
   cursor: default;
 }
 
-.sc.has-controls:hover .sc-controls,
-.sc.has-controls:focus-within .sc-controls,
-.sc.has-controls.is-paused .sc-controls {
+.sc.has-controls.is-active .sc-controls {
   opacity: 1;
 }
 
-@media (hover: none) {
-  .sc.has-controls .sc-controls {
-    opacity: 1;
-  }
+/* Pointer goes too when it has been still for a few seconds. */
+.sc.has-controls:not(.is-active) {
+  cursor: none;
 }
 
 .sc-ctl-btn {
