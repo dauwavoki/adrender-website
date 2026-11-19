@@ -4,7 +4,7 @@
  * "now", so any moment can be shown exactly (?showcase-t=12.5 freezes it).
  */
 
-export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library' | 'saved' | 'adslib' | 'profile'
+export type Screen = 'home' | 'brands' | 'brand' | 'browse' | 'library' | 'saved' | 'adslib' | 'profile' | 'kit' | 'kitlist'
 export type ProfileTab = 'account' | 'billing' | 'workspace' | 'affiliate' | 'stats'
 export type Mode = 'image' | 'video'
 
@@ -93,6 +93,83 @@ export type SceneState = {
   tag: Tag | null
   /** Ads Library tutorial: page state. */
   lt: LibTutState
+  /** Brand setup tutorials (website scan, Shopify, documents, ad copy, negative words). */
+  bk: KitState
+}
+
+/** The brand page used by the ad copy, brands and campaigns, and one-product tutorials. */
+export type KitState = {
+  kind: 'brand' | 'campaign'
+  /** Brands list filter: 0 All · 1 Brands · 2 Campaigns. */
+  filter: number
+  /** Brands list search text. */
+  q: string
+  /** Campaign cards added to the list by the one-product tutorial (0–2). */
+  made: number
+  /** Header name, set when the page has one. */
+  name: string
+  /** Website scan: typed URL, and stage 0 idle · 1 scanning · 2 name + logo · 3 voice, colors · 4–7 products 1–4 · 8 ad copy done. */
+  web: string
+  scan: number
+  /** Shopify: typed store, and stage 0 idle · 1 connecting · 2 approve screen · 3 importing · 4 connected, building copy · 5 copy done. */
+  shopDraft: string
+  shop: number
+  /** Documents: file being dragged over the box, files uploaded, scan 0 idle · 1 scanning · 2 done. */
+  drag: boolean
+  docs: number
+  docScan: number
+  /** Product whose Ad copy panel is open. */
+  open: string | null
+  /** Show only this product (campaign pages), and hide the product list until set. */
+  only: string | null
+  /** Bottom toast. */
+  toast: { text: string; busy: boolean; key: number } | null
+  /** Negative words, keywords, audience picks and their drafts. */
+  neg: string[]
+  negDraft: string
+  kw: string[]
+  kwDraft: string
+  aud: string[]
+  /** Import-from-URL dialog: 0 closed · 1 empty · 2 fetching · 3 ready · 4 importing. */
+  imp: number
+  impUrl: string
+  /** Manual line typed into Hooks of the open product. */
+  manual: string
+  /** Page title typed in the name field. */
+  nameDraft: string
+}
+
+export const INITIAL_KIT: KitState = {
+  kind: 'brand',
+  filter: 0,
+  q: '',
+  made: 0,
+  name: '',
+  web: '',
+  scan: 0,
+  shopDraft: '',
+  shop: 0,
+  drag: false,
+  docs: 0,
+  docScan: 0,
+  open: null,
+  only: null,
+  toast: null,
+  neg: [],
+  negDraft: '',
+  kw: [],
+  kwDraft: '',
+  aud: [],
+  imp: 0,
+  impUrl: '',
+  manual: '',
+  nameDraft: '',
+}
+
+export function bk(patch: Partial<KitState> | ((kit: KitState) => Partial<KitState>)) {
+  return (s: SceneState): Partial<SceneState> => ({
+    bk: { ...s.bk, ...(typeof patch === 'function' ? patch(s.bk) : patch) },
+  })
 }
 
 /** My Ads Library page (tutorial). */
@@ -267,6 +344,7 @@ export const INITIAL: SceneState = {
   wsPick: null,
   sv: INITIAL_SAVED,
   lt: INITIAL_LIB,
+  bk: INITIAL_KIT,
   tag: null,
 }
 

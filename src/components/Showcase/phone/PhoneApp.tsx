@@ -40,6 +40,7 @@ import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toa
 import { COLLECTIONS, collectionCount } from '../desktop/pagesData'
 import { LibraryTutScreen } from '../desktop/adslib'
 import { SavedScreen, usedSrc, ThumbPreview, ThumbStrip } from '../desktop/saved'
+import { KitListScreen, KitOverlay, KitScreen } from '../desktop/kit'
 import {
   ACCOUNT,
   BRAND,
@@ -161,7 +162,7 @@ function libraryDot(lib: LibState) {
 
 function TabBar({ state }: { state: SceneState }) {
   const tab =
-    state.screen === 'library' || state.screen === 'adslib' ? 'library' : state.screen === 'saved' ? 'saved' : state.screen === 'profile' ? 'profile' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' ? 'brands' : null
+    state.screen === 'library' || state.screen === 'adslib' ? 'library' : state.screen === 'saved' ? 'saved' : state.screen === 'profile' ? 'profile' : state.screen === 'browse' ? 'browse' : state.screen === 'brands' || state.screen === 'brand' || state.screen === 'kit' || state.screen === 'kitlist' ? 'brands' : null
   const dot = libraryDot(state.lib.image) ?? libraryDot(state.lib.video)
   const item = (id: string, label: string, icon: ReactNode, extra?: ReactNode) => (
     <span className={cx('sc-ph-tab', tab === id && 'is-on')} data-sc={`sc-tab-${id}`}>
@@ -703,7 +704,7 @@ function PhoneLibrary({ state }: { state: SceneState }) {
 
 /** The phone web app: header, one page, folded cockpit bar, tab bar and sheets. */
 export function PhoneApp({ state }: { state: SceneState }) {
-  const cockpit = state.screen !== 'brands' && state.screen !== 'brand' && state.screen !== 'profile'
+  const cockpit = state.screen !== 'brands' && state.screen !== 'brand' && state.screen !== 'profile' && state.screen !== 'kit' && state.screen !== 'kitlist'
   return (
     <div className={cx('sc-ph', cockpit && 'has-cockpit')}>
       <div className="sc-ph-viewport">
@@ -715,6 +716,8 @@ export function PhoneApp({ state }: { state: SceneState }) {
           {state.screen === 'library' ? <PhoneLibrary state={state} /> : null}
           {state.screen === 'saved' ? <SavedScreen state={state} phone /> : null}
           {state.screen === 'adslib' ? <LibraryTutScreen state={state} phone /> : null}
+          {state.screen === 'kit' ? <KitScreen state={state} phone /> : null}
+          {state.screen === 'kitlist' ? <KitListScreen state={state} phone /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} phone /> : null}
         </div>
       </div>
@@ -730,6 +733,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
       <Toast state={state} />
       <ModalLayer state={state} />
       <ThumbPreview state={state} />
+      <KitOverlay state={state} />
     </div>
   )
 }

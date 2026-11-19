@@ -124,7 +124,7 @@ function Spotlight({ state, instant }: { state: SceneState; instant: boolean }) 
     el.style.width = `${use.w + pad * 2}px`
     el.style.height = `${use.h + pad * 2}px`
     el.style.opacity = box ? '1' : '0'
-  }, [state.focus, instant, state.screen, state.menu, state.modal, state.ptab, state.ws, state.team, state.cockpitOpen])
+  }, [state.focus, instant, state.screen, state.menu, state.modal, state.ptab, state.ws, state.team, state.cockpitOpen, state.bk])
   return <div ref={ref} className="sc-spotlight" aria-hidden />
 }
 
@@ -150,7 +150,7 @@ function TagLabel({ state, instant }: { state: SceneState; instant: boolean }) {
     x = Math.max(12, Math.min(app.offsetWidth - w - 12, x))
     y = Math.max(12, Math.min(app.offsetHeight - h - 12, y))
     el.style.transform = `translate(${x}px, ${y}px)`
-  }, [tag, instant, state.screen, state.sv, state.cockpitOpen, state.templates])
+  }, [tag, instant, state.screen, state.sv, state.bk, state.cockpitOpen, state.templates])
   if (!tag) return null
   return (
     <div ref={ref} key={tag.key} className={`sc-tag is-${tag.side}`} data-sc="sc-tag">

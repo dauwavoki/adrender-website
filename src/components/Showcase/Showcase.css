@@ -6383,3 +6383,468 @@ body.tv-theater .site-banner {
   padding: 0 4px;
   font-size: 10.5px;
 }
+
+/* ── Brand setup tutorials: sources, documents, ad copy ────── */
+.sc-kit .sc-setup {
+  gap: 0;
+}
+
+.sc-kit-source {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sc-kit-source:first-child {
+  padding-top: 0;
+}
+
+.sc-kit-source:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sc-kit .sc-setup.sc-kit-fields {
+  margin-top: 14px;
+}
+
+.sc-kit-gap {
+  margin-top: 12px !important;
+}
+
+.sc-kit-kind {
+  align-self: flex-start;
+}
+
+.sc-kit-sync {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.sc-kit-sync .sc-label {
+  margin-bottom: 2px !important;
+  font-size: 13px;
+}
+
+.sc-kit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sc-kit-disconnect {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sc-kit-scanbtn {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  padding: 0 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 200ms, color 200ms;
+}
+
+.sc-kit-scanbtn-l {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sc-kit-scanbtn.is-ready {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.sc-kit-scanbtn.is-ready svg {
+  color: var(--accent);
+}
+
+.sc-kit-drop {
+  position: relative;
+  display: flex;
+  min-height: 148px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: border-color 200ms, background 200ms;
+}
+
+.sc-kit-drop.is-over {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.sc-kit-drop.is-busy {
+  opacity: 0.7;
+}
+
+.sc-kit-ghost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  padding: 10px 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  transform: translate(-50%, -50%) rotate(-3deg);
+  white-space: nowrap;
+}
+
+.sc-kit-files {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-inset);
+}
+
+.sc-kit-files li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.sc-kit-opt {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  padding: 0 11px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  transition: all 160ms;
+}
+
+.sc-kit-opt.is-on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+.sc-badge.is-danger {
+  gap: 6px;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.sc-kit-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sc-kit-empty {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.sc-kit-product {
+  padding: 14px;
+}
+
+.sc-kit-product-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-kit-thumb {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--bg-inset);
+}
+
+.sc-kit-skel {
+  width: 120px;
+  margin: 6px 0 0;
+}
+
+.sc-kit-copyrow {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sc-kit-copyrow > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sc-kit-caret {
+  transition: transform 200ms;
+}
+
+.sc-kit-caret.is-open {
+  transform: rotate(180deg);
+}
+
+.sc-kit-total {
+  margin-top: 10px !important;
+  text-align: right;
+}
+
+.sc-kit-copy {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.sc-kit-copy.is-phone {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sc-kit-cat {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-inset);
+  padding: 10px;
+}
+
+.sc-kit-cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sc-kit-plus {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.sc-kit-cat ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.sc-kit-line {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  padding: 8px 10px;
+}
+
+.sc-kit-line p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.sc-kit-line.is-flag {
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+}
+
+.sc-kit-line-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.sc-kit-line-meta b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.sc-kit-safe {
+  display: inline-flex;
+  height: 18px;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0 6px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.sc-kit-safe.is-pass {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.sc-kit-safe.is-review {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning);
+}
+
+.sc-kit-safe.is-flag {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.sc-kit-from {
+  color: var(--accent);
+}
+
+.sc-kit-toast {
+  position: absolute;
+  bottom: 88px;
+  left: 50%;
+  z-index: 80;
+  display: inline-flex;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  padding: 12px 16px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  transform: translateX(-50%);
+  animation: sc-pg-pop 220ms ease-out both;
+}
+
+.sc-kit-scope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-inset);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.sc-kit-imgs {
+  display: flex;
+  gap: 10px;
+}
+
+.sc-kit-img {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+}
+
+.sc-kit-img.is-on {
+  border-color: var(--accent);
+}
+
+.sc-kit-img-check {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.sc-kit-imp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sc-kitlist .sc-kit-search {
+  width: 280px;
+}
+
+.sc-kitlist .sc-kit-q {
+  color: var(--text-primary);
+}
+
+.sc-kitlist .sc-brand-card.is-new {
+  border-color: var(--accent);
+}
+
+.sc-kit.is-phone .sc-kit-source {
+  padding: 14px 0;
+}
+
+.sc-kit.is-phone .sc-kit-sync {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.sc-kit.is-phone .sc-kit-actions {
+  flex-wrap: wrap;
+}
+
+.sc-kit.is-phone .sc-setup-url {
+  flex-wrap: wrap;
+}
+
+.sc-kit.is-phone .sc-setup-url .sc-input {
+  flex: 1 1 100%;
+}
+
+.sc-kit.is-phone .sc-brand-section-head {
+  flex-wrap: wrap;
+}
+
+.sc-kit.is-phone .sc-kit-toast {
+  bottom: 70px;
+}

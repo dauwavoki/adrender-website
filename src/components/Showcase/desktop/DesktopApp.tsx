@@ -3,6 +3,7 @@ import { Cockpit } from './Cockpit'
 import { AccountMenu, ModalLayer, ProfileScreen } from './pages'
 import { LibraryTutScreen } from './adslib'
 import { SavedScreen, ThumbPreview } from './saved'
+import { KitListScreen, KitOverlay, KitScreen } from './kit'
 import { BrandScreen, BrandsScreen, BrowseScreen, HomeScreen, LibraryScreen } from './screens'
 
 /** The desktop client: one page at a time, the cockpit docked at the bottom. */
@@ -18,6 +19,8 @@ export function DesktopApp({ state }: { state: SceneState }) {
           {state.screen === 'library' ? <LibraryScreen state={state} /> : null}
           {state.screen === 'adslib' ? <LibraryTutScreen state={state} /> : null}
           {state.screen === 'saved' ? <SavedScreen state={state} /> : null}
+          {state.screen === 'kit' ? <KitScreen state={state} /> : null}
+          {state.screen === 'kitlist' ? <KitListScreen state={state} /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} /> : null}
         </div>
       </div>
@@ -25,6 +28,7 @@ export function DesktopApp({ state }: { state: SceneState }) {
       {state.menu ? <AccountMenu state={state} /> : null}
       <ModalLayer state={state} />
       <ThumbPreview state={state} />
+      <KitOverlay state={state} />
     </>
   )
 }

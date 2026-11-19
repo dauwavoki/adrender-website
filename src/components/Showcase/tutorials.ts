@@ -4,6 +4,7 @@ import { SAVED_CAPTIONS, SAVED_DESKTOP, SAVED_PHONE } from './stories/saved'
 import { ADSLIB_CAPTIONS, ADSLIB_DESKTOP, ADSLIB_PHONE } from './stories/adslib'
 import { SPOT_CAPTIONS, SPOT_TALL, SPOT_WIDE } from './stories/spot'
 import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
+import { ADCOPIES_DESKTOP, ADCOPIES_PHONE, BRANDS_DESKTOP, BRANDS_PHONE, KIT_CAPTIONS, ONEPRODUCT_DESKTOP, ONEPRODUCT_PHONE } from './stories/kit'
 
 /**
  * The tutorials collection. The first entry is always the intro.
@@ -94,23 +95,68 @@ export const TUTORIALS: Tutorial[] = [
     id: "brands-and-campaigns",
     category: "Brands and campaigns",
     title: "Brands and campaigns: how it works",
-    summary: "Every feature in Brands & Campaigns, including targets and negative words.",
-    tags: ["brands", "campaigns", "targets", "negative", "words", "target", "marketing", "audience"],
+    summary: "Filter and search your list, then set voice, audience, colors, keywords and negative words on one page.",
+    tags: ["brands", "campaigns", "targets", "negative", "words", "target", "marketing", "audience", "voice", "keywords", "colors"],
+    stories: { desktop: BRANDS_DESKTOP, phone: BRANDS_PHONE },
+    captions: KIT_CAPTIONS,
+    learn: [
+      'A brand is your whole business. A campaign is one product, offer or season.',
+      'Voice, target audience, colors and keywords guide every ad you render.',
+      'Negative words keep language you never use out of your ad copy, and the safety check flags any slip.',
+    ],
+    steps: [
+      'Open Brands & Campaigns. Use All, Brands or Campaigns and the search box to find one.',
+      'Open a brand and choose Brand info or Campaign info.',
+      'Check the voice, pick your target audience and review the colors.',
+      'Add keywords to find matching templates faster.',
+      'Add negative words, then open Ad copy to see any flagged line.',
+    ],
   },
+
   {
     id: "campaign-per-product",
     category: "Brands and campaigns",
     title: "One product per campaign",
-    summary: "Test each product as its own campaign, one set per product.",
-    tags: ["campaigns", "products", "testing", "sets"],
+    summary: "Give each product its own campaign, with its own ad copy, so you can see which product wins.",
+    tags: ["campaigns", "products", "testing", "sets", "import", "one product"],
+    stories: { desktop: ONEPRODUCT_DESKTOP, phone: ONEPRODUCT_PHONE },
+    captions: KIT_CAPTIONS,
+    learn: [
+      'A campaign built around one product keeps its voice and ad copy focused on that product.',
+      'Import a product from its page link: pick the images and the name comes with it.',
+      'Make one campaign per product, render from each, and compare which product wins.',
+    ],
+    steps: [
+      'Open Brands & Campaigns and press Add brand or campaign.',
+      'Choose Campaign info and name the campaign after the product.',
+      'Under Products, press Import from URL, paste the product page link and press Fetch images.',
+      'Pick the images and press Import.',
+      'Open Ad copy to read what was written for that one product. Repeat for each product.',
+    ],
   },
+
   {
     id: "ad-copies",
     category: "Brands and campaigns",
     title: "Automated ad copies",
-    summary: "AdRender takes your ad copies and creates more.",
-    tags: ["ad", "copy", "docs", "voice"],
+    summary: "Scan your website or connect Shopify and AdRender writes ad copy for every product. Upload a document for even more.",
+    tags: ["ad", "copy", "docs", "voice", "shopify", "website", "scan", "documents", "hooks", "headlines"],
+    stories: { desktop: ADCOPIES_DESKTOP, phone: ADCOPIES_PHONE },
+    captions: KIT_CAPTIONS,
+    learn: [
+      'Scan your website or connect your Shopify store and every product gets ad copy written for it.',
+      'Each line is a hook, headline, CTA or subject line with a performance score and a safety check.',
+      'Upload a brand guide or product sheet and AdRender adds lines from it, keeping the ones you already have.',
+    ],
+    steps: [
+      'Open Brands & Campaigns, add a brand or open one, and find Brand or campaign setup.',
+      'Type your website and press Scan, or type your store address and press Connect Shopify Store.',
+      'Open Ad copy on any product to read the hooks, headlines, CTAs and subject lines.',
+      'Drop a PDF, DOCX or TXT into Documents and press Scan documents.',
+      'Pick the brand in the cockpit. The copy is used for you, with no prompt to write.',
+    ],
   },
+
   {
     id: "search-and-filters",
     category: "Templates and creating ads",
