@@ -5493,3 +5493,108 @@ body.tv-theater .site-banner {
   background: var(--text-primary);
   color: var(--bg-surface);
 }
+
+/* Play / pause / seek (tutorials page) */
+
+.sc.has-controls {
+  cursor: pointer;
+  outline: none;
+}
+
+.sc-controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+  padding: 28px 16px 10px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  cursor: default;
+}
+
+.sc.has-controls:hover .sc-controls,
+.sc.has-controls:focus-within .sc-controls,
+.sc.has-controls.is-paused .sc-controls {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .sc.has-controls .sc-controls {
+    opacity: 1;
+  }
+}
+
+.sc-ctl-btn {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.sc-ctl-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.sc-ctl-time {
+  flex: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sc-ctl-range {
+  height: 16px;
+  min-width: 0;
+  flex: 1;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sc-ctl-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #fff var(--pct, 0%), rgba(255, 255, 255, 0.35) var(--pct, 0%));
+}
+
+.sc-ctl-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sc-ctl-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.sc-ctl-range::-webkit-slider-thumb {
+  width: 13px;
+  height: 13px;
+  margin-top: -4.5px;
+  appearance: none;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.sc-ctl-range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+}

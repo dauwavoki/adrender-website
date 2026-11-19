@@ -28,23 +28,27 @@ function readQueryTime(duration: number): number | null {
   return Number.isFinite(t) ? Math.max(0, Math.min(duration, t)) : null
 }
 
-/** The story clock. Applies steps on time, pauses off screen, loops forever. */
+/** The story clock. Applies steps on time, pauses off screen, loops forever. Can pause and seek. */
 function useStory(story: Story, active: boolean) {
   const [state, setState] = useState<SceneState>(story.initial)
+  const [paused, setPaused] = useState(false)
+  const [seekCount, setSeekCount] = useState(0)
   const elapsed = useRef(0)
+  const startedAtRef = useRef(0)
   const index = useRef(0)
   const live = useRef(story.initial)
+  const running = active && !paused
 
   useEffect(() => {
-    if (!active) return
+    if (!running) return
     let timer = 0
-    let startedAt = performance.now() - elapsed.current
+    startedAtRef.current = performance.now() - elapsed.current
     const { steps, duration, initial } = story
 
     const tick = () => {
-      const now = performance.now() - startedAt
+      const now = performance.now() - startedAtRef.current
       if (now >= duration * 1000) {
-        startedAt = performance.now()
+        startedAtRef.current = performance.now()
         index.current = 0
         live.current = initial
         setState(initial)
@@ -62,17 +66,31 @@ function useStory(story: Story, active: boolean) {
         setState(next)
       }
       const due = index.current < steps.length ? steps[index.current].at * 1000 : duration * 1000
-      timer = window.setTimeout(tick, Math.max(0, due - (performance.now() - startedAt)))
+      timer = window.setTimeout(tick, Math.max(0, due - (performance.now() - startedAtRef.current)))
     }
 
     timer = window.setTimeout(tick, 0)
     return () => {
       window.clearTimeout(timer)
-      elapsed.current = performance.now() - startedAt
+      elapsed.current = performance.now() - startedAtRef.current
     }
-  }, [active, story])
+  }, [running, story, seekCount])
 
-  return state
+  /** Current position in seconds. */
+  const getTime = () => (running ? (performance.now() - startedAtRef.current) / 1000 : elapsed.current / 1000)
+
+  const seek = (seconds: number) => {
+    const t = Math.max(0, Math.min(story.duration - 0.05, seconds))
+    elapsed.current = t * 1000
+    startedAtRef.current = performance.now() - t * 1000
+    index.current = story.steps.filter((step) => step.at <= t).length
+    const next = story.stateAt(t)
+    live.current = next
+    setState(next)
+    setSeekCount((value) => value + 1)
+  }
+
+  return { state, paused, setPaused, getTime, seek }
 }
 
 function Caption({ index, captions, variant }: { index: number; captions: readonly string[]; variant: 'pill' | 'ad' }) {
@@ -156,6 +174,64 @@ function Cursor({ state, instant, scale, touch }: { state: SceneState; instant: 
   )
 }
 
+function mmss(seconds: number) {
+  const whole = Math.max(0, Math.floor(seconds))
+  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`
+}
+
+/** Play/pause, time and a seek slider, drawn over the bottom of the video. */
+function ControlBar({ story, clock }: { story: Story; clock: ReturnType<typeof useStory> }) {
+  const [time, setTime] = useState(0)
+  const [dragging, setDragging] = useState(false)
+  const getTime = clock.getTime
+  useEffect(() => {
+    let frame = 0
+    const loop = () => {
+      if (!dragging) setTime(getTime())
+      frame = requestAnimationFrame(loop)
+    }
+    frame = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(frame)
+  }, [getTime, dragging])
+  const pct = Math.min(100, (time / story.duration) * 100)
+  return (
+    <div className="sc-controls" onClick={(event) => event.stopPropagation()}>
+      <button type="button" className="sc-ctl-btn" aria-label={clock.paused ? 'Play' : 'Pause'} onClick={() => clock.setPaused((value) => !value)}>
+        {clock.paused ? (
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
+            <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
+            <rect x="6" y="5" width="4" height="14" rx="1" />
+            <rect x="14" y="5" width="4" height="14" rx="1" />
+          </svg>
+        )}
+      </button>
+      <span className="sc-ctl-time tabular-nums">
+        {mmss(time)} / {mmss(story.duration)}
+      </span>
+      <input
+        type="range"
+        className="sc-ctl-range"
+        min={0}
+        max={story.duration}
+        step={0.05}
+        value={time}
+        style={{ ['--pct' as string]: `${pct}%` }}
+        aria-label="Seek"
+        onPointerDown={() => setDragging(true)}
+        onPointerUp={() => setDragging(false)}
+        onChange={(event) => {
+          const t = Number(event.target.value)
+          setTime(t)
+          clock.seek(t)
+        }}
+      />
+    </div>
+  )
+}
+
 export type PlayerProps = {
   story: Story
   /** The app's own design size. */
@@ -175,6 +251,8 @@ export type PlayerProps = {
   contain?: boolean
   /** Scale up past the design size to fill the slot's width (theater mode). */
   upscale?: boolean
+  /** Show play/pause and a seek slider (tutorials page). */
+  controls?: boolean
   /** Always play while mounted, even off screen (full screen). */
   ariaLabel: string
   className?: string
@@ -196,6 +274,7 @@ export function Player({
   touch = false,
   contain = false,
   upscale = false,
+  controls = false,
   ariaLabel,
   className,
 }: PlayerProps) {
@@ -211,8 +290,8 @@ export function Player({
   const frozenAt = queryT ?? (reduce ? story.stillAt : null)
   const instant = frozenAt != null
   const playing = inView && pageVisible && !instant
-  const live = useStory(story, playing)
-  const state = frozenAt != null ? story.stateAt(frozenAt) : live
+  const clock = useStory(story, playing)
+  const state = frozenAt != null ? story.stateAt(frozenAt) : clock.state
   const base = Math.min(view.w / app.w, view.h / app.h)
   const [zoom, setZoom] = useState(base)
   /** Follow mode keeps its last framing when a target is not on screen yet. */
@@ -318,7 +397,25 @@ export function Player({
   const cursorScale = 1 / Math.sqrt(Math.max(1, zoom / base))
 
   return (
-    <div ref={sectionRef} className={cx('sc', className)} role="img" aria-label={ariaLabel}>
+    <div
+      ref={sectionRef}
+      className={cx('sc', className, controls && !instant && 'has-controls', clock.paused && 'is-paused')}
+      role={controls ? 'group' : 'img'}
+      aria-label={ariaLabel}
+      tabIndex={controls ? 0 : undefined}
+      onClick={controls ? () => clock.setPaused((value) => !value) : undefined}
+      onKeyDown={
+        controls
+          ? (event) => {
+              if (event.key === 'k' || event.key === ' ') {
+                event.preventDefault()
+                clock.setPaused((value) => !value)
+              } else if (event.key === 'ArrowRight') clock.seek(clock.getTime() + 5)
+              else if (event.key === 'ArrowLeft') clock.seek(clock.getTime() - 5)
+            }
+          : undefined
+      }
+    >
       <div ref={slotRef} className={cx('sc-slot', contain && 'is-contain')} aria-hidden>
         <div ref={frameRef} className="sc-window" style={{ width: view.w, height: view.h }}>
           <PlayingCtx.Provider value={playing}>
@@ -334,6 +431,7 @@ export function Player({
           <div className={cx('sc-dim', state.dim && 'is-on')} />
         </div>
       </div>
+      {controls && !instant ? <ControlBar story={story} clock={clock} /> : null}
     </div>
   )
 }

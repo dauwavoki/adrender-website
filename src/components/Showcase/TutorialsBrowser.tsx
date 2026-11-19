@@ -82,6 +82,7 @@ function TutorialPlayer({
         captionVariant="ad"
         contain={contain}
         upscale
+        controls
         ariaLabel={label}
         className={tall ? "is-tiktok" : "is-ad-wide"}
       />
@@ -101,6 +102,7 @@ function TutorialPlayer({
         follow={1.05}
         contain={contain}
         upscale
+        controls
         ariaLabel={label}
         className={tall ? "is-tiktok" : "is-ad-wide"}
       />
@@ -116,6 +118,7 @@ function TutorialPlayer({
         touch
         contain={contain}
         upscale
+        controls
         ariaLabel={label}
         className="is-phone"
       />
@@ -129,6 +132,7 @@ function TutorialPlayer({
       captions={tutorial.captions ?? CAPTIONS}
       contain={contain}
       upscale
+      controls
       ariaLabel={label}
     />
   );
