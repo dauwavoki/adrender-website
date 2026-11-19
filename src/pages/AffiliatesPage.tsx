@@ -17,7 +17,7 @@ const SITE_URL = 'https://adrender.app'
 
 const TITLE = 'AdRender Affiliate Program — Earn 50% Commission'
 const DESCRIPTION =
-  'Join the AdRender affiliate program — 50% commission on referred subscribers before Oct 31, 2026. Real-time dashboard, biweekly payouts, no cap.'
+  'Join the AdRender affiliate program — 50% commission on referred subscribers before Dec 31, 2026. Real-time dashboard, biweekly payouts, no cap.'
 
 const PERKS: {
   icon: ComponentType<{ className?: string; weight?: IconWeight; size?: number }>
@@ -58,7 +58,7 @@ const FAQ = [
     a: 'Payouts run every 2 weeks. Your first payout begins after the subscriber’s first month is complete.',
   },
   {
-    q: 'What happens after October 31, 2026?',
+    q: 'What happens after December 31, 2026?',
     a: 'New campaigns will vary after that date, but no standard campaign will ever pay less than 20% commission. You can also negotiate a custom rate through our Split-Share program.',
   },
 ]
@@ -74,7 +74,7 @@ export function AffiliatesPage() {
         lead="Earn with AdRender"
         aside={
           <p className="site-lead">
-            Refer subscribers and earn a share of the profit — up to 50% when you join before October 31, 2026.
+            Refer subscribers and earn a share of the profit — up to 50% when you join before December 31, 2026.
             You&apos;re not just earning commission — you&apos;re getting the tool. Use AdRender itself to render
             on-brand UGC-style videos and ads promoting your link, in minutes, with the exact same renderer
             you&apos;re recommending to everyone else.
@@ -90,7 +90,7 @@ export function AffiliatesPage() {
           <div style={{ marginTop: 28 }}>
             <StatRow
               items={[
-                { value: '50%', label: 'of profit on every referred subscriber. Sign up before October 31, 2026 to lock in the 50% rate.' },
+                { value: '50%', label: 'of profit on every referred subscriber. Sign up before December 31, 2026 to lock in the 50% rate.' },
                 { value: '20%+', label: 'minimum on standard campaigns after that date. Negotiate a custom rate through Split-Share.' },
               ]}
             />
@@ -179,7 +179,7 @@ export function AffiliatesPage() {
 
       <ClosingCta
         lead="Ready to start earning?"
-        sentence="Create an account at app.adrender.app, then apply under Profile → Affiliates. Early enrollment for 50% commission closes October 31, 2026."
+        sentence="Create an account at app.adrender.app, then apply under Profile → Affiliates. Early enrollment for 50% commission closes December 31, 2026."
         href={signupUrl}
         label="Sign up at app.adrender.app"
         note="Prefer the marketing site first? Visit adrender.app."
