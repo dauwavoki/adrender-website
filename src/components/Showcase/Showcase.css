@@ -609,7 +609,7 @@ html.light .sc {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 30;
+  z-index: 200;
   pointer-events: none;
   will-change: transform;
 }
@@ -630,7 +630,7 @@ html.light .sc {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 29;
+  z-index: 199;
   pointer-events: none;
 }
 
@@ -5597,4 +5597,126 @@ body.tv-theater .site-banner {
   border: 0;
   border-radius: 999px;
   background: #fff;
+}
+
+
+/* ── Spotlight ────────────────────────────────────────────── */
+
+.sc-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 3px var(--brand-via),
+    0 0 0 9999px rgba(4, 4, 10, 0.66);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, width, height;
+}
+
+/* ── Captions: bottom, larger, 3 seconds each ─────────────── */
+
+@keyframes sc-caption-3s {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  9%,
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+}
+
+.sc-tv-page .sc .sc-caption:not(.is-ad) {
+  top: auto;
+  bottom: 22px;
+  gap: 12px;
+  padding: 10px 24px 10px 10px;
+  font-size: 22px;
+  line-height: 30px;
+  animation: sc-caption-3s 3s ease both;
+}
+
+.sc-tv-page .sc .sc-caption:not(.is-ad) .sc-caption-num {
+  width: 36px;
+  height: 36px;
+  font-size: 17px;
+}
+
+.sc-tv-page .sc.is-phone .sc-caption:not(.is-ad) {
+  top: auto;
+  bottom: 20px;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  font-size: 17px;
+  line-height: 23px;
+  white-space: normal;
+  animation: sc-caption-3s 3s ease both;
+}
+
+.sc-tv-page .sc.is-phone .sc-caption:not(.is-ad) .sc-caption-num {
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.sc-tv-page .sc.is-paused .sc-caption {
+  animation-play-state: paused;
+}
+
+/* Workspace picker dropdown (home title, cockpit chip) */
+.sc-ws-drop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  display: flex;
+  width: 256px;
+  flex-direction: column;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  padding: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  animation: sc-pg-pop 160ms ease-out both;
+}
+
+.sc-ws-drop.is-up {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+/* Bigger, slower click rings so the click reads at a glance */
+.sc-rings > span {
+  width: 110px;
+  height: 110px;
+  animation-duration: 900ms;
+}
+
+.sc-rings > span:nth-child(2) {
+  width: 76px;
+  height: 76px;
+  animation-delay: 110ms;
+}
+
+.sc-rings > span:nth-child(3) {
+  width: 44px;
+  height: 44px;
+  animation-delay: 220ms;
+}
+
+/* The shoe template is square; keep its headline in frame inside the tall card. */
+.sp-from img,
+.sp-hero img {
+  object-position: 85% 50%;
 }

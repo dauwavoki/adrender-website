@@ -47,7 +47,7 @@ function Scene({ state, tall }: { state: SceneState; tall: boolean }) {
         <div className="sp-scene is-clues">
           <div className="sp-stage">
             <div className="sp-card sp-hero">
-              <img src="/showcase/tpl-01.webp" alt="" />
+              <img src="/showcase/shoe-template.webp" alt="" />
               <span className="sp-ring" />
             </div>
             <span className="sp-chip c1">Hook that stops the scroll</span>
@@ -67,20 +67,20 @@ function Scene({ state, tall }: { state: SceneState; tall: boolean }) {
         <div className="sp-scene is-yours">
           <div className="sp-flow">
             <div className="sp-card sp-from">
-              <img src="/showcase/tpl-01.webp" alt="" />
+              <img src="/showcase/shoe-template.webp" alt="" />
               <span className="sp-tag">Winning ad</span>
             </div>
             <div className="sp-mid">
               <span className="sp-fly f1">
-                <img src="/showcase/ultra-light-runner.webp" alt="" />
+                <img src="/showcase/shoe-product.webp" alt="" />
               </span>
               <span className="sp-fly f2">
-                <img src="/showcase/yourbrand-logo.webp" alt="" />
+                <img src="/showcase/shoe-logo.webp" alt="" />
               </span>
               <span className="sp-arrow">→</span>
             </div>
             <div className="sp-card sp-to">
-              <img src={AD(4)} alt="" />
+              <img src="/showcase/shoe-output.webp" alt="" />
               <span className="sp-tag is-brand">Your ad</span>
             </div>
           </div>

@@ -5,6 +5,7 @@ import {
   BookmarkSimple,
   Books,
   CaretDown,
+  UsersFour,
   CaretLeft,
   ChartBar,
   Check,
@@ -53,7 +54,7 @@ import {
 import type { SceneState } from '../engine/story'
 import { balanceFor, PlayingCtx } from '../engine/layout'
 import { cx } from '../../site/cx'
-import { CollectionNav, NewCollectionDialog, SelectionBar, Toast } from './pages'
+import { CollectionNav, NewCollectionDialog, SelectionBar, Toast, WsDropdown } from './pages'
 
 
 type Tone = 'blue' | 'violet' | 'orange' | 'green' | 'amber'
@@ -175,13 +176,16 @@ export function HomeScreen({ state }: { state: SceneState }) {
       </div>
 
       <div className="sc-home-header">
-        <p className="cockpit-page-title home-workspace-title">
-          <UserCircleCheck size={16} aria-hidden />
-          <span className="cockpit-page-title-name">AdRender Workspace</span>
-          <span className="sc-slash">/</span>
-          <span className="cockpit-page-title-folder">{ACCOUNT.workspace}</span>
-          <CaretDown size={12} aria-hidden />
-        </p>
+        <span className="sc-rel">
+          <p className="cockpit-page-title home-workspace-title" data-sc="sc-home-ws">
+            {state.wsCur >= 1 ? <UsersFour size={16} aria-hidden /> : <UserCircleCheck size={16} aria-hidden />}
+            <span className="cockpit-page-title-name">AdRender Workspace</span>
+            <span className="sc-slash">/</span>
+            <span className="cockpit-page-title-folder">{state.wsCur >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
+            <CaretDown size={12} aria-hidden />
+          </p>
+          <WsDropdown state={state} where="home" />
+        </span>
         <div className="sc-home-actions">
           <Button variant="primary" icon={<SquaresFour size={14} />}>
             Browse templates

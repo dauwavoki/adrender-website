@@ -48,6 +48,33 @@ function Row({ icon, children, sc, trailing }: { icon: ReactNode; children: Reac
   )
 }
 
+/** Small picker that drops from the home title or the cockpit's workspace chip. */
+export function WsDropdown({ state, where }: { state: SceneState; where: 'home' | 'cockpit' }) {
+  if (state.wsPick !== where) return null
+  return (
+    <div className={cx('sc-ws-drop', where === 'cockpit' && 'is-up')} data-sc="sc-ws-drop">
+      <span className={cx('sc-menu-ws', state.wsCur === 0 && 'is-on')} data-sc="sc-ws-personal">
+        <UserCircleCheck size={16} />
+        <span className="sc-menu-ws-text">
+          <span>Personal</span>
+          <small>Workspace</small>
+        </span>
+        {state.wsCur === 0 ? <Check size={16} /> : null}
+      </span>
+      {state.ws >= 1 ? (
+        <span className={cx('sc-menu-ws', state.wsCur === 1 && 'is-on')} data-sc="sc-ws-team">
+          <UsersFour size={16} />
+          <span className="sc-menu-ws-text">
+            <span>{TEAM_NAME}</span>
+            <small>Owner</small>
+          </span>
+          {state.wsCur === 1 ? <Check size={16} /> : null}
+        </span>
+      ) : null}
+    </div>
+  )
+}
+
 function WorkspaceRows({ state }: { state: SceneState }) {
   return (
     <>
@@ -57,7 +84,7 @@ function WorkspaceRows({ state }: { state: SceneState }) {
           <span>Personal</span>
           <small>Workspace</small>
         </span>
-        {state.ws === 0 ? <Check size={16} /> : null}
+        {state.wsCur === 0 ? <Check size={16} /> : null}
       </span>
       {state.ws >= 1 ? (
         <span className="sc-menu-ws rise" data-sc="sc-ws-team">
@@ -66,7 +93,7 @@ function WorkspaceRows({ state }: { state: SceneState }) {
             <span>{TEAM_NAME}</span>
             <small>Owner</small>
           </span>
-          <Check size={16} />
+          {state.wsCur === 1 ? <Check size={16} /> : null}
         </span>
       ) : null}
       <Row icon={<Plus size={16} />} sc="sc-create-ws">

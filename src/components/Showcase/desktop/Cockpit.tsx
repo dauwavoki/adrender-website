@@ -18,6 +18,7 @@ import {
   SquaresFour,
   TextT,
   UserCircleCheck,
+  UsersFour,
   VideoCamera,
   X,
   CircleNotch,
@@ -26,6 +27,7 @@ import { buildFrame, localTabPath, type FramePaths, type TabBox } from './flapSh
 import { ACCOUNT, BRAND, PICKED_IMAGE, PICKED_VIDEO } from '../showcaseData'
 import type { LibState, Mode, SceneState } from '../engine/story'
 import { balanceFor, offsetWithin, VIDEO_PRICE } from '../engine/layout'
+import { WsDropdown } from './pages'
 import { cx } from '../../site/cx'
 
 const EMPTY: FramePaths = { leftFill: '', rightFill: '', selected: [], outline: '', silhouette: '', details: [] }
@@ -433,10 +435,13 @@ export function Cockpit({ state }: { state: SceneState }) {
               <div className="cockpit-body">
                 <div className="cockpit-topline">
                   <div className="cockpit-topline-main">
-                    <Switch>
-                      <UserCircleCheck size={16} aria-hidden />
-                      <span>{ACCOUNT.workspace}</span>
-                    </Switch>
+                    <span className="sc-rel">
+                      <Switch sc="sc-cockpit-ws" open={state.wsPick === 'cockpit'}>
+                        {state.wsCur >= 1 ? <UsersFour size={16} aria-hidden /> : <UserCircleCheck size={16} aria-hidden />}
+                        <span>{state.wsCur >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
+                      </Switch>
+                      <WsDropdown state={state} where="cockpit" />
+                    </span>
                     <span className="sc-rel">
                       <Switch sc="sc-brand-switch" placeholder={!state.brand} open={state.pop === 'brand'}>
                         {state.brand ? (

@@ -1,5 +1,5 @@
 import type { Story } from './engine/story'
-import { AFFILIATES_CAPTIONS, AFFILIATES_DESKTOP, AFFILIATES_PHONE, LIBRARY_CAPTIONS, LIBRARY_DESKTOP, LIBRARY_PHONE, WORKSPACES_CAPTIONS, WORKSPACES_DESKTOP, WORKSPACES_PHONE } from './stories/account'
+import { AFFILIATES_CAPTIONS, AFFILIATES_DESKTOP, AFFILIATES_PHONE, WORKSPACES_CAPTIONS, WORKSPACES_DESKTOP, WORKSPACES_PHONE } from './stories/account'
 import { SPOT_CAPTIONS, SPOT_TALL, SPOT_WIDE } from './stories/spot'
 import { AD_TALL, AD_WIDE, INTRO_DESKTOP, INTRO_PHONE } from './stories/intro'
 
@@ -150,8 +150,7 @@ export const TUTORIALS: Tutorial[] = [
     title: "My Ads Library and folders",
     summary: "Group your ads into collections, save an ad as a template, and use saved templates and past ads in the cockpit.",
     tags: ["library", "folders", "collections", "saved templates", "download"],
-    stories: { desktop: LIBRARY_DESKTOP, phone: LIBRARY_PHONE },
-    captions: LIBRARY_CAPTIONS,
+    // Being redone against the new selection bar; shows "Coming soon" until then.
   },
   {
     id: "skills",

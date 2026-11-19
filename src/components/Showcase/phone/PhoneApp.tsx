@@ -36,7 +36,7 @@ import {
 import type { LibState, SceneState } from '../engine/story'
 import { PlayingCtx, VIDEO_PRICE, balanceFor } from '../engine/layout'
 import { BrandScreen, BrandsScreen } from '../desktop/screens'
-import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toast } from '../desktop/pages'
+import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toast, WsDropdown } from '../desktop/pages'
 import { COLLECTIONS, SAVED_NEW, collectionCount } from '../desktop/pagesData'
 import {
   ACCOUNT,
@@ -132,8 +132,8 @@ function Header({ state }: { state: SceneState }) {
   return (
     <header className="sc-ph-header">
       <span className="sc-ph-workspace" data-sc="sc-ph-workspace">
-        {state.ws >= 1 ? <UsersFour size={16} /> : <UserCircleCheck size={16} />}
-        <span>{state.ws >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
+        {state.wsCur >= 1 ? <UsersFour size={16} /> : <UserCircleCheck size={16} />}
+        <span>{state.wsCur >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
         <CaretDown size={14} />
       </span>
       {showMode ? <ModeToggle state={state} /> : null}
@@ -470,13 +470,16 @@ function PhoneHome({ state }: { state: SceneState }) {
           <p className="sc-quote-by">— {QUOTE.by}</p>
         </div>
       </div>
-      <p className="cockpit-page-title home-workspace-title sc-ph-title">
-        <UserCircleCheck size={16} />
-        <span className="cockpit-page-title-name">AdRender Workspace</span>
-        <span className="sc-slash">/</span>
-        <span className="cockpit-page-title-folder">{ACCOUNT.workspace}</span>
-        <CaretDown size={12} />
-      </p>
+      <span className="sc-rel">
+        <p className="cockpit-page-title home-workspace-title sc-ph-title" data-sc="sc-home-ws">
+          {state.wsCur >= 1 ? <UsersFour size={16} /> : <UserCircleCheck size={16} />}
+          <span className="cockpit-page-title-name">AdRender Workspace</span>
+          <span className="sc-slash">/</span>
+          <span className="cockpit-page-title-folder">{state.wsCur >= 1 ? 'Studio Team' : ACCOUNT.workspace}</span>
+          <CaretDown size={12} />
+        </p>
+        <WsDropdown state={state} where="home" />
+      </span>
       <div className="sc-ph-stats">
         {[
           ['Ads generated', ACCOUNT.stats.ads],

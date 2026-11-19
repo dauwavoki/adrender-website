@@ -83,6 +83,11 @@ export type SceneState = {
   saved: number
   /** Ad spot scene (the creative ad). */
   spot: number
+  /** Spotlight: data-sc name to light up while the rest of the window darkens. */
+  focus: string | null
+  /** Workspace: which one is active (0 Personal · 1 Studio Team), and which picker dropdown is open. */
+  wsCur: number
+  wsPick: 'home' | 'cockpit' | null
 }
 
 export const INITIAL: SceneState = {
@@ -130,6 +135,9 @@ export const INITIAL: SceneState = {
   shelf: 0,
   saved: 0,
   spot: 0,
+  focus: null,
+  wsCur: 0,
+  wsPick: null,
 }
 
 export type Patch = Partial<SceneState> | ((state: SceneState) => Partial<SceneState>)

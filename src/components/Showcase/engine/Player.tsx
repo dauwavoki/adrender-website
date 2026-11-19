@@ -106,6 +106,28 @@ function Caption({ index, captions, variant }: { index: number; captions: readon
   )
 }
 
+/** Darkens everything but one named element, so a click on it is easy to spot. */
+function Spotlight({ state, instant }: { state: SceneState; instant: boolean }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const last = useRef<Box | null>(null)
+  useLayoutEffect(() => {
+    const el = ref.current
+    const app = el?.closest<HTMLElement>('.sc-app')
+    if (!el || !app) return
+    const box = state.focus ? boxOf(state.focus, app) : null
+    if (box) last.current = box
+    const use = box ?? last.current
+    if (!use) return
+    const pad = 10
+    el.style.transition = instant ? 'none' : 'all 380ms ease'
+    el.style.transform = `translate(${use.x - pad}px, ${use.y - pad}px)`
+    el.style.width = `${use.w + pad * 2}px`
+    el.style.height = `${use.h + pad * 2}px`
+    el.style.opacity = box ? '1' : '0'
+  }, [state.focus, instant, state.screen, state.menu, state.modal, state.ptab, state.ws, state.team, state.cockpitOpen])
+  return <div ref={ref} className="sc-spotlight" aria-hidden />
+}
+
 type Ring = { id: number; x: number; y: number }
 
 /** Cursor and click rings. Position is written straight to the DOM; rings are state. */
@@ -134,7 +156,7 @@ function Cursor({ state, instant, scale, touch }: { state: SceneState; instant: 
     lastClick.current = state.click
     const ring = { id: state.click, ...pos.current }
     const add = window.setTimeout(() => setRings((current) => [...current, ring]), 0)
-    const remove = window.setTimeout(() => setRings((current) => current.filter((item) => item.id !== ring.id)), 900)
+    const remove = window.setTimeout(() => setRings((current) => current.filter((item) => item.id !== ring.id)), 1300)
     return () => {
       window.clearTimeout(add)
       window.clearTimeout(remove)
@@ -422,6 +444,7 @@ export function Player({
             <div ref={cameraRef} className="sc-camera">
               <div ref={appRef} className="sc-app" style={{ width: app.w, height: app.h }} data-screen={state.screen}>
                 {renderApp(state)}
+                <Spotlight state={state} instant={instant} />
                 <Cursor state={state} instant={instant} scale={cursorScale} touch={touch} />
               </div>
             </div>
