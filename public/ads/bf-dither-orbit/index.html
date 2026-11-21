@@ -113,7 +113,7 @@ function sceneGauge(t) {
 function sceneFlow(t) {
   backdrop(t, gradientField(t, 'right'));
   const k = sine(prog(t, 14.0, 21.6)), enter = EASE.premium(prog(t, 14.2, 15.4));
-  g.save(); g.translate(W / 2, H / 2 + (1 - enter) * 50); g.rotate(lerp(-0.07, -0.04, k)); g.transform(1, 0, lerp(0.10, 0.05, k), 1, 0, 0); g.scale(lerp(1, 1.04, k), lerp(1, 1.04, k)); g.globalAlpha = enter;
+  g.save(); g.translate(W / 2, H / 2 + (1 - enter) * 50); g.rotate(lerp(-0.07, -0.04, k)); g.transform(1, 0, lerp(0.10, 0.05, k), 1, 0, 0); const zs = (PHONE ? 0.86 : 1) * lerp(1, 1.04, k); g.scale(zs, zs); g.globalAlpha = enter;
   const PW = PHONE ? 980 : 1640, PH = PHONE ? 1240 : 760;
   g.beginPath(); g.roundRect(-PW / 2, -PH / 2, PW, PH, 36); g.fillStyle = 'rgba(14,14,32,0.92)'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.08)'; g.lineWidth = 2; g.stroke();
   g.font = '600 34px Inter'; g.fillStyle = TXT; g.letterSpacing = '-0.5px'; g.fillText('One brand in. Ads out.', -PW / 2 + 48, -PH / 2 + 74); mono('YOURBRAND · BLACK FRIDAY', PW / 2 - 48, -PH / 2 + 72, 18, MUTE, 'right', 3);
@@ -122,7 +122,7 @@ function sceneFlow(t) {
   const N = PHONE ? {
     src: [-470 + 10, -100, 250, 150, 'YourBrand', 'brand kit', BL],
     mid: [[-90, -330, 250, 120, 'Image', 'templates', PK], [-90, -100, 250, 120, 'Video', 'templates', PK], [-90, 130, 250, 120, 'Ad copy', 'per product', PK]],
-    out: [[220, -380, 240, 130, 'Feed ads', 'image', PU], [220, -160, 240, 130, 'Story ads', 'image + video', PU], [220, 60, 240, 130, 'Video ads', 'clone', PU], [220, 280, 240, 130, 'Captions', 'ready to post', PU]],
+    out: [[220, -380, 240, 130, 'Feed ads', 'image', PU], [220, -160, 240, 130, 'Story ads', 'image + video', PU], [220, 60, 240, 130, 'Video ads', 'clone', PU], [220, 280, 240, 130, 'Square ads', 'image', PU]],
   } : {
     src: [-760, -60, 300, 170, 'YourBrand', 'brand kit', BL],
     mid: [[-260, -250, 300, 130, 'Image templates', 'winning ads', PK], [-260, -40, 300, 130, 'Video templates', 'winning ads', PK], [-260, 170, 300, 130, 'Ad copy', 'per product', PK]],
