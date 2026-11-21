@@ -58,6 +58,7 @@
   // ---------- text: word by word, blur to sharp with a small rise ----------
   // spec: {text, x, y, size, weight, font, color, align, t, in, out, stagger, grad:[top,bottom], italic}
   function words(g, s) {
+    if (s.solid) return solidWords(g, s);
     const fam = s.font || 'Inter', size = s.size || 64, weight = s.weight || 600;
     g.save(); g.font = `${s.italic ? 'italic ' : ''}${weight} ${size}px ${fam}`; g.textBaseline = 'alphabetic';
     if (s.track != null) g.letterSpacing = `${s.track * size}px`; else g.letterSpacing = `${-0.03 * size}px`;
@@ -79,6 +80,31 @@
         if (s.shadow) { g.shadowColor = s.shadow; g.shadowBlur = size * 0.5 * SCALE; }
         g.fillText(p, x, s.y + dy);
       }
+      x += widths[i] + space;
+    });
+    g.restore();
+    return total;
+  }
+  // Solid text: no opacity, no blur. Each whole word slides up from behind a clean edge (clip), one after another,
+  // and leaves upward the same way. Stagger stays under 0.5s in total (motion-design skill).
+  function solidWords(g, s) {
+    const fam = s.font || 'Inter', size = s.size || 64, weight = s.weight || 600;
+    g.save(); g.font = `${s.italic ? 'italic ' : ''}${weight} ${size}px ${fam}`; g.textBaseline = 'alphabetic';
+    g.letterSpacing = `${(s.track ?? -0.03) * size}px`;
+    const parts = s.text.split(' '), space = g.measureText(' ').width, widths = parts.map(p => g.measureText(p).width);
+    const total = widths.reduce((a, b) => a + b, 0) + space * (parts.length - 1);
+    let x = s.align === 'left' ? s.x : s.align === 'right' ? s.x - total : s.x - total / 2;
+    const n = parts.length, stag = Math.min(s.stagger ?? 0.06, 0.45 / Math.max(1, n - 1)), dur = s.dur ?? 0.45;
+    const enter = s.ease || EASE.standard, leave = EASE.exit;
+    const top = s.y - size * 1.0, h = size * 1.32;
+    g.beginPath(); g.rect(x - size, top, total + size * 2, h); g.clip();
+    if (s.grad) { const gr = g.createLinearGradient(0, s.y - size * 0.75, 0, s.y); gr.addColorStop(0, s.grad[0]); gr.addColorStop(0.5, s.grad[0]); gr.addColorStop(1, s.grad[1]); g.fillStyle = gr; }
+    else g.fillStyle = s.color || '#fff';
+    if (s.shadow) { g.shadowColor = s.shadow; g.shadowBlur = size * 0.4 * SCALE; }
+    parts.forEach((p, i) => {
+      const kin = s.in == null ? 1 : enter(prog(s.t, s.in + i * stag, s.in + i * stag + dur));
+      const kout = s.out == null ? 0 : leave(prog(s.t, s.out + i * stag * 0.7, s.out + i * stag * 0.7 + dur * 0.75));
+      if (kin > 0 && kout < 1) g.fillText(p, x, s.y + (1 - kin) * h - kout * h);
       x += widths[i] + space;
     });
     g.restore();
@@ -173,7 +199,7 @@
     function seek(k) { at = k * TOTAL; base = performance.now(); }
     function controls() {
       const el = document.createElement('div'); el.className = 'ctl';
-      el.innerHTML = '<button class="pp" aria-label="Play or pause"></button><div class="trk"><div class="fill"></div></div><button class="rs" aria-label="Restart">↺</button>';
+      el.innerHTML = '<button class="pp" aria-label="Play or pause"></button><div class="trk"><div class="fill"></div></div><button class="rs" aria-label="Restart">↺</button>' + (window.AUDIO_SRC ? '<button class="snd" aria-label="Sound on or off">🔇</button>' : '');
       document.body.appendChild(el);
       const pp = el.querySelector('.pp'), trk = el.querySelector('.trk'), fill = el.querySelector('.fill');
       pp.onclick = () => { if (playing) { at = now(); playing = false; } else { base = performance.now(); playing = true; } };
@@ -183,7 +209,13 @@
       trk.addEventListener('pointerup', () => { trk.onpointermove = null; });
       let idle; const wake = () => { el.classList.remove('hide'); clearTimeout(idle); idle = setTimeout(() => el.classList.add('hide'), 2200); };
       document.addEventListener('pointermove', wake); wake();
-      return { update(k, p) { fill.style.width = (k * 100).toFixed(2) + '%'; pp.textContent = p ? '❚❚' : '▶'; } };
+      // optional sound track, kept in step with the timeline (browsers only allow sound after a click)
+      let audio = null, soundOn = false;
+      const snd = el.querySelector('.snd');
+      if (snd) { audio = new Audio(window.AUDIO_SRC); audio.preload = 'auto';
+        snd.onclick = () => { soundOn = !soundOn; snd.textContent = soundOn ? '🔊' : '🔇'; if (soundOn) { audio.currentTime = now(); if (playing) audio.play().catch(() => {}); } else audio.pause(); }; }
+      return { update(k, p) { fill.style.width = (k * 100).toFixed(2) + '%'; pp.textContent = p ? '❚❚' : '▶';
+        if (audio && soundOn) { const t = k * TOTAL; if (!p) { if (!audio.paused) audio.pause(); } else { if (audio.paused) audio.play().catch(() => {}); if (Math.abs(audio.currentTime - t) > 0.15) audio.currentTime = t; } } } };
     }
   }
   const style = document.createElement('style');

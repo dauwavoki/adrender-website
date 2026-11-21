@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AdRender Black Friday: cinematic</title><meta name="robots" content="noindex"></head>
+<body><canvas id="c"></canvas>
+<script src="/ads/lib/logo3d.js"></script>
+<script src="/ads/lib/core.js"></script>
+<script>
+// Ad 5: "Cinematic". The real 3D AdRender logo (geometry from the logo pack's beam3d.py) under one key light,
+// a winning ad taken apart into cut-out layers and rebuilt as your brand, a row of finished ads, the offer, the logo again.
+// Motion personality: Premium (one per project). Signature easing cubic-bezier(0.4,0,0.2,1); durations 0.4 / 0.6 / 1.0s;
+// no overshoot. No fades: shots turn into each other (logo edge-on becomes the card edge-on), words slide up from behind an edge.
+const A = AD, { PHONE, W, H, SCALE, clamp01, lerp, prog, sine, bezier, ctx, mk, begin, IMG, drawCover, words, ditherField, ditherSource } = A;
+const TOTAL = 30;
+const PREM = bezier(0.4, 0, 0.2, 1), EXIT = bezier(0.4, 0, 1, 1), ENTER = bezier(0.05, 0.7, 0.1, 1);
+const BG = '#08080A', INK = '#F2F0EC', MUTE = 'rgba(242,240,236,0.6)', VIO = '#9B7BFF';
+const assets = { tpl: '/showcase/shoe-template.webp', tplCut: '/ads/assets/shoe-template-cut.webp', out: '/showcase/shoe-output.webp',
+  a2: '/showcase/ad-02.webp', a2Cut: '/ads/assets/ad-02-cut.webp', a8: '/showcase/ad-08.webp', a11: '/showcase/ad-11.webp', v3: '/showcase/vad-03.webp', yb: '/showcase/yourbrand-logo.webp' };
+let g = ctx;
+const CX = W / 2, CY = PHONE ? H * 0.47 : H * 0.48;
+const CARD = PHONE ? [600, 746] : [460, 572];
+const LOGO = PHONE ? 520 : 500;
+
+// ---------- helpers ----------
+function ditherImg(im, w, h) {   // other brands' ads stay as violet pixel dither
+  const c = mk(w, h, 1), x = c.getContext('2d'); drawCover(x, im, 0, 0, w, h, 0);
+  const o = mk(w, h, 1), ox = o.getContext('2d'); ox.fillStyle = '#100E18'; ox.fillRect(0, 0, w, h);
+  ditherSource(ox, c, { x: 0, y: 0, w, h, cell: 5, on: VIO, gain: 1.3, bias: -0.06, key: 'di' + w }); return o;
+}
+function ditherCut(im, w, h) {   // dithered cut-out that keeps its transparent outline
+  const c = mk(w, h, 1), x = c.getContext('2d'); x.drawImage(im, 0, 0, w, h);
+  const o = mk(w, h, 1), ox = o.getContext('2d'); ditherSource(ox, c, { x: 0, y: 0, w, h, cell: 5, on: VIO, off: '#100E18', gain: 1.3, bias: -0.06, key: 'dc' + w }); return o;
+}
+let D = null;
+function build() { D = { tpl: ditherImg(IMG.tpl, 420, 522), cut: ditherCut(IMG.tplCut, 840, Math.round(840 * IMG.tplCut.height / IMG.tplCut.width)) }; }
+function card(im, x, y, w, h, r = 22, shadow = 0.5, blur = 0) {
+  g.save(); if (shadow) { g.shadowColor = `rgba(0,0,0,${shadow})`; g.shadowBlur = 50 * SCALE; g.shadowOffsetY = 26 * SCALE; }
+  g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = '#111'; g.fill(); g.shadowColor = 'transparent';
+  if (blur) g.filter = `blur(${blur * SCALE}px)`; drawCover(g, im, x, y, w, h, r); g.filter = 'none';
+  g.beginPath(); g.roundRect(x + 1, y + 1, w - 2, h - 2, r); g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,0.10)'; g.stroke(); g.restore();
+}
+function cap(t, text, a, b, y, o = {}) { words(g, Object.assign({ text, x: W / 2, y, size: PHONE ? 64 : 58, weight: 500, t, in: a, out: b, solid: true, color: INK, ease: PREM, dur: 0.6 }, o)); }
+function serif(t, text, a, b, y, size) { words(g, { text, x: W / 2, y, size, weight: 400, font: 'Newsreader', italic: true, t, in: a, out: b, solid: true, color: INK, track: -0.02, ease: PREM, dur: 0.7 }); }
+
+// ---------- ambient layer: key-light pool and slow dust ----------
+const DUST = Array.from({ length: 70 }, (_, i) => ({ x: (Math.sin(i * 12.9898) * 43758.5453) % 1, y: (Math.sin(i * 78.233) * 12345.678) % 1, s: 1 + (i % 3), v: 0.004 + (i % 5) * 0.002 }));
+function ambient(t, lx) {
+  g.fillStyle = BG; g.fillRect(0, 0, W, H);
+  const gx = W * (0.5 + 0.18 * lx), gy = CY - H * 0.06, gr = g.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W, H) * 0.55);
+  gr.addColorStop(0, 'rgba(120,96,200,0.20)'); gr.addColorStop(0.45, 'rgba(70,50,120,0.08)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  // dithered floor line under the subject
+  ditherField(g, { x: 0, y: H * (PHONE ? 0.72 : 0.80), w: W, h: H * 0.2, cell: 6, on: '#1C1830', key: 'floor', field: (u, v) => Math.exp(-Math.pow((u - 0.5 - 0.1 * lx) / 0.32, 2)) * (1 - v) * 0.8 });
+  g.fillStyle = 'rgba(220,210,255,0.35)';
+  DUST.forEach(d => { const x = ((Math.abs(d.x) + t * d.v * 0.6) % 1) * W, y = ((Math.abs(d.y) - t * d.v) % 1 + 1) % 1 * H; g.fillRect(x, y, d.s, d.s); });
+}
+
+// ---------- shots ----------
+function logoShot(t, yaw, size, lightX, cy = CY, pitch = 0.16) {
+  Logo3D.draw(g, { cx: CX, cy, size, yaw, pitch, roll: 0, light: [lightX, 0.45, 0.75], amb: 0.22, key: 0.95, spec: 0.55, lines: 0.55, persp: 6.5 });
+}
+function render(t) {
+  if (!D) build();
+  begin(ctx); g = ctx;
+  const lx = Math.sin(t * 0.35);
+  ambient(t, lx);
+
+  // 1-2: the 3D logo under a sweeping key light, then it turns edge-on and becomes the card
+  if (t < 6.2) {
+    const turn = PREM(prog(t, 4.6, 6.1));
+    const yaw = lerp(-0.85, -0.12, sine(prog(t, 0, 4.6))) + turn * (Math.PI / 2 + 0.12);
+    const size = LOGO * lerp(0.9, 1, sine(prog(t, 0, 4.6))) * lerp(1, 1.5, turn);
+    const light = lerp(-1.1, 0.9, sine(prog(t, 0.2, 4.4)));
+    logoShot(t, yaw, size, light);
+  }
+  const [cw, ch] = CARD;
+  // card comes round from edge-on (6.1 - 6.9)
+  const face = PREM(prog(t, 6.1, 6.9));
+  // 3: layers come apart (7.4 - 8.6), puppet motion while apart
+  const apart = PREM(prog(t, 7.4, 8.6)) * (1 - PREM(prog(t, 14.4, 15.4)));
+  // 4: hard-edge wipe from the winning ad to your version (12.4 - 13.6)
+  const wipe = PREM(prog(t, 12.4, 13.6));
+  const shoeOut = EXIT(prog(t, 12.2, 12.8));
+  // 5: card steps back into a row (17.4 - 18.4)
+  const back = PREM(prog(t, 17.4, 18.4));
+  const leave = EXIT(prog(t, 23.4, 24.0));
+  if (t >= 6.1 && t < 24.0) {
+    const rowScale = lerp(1, PHONE ? 0.6 : 0.62, back), drift = -40 * sine(prog(t, 17.4, 24));
+    const w = cw * rowScale, h = ch * rowScale, x0 = CX - w / 2 + drift, y0 = CY - h / 2 + leave * H * 0.7;
+    // row neighbours slide in from the sides, a pair at a time (1/3 rule), soft focus
+    if (back > 0) {
+      const gap = 30, list = [[IMG.v3, -2], [IMG.a2, -1], [IMG.a8, 1], [IMG.a11, 2]];
+      list.forEach(([im, k], i) => {
+        const e = PREM(prog(t, 17.8 + Math.abs(k) * 0.25, 18.8 + Math.abs(k) * 0.25)), side = Math.sign(k);
+        const nx = x0 + k * (w + gap) + side * (1 - e) * W * 0.32, ny = y0 + Math.abs(k) * 18;
+        if (k === -1) {   // puppet: the athlete cut out and moving in front of his own blurred plate
+          card(im, nx, ny, w, h, 18, 0.4, 5);
+          const sway = Math.sin(t * 1.3) * 0.025, bob = Math.sin(t * 1.9) * 4;
+          const cw2 = w * 0.974, chh = cw2 * IMG.a2Cut.height / IMG.a2Cut.width;
+          g.save(); g.beginPath(); g.roundRect(nx, ny, w, h, 18); g.clip(); g.translate(nx + w * 0.026 + cw2 / 2, ny + chh); g.rotate(sway); g.scale(1.03, 1.03);
+          g.drawImage(IMG.a2Cut, -cw2 / 2, -chh + bob, cw2, chh); g.restore();
+        } else card(im, nx, ny, w, h, 18, 0.4, Math.abs(k) === 2 ? 7 : 4);
+      });
+    }
+    // the hero card: edge-on -> facing (horizontal scale is the turn)
+    g.save(); g.translate(x0 + w / 2, y0 + h / 2); g.scale(Math.max(0.02, face), 1); g.translate(-(x0 + w / 2), -(y0 + h / 2));
+    // plate: winning ad (dither) wiped into your version (colour) behind a moving hard edge
+    const px = x0 - apart * w * 0.10, py = y0 - apart * h * 0.06, ps = 1 - apart * 0.08;
+    const pw = w * ps, ph = h * ps;
+    card(D.tpl, px, py, pw, ph, 22, 0.55);
+    if (wipe > 0) {
+      g.save(); g.beginPath(); g.rect(px, py, pw * wipe, ph); g.clip(); card(IMG.out, px, py, pw, ph, 22, 0); g.restore();
+      if (wipe < 1) { g.fillStyle = '#FFFFFF'; g.fillRect(px + pw * wipe - 2, py, 4, ph); }
+    }
+    // product layer: the cut-out shoe lifts forward and moves like a puppet, then slides out to the right
+    if (apart > 0 && shoeOut < 1) {
+      const sw = pw * 1.02, sh = sw * D.cut.height / D.cut.width;
+      const sx = px + apart * w * 0.22 + shoeOut * W * 0.5, sy = py + ph * 0.36 - apart * h * 0.05 + Math.sin(t * 1.6) * 6 * apart;
+      g.save(); g.translate(sx + sw / 2, sy + sh / 2); g.rotate((Math.sin(t * 1.1) * 0.05 - 0.04) * apart); g.shadowColor = 'rgba(0,0,0,0.55)'; g.shadowBlur = 40 * SCALE; g.shadowOffsetY = 30 * SCALE;
+      g.drawImage(D.cut, -sw / 2, -sh / 2, sw, sh); g.restore();
+    }
+    // labels for the layers (secondary motion), slide out with the swap
+    if (apart > 0.5 && t < 14.4) {
+      const lk = PREM(prog(t, 8.4, 8.9)) * (1 - EXIT(prog(t, 12.0, 12.4)));
+      const tag = (txt, tx, ty, ax, ay) => { g.save(); g.strokeStyle = 'rgba(255,255,255,0.55)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(ax, ay); g.lineTo(lerp(ax, tx, lk), lerp(ay, ty, lk)); g.stroke();
+        g.beginPath(); g.arc(ax, ay, 4, 0, 7); g.fillStyle = '#fff'; g.fill(); if (lk > 0.98) { g.font = `500 ${PHONE ? 26 : 20}px Inter`; g.fillStyle = INK; g.letterSpacing = '2px'; g.textAlign = tx < ax ? 'right' : 'left'; g.fillText(txt, tx + (tx < ax ? -10 : 10), ty + 7); } g.restore(); };
+      tag('LAYOUT', px - (PHONE ? 30 : 90), py + ph * 0.15, px + pw * 0.12, py + ph * 0.18);
+      tag('PRODUCT', px + pw + (PHONE ? 30 : 120), py + ph * 0.62, px + pw * 0.78, py + ph * 0.66);
+      tag('HEADLINE', px + pw + (PHONE ? 30 : 120), py + ph * 0.2, px + pw * 0.75, py + ph * 0.24);
+    }
+    // your brand chip clicks on after the rebuild
+    const chip = PREM(prog(t, 15.2, 15.8)) * (1 - EXIT(prog(t, 17.2, 17.6)));
+    if (chip > 0) {
+      const cwid = PHONE ? 300 : 230, chh = PHONE ? 74 : 58, cxp = CX - cwid / 2, cyp = y0 + h + 24 + (1 - chip) * 60;
+      g.save(); g.beginPath(); g.rect(0, y0 + h + 10, W, chh + 40); g.clip();
+      g.beginPath(); g.roundRect(cxp, cyp, cwid, chh, chh / 2); g.fillStyle = '#17161D'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.16)'; g.lineWidth = 2; g.stroke();
+      drawCover(g, IMG.yb, cxp + 10, cyp + 8, chh - 16, chh - 16, (chh - 16) / 2); g.font = `600 ${PHONE ? 30 : 24}px Inter`; g.fillStyle = INK; g.fillText('YourBrand', cxp + chh + 6, cyp + chh / 2 + (PHONE ? 10 : 8)); g.restore();
+    }
+    g.restore();
+  }
+
+  // 6: the offer in big editorial type
+  const big = PHONE ? 210 : 190;
+  serif(t, '50% off', 24.0, 27.0, CY - (PHONE ? 10 : 20), big);
+  words(g, { text: 'your first month', x: W / 2, y: CY + (PHONE ? 110 : 90), size: PHONE ? 72 : 64, weight: 500, t, in: 24.3, out: 27.0, solid: true, color: INK, ease: PREM, dur: 0.6 });
+  words(g, { text: 'Every plan · One week only', x: W / 2, y: CY + (PHONE ? 200 : 170), size: PHONE ? 36 : 30, weight: 500, t, in: 24.6, out: 27.0, solid: true, color: MUTE, track: 0.02, ease: PREM, dur: 0.6 });
+
+  // 7: the logo comes back up from below, turning to face us
+  if (t >= 26.9) {
+    const up = PREM(prog(t, 26.9, 28.0)), lyaw = lerp(-0.7, -0.08, PREM(prog(t, 26.9, 29.4)));
+    logoShot(t, lyaw, LOGO * 0.62, lerp(-0.6, 0.8, sine(prog(t, 26.9, 30))), lerp(H + LOGO, CY - (PHONE ? 140 : 110), up), 0.12);
+    const uk = PREM(prog(t, 28.1, 28.6)), uy = CY + (PHONE ? 150 : 150);
+    if (uk > 0) { const bw = PHONE ? 470 : 380, bh = PHONE ? 86 : 70; g.save(); g.beginPath(); g.rect(0, uy - 4, W, bh + 8); g.clip(); g.translate(0, (1 - uk) * (bh + 8));
+      g.beginPath(); g.roundRect(W / 2 - bw / 2, uy, bw, bh, bh / 2); g.fillStyle = INK; g.fill(); g.font = `500 ${PHONE ? 38 : 31}px Inter`; g.fillStyle = BG; g.textAlign = 'center'; g.fillText('adrender.app', W / 2, uy + bh / 2 + 11); g.restore(); }
+    words(g, { text: 'Black Friday · 50% off your first month · One week only', x: W / 2, y: uy + (PHONE ? 160 : 130), size: PHONE ? 30 : 25, weight: 500, t, in: 28.5, solid: true, stagger: 0.03, color: MUTE, track: 0, ease: PREM });
+  }
+
+  // captions
+  const capY = PHONE ? H * 0.86 : H - 92;
+  serif(t, 'Black Friday.', 1.0, 4.5, PHONE ? H * 0.8 : H - 110, PHONE ? 96 : 84);
+  cap(t, 'A winning ad, taken apart.', 8.0, 12.1, capY);
+  cap(t, 'Rebuilt as your brand.', 12.9, 17.1, capY);
+  if (PHONE) { cap(t, 'Image and video ads', 18.4, 23.2, capY - 40); cap(t, 'for your brand.', 18.55, 23.2, capY + 40); }
+  else cap(t, 'Image and video ads for your brand.', 18.4, 23.2, capY);
+}
+window.GL_TWICE = false;
+window.AUDIO_SRC = '/ads/audio/bf-cinematic.mp3';
+Logo3D.load('/ads/assets/logo3d.json').then(() => AD.start(TOTAL, render, assets));
+</script></body></html>

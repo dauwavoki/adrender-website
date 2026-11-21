@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AdRender Black Friday: the real app</title><meta name="robots" content="noindex"></head>
+<body><canvas id="c"></canvas>
+<script src="/ads/lib/gl3d.js"></script>
+<script src="/ads/lib/core.js"></script>
+<script>
+// Ad 4: "The real app". Real AdRender screens in 3D space, one continuous camera that only moves forward along the row.
+// Motion personality: Corporate (one per project). Signature easing cubic-bezier(0.2,0,0,1); durations 0.25 / 0.4 / 0.6s;
+// one entrance pattern (slide in on position, never opacity). No fades anywhere: things move, scale, flip or switch
+// pixel by pixel (the app turns into pixel dither and back). Main action stays dead centre.
+const A = AD, { PHONE, W, H, SCALE, RENDER, clamp01, lerp, prog, outExpo, sine, bezier, ctx, mk, begin, IMG, drawCover, words, ditherField, dissolve, pixelWipe, logo } = A;
+const TOTAL = 30;
+const SIG = bezier(0.2, 0, 0, 1), INOUT = bezier(0.65, 0, 0.35, 1), EXIT = bezier(0.3, 0, 1, 1);
+const BG = '#0B0B0F', INK = '#F4F3F8', MUTE = 'rgba(244,243,248,0.62)', VIO = '#9B7BFF';
+const GRAD = ['#4F8DF7', '#9B6BF2', '#FF8A3D'];
+const S3 = GL3D.create(W * SCALE, H * SCALE);
+const TS = 2;
+let g = ctx;
+const assets = {
+  home: '/ads/assets/scr-home.webp', homeD: '/ads/assets/scr-home-d.webp', browse: '/ads/assets/scr-browse.webp',
+  lib: '/ads/assets/scr-library.webp', libD: '/ads/assets/scr-library-d.webp', bar: '/ads/assets/scr-bar.webp',
+  tpl: '/showcase/shoe-template.webp', out: '/showcase/shoe-output.webp', yb: '/showcase/yourbrand-logo.webp', logo: '/brand/logo/adrender-logo-1024.png',
+};
+
+// ---------- layout ----------
+const SW = PHONE ? 1100 : 1500;
+const FGD = PHONE ? 1020 : 1500;   // distance of the foreground plane from the camera
+const L = PHONE ? { fov: 58, card: [310, 385], cardY: 80, bar: [600, 70], barY: -385, chip: [100, -165], chipS: 0.72, textY: 230, textSize: 64, offer: [490, 600] }
+                : { fov: 34, card: [360, 448], cardY: 40, bar: [1280, 149], barY: -312, chip: [235, -160], chipS: 1, textY: 118, textSize: 58, offer: [880, 520] };
+const X = { home: 0, browse: PHONE ? 1500 : 1900, lib: PHONE ? 3000 : 3800 };
+const HH = { home: SW * 1497 / 2333, browse: SW * 1280 / 2400, lib: SW * 860 / 2400 };
+// slots measured on the real screenshots (fractions of each screen)
+const SLOT = { u: (0.4125 + 0.5875) / 2, v: (0.19375 + 0.603) / 2, w: 0.175, h: 0.409 };
+const LSLOT = { u: (0.0308 + 0.2058) / 2, v: (0.2419 + 0.7349) / 2, w: 0.175, h: 0.493 };
+const HOMEFOCUS = { u: 0.21, v: 0.065 };   // the AdRender mark at the top of Home
+
+// ---------- textures ----------
+function panel(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = Math.round(w * TS); c.height = Math.round(h * TS); const p = { c, w, h, tex: null, key: null };
+  p.redraw = (...a) => { const key = JSON.stringify(a); if (key === p.key && p.tex) return p; p.key = key; const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, c.width, c.height); x.setTransform(TS, 0, 0, TS, 0, 0); const keep = g; g = x; draw(...a); g = keep; if (p.tex) p.tex.update(); else p.tex = S3.texture(c); return p; };
+  return p;
+}
+// switch an image to its dithered twin cell by cell (k 0..1), no opacity
+function morph(a, b, k, w, h, r, dir = [1, 0.4], cell = 26) {
+  drawCover(g, a, 0, 0, w, h, r);
+  if (k <= 0) return; if (k >= 1) { drawCover(g, b, 0, 0, w, h, r); return; }
+  const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell), m = A.small('mm', cols, rows), id = m.g.createImageData(cols, rows);
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) if (dissolve(k, (i + .5) / cols, (j + .5) / rows, i, j, dir, 0.5)) id.data[(j * cols + i) * 4 + 3] = 255;
+  m.g.putImageData(id, 0, 0);
+  const t = A.small('mt', Math.ceil(w * TS), Math.ceil(h * TS)); t.g.setTransform(TS, 0, 0, TS, 0, 0); t.g.globalCompositeOperation = 'source-over'; t.g.clearRect(0, 0, w, h);
+  drawCover(t.g, b, 0, 0, w, h, r); t.g.globalCompositeOperation = 'destination-in'; t.g.imageSmoothingEnabled = false; t.g.drawImage(m, 0, 0, cols * cell, rows * cell); t.g.globalCompositeOperation = 'source-over'; t.g.imageSmoothingEnabled = true;
+  g.drawImage(t, 0, 0, w, h);
+}
+let ditherTpl = null, ditherOut = null;
+function makeDitherTpl(im = IMG.tpl) {   // an ad as purple pixel dither (other brands stay unreadable)
+  const c = mk(420, 522, 1), x = c.getContext('2d'); drawCover(x, im, 0, 0, 420, 522, 0);
+  const o = mk(420, 522, 1), ox = o.getContext('2d'); ox.fillStyle = '#0E0E14'; ox.fillRect(0, 0, 420, 522);
+  A.ditherSource(ox, c, { x: 0, y: 0, w: 420, h: 522, cell: 6, on: VIO, gain: 1.3, bias: -0.06, key: 'dt' }); return o;
+}
+const T = {};
+function build() {
+  ditherTpl = makeDitherTpl(); ditherOut = makeDitherTpl(IMG.out);
+  const rim = (w, h, r) => { g.save(); g.beginPath(); g.roundRect(1, 1, w - 2, h - 2, r); g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,0.10)'; g.stroke(); g.restore(); };
+  T.home = panel(SW, HH.home, k => { morph(IMG.home, IMG.homeD, k, SW, HH.home, 18, [1, 0.3]); rim(SW, HH.home, 18); });
+  T.browse = panel(SW, HH.browse, () => { drawCover(g, IMG.browse, 0, 0, SW, HH.browse, 18); rim(SW, HH.browse, 18);
+    // the slot the template lifts out of becomes an empty card spot
+    const sx = (SLOT.u - SLOT.w / 2) * SW, sy = (SLOT.v - SLOT.h / 2) * HH.browse; g.fillStyle = '#121214'; g.beginPath(); g.roundRect(sx, sy, SLOT.w * SW, SLOT.h * HH.browse, 10); g.fill(); });
+  T.browseFull = panel(SW, HH.browse, () => { drawCover(g, IMG.browse, 0, 0, SW, HH.browse, 18); rim(SW, HH.browse, 18); });
+  T.lib = panel(SW, HH.lib, k => { morph(IMG.lib, IMG.libD, k, SW, HH.lib, 18, [-1, 0.3]); rim(SW, HH.lib, 18); });
+  const [cw, ch] = L.card;
+  T.card = panel(cw, ch, (k, out, ready) => {
+    if (out) morph(ditherOut, IMG.out, k, cw, ch, 22, [0.2, 1], 18); else drawCover(g, ditherTpl, 0, 0, cw, ch, 22);
+    rim(cw, ch, 22);
+    if (ready) { g.font = '600 22px Inter'; const tw = g.measureText('Ready').width + 34; g.beginPath(); g.roundRect(cw - tw - 14, 14, tw, 40, 20); g.fillStyle = '#123A23'; g.fill(); g.fillStyle = '#7BF0A6'; g.fillText('Ready', cw - tw + 3, 41); }
+  });
+  T.chip = panel(300, 84, () => { g.beginPath(); g.roundRect(0, 0, 300, 84, 42); g.fillStyle = '#1A1A20'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.16)'; g.lineWidth = 2; g.stroke();
+    drawCover(g, IMG.yb, 14, 14, 56, 56, 28); g.font = '600 28px Inter'; g.fillStyle = INK; g.letterSpacing = '-0.5px'; g.fillText('YourBrand', 86, 52); g.letterSpacing = '0px';
+    g.strokeStyle = MUTE; g.lineWidth = 2.5; g.beginPath(); g.moveTo(258, 37); g.lineTo(266, 46); g.lineTo(274, 37); g.stroke(); });
+  const [bw, bh] = L.bar;
+  T.bar = panel(bw, bh, press => {
+    g.save(); g.beginPath(); g.roundRect(0, 0, bw, bh, 22); g.fillStyle = '#1E1F1C'; g.fill(); g.clip(); drawCover(g, IMG.bar, 0, 0, bw, bh, 0); g.restore();
+    g.beginPath(); g.roundRect(1, 1, bw - 2, bh - 2, 21); g.strokeStyle = 'rgba(255,255,255,0.14)'; g.lineWidth = 2; g.stroke();
+    if (press > 0) { const x0 = 0.913 * bw, x1 = 0.991 * bw, y0 = 0.70 * bh, y1 = 0.97 * bh; g.beginPath(); g.roundRect(x0 - 6 * press, y0 - 6 * press, x1 - x0 + 12 * press, y1 - y0 + 12 * press, 14); g.lineWidth = 4; g.strokeStyle = VIO; g.stroke(); }
+  });
+  const [ow, oh] = L.offer;
+  T.offer = panel(ow, oh, (m, c1, c2, c3) => {   // m: Render pill (0) -> offer card (1); c1..c3 content slides (0..1)
+    const pw = 220, ph = 76, w = lerp(pw, ow, m), h = lerp(ph, oh, m), r = lerp(38, 40, m), x = (ow - w) / 2, y = (oh - h) / 2;
+    g.save(); g.beginPath(); g.roundRect(x, y, w, h, r);
+    if (m < 0.35) { g.fillStyle = '#F4F3F8'; g.fill(); } else { g.fillStyle = '#14141A'; g.fill(); g.lineWidth = 3; const gr = g.createLinearGradient(x, 0, x + w, 0); GRAD.forEach((c, i) => gr.addColorStop(i / 2, c)); g.strokeStyle = gr; g.stroke(); }
+    g.clip();
+    if (m < 0.35) { // the real Render button look
+      const s = 1 - m / 0.35; g.translate(0, (1 - s) * -60); g.fillStyle = '#111'; g.font = '600 32px Inter'; g.textAlign = 'center'; g.fillText('⚡ Render', ow / 2, oh / 2 + 11);
+    } else {
+      const slide = (k, y0) => (1 - SIG(k)) * 120 + y0;
+      g.textAlign = 'center';
+      g.save(); g.translate(0, slide(c1, 0)); g.font = `500 ${PHONE ? 34 : 30}px Inter`; g.fillStyle = MUTE; g.fillText('Black Friday', ow / 2, oh * (PHONE ? 0.24 : 0.22)); g.restore();
+      const big = PHONE ? 270 : 230; g.save(); g.translate(0, slide(c2, 0)); g.font = `700 ${big}px Inter`; g.letterSpacing = `${-0.05 * big}px`; const tw = g.measureText('50%').width; const gr = g.createLinearGradient(ow / 2 - tw / 2, 0, ow / 2 + tw / 2, 0); GRAD.forEach((c, i) => gr.addColorStop(i / 2, c)); g.fillStyle = gr; g.fillText('50%', ow / 2, oh * (PHONE ? 0.52 : 0.6)); g.restore();
+      g.save(); g.translate(0, slide(c3, 0)); g.font = `600 ${PHONE ? 46 : 40}px Inter`; g.fillStyle = INK; g.letterSpacing = '-1px'; g.fillText('off your first month', ow / 2, oh * (PHONE ? 0.64 : 0.76));
+      g.font = `500 ${PHONE ? 30 : 26}px Inter`; g.fillStyle = MUTE; g.letterSpacing = '0px'; g.fillText('Every plan · One week only', ow / 2, oh * (PHONE ? 0.73 : 0.87)); g.restore();
+    }
+    g.restore();
+  });
+}
+
+// ---------- camera: one move, forward along the row, fast then slow ----------
+function camera(t) {
+  const pull = outExpo(prog(t, 0, 3.4));
+  const hx = (HOMEFOCUS.u - 0.5) * SW, hy = (0.5 - HOMEFOCUS.v) * HH.home;
+  let tx = lerp(hx, 0, INOUT(prog(t, 0.2, 3.2))), ty = lerp(hy, 0, INOUT(prog(t, 0.2, 3.2)));
+  tx += (X.browse - 0) * INOUT(prog(t, 3.4, 5.2)) + 70 * sine(prog(t, 5.2, 15.8)) + (X.lib - X.browse - 70) * INOUT(prog(t, 15.8, 17.8)) + 60 * sine(prog(t, 17.8, TOTAL));
+  const D = Math.exp(lerp(Math.log(240), Math.log(PHONE ? 1380 : 1850), pull)) + 160 * sine(prog(t, 3.4, TOTAL));
+  const yaw = 0.10 - 0.16 * sine(prog(t, 0, TOTAL)), pitch = 0.05 + 0.03 * sine(prog(t, 0, TOTAL));
+  const dir = [Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch)], target = [tx, ty, 0];
+  const eye = [target[0] + D * dir[0], target[1] + D * dir[1], target[2] + D * dir[2]];
+  const fgk = INOUT(prog(t, 7.2, 8.4)) * (1 - INOUT(prog(t, 25.6, 26.4)));
+  return { eye, target, dir, D, yaw, pitch, fov: L.fov, focus: lerp(D, FGD, fgk), aperture: lerp(0.15, 1.8, fgk), fog: { near: 3200, far: 9000, color: [0.043, 0.043, 0.06] } };
+}
+function fg(cam, x, y, dz = 0) {
+  const { eye, dir } = cam, f = [-dir[0], -dir[1], -dir[2]], d = FGD - dz * FGD / 1500;
+  const cr = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  let r = cr(f, [0, 1, 0]); const rl = Math.hypot(...r); r = r.map(v => v / rl); const u = cr(r, f);
+  return [eye[0] + f[0] * d + r[0] * x + u[0] * y, eye[1] + f[1] * d + r[1] * x + u[1] * y, eye[2] + f[2] * d + r[2] * x + u[2] * y];
+}
+const face = cam => [-cam.pitch, cam.yaw, 0];
+const lerp3 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
+// path with a middle keyframe (1/3 rule: no single move crosses more than a third of the screen)
+const via = (a, m, b, k) => k < 0.5 ? lerp3(a, m, SIG(k * 2)) : lerp3(m, b, SIG((k - 0.5) * 2));
+
+// ---------- scene ----------
+function scene(t, cam) {
+  const P = [], rot = face(cam);
+  // screens (slide up into place on entry: position, never opacity)
+  const homeK = clamp01(prog(t, 3.4, 4.4));
+  T.home.redraw(+homeK.toFixed(2));
+  P.push({ tex: T.home.tex, w: SW, h: HH.home, pos: [X.home, 0, 0], bias: 0 });
+  const bIn = SIG(prog(t, 2.8, 3.8));
+  const lifted = t >= 7.2;
+  P.push({ tex: (lifted ? T.browse : T.browseFull).redraw().tex, w: SW, h: HH.browse, pos: [X.browse, lerp(-1400, 0, bIn), 0] });
+  const libK = clamp01(prog(t, 20.8, 21.8)), lIn = SIG(prog(t, 15.2, 16.4));
+  T.lib.redraw(+libK.toFixed(2));
+  P.push({ tex: T.lib.tex, w: SW, h: HH.lib, pos: [X.lib, lerp(-1400, 0, lIn), 0] });
+
+  // the template card: lifts out of its slot (pixel dither -> real), docks, renders, flips, lands in the library
+  const [cw, ch] = L.card;
+  if (t >= 7.2 && t < 21.0) {
+    const slotPos = [X.browse + (SLOT.u - 0.5) * SW, (0.5 - SLOT.v) * HH.browse, 0], slotScale = SLOT.w * SW / cw;
+    const lift = prog(t, 7.2, 8.4);
+    const reveal = clamp01(prog(t, 15.2, 16.0));   // your version resolves from pixel dither into the real ad
+    const [bw, bh] = L.bar, bx = -bw / 2 + 0.114 * bw, by = L.barY + (0.5 - 0.347) * bh, slotS = (0.59 * bh) / ch;
+    const dock = prog(t, 11.9, 12.7), back = prog(t, 13.9, 14.7), flip = INOUT(prog(t, 14.5, 15.3));
+    const land = prog(t, 17.9, 19.0);
+    const libPos = [X.lib + (LSLOT.u - 0.5) * SW, (0.5 - LSLOT.v) * HH.lib, 4], libScale = LSLOT.w * SW / cw;
+    let pos, sc, rr = rot;
+    const centre = fg(cam, 0, L.cardY), inBar = fg(cam, bx, by, 10);
+    if (t < 8.4) { pos = lerp3(slotPos, centre, SIG(lift)); sc = lerp(slotScale, 1, SIG(lift)); rr = [rot[0] * SIG(lift), rot[1] * SIG(lift), 0]; }
+    else if (t < 13.9) { pos = via(centre, fg(cam, bx * 0.5, (L.cardY + by) * 0.5 + 60, 5), inBar, dock); sc = lerp(1, slotS, SIG(dock)); }
+    else if (t < 17.9) { pos = via(inBar, fg(cam, bx * 0.5, (L.cardY + by) * 0.5 + 60, 5), centre, back); sc = lerp(slotS, 1, SIG(back)); }
+    else { pos = via(centre, lerp3(centre, libPos, 0.5), libPos, land); sc = lerp(1, libScale, SIG(land)); rr = [rot[0] * (1 - SIG(land)), rot[1] * (1 - SIG(land)), 0]; }
+    const showOut = flip >= 0.5, edge = flip < 0.5 ? flip * Math.PI : (flip - 1) * Math.PI;
+    T.card.redraw(+reveal.toFixed(2), showOut, t > 15.4);
+    P.push({ tex: T.card.tex, w: cw, h: ch, pos, rot: [rr[0], rr[1] + edge, 0], scale: sc, bias: 40 });
+    // brand chip: slides in from the right, clicks onto the card, then rides along and leaves into the bar
+    const cIn = SIG(prog(t, 8.9, 9.5)), cOut = EXIT(prog(t, 11.7, 12.1));
+    if (cIn > 0 && cOut < 1) {
+      const [cx, cy] = L.chip, from = PHONE ? 520 : 1050;
+      P.push({ tex: T.chip.redraw().tex, w: 300, h: 84, pos: fg(cam, lerp(from, cx, cIn), cy - cOut * 120, 60), rot, scale: L.chipS * (1 - 0.7 * cOut), bias: 60 });
+    }
+    // prompt bar rises, Render is pressed, bar leaves downward
+    const bIn2 = SIG(prog(t, 10.9, 11.6)), bOut = EXIT(prog(t, 15.3, 15.8));
+    if (bIn2 > 0 && bOut < 1) {
+      const press = Math.sin(Math.PI * prog(t, 13.1, 13.6));
+      T.bar.redraw(+press.toFixed(2));
+      P.push({ tex: T.bar.tex, w: bw, h: bh, pos: fg(cam, 0, lerp(L.barY - 260, L.barY, bIn2) - bOut * 300), rot, bias: 30 });
+    }
+  }
+  // Render pill grows into the offer card
+  if (t >= 21.6 && t < 27.2) {
+    const pop = SIG(prog(t, 21.6, 21.9)), grow = SIG(prog(t, 22.2, 22.8));
+    const c1 = prog(t, 22.7, 23.1), c2 = prog(t, 22.8, 23.2), c3 = prog(t, 22.9, 23.3);
+    const shrink = INOUT(prog(t, 26.0, 26.8));
+    T.offer.redraw(+grow.toFixed(3), +c1.toFixed(2), +c2.toFixed(2), +c3.toFixed(2));
+    P.push({ tex: T.offer.tex, w: L.offer[0], h: L.offer[1], pos: fg(cam, 0, 0, 30), rot, scale: Math.max(0.001, pop * (1 - shrink * 0.86)), bias: 50 });
+  }
+  return P;
+}
+
+// ---------- captions (solid: whole words slide up from behind an edge) ----------
+function cap(t, text, a, b, y = L.textY) { words(ctx, { text, x: W / 2, y, size: L.textSize, weight: 600, t, in: a, out: b, solid: true, grad: ['#FFFFFF', '#B9B7C6'], shadow: 'rgba(0,0,0,0.85)' }); }
+function cap2(t, l1, l2, a, b) { if (PHONE) { cap(t, l1, a, b, L.textY); cap(t, l2, a + 0.12, b, L.textY + 80); } else cap(t, `${l1} ${l2}`, a, b); }
+
+// ---------- end card ----------
+function endCard(t, g2) {
+  const cy = PHONE ? H * 0.42 : H * 0.40, lh = PHONE ? 220 : 180;
+  ditherField(g2, { cell: 8, on: '#2A2340', off: BG, key: 'endbg', field: (u, v) => { const dx = (u - 0.5) * W / H, dy = v - 0.45; const d = Math.sqrt(dx * dx + dy * dy); return Math.max(0, 0.42 - d) * 1.6 + 0.04 * Math.sin(u * 14 + t * 1.4); } });
+  const k = SIG(prog(t, 26.9, 27.5)); if (k <= 0) return;
+  const s = lerp(0.25, 1, k); logo(g2, W / 2, cy, lh * s, 1);
+  words(g2, { text: 'AdRender', x: W / 2, y: cy + lh * 0.5 + (PHONE ? 120 : 100), size: PHONE ? 88 : 74, weight: 600, t, in: 27.3, solid: true, grad: ['#FFFFFF', '#B9B7C6'] });
+  const bk = SIG(prog(t, 27.8, 28.2)); if (bk <= 0) return;
+  const url = 'adrender.app', chars = Math.round(url.length * prog(t, 28.2, 28.9)), bw = PHONE ? 560 : 480, bh = PHONE ? 88 : 74, by = cy + lh * 0.5 + (PHONE ? 180 : 150);
+  g2.save(); g2.translate(0, (1 - bk) * 40); g2.beginPath(); g2.roundRect(W / 2 - bw / 2, by, bw, bh, bh / 2); g2.fillStyle = '#17171D'; g2.fill(); g2.lineWidth = 2; g2.strokeStyle = 'rgba(255,255,255,0.18)'; g2.stroke();
+  g2.font = `500 ${PHONE ? 40 : 34}px Inter`; g2.fillStyle = INK; const tw = g2.measureText(url).width, txt = url.slice(0, chars); g2.fillText(txt, W / 2 - tw / 2, by + bh / 2 + 12);
+  if (Math.floor(t * 2.2) % 2 === 0 || chars < url.length) { g2.fillStyle = VIO; g2.fillRect(W / 2 - tw / 2 + g2.measureText(txt).width + 4, by + bh / 2 - 20, 3, 36); }
+  g2.restore();
+  words(g2, { text: 'Black Friday · 50% off your first month · One week only', x: W / 2, y: by + bh + (PHONE ? 90 : 70), size: PHONE ? 32 : 27, weight: 500, t, in: 28.9, solid: true, stagger: 0.03, color: MUTE, track: 0 });
+}
+
+// ---------- frame ----------
+const BGc = mk(), TMP = mk(), ACC = mk(), ENDc = mk();
+let built = false;
+function render(t) {
+  if (!built) { build(); built = true; }
+  const SUB = RENDER && !window.__warm ? 4 : 1, SHUT = 0.5 / 25;
+  const b = BGc.getContext('2d'); b.setTransform(SCALE, 0, 0, SCALE, 0, 0); b.fillStyle = BG; b.fillRect(0, 0, W, H);
+  // ambient layer: a slow brand glow
+  const gx = W * (0.5 + 0.12 * Math.sin(t * 0.25)), gy = H * 0.5; const vg = b.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W, H) * 0.7); vg.addColorStop(0, 'rgba(155,107,242,0.12)'); vg.addColorStop(1, 'rgba(0,0,0,0)'); b.fillStyle = vg; b.fillRect(0, 0, W, H);
+  const Ax = ACC.getContext('2d'); Ax.setTransform(1, 0, 0, 1, 0, 0); Ax.globalAlpha = 1; Ax.clearRect(0, 0, ACC.width, ACC.height);
+  for (let i = 0; i < SUB; i++) {
+    const ts = SUB > 1 ? Math.max(0, Math.min(TOTAL, t + (i / (SUB - 1) - 0.5) * SHUT)) : t, cam = camera(ts);
+    const x = TMP.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.drawImage(BGc, 0, 0);
+    x.drawImage(S3.render(scene(ts, cam), cam), 0, 0);
+    Ax.globalAlpha = 1 / (i + 1); Ax.drawImage(TMP, 0, 0);   // motion blur accumulation (render only)
+  }
+  begin(ctx); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(ACC, 0, 0); begin(ctx);
+  // captions sit on a dark band at the top
+  const sk = PHONE ? 1 : 1, sg = ctx.createLinearGradient(0, 0, 0, PHONE ? 380 : 220); sg.addColorStop(0, `rgba(11,11,15,${0.9 * sk})`); sg.addColorStop(1, 'rgba(11,11,15,0)'); ctx.fillStyle = sg; ctx.fillRect(0, 0, W, PHONE ? 380 : 220);
+  cap2(t, 'Black Friday', 'at AdRender.', 0.6, 3.2);
+  cap(t, 'Pick a winning ad.', 4.7, 8.4);
+  cap(t, 'Add your brand.', 8.9, 11.6);
+  cap(t, 'Get your version.', 13.5, 16.6);
+  cap2(t, 'Image and video ads,', 'ready to post.', 17.4, 21.2);
+  // switch to the end card pixel by pixel (no fade)
+  if (t >= 26.4) {
+    const e = ENDc.getContext('2d'); begin(e); e.fillStyle = BG; e.fillRect(0, 0, W, H); endCard(t, e);
+    pixelWipe(ctx, ENDc, INOUT(prog(t, 26.4, 27.0)), { cell: 24, dir: [0, -1], spread: 0.6 });
+  }
+}
+window.GL_TWICE = true;
+window.AUDIO_SRC = '/ads/audio/bf-real-app.mp3';
+AD.start(TOTAL, render, assets);
+</script></body></html>
