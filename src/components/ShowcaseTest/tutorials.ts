@@ -74,7 +74,7 @@ const LIST: Tutorial[] = [
     id: 'spot-one-second',
     category: 'Getting started',
     title: 'Ad: you get one second',
-    summary: 'A 35-second creative ad about why winning ads matter and how AdRender remixes them into your brand. Captions on, ready for music.',
+    summary: 'A 38-second creative ad about why winning ads matter and how AdRender remixes them into your brand. Captions on, ready for music.',
     tags: ['ad', 'promo', 'creative', 'social', 'tiktok', 'instagram', 'youtube'],
     stories: { desktop: SPOT_WIDE, phone: SPOT_TALL },
     spot: true,
