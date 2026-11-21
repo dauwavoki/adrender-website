@@ -69,6 +69,9 @@ export function getBlogPostsMeta() {
  * Every path prerendered / listed in the sitemap (leading slash, no trailing slash except home).
  * @returns {string[]}
  */
+/** Prerendered but kept out of the sitemap, RSS and llms.txt (review pages). */
+export const HIDDEN_ROUTES = ['/tutorials-test']
+
 export function getAllRoutes() {
   const comparisonPaths = getComparisonSlugs().map((s) => `/vs-${s}`)
   const solutionPaths = getSolutionSlugs().map((s) => `/solutions/${s}`)

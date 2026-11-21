@@ -18,7 +18,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { build } from 'vite'
-import { ROOT, getAllRoutes } from './site-urls.mjs'
+import { HIDDEN_ROUTES, ROOT, getAllRoutes } from './site-urls.mjs'
 
 const SERVER_OUT = path.join(ROOT, 'dist/server')
 
@@ -121,7 +121,7 @@ export async function ssg() {
   })
 
   const template = fs.readFileSync(templatePath, 'utf8')
-  const all = getAllRoutes()
+  const all = [...getAllRoutes(), ...HIDDEN_ROUTES]
 
   try {
     const mod = await import(pathToFileURL(path.join(SERVER_OUT, 'entry-server.js')).href)
