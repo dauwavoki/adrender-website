@@ -8,7 +8,7 @@ const spot = makeStory(
     s.after(5.5, { spot: 3, caption: 3 })
     s.after(6.5, { spot: 4, caption: 4 })
     // Hold on the results while the video ads play between the image ads.
-    s.after(9.5, { spot: 5, caption: 5 })
+    s.after(12.5, { spot: 5, caption: 5 })
     s.after(5.5, { dim: true })
     s.after(0.6, {})
   },

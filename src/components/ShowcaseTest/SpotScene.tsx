@@ -14,19 +14,21 @@ const COLUMNS = [
 
 /** The results: image ads with video ads mixed in. */
 const VAD = (n: number) => `/showcase/vad-${String(n).padStart(2, '0')}.webp`
-const RESULTS: { src: string; video?: string }[] = [
+/** Real YourBrand video ads (the same ads as the vad stills), played in the tiles. */
+const CLIP = (n: number) => `/how-it-works/video-${String(n).padStart(2, '0')}.mp4`
+const RESULTS: { src: string; clip?: string; video?: string }[] = [
   { src: AD(1) },
-  { src: VAD(1), video: '0:12' },
+  { src: VAD(1), clip: CLIP(1), video: '0:10' },
   { src: AD(2) },
   { src: AD(3) },
-  { src: VAD(2), video: '0:09' },
+  { src: VAD(2), clip: CLIP(2), video: '0:06' },
   { src: AD(4) },
   { src: AD(5) },
-  { src: VAD(3), video: '0:15' },
+  { src: VAD(3), clip: CLIP(3), video: '0:05' },
   { src: AD(6) },
   { src: AD(7) },
   { src: AD(8) },
-  { src: VAD(4), video: '0:11' },
+  { src: VAD(4), clip: CLIP(4), video: '0:05' },
 ]
 
 function Feed({ tall }: { tall: boolean }) {
@@ -119,12 +121,15 @@ function Scene({ state, tall }: { state: SceneState; tall: boolean }) {
           <div className="sp-grid">
             {RESULTS.map((item, i) => (
               <span key={i} className={cx('scv2-sp-tile', item.video && 'is-video')} style={{ animationDelay: `${0.15 + i * 0.09}s` }}>
-                <img src={item.src} alt="" />
+                {item.clip ? (
+                  <video src={item.clip} poster={item.src} autoPlay muted loop playsInline preload="auto" />
+                ) : (
+                  <img src={item.src} alt="" />
+                )}
                 {item.video ? (
                   <>
                     <i className="scv2-sp-play" />
                     <b className="scv2-sp-time">{item.video}</b>
-                    <i className="scv2-sp-bar" style={{ animationDelay: `${1.4 + i * 0.09}s` }} />
                   </>
                 ) : null}
               </span>
