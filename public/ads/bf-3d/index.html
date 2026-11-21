@@ -221,10 +221,11 @@ function endCard(t) {
 
 // ---------- frame ----------
 const BGc = mk(), TMP = mk(), ACC = mk();
-const SUB = RENDER ? 6 : 1, SHUTTER = 0.5 / 25;
+const SHUTTER = 0.5 / 25;
 let built = false;
 function render(t) {
   if (!built) { build(); built = true; }
+  const SUB = RENDER && !window.__warm ? 6 : 1;   // export: 6 motion-blur sub-frames (the warm-up pass only needs one)
   const b = BGc.getContext('2d'); b.setTransform(SCALE, 0, 0, SCALE, 0, 0); b.fillStyle = BG; b.fillRect(0, 0, W, H);
   const vg = b.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.45, Math.max(W, H) * 0.75); vg.addColorStop(0, 'rgba(79,141,247,0.10)'); vg.addColorStop(0.5, 'rgba(155,107,242,0.05)'); vg.addColorStop(1, 'rgba(0,0,0,0)'); b.fillStyle = vg; b.fillRect(0, 0, W, H);
   const A = ACC.getContext('2d'); A.setTransform(1, 0, 0, 1, 0, 0); A.globalAlpha = 1; A.clearRect(0, 0, ACC.width, ACC.height);
