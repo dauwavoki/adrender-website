@@ -1549,3 +1549,445 @@
   flex: none;
   font-size: 12.5px;
 }
+
+/* ── Opening and closing cards ────────────────────────────── */
+.scv2-bookend {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 80px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand-via) 18%, transparent), transparent 60%),
+    var(--bg-page);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 450ms ease;
+}
+.scv2-bookend.is-on {
+  opacity: 1;
+}
+.scv2-bookend-card {
+  display: flex;
+  max-width: 760px;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: scv2-card-in 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes scv2-card-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.scv2-bookend-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px 5px 8px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+}
+.scv2-bookend-brand img {
+  width: 22px;
+  height: 22px;
+}
+.scv2-bookend-logo {
+  width: 84px;
+  height: 84px;
+  animation: scv2-logo-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes scv2-logo-in {
+  from { opacity: 0; transform: rotate(-12deg) scale(0.8); }
+  to { opacity: 1; transform: none; }
+}
+.scv2-bookend-name {
+  margin: -4px 0 0;
+  color: var(--text-primary);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.scv2-bookend-title {
+  margin: 0;
+  background: linear-gradient(100deg, var(--brand-from), var(--brand-via), var(--brand-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.scv2-bookend-line {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 20px;
+  line-height: 1.45;
+}
+.scv2-bookend-link {
+  margin-top: 8px;
+  border-radius: 999px;
+  background: var(--text-primary);
+  padding: 10px 22px;
+  color: var(--bg-page);
+  font-size: 18px;
+  font-weight: 600;
+}
+.scv2-bookend.is-touch {
+  padding: 0 28px;
+}
+.scv2-bookend.is-touch .scv2-bookend-title {
+  font-size: 30px;
+}
+.scv2-bookend.is-touch .scv2-bookend-line {
+  font-size: 16px;
+}
+.scv2-bookend.is-touch .scv2-bookend-logo {
+  width: 68px;
+  height: 68px;
+}
+
+/* ── Ads: logo top left on the wide version ───────────────── */
+.sc.is-ad-wide .sc-ad-brandbar {
+  left: 16px;
+  transform: none;
+}
+
+/* ── Subtle motion on toggles, tabs, chips, menus ─────────── */
+.sc-v2 .sc-segmented > span,
+.sc-v2 .scv2-seg > span,
+.sc-v2 .scv2-set-seg > span,
+.sc-v2 .scv2-status-tab,
+.sc-v2 .scv2-density > span,
+.sc-v2 .scv2-drop,
+.sc-v2 .sc-chip,
+.sc-v2 .scv2-nav-btn,
+.sc-v2 .cockpit-switch,
+.sc-v2 .cockpit-action,
+.sc-v2 .cockpit-size-tile,
+.sc-v2 .sc-sv-star,
+.sc-v2 .scv2-label,
+.sc-v2 .sc-sv-menu-row,
+.sc-v2 .cockpit-row {
+  transition:
+    background-color 240ms ease,
+    color 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    opacity 240ms ease;
+}
+.sc-v2 .sc-sv-star.is-on svg {
+  animation: scv2-pop 420ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes scv2-pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.sc-v2 .sc-sv-menu,
+.sc-v2 .scv2-recent,
+.sc-v2 .scv2-tip {
+  animation: scv2-drop-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes scv2-drop-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.sc-v2 .scv2-tip {
+  animation-name: scv2-tip-in;
+}
+@keyframes scv2-tip-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.sc-v2 .scv2-qchip,
+.sc-v2 .cockpit-pill,
+.sc-v2 .scv2-chips i {
+  animation: scv2-chip-in 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes scv2-chip-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: none; }
+}
+.sc-v2 .sc-sv-circle {
+  transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+.sc-v2 .sc-sv-circle.is-on {
+  transform: scale(1.08);
+}
+.sc-v2 .scv2-collapse .scv2-collapse-head svg {
+  transition: transform 260ms ease;
+}
+
+/* ── Big page changes fade and lift in ────────────────────── */
+.sc-v2 .scv2-swap {
+  animation: scv2-swap-in 460ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes scv2-swap-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Ad notes: a short sentence on what each click does ───── */
+.sc-caption.is-ad.is-note {
+  width: max-content;
+  max-width: 84%;
+  justify-content: center;
+  border-radius: 20px;
+  padding: 12px 22px;
+  text-align: center;
+  white-space: normal;
+  text-wrap: balance;
+}
+.sc.is-tiktok .sc-caption.is-ad.is-note {
+  top: 104px;
+  font-size: 24px;
+  line-height: 31px;
+}
+.sc.is-ad-wide .sc-caption.is-ad.is-note {
+  top: 58px;
+  max-width: 70%;
+  padding: 9px 18px;
+  font-size: 19px;
+  line-height: 25px;
+}
+
+/* ── Spot ad: centred end logo, video tiles in the results ── */
+.sc-v2 .sp-logo {
+  animation-name: scv2-logo-in;
+}
+.sc-v2 .scv2-sp-tile {
+  position: relative;
+  display: block;
+  animation: sp-chip 420ms cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+.sc-v2 .scv2-sp-tile img {
+  animation: none;
+}
+.sc-v2 .scv2-sp-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(4px);
+}
+.sc-v2 .scv2-sp-play::after {
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  border-width: 7px 0 7px 11px;
+  border-style: solid;
+  border-color: transparent transparent transparent #fff;
+  content: '';
+  transform: translate(-50%, -50%);
+}
+.sc-v2 .scv2-sp-time {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2px 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── The AdRender website (affiliates page) over the app ──── */
+.scv2-site {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-page);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.985);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+.scv2-site.is-on {
+  opacity: 1;
+  transform: none;
+}
+.scv2-site-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-inset);
+  padding: 9px 14px;
+}
+.scv2-site-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.scv2-site-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+.scv2-site-url {
+  flex: 1;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  padding: 5px 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+.scv2-site-view {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+.scv2-site-page {
+  padding: 0 64px 80px;
+  transition: transform 1200ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+.scv2-site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  font-size: 14px;
+}
+.scv2-site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+.scv2-site-logo img {
+  width: 22px;
+  height: 22px;
+}
+.scv2-site-links {
+  display: inline-flex;
+  gap: 26px;
+  color: var(--text-secondary);
+}
+.scv2-site-start {
+  border-radius: 999px;
+  background: var(--text-primary);
+  padding: 7px 16px;
+  color: var(--bg-page);
+  font-weight: 600;
+}
+.scv2-site-hero {
+  display: flex;
+  max-width: 760px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 70px 0 60px;
+}
+.scv2-site-hero h1,
+.scv2-site-sec h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.scv2-site-hero h1 {
+  font-size: 64px;
+  line-height: 1.05;
+}
+.scv2-site-hero p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1.5;
+}
+.scv2-site-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  background: var(--text-primary);
+  padding: 10px 18px 10px 12px;
+  color: var(--bg-page);
+  font-size: 15px;
+  font-weight: 600;
+}
+.scv2-site-hero small {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.scv2-site-sec {
+  padding: 40px 0;
+}
+.scv2-site-sec h2 {
+  margin-bottom: 22px;
+  font-size: 40px;
+}
+.scv2-site-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.scv2-site-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+  padding: 18px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.scv2-site-card svg {
+  color: var(--brand-via);
+}
+.scv2-site-card b {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+.scv2-site-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 0 22px;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+.scv2-site-step small {
+  color: var(--text-muted);
+}
+.scv2-site-step b {
+  color: var(--text-primary);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+.scv2-site.is-phone .scv2-site-page {
+  padding: 0 22px 80px;
+}
+.scv2-site.is-phone .scv2-site-hero {
+  padding: 40px 0;
+}
+.scv2-site.is-phone .scv2-site-hero h1 {
+  font-size: 46px;
+}
+.scv2-site.is-phone .scv2-site-grid {
+  grid-template-columns: 1fr;
+}
+.scv2-site.is-phone .scv2-site-sec h2 {
+  font-size: 32px;
+}

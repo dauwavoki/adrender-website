@@ -40,6 +40,8 @@ import { ModalLayer, NewCollectionDialog, PhoneWorkspaceMenu, ProfileScreen, Toa
 import { COLLECTIONS, collectionCount } from '../desktop/pagesData'
 import { AdsLibScreen as LibraryTutScreen, LibOverlays } from '../desktop/adslib'
 import { NICHES, visibleBrowse } from '../desktop/browse'
+import { swapKey } from '../desktop/swapKey'
+import { SiteOverlay } from '../SitePage'
 import { SavedOverlays, SavedScreen, usedSrc, ThumbPreview, ThumbStrip } from '../desktop/saved'
 import { KitListScreen, KitOverlay, KitScreen } from '../desktop/kit'
 import {
@@ -270,7 +272,7 @@ function Pill({ children }: { children: ReactNode }) {
 }
 
 const PHONE_IMPROVED =
-  'A fast, authentic reaction video. Open on a close-up as the person sees the product for the first time: a genuine smile, then surprise. Natural light, handheld feel, quick cuts. End on the product with the headline on screen.'
+  "Keep the template's layout, headline and lighting. Recolor the shoe a full, bold red, laces and sole trim included. Keep the logo and match the shadows to the new red."
 
 function CockpitSheet({ state }: { state: SceneState }) {
   const items = picked(state)
@@ -763,6 +765,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
     <div className={cx('sc-ph', cockpit && 'has-cockpit')}>
       <div className="sc-ph-viewport">
         <div className="sc-scroller" data-sc-scroll="" key={`${state.screen}-${state.mode}`}>
+          <div className="scv2-swap" key={swapKey(state)}>
           {state.screen === 'home' ? <PhoneHome state={state} /> : null}
           {state.screen === 'brands' ? <BrandsScreen state={state} phone /> : null}
           {state.screen === 'brand' ? <BrandScreen state={state} phone /> : null}
@@ -773,6 +776,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
           {state.screen === 'kit' ? <KitScreen state={state} phone /> : null}
           {state.screen === 'kitlist' ? <KitListScreen state={state} phone /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} phone /> : null}
+          </div>
         </div>
       </div>
       <Header state={state} />
@@ -790,6 +794,7 @@ export function PhoneApp({ state }: { state: SceneState }) {
       <LibOverlays state={state} />
       <ThumbPreview state={state} />
       <KitOverlay state={state} />
+      <SiteOverlay state={state} phone />
     </div>
   )
 }

@@ -17,6 +17,7 @@ import { PhoneApp } from "./phone/PhoneApp";
 import type { SceneState } from "./engine/story";
 import { CAPTIONS } from "./showcaseData";
 import { SpotScene } from "./SpotScene";
+import { AD_NOTE_LIST } from "./stories/adNotes";
 import { AdOverlay } from "./AdOverlay";
 import { AD_TALL_VIEW, AD_WIDE_VIEW } from "./stories/intro";
 import {
@@ -98,8 +99,8 @@ function TutorialPlayer({
         view={tall ? AD_TALL_VIEW : AD_WIDE_VIEW}
         renderApp={desktopApp}
         overlay={adOverlay}
-        captions={AD_CAPTIONS}
-        captionVariant="ad"
+        captions={AD_NOTE_LIST}
+        captionVariant="note"
         follow={1.05}
         contain={contain}
         upscale
@@ -109,9 +110,16 @@ function TutorialPlayer({
       />
     );
   }
+  const bookend = {
+    title: tutorial.title,
+    line: tutorial.opener ?? tutorial.summary,
+    link: tutorial.link ?? "adrender.app",
+    closer: tutorial.closer,
+  };
   if (view === "phone") {
     return (
       <Player
+        bookend={bookend}
         story={stories.phone}
         app={PHONE_APP}
         renderApp={phoneApp}
@@ -127,6 +135,7 @@ function TutorialPlayer({
   }
   return (
     <Player
+      bookend={bookend}
       story={stories.desktop}
       app={DESKTOP_APP}
       renderApp={desktopApp}

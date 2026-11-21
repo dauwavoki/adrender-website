@@ -35,6 +35,8 @@ export type LibAd = {
   ratio: '4:5' | '1:1'
   product: string
   copy: string
+  body?: string
+  cta?: string
   coll: number
   ready: boolean
   kw: string
@@ -43,20 +45,33 @@ export type LibAd = {
   date: string
 }
 
-const COPY = ['Run faster today', 'Built for race day', 'Light. Fast. Yours.', 'Recover like a pro', 'Your pace, upgraded', 'New season, new PB', 'Go further', 'Feel the speed']
 const SRC = ['ad-04', 'ad-06', 'ad-02', 'ad-05', 'ad-01', 'ad-03', 'ad-07', 'ad-08']
+/** The words actually on each ad image: headline, body, button. */
+const WORDS: Record<string, { product: string; head: string; body?: string; cta?: string }> = {
+  'ad-01': { product: 'Recovery Slides', head: 'Your Post-Workout Essential.', body: 'Get Comfortable' },
+  'ad-02': { product: 'Compression Vest', head: 'Train With Purpose', body: 'Compression Vest / YourBrand Athletics', cta: 'Gear Up Now' },
+  'ad-03': { product: 'Compression Vest', head: 'Maximum Support, Zero Distraction.', body: 'Ready to train? Support + Style.', cta: 'Gear Up' },
+  'ad-04': { product: 'Ultra Light Runner', head: 'Run Hard. Look Sharp.', cta: 'Shop The Trainers' },
+  'ad-05': { product: 'Ultra Light Runner', head: 'Retro Style, Modern Speed.', body: 'YourBrand Elite Runners. New season, same energy.', cta: 'Shop The Trainers' },
+  'ad-06': { product: 'Ultra Light Runner', head: 'Run Hard. Look Sharp.', cta: 'GET YOUR PAIR' },
+  'ad-07': { product: 'Ultra Light Runner', head: 'Run Hard. Look Sharp.', cta: 'Get Your Pair' },
+  'ad-08': { product: 'Ultra Light Runner', head: 'Retro Style, Modern Speed.', body: 'Retro design meets modern comfort for your daily miles and weekend hangouts.', cta: 'Get Your Pair' },
+}
+const COPY = SRC.map((file) => WORDS[file].head)
 const RATIO = ['4:5', '4:5', '1:1', '1:1', '4:5', '1:1', '4:5', '1:1'] as const
 const COLL = [1, 2, 1, 2, 1, 2, 0, 0]
 const DATES = ['Nov 18, 2026', 'Nov 17, 2026', 'Nov 15, 2026', 'Nov 14, 2026', 'Nov 12, 2026', 'Nov 10, 2026', 'Nov 21, 2026', 'Nov 21, 2026']
 
 export const LIB_ADS: LibAd[] = SRC.map((file, index) => {
-  const product = BRAND.products[index % BRAND.products.length].name
+  const product = WORDS[file].product
   return {
     id: `a${index + 1}`,
     src: `/showcase/${file}.webp`,
     ratio: RATIO[index],
     product,
     copy: COPY[index],
+    body: WORDS[file].body,
+    cta: WORDS[file].cta,
     coll: COLL[index],
     ready: index >= 6,
     kw: `${product} ${COPY[index]} ${BRAND.name}`.toLowerCase(),
@@ -544,8 +559,8 @@ function LibDetail({ state }: { state: SceneState }) {
             <Copy size={14} />
           </span>
           <p>{ad.copy}</p>
-          <p>Made for every mile you run.</p>
-          <p>Shop now</p>
+          {ad.body ? <p>{ad.body}</p> : null}
+          {ad.cta ? <p>{ad.cta}</p> : null}
         </div>
         <span className="sc-grow" />
         <div className="scv2-detail-foot">

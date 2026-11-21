@@ -1,4 +1,4 @@
-import type { Story } from './engine/story'
+import { withBookends, type Story } from './engine/story'
 import { AFFILIATES_CAPTIONS, AFFILIATES_DESKTOP, AFFILIATES_PHONE, WORKSPACES_CAPTIONS, WORKSPACES_DESKTOP, WORKSPACES_PHONE } from './stories/account'
 import { SAVED_CAPTIONS, SAVED_DESKTOP, SAVED_PHONE } from './stories/saved'
 import { SEARCH_DESKTOP, SEARCH_PHONE } from './stories/search'
@@ -30,9 +30,15 @@ export type Tutorial = {
   captions?: readonly string[]
   learn?: string[]
   steps?: string[]
+  /** Opening line under the title (defaults to the summary). */
+  opener?: string
+  /** Link on the closing card. */
+  link?: string
+  /** Line on the closing card. */
+  closer?: string
 }
 
-export const TUTORIALS: Tutorial[] = [
+const LIST: Tutorial[] = [
   {
     id: 'intro',
     category: 'Getting started',
@@ -260,6 +266,8 @@ export const TUTORIALS: Tutorial[] = [
     tags: ["affiliate", "commission", "earn", "money"],
     stories: { desktop: AFFILIATES_DESKTOP, phone: AFFILIATES_PHONE },
     captions: AFFILIATES_CAPTIONS,
+    link: "adrender.app/affiliates",
+    closer: "Read the details and apply on the affiliates page.",
   },
   {
     id: "start-an-agency",
@@ -353,6 +361,11 @@ export const TUTORIALS: Tutorial[] = [
     tags: ["course", "full"],
   },
 ]
+
+/** Every walkthrough opens with what it covers and closes with thanks, the logo and a link. Ads have their own. */
+export const TUTORIALS: Tutorial[] = LIST.map((t) =>
+  t.stories && !t.ad ? { ...t, stories: { desktop: withBookends(t.stories.desktop), phone: withBookends(t.stories.phone) } } : t,
+)
 
 export function searchTutorials(query: string): Tutorial[] {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean)

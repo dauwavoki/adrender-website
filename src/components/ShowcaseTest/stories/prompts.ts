@@ -37,14 +37,14 @@ function promptsFlow(s: Script, phone: boolean) {
   // 2 · When a note helps
   point(a.note, up, 'Add a note when you want something the template does not show: a season, an offer, a mood', 1.4, 900)
   press({ focus: null, tag: null })
-  type('Make it a winter sale, 30% off, snowy street.')
+  type('Make it a winter sale with snow on the street.')
   s.after(0.8, {})
   note(a.note, up, 'Keep it short and plain. Say what to change, not how to draw it', 3.4)
   s.after(0, { focus: null, tag: null })
 
   // 3 · Improve prompt
   s.after(0.3, { note: '' })
-  type('Make it a reaction video.')
+  type('Change my product shoe to full red.')
   s.after(0.4, {})
   point(a.improve, phone ? 'bottom' : 'top', 'Short note? Improve prompt turns it into a full creative brief', 1.4, 800)
   press({ improve: 1, focus: null, tag: null })

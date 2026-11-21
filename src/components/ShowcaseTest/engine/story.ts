@@ -32,6 +32,12 @@ export type SceneState = {
   caption: number
   /** Whole-window fade at the loop seam. */
   dim: boolean
+  /** Opening and closing cards drawn over the window. */
+  bookend: 'intro' | 'outro' | null
+  /** The AdRender website over the app (affiliates page). Number = how far it is scrolled. */
+  site: number | null
+  /** Ads: stop following the cursor and show the whole window. */
+  wide: boolean
 
   // Brand creation
   /** Phone Home: the folded "Create a brand or campaign" card is open. */
@@ -379,6 +385,9 @@ export const INITIAL: SceneState = {
   click: 0,
   caption: 0,
   dim: false,
+  bookend: null,
+  site: null,
+  wide: false,
   createOpen: false,
   urlFocus: false,
   url: '',
@@ -444,6 +453,8 @@ export type Story = {
 export class Script {
   clock = 0
   steps: Step[] = []
+  /** Slows cursor moves: each move takes `pace` times longer, and the story waits for it. */
+  pace = 1
 
   after(seconds: number, patch: Patch) {
     this.clock += seconds
@@ -451,7 +462,10 @@ export class Script {
   }
 
   move(seconds: number, target: Target, ms: number) {
-    this.after(seconds, (s) => ({ cursor: { ...s.cursor, target, ms, hidden: false } }))
+    const slow = Math.round(ms * this.pace)
+    this.after(seconds, (s) => ({ cursor: { ...s.cursor, target, ms: slow, hidden: false } }))
+    // The story waits the extra time so clicks still land after the cursor arrives.
+    if (seconds >= 0 && slow > ms) this.clock += (slow - ms) / 1000
   }
 
   /** Press, then release 120ms later. The rings start on press. */
@@ -520,6 +534,31 @@ export function makeStory(
     initial,
     duration: Math.max(script.clock, steps[steps.length - 1]?.at ?? 0),
     stillAt: still ? still.at + 1.5 : 0,
+    stateAt,
+  }
+}
+
+/** Seconds the opening and closing cards stay up. */
+export const BOOKEND_IN = 3.4
+export const BOOKEND_OUT = 4.2
+
+/** Adds an opening card (what this is about) and a closing card (thanks, logo, link). */
+export function withBookends(story: Story): Story {
+  const shifted = story.steps.map((step) => ({ at: Math.round((step.at + BOOKEND_IN) * 1000) / 1000, patch: step.patch }))
+  const end = story.duration + BOOKEND_IN
+  const steps: Step[] = [
+    { at: 0, patch: { bookend: 'intro' } },
+    { at: BOOKEND_IN - 0.45, patch: { bookend: null } },
+    ...shifted,
+    { at: end + 0.2, patch: { bookend: 'outro', tag: null, focus: null } },
+    { at: end + BOOKEND_OUT, patch: {} },
+  ]
+  const stateAt = (t: number) => fold(story.initial, steps, t)
+  return {
+    steps,
+    initial: story.initial,
+    duration: end + BOOKEND_OUT,
+    stillAt: story.stillAt ? story.stillAt + BOOKEND_IN : 0,
     stateAt,
   }
 }

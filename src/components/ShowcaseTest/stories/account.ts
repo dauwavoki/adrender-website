@@ -1,4 +1,4 @@
-import { addTemplate, makeStory, type Script } from '../engine/story'
+import { addTemplate, makeStory, noTag, tag, type Script } from '../engine/story'
 import { PACKS } from '../desktop/pagesData'
 
 /**
@@ -18,7 +18,7 @@ const outro = (s: Script) => {
 
 function affiliateForm(s: Script, phone: boolean) {
   const zoom = (target: string) => (phone ? s.after(0, {}) : s.camera(0.2, target, 1.25, 800))
-  s.after(0.5, { caption: 2 })
+  s.after(0.5, { caption: 3 })
   zoom('sc-aff-name')
   s.move(0.5, 'sc-aff-name', 700)
   s.click(0.6, { aff: 1 })
@@ -34,9 +34,33 @@ function affiliateForm(s: Script, phone: boolean) {
   if (!phone) s.camera(0.2, null, 1, 800)
 }
 
+
+/** Open on the website's affiliates page, then go into the app to apply. */
+function websiteTour(s: Script, phone: boolean) {
+  s.after(0.4, { caption: 1 })
+  s.after(0.2, tag('sc-site-url', 'bottom', 'The affiliate program lives at adrender.app/affiliates'))
+  s.move(0.1, 'sc-site-url', 900)
+  s.after(2.6, {})
+  s.move(0, 'sc-site-hero', 900)
+  s.after(0.3, tag('sc-site-hero', phone ? 'bottom' : 'right', 'Earn a share of the profit on every subscriber you refer'))
+  s.after(3.0, { ...noTag, site: 1 })
+  s.after(1.3, tag('sc-site-card-2', 'bottom', 'No earnings cap, a live dashboard, a private Discord and prizes'))
+  s.move(0, 'sc-site-features', 900)
+  s.after(3.4, { ...noTag, site: 2 })
+  s.after(1.3, tag('sc-site-step-3', 'bottom', 'Three steps: create an account, apply in your profile, get approved'))
+  s.move(0, 'sc-site-step-2', 900)
+  s.after(3.4, { ...noTag, site: 0 })
+  s.after(1.3, {})
+  s.move(0, 'sc-site-apply', 900)
+  s.after(0.3, tag('sc-site-apply', 'bottom', 'Already have an account? Apply inside the app'))
+  s.after(2.6, { ...noTag, site: null })
+  s.after(0.7, {})
+}
+
 export const AFFILIATES_DESKTOP = makeStory(
   (s) => {
-    s.after(0.5, { caption: 1 })
+    websiteTour(s, false)
+    s.after(0.2, { caption: 2 })
     s.after(0.2, { focus: 'sc-profile-orb' })
     s.move(0.3, 'sc-profile-orb', 1000)
     s.after(1.0, {})
@@ -52,23 +76,24 @@ export const AFFILIATES_DESKTOP = makeStory(
     s.click(0.2, { ptab: 'affiliate', aff: 0, focus: null })
     s.after(0.8, {})
     affiliateForm(s, false)
-    s.after(0.5, { caption: 3 })
+    s.after(0.5, { caption: 4 })
     s.after(2.4, { aff: 7 })
     s.move(1.0, 'sc-aff-connect', 800)
     s.click(0.9, { aff: 8 })
-    s.after(0.4, { caption: 4 })
+    s.after(0.4, { caption: 5 })
     s.move(1.2, 'sc-aff-copy', 800)
     s.click(0.8, {})
     s.after(1.4, { ptab: 'stats' })
     s.after(2.4, {})
     outro(s)
   },
-  { initial: desktopStart, stillWhen: (st) => st.aff === 8 },
+  { initial: { ...desktopStart, site: 0 }, stillWhen: (st) => st.aff === 8 },
 )
 
 export const AFFILIATES_PHONE = makeStory(
   (s) => {
-    s.after(0.5, { caption: 1 })
+    websiteTour(s, true)
+    s.after(0.2, { caption: 2 })
     s.after(0.2, { focus: 'sc-tab-profile' })
     s.move(0.3, 'sc-tab-profile', 900)
     s.after(1.0, {})
@@ -80,18 +105,18 @@ export const AFFILIATES_PHONE = makeStory(
     s.click(0.2, { ptab: 'affiliate', aff: 0, focus: null })
     s.after(0.8, {})
     affiliateForm(s, true)
-    s.after(0.5, { caption: 3 })
+    s.after(0.5, { caption: 4 })
     s.after(2.4, { aff: 7 })
     s.move(1.0, 'sc-aff-connect', 800)
     s.click(0.9, { aff: 8 })
-    s.after(0.4, { caption: 4 })
+    s.after(0.4, { caption: 5 })
     s.move(1.2, 'sc-aff-copy', 800)
     s.click(0.8, {})
     s.after(1.4, { ptab: 'stats' })
     s.after(2.4, {})
     outro(s)
   },
-  { initial: phoneStart, stillWhen: (st) => st.aff === 8 },
+  { initial: { ...phoneStart, site: 0 }, stillWhen: (st) => st.aff === 8 },
 )
 
 /* ── 2 · My Ads Library and folders ──────────────────────────────── */
@@ -283,6 +308,6 @@ export const WORKSPACES_PHONE = makeStory((s) => workspaceFlow(s, true), {
   stillWhen: (st) => st.team >= 2,
 })
 
-export const AFFILIATES_CAPTIONS = ['Open your profile', 'Apply to the program', 'Get approved and connect payouts', 'Share your code and track earnings'] as const
+export const AFFILIATES_CAPTIONS = ['See the program on the website', 'Open your profile', 'Apply to the program', 'Get approved and connect payouts', 'Share your code and track earnings'] as const
 export const LIBRARY_CAPTIONS = ['Open My Ads Library', 'Group ads into a collection', 'Save an ad as a template', 'Use them in the cockpit'] as const
 export const WORKSPACES_CAPTIONS = ['Open the workspace menu', 'Create a workspace', 'Switch workspaces from the home page and the cockpit', 'Top up tokens', 'Open your profile, then Workspace to invite your team', 'Set a token cap'] as const

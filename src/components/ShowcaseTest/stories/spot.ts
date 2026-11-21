@@ -20,6 +20,6 @@ export const SPOT_CAPTIONS = [
   'Everyone is fighting for the same scroll',
   'Winning ads leave clues',
   'Swap in your brand and product',
-  'Render a dozen versions at once',
+  'Render image and video ads at once',
   'Try it on your own brand today',
 ] as const

@@ -107,9 +107,11 @@ function cockpitDesktop(s: import('../engine/story').Script) {
   s.after(4.4, { pop: null, focus: null })
 
   // 5 · Notes and Improve prompt
-  point('sc-note', 'top', 'No prompt needed. Add a note if you want', 1.0, 900)
+  point('sc-note', 'top', 'No prompt needed. The template, your brand and your product do the work', 1.0, 900)
+  s.after(2.8, tag('sc-note', 'top', 'You can still add a note to tweak the result'))
+  s.after(2.4, {})
   press({ focus: null, tag: null })
-  const text = 'Make it a reaction video.'
+  const text = 'Change my product shoe to full red.'
   for (let i = 1; i <= text.length; i += 1) s.after(i === 1 ? 0.2 : 0.06, { note: text.slice(0, i) })
   s.after(0.4, {})
   point('sc-improve', 'top', 'Improve prompt turns a short note into a full creative brief', 1.2, 700)

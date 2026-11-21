@@ -12,6 +12,23 @@ const COLUMNS = [
   [5, 11, 2, 7, 10, 4],
 ]
 
+/** The results: image ads with video ads mixed in. */
+const VAD = (n: number) => `/showcase/vad-${String(n).padStart(2, '0')}.webp`
+const RESULTS: { src: string; video?: string }[] = [
+  { src: AD(1) },
+  { src: VAD(1), video: '0:12' },
+  { src: AD(2) },
+  { src: AD(3) },
+  { src: VAD(2), video: '0:09' },
+  { src: AD(4) },
+  { src: AD(5) },
+  { src: VAD(3), video: '0:15' },
+  { src: AD(6) },
+  { src: AD(7) },
+  { src: AD(8) },
+  { src: VAD(4), video: '0:11' },
+]
+
 function Feed({ tall }: { tall: boolean }) {
   const cols = tall ? COLUMNS.slice(0, 3) : COLUMNS
   return (
@@ -96,15 +113,23 @@ function Scene({ state, tall }: { state: SceneState; tall: boolean }) {
         <div className="sp-scene is-scale">
           <div className="sp-title is-top">
             <h2>
-              One click. <em>A dozen ads.</em>
+              One click. <em>Image and video ads.</em>
             </h2>
           </div>
           <div className="sp-grid">
-            {Array.from({ length: 12 }, (_, i) => (
-              <img key={i} src={AD(i + 1)} alt="" style={{ animationDelay: `${0.15 + i * 0.09}s` }} />
+            {RESULTS.map((item, i) => (
+              <span key={i} className={cx('scv2-sp-tile', item.video && 'is-video')} style={{ animationDelay: `${0.15 + i * 0.09}s` }}>
+                <img src={item.src} alt="" />
+                {item.video ? (
+                  <>
+                    <i className="scv2-sp-play" />
+                    <b className="scv2-sp-time">{item.video}</b>
+                  </>
+                ) : null}
+              </span>
             ))}
           </div>
-          <span className="sp-ready">12 ads ready</span>
+          <span className="sp-ready">8 image ads and 4 video ads ready</span>
         </div>
       )
     case 5:

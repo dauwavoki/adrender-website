@@ -93,14 +93,14 @@ function useStory(story: Story, active: boolean) {
   return { state, paused, setPaused, getTime, seek }
 }
 
-function Caption({ index, captions, variant }: { index: number; captions: readonly string[]; variant: 'pill' | 'ad' }) {
+function Caption({ index, captions, variant }: { index: number; captions: readonly string[]; variant: 'pill' | 'ad' | 'note' }) {
   const [shown, setShown] = useState(index)
   if (index > 0 && index !== shown) setShown(index)
   const text = captions[shown - 1]
   if (!text) return null
   return (
-    <div className={cx('sc-caption', variant === 'ad' && 'is-ad', index === 0 && 'is-out')} key={shown}>
-      <span className="sc-caption-num">{shown}</span>
+    <div className={cx('sc-caption', variant !== 'pill' && 'is-ad', variant === 'note' && 'is-note', index === 0 && 'is-out')} key={shown}>
+      {variant === 'note' ? null : <span className="sc-caption-num">{shown}</span>}
       <span>{text}</span>
     </div>
   )
@@ -325,7 +325,7 @@ export type PlayerProps = {
   /** Drawn above the camera, in window coordinates (ad hooks, end cards). */
   overlay?: (state: SceneState) => ReactNode
   captions: readonly string[]
-  captionVariant?: 'pill' | 'ad'
+  captionVariant?: 'pill' | 'ad' | 'note'
   /** Camera follows the cursor at this zoom when the story sets no target. */
   follow?: number
   /** Touch dot instead of an arrow (phone). */
@@ -336,9 +336,40 @@ export type PlayerProps = {
   upscale?: boolean
   /** Show play/pause and a seek slider (tutorials page). */
   controls?: boolean
+  /** Opening and closing cards: what the video is about, then thanks, logo and link. */
+  bookend?: Bookend
   /** Always play while mounted, even off screen (full screen). */
   ariaLabel: string
   className?: string
+}
+
+/** Opening card (what this video shows) and closing card (thanks, logo, name, link). */
+type Bookend = { title: string; line: string; link: string; closer?: string }
+
+function BookendCard({ state, bookend, touch }: { state: SceneState; bookend: Bookend; touch: boolean }) {
+  const on = state.bookend
+  return (
+    <div className={cx('scv2-bookend', on && 'is-on', touch && 'is-touch')} aria-hidden>
+      {on === 'outro' ? (
+        <div className="scv2-bookend-card" key="outro">
+          <img src="/brand/icons/icon-color.svg" alt="" className="scv2-bookend-logo" />
+          <p className="scv2-bookend-name">AdRender</p>
+          <p className="scv2-bookend-title">Thanks for watching</p>
+          <p className="scv2-bookend-line">{bookend.closer ?? 'Make your first ads free. No credit card needed.'}</p>
+          <span className="scv2-bookend-link">{bookend.link}</span>
+        </div>
+      ) : (
+        <div className="scv2-bookend-card" key="intro">
+          <span className="scv2-bookend-brand">
+            <img src="/brand/icons/icon-color.svg" alt="" />
+            AdRender tutorial
+          </span>
+          <p className="scv2-bookend-title">{bookend.title}</p>
+          <p className="scv2-bookend-line">{bookend.line}</p>
+        </div>
+      )}
+    </div>
+  )
 }
 
 /**
@@ -353,7 +384,8 @@ export function Player({
   overlay,
   captions,
   captionVariant = 'pill',
-  follow,
+  follow: followProp,
+  bookend,
   touch = false,
   contain = false,
   upscale = false,
@@ -376,7 +408,24 @@ export function Player({
   const clock = useStory(story, playing)
   const state = frozenAt != null ? story.stateAt(frozenAt) : clock.state
   const base = Math.min(view.w / app.w, view.h / app.h)
+  const follow = state.wide ? undefined : followProp
   const [zoom, setZoom] = useState(base)
+
+  // A small press on whatever the cursor clicks: buttons, toggles, cards.
+  const lastClick = useRef(state.click)
+  useEffect(() => {
+    if (state.click === lastClick.current) return
+    lastClick.current = state.click
+    if (instant) return
+    const target = state.cursor.target
+    if (typeof target !== 'string') return
+    const el = appRef.current?.querySelector<HTMLElement>(`[data-sc="${target}"]`)
+    if (!el || typeof el.animate !== 'function') return
+    el.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(0.94)', offset: 0.35 }, { transform: 'scale(1)' }],
+      { duration: 280, easing: 'cubic-bezier(0.3, 0, 0.3, 1)' },
+    )
+  }, [state.click, state.cursor.target, instant])
   /** Follow mode keeps its last framing when a target is not on screen yet. */
   const lastFocus = useRef<Box | null>(null)
 
@@ -528,6 +577,7 @@ export function Player({
           {overlay ? overlay(state) : null}
           <Caption index={state.caption} captions={captions} variant={captionVariant} />
           <div className={cx('sc-dim', state.dim && 'is-on')} />
+          {bookend ? <BookendCard state={state} bookend={bookend} touch={touch} /> : null}
         </div>
       </div>
       {controls && !instant ? <ControlBar story={story} clock={clock} /> : null}

@@ -1,5 +1,7 @@
 import type { SceneState } from '../engine/story'
 import { Cockpit } from './Cockpit'
+import { swapKey } from './swapKey'
+import { SiteOverlay } from '../SitePage'
 import { AccountMenu, ModalLayer, ProfileScreen } from './pages'
 import { AdsLibScreen as LibraryTutScreen, LibOverlays } from './adslib'
 import { SavedOverlays, SavedScreen, ThumbPreview } from './saved'
@@ -13,6 +15,7 @@ export function DesktopApp({ state }: { state: SceneState }) {
     <>
       <div className="sc-viewport">
         <div className="sc-scroller" data-sc-scroll="" key={state.screen}>
+          <div className="scv2-swap" key={swapKey(state)}>
           {state.screen === 'home' ? <HomeScreen state={state} /> : null}
           {state.screen === 'brands' ? <KitListScreen state={state} /> : null}
           {state.screen === 'brand' ? <BrandScreen state={state} /> : null}
@@ -23,6 +26,7 @@ export function DesktopApp({ state }: { state: SceneState }) {
           {state.screen === 'kit' ? <KitScreen state={state} /> : null}
           {state.screen === 'kitlist' ? <KitListScreen state={state} /> : null}
           {state.screen === 'profile' ? <ProfileScreen state={state} /> : null}
+          </div>
         </div>
       </div>
       <Cockpit state={state} />
@@ -33,6 +37,7 @@ export function DesktopApp({ state }: { state: SceneState }) {
       <LibOverlays state={state} />
       <ThumbPreview state={state} />
       <KitOverlay state={state} />
+      <SiteOverlay state={state} />
     </>
   )
 }

@@ -437,13 +437,13 @@ function BrandDrop() {
 }
 
 const IMPROVED =
-  'A fast, authentic reaction video. Open on a close-up as the person sees the product for the first time: a genuine smile, then surprise. Natural light, handheld feel, quick cuts that match the beat. Keep the brand colors in the frame and end on the product with the headline on screen.'
+  "Keep the template's layout, headline and lighting. Recolor the shoe a full, bold red from toe to heel, including the laces and sole trim. Keep the logo and brand colors around it, and match the shadows and highlights to the new red."
 
 function HistoryDrop() {
   const rows = [
     'A bright summer version with the product in hand, outdoors',
-    'Bold sale banner, 30% off, keep the layout of the template',
-    'UGC style, person talking to camera about how it feels',
+    'Bold sale banner, keep the layout of the template',
+    'Swap the background for a clean white studio',
   ]
   return (
     <div className="cockpit-pop scv2-pop is-right sc-pop-up" data-sc="sc-history-pop">
