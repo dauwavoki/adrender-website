@@ -36,6 +36,8 @@ export type Tutorial = {
   link?: string
   /** Line on the closing card. */
   closer?: string
+  /** Only on the admin test page (/tutorials-test) until it moves to /tutorials. */
+  test?: boolean
 }
 
 const LIST: Tutorial[] = [
@@ -367,10 +369,15 @@ export const TUTORIALS: Tutorial[] = LIST.map((t) =>
   t.stories && !t.ad ? { ...t, stories: { desktop: withBookends(t.stories.desktop), phone: withBookends(t.stories.phone) } } : t,
 )
 
-export function searchTutorials(query: string): Tutorial[] {
+/** On /tutorials. */
+export const LIVE_TUTORIALS = TUTORIALS.filter((t) => !t.test)
+/** On the admin test page only: new or reworked tutorials not moved to /tutorials yet. */
+export const TEST_TUTORIALS = TUTORIALS.filter((t) => t.test)
+
+export function searchTutorials(query: string, list: Tutorial[] = LIVE_TUTORIALS): Tutorial[] {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean)
-  if (!words.length) return TUTORIALS
-  return TUTORIALS.filter((t, index) => {
+  if (!words.length) return list
+  return list.filter((t, index) => {
     if (index === 0) return true // the intro is always first
     const hay = `${t.title} ${t.summary} ${t.category} ${t.tags.join(' ')}`.toLowerCase()
     return words.every((w) => hay.includes(w))

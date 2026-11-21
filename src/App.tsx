@@ -12,6 +12,7 @@ import { FaqPage } from './pages/FaqPage'
 import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
 import { TutorialsPage } from './pages/TutorialsPage'
+import { TutorialsTestPage } from './pages/TutorialsTestPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { VsPage } from './pages/VsPage'
 import { SolutionRoutePage } from './pages/SolutionPage'
@@ -33,6 +34,8 @@ export function AppRoutes() {
         {/* Public standalone pages — no Layout chrome */}
         <Route path="terms" element={<TermsPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
+        {/* Admin test page for tutorials: logo-only header, noindex. Permanent. */}
+        <Route path="tutorials-test" element={<TutorialsTestPage />} />
 
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />

@@ -26,7 +26,7 @@ import {
   usePhoneWidth,
   useWarmStills,
 } from "./engine/hooks";
-import { TUTORIALS, searchTutorials, type Tutorial } from "./tutorials";
+import { LIVE_TUTORIALS, TEST_TUTORIALS, searchTutorials, type Tutorial } from "./tutorials";
 import { cx } from "../site/cx";
 import "../Showcase/Showcase.css";
 import "./v2.css";
@@ -152,7 +152,23 @@ function TutorialPlayer({
  * Tutorials page: player on the left, collection on the right (search on top),
  * Desktop/Phone switch and Full screen next to the video, info underneath.
  */
-export function TutorialsBrowser() {
+const ADS = "Advertisements";
+
+/** /tutorials shows the live tutorials; the admin test page shows only the ones still being tested. */
+export function TutorialsBrowser({ test = false }: { test?: boolean }) {
+  const list = test ? TEST_TUTORIALS : LIVE_TUTORIALS;
+  if (!list.length) {
+    return (
+      <div className="sc-tv sc-v2 scv2-tv-empty">
+        <Clock size={28} aria-hidden />
+        <p>Nothing in testing right now. New and reworked tutorials show up here before they move to /tutorials.</p>
+      </div>
+    );
+  }
+  return <Browser list={list} />;
+}
+
+function Browser({ list }: { list: Tutorial[] }) {
   const phone = usePhoneWidth();
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState("");
@@ -163,7 +179,7 @@ export function TutorialsBrowser() {
   useWarmStills();
 
   const tutorial =
-    TUTORIALS.find((t) => t.id === params.get("v")) ?? TUTORIALS[0];
+    list.find((t) => t.id === params.get("v")) ?? list[0];
   const wanted = params.get("view");
   const view: View =
     wanted === "desktop" || wanted === "phone"
@@ -173,19 +189,25 @@ export function TutorialsBrowser() {
         : "desktop";
   const [genre, setGenre] = useState("All");
   const genres = useMemo(
-    () => ["All", ...Array.from(new Set(TUTORIALS.map((t) => t.category)))],
-    [],
+    () => [
+      "All",
+      ...(list.some((t) => t.ad) ? [ADS] : []),
+      ...Array.from(new Set(list.map((t) => t.category))),
+    ],
+    [list],
   );
   // Finished tutorials first (in catalog order), "coming soon" after them.
   const results = useMemo(() => {
-    const found = searchTutorials(query).filter(
-      (t, i) => i === 0 || genre === "All" || t.category === genre,
+    const found = searchTutorials(query, list).filter((t, i) =>
+      genre === ADS
+        ? t.ad
+        : i === 0 || genre === "All" || t.category === genre,
     );
     return [
       ...found.filter((t) => t.stories),
       ...found.filter((t) => !t.stories),
     ];
-  }, [query, genre]);
+  }, [query, genre, list]);
   const ready = Boolean(tutorial.stories);
   const story = tutorial.stories?.[view];
 
@@ -193,13 +215,13 @@ export function TutorialsBrowser() {
     (next: { v?: string; view?: View }) => {
       const merged = new URLSearchParams(params);
       if (next.v !== undefined) {
-        if (next.v === TUTORIALS[0].id) merged.delete("v");
+        if (next.v === list[0].id) merged.delete("v");
         else merged.set("v", next.v);
       }
       if (next.view) merged.set("view", next.view);
       setParams(merged, { replace: true, preventScrollReset: true });
     },
-    [params, setParams],
+    [params, setParams, list],
   );
 
   // Theater mode hides the discount banner (CSS on body) to give the video more room.

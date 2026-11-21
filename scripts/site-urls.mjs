@@ -70,7 +70,7 @@ export function getBlogPostsMeta() {
  * @returns {string[]}
  */
 /** Prerendered but kept out of the sitemap, RSS and llms.txt (review pages). */
-export const HIDDEN_ROUTES = []
+export const HIDDEN_ROUTES = ['/tutorials-test']
 
 export function getAllRoutes() {
   const comparisonPaths = getComparisonSlugs().map((s) => `/vs-${s}`)
