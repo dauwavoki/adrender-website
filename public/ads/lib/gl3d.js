@@ -16,7 +16,7 @@ window.GL3D = (function () {
   const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]], dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
   const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], norm = a => { const l = Math.hypot(...a) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
 
-  function create(width, height) {
+  function create(width, height, cfg = {}) {
     const cv = document.createElement('canvas'); cv.width = width; cv.height = height;
     const gl = cv.getContext('webgl2', { premultipliedAlpha: true, alpha: true, antialias: true, preserveDrawingBuffer: true });
     const vs = `#version 300 es
@@ -39,7 +39,8 @@ window.GL3D = (function () {
     function texture(src) {   // src: a 2D canvas (or image); call .update() after redrawing it
       const t = gl.createTexture(), o = { t, src, update() {
         gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.generateMipmap(gl.TEXTURE_2D);
+        const px = src.getContext ? src.getContext('2d').getImageData(0, 0, src.width, src.height) : src;   // upload pixels, not the canvas (avoids stale canvas snapshots)
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, px); gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8); } };
@@ -65,8 +66,25 @@ window.GL3D = (function () {
       (opts.ground || []).forEach(p => { if (p && p.tex && (p.alpha ?? 1) > 0.002) draw(p, opts.focus || 1, false); });   // opts.ground: floor + contact shadows, drawn first, unsorted, in focus
       if (opts.floorY != null) list.forEach(({ p, z }) => { if (p.reflect !== false) draw(p, z, true); });
       list.forEach(({ p, z }) => draw(p, z, false));
-      gl.finish();   // make sure the frame is complete before a 2D canvas copies it
+      if (cfg.readback) return readback();   // video export: copy pixels out explicitly (software GL can hand 2D canvases a stale frame)
       return cv;
+    }
+    let rb = null, rbData = null, rbBuf = null;
+    function readback() {
+      const w = cv.width, h = cv.height;
+      if (!rb) { rb = document.createElement('canvas'); rb.width = w; rb.height = h; rbData = rb.getContext('2d').createImageData(w, h); rbBuf = new Uint8Array(w * h * 4); }
+      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, rbBuf);
+      const d = rbData.data, row = w * 4;
+      for (let y = 0; y < h; y++) {
+        const src = (h - 1 - y) * row, dst = y * row;
+        for (let i = 0; i < row; i += 4) {
+          const a = rbBuf[src + i + 3]; d[dst + i + 3] = a;
+          if (a === 0) { d[dst + i] = d[dst + i + 1] = d[dst + i + 2] = 0; }
+          else if (a === 255) { d[dst + i] = rbBuf[src + i]; d[dst + i + 1] = rbBuf[src + i + 1]; d[dst + i + 2] = rbBuf[src + i + 2]; }
+          else { const k = 255 / a; d[dst + i] = Math.min(255, rbBuf[src + i] * k); d[dst + i + 1] = Math.min(255, rbBuf[src + i + 1] * k); d[dst + i + 2] = Math.min(255, rbBuf[src + i + 2] * k); }
+        }
+      }
+      rb.getContext('2d').putImageData(rbData, 0, 0); return rb;
     }
     function project(pt, opts) {   // world point -> screen px (0..width), for screen-space extras
       const VP = M.mul(M.persp(opts.fov * Math.PI / 180, cv.width / cv.height, 10, 40000), M.look(opts.eye, opts.target, opts.up || [0, 1, 0]));

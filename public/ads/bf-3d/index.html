@@ -11,7 +11,7 @@ const { PHONE, W, H, SCALE, RENDER, clamp01, lerp, prog, outExpo, sine, EASE, th
 const TOTAL = 37;
 const BG = '#0B0B0F', INK = '#F4F3F8', MUTE = 'rgba(244,243,248,0.62)';
 const GRAD = ['#4F8DF7', '#9B6BF2', '#FF8A3D'];
-const S3 = GL3D.create(W * SCALE, H * SCALE);
+const S3 = GL3D.create(W * SCALE, H * SCALE, { readback: false });
 const TS = 2;
 let g = ctx;
 function panel(w, h, draw) {
@@ -253,5 +253,6 @@ function render(t) {
   caption(t, 'One week only.', 29.4, 32.0);
   endCard(t);
 }
+window.GL_TWICE = true;   // video export: headless Chrome needs a frame before a WebGL canvas can be copied
 AD.start(TOTAL, render, assets);
 </script></body></html>

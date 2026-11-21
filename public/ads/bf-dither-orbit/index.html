@@ -34,7 +34,7 @@ const gradientField = (t, mode) => (u, v) => {
 };
 
 // ---------- scene 1: orbit (3D sphere of ads on warm paper) ----------
-const S3 = GL3D.create(W * SCALE, H * SCALE);
+const S3 = GL3D.create(W * SCALE, H * SCALE, { readback: false });
 const TS = 2, tex = {};
 function buildTex() {
   TILES.forEach(k => { const c = document.createElement('canvas'), w = 168, h = 209; c.width = w * TS; c.height = h * TS; const x = c.getContext('2d'); x.scale(TS, TS);
@@ -240,5 +240,6 @@ function render(t) {
   }
   g = ctx; begin(ctx); ctx.fillStyle = NAVY; ctx.fillRect(0, 0, W, H); cur(t);
 }
+window.GL_TWICE = true;   // video export: headless Chrome needs a frame before a WebGL canvas can be copied
 AD.start(TOTAL, render, assets);
 </script></body></html>
