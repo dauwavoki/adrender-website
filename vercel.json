@@ -27,7 +27,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!ads/).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
@@ -63,8 +63,24 @@
           "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://*.clarity.ms https://c.bing.com https://fazier.com https://saascity.io https://statics.startupbase.io https://easylaunch.dev https://www.easylaunch.dev https://smollaunch.com https://api.producthunt.com; media-src 'self'; frame-src 'self' https://www.youtube-nocookie.com; connect-src 'self' https://oxxsgplmsqajhvjveact.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.google.com https://www.clarity.ms https://*.clarity.ms; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://oxxsgplmsqajhvjveact.supabase.co;"
         },
         {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
           "key": "X-Frame-Options",
           "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
         },
         {
           "key": "X-Robots-Tag",
