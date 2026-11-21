@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/tutorials-test",
+      "destination": "/tutorials",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

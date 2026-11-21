@@ -1,5 +1,5 @@
 import { PageMeta } from '../components/PageMeta'
-import { TutorialsBrowser } from '../components/Showcase/TutorialsBrowser'
+import { TutorialsBrowser } from '../components/ShowcaseTest/TutorialsBrowser'
 
 const TITLE = 'Tutorials — AdRender'
 const DESCRIPTION = 'Short walkthroughs of AdRender, from adding your brand to downloading finished image and video ads.'

@@ -346,6 +346,21 @@ export type PlayerProps = {
 /** Opening card (what this video shows) and closing card (thanks, logo, name, link). */
 type Bookend = { title: string; line: string; link: string; closer?: string }
 
+/** Two lines at the title's natural break: after a colon, or before a bracket. */
+function titleLines(title: string): ReactNode {
+  const colon = title.indexOf(': ')
+  const bracket = title.indexOf(' (')
+  const at = colon > 0 ? colon + 1 : bracket > 0 ? bracket : -1
+  if (at < 0) return title
+  return (
+    <>
+      {title.slice(0, at)}
+      <br />
+      {title.slice(at).trim()}
+    </>
+  )
+}
+
 function BookendCard({ state, bookend, touch }: { state: SceneState; bookend: Bookend; touch: boolean }) {
   const on = state.bookend
   return (
@@ -364,7 +379,7 @@ function BookendCard({ state, bookend, touch }: { state: SceneState; bookend: Bo
             <img src="/brand/icons/icon-color.svg" alt="" />
             AdRender tutorial
           </span>
-          <p className="scv2-bookend-title">{bookend.title}</p>
+          <p className="scv2-bookend-title">{titleLines(bookend.title)}</p>
           <p className="scv2-bookend-line">{bookend.line}</p>
         </div>
       )}

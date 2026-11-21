@@ -124,12 +124,12 @@ function Scene({ state, tall }: { state: SceneState; tall: boolean }) {
                   <>
                     <i className="scv2-sp-play" />
                     <b className="scv2-sp-time">{item.video}</b>
+                    <i className="scv2-sp-bar" style={{ animationDelay: `${1.4 + i * 0.09}s` }} />
                   </>
                 ) : null}
               </span>
             ))}
           </div>
-          <span className="sp-ready">8 image ads and 4 video ads ready</span>
         </div>
       )
     case 5:

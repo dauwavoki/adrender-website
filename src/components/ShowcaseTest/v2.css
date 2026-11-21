@@ -1991,3 +1991,40 @@
 .scv2-site.is-phone .scv2-site-sec h2 {
   font-size: 32px;
 }
+
+/* Spot results: video tiles play (slow push-in, play button fades, progress runs) */
+.sc-v2 .scv2-sp-tile {
+  overflow: hidden;
+  border-radius: 10px;
+}
+.sc-v2 .scv2-sp-tile.is-video img {
+  animation: scv2-sp-playing 9s 1.2s ease-in-out both;
+}
+@keyframes scv2-sp-playing {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.12) translate(-3%, -2%); }
+  100% { transform: scale(1.06) translate(2%, 1%); }
+}
+.sc-v2 .scv2-sp-tile.is-video .scv2-sp-play {
+  animation: scv2-sp-play-out 500ms 1.3s ease both;
+}
+@keyframes scv2-sp-play-out {
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+}
+.sc-v2 .scv2-sp-bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #fff;
+  transform-origin: left;
+  animation: scv2-sp-progress 8s linear both;
+}
+@keyframes scv2-sp-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.scv2-bookend-title {
+  text-wrap: balance;
+}

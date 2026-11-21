@@ -12,7 +12,6 @@ import { FaqPage } from './pages/FaqPage'
 import { HomePage } from './pages/HomePage'
 import { TermsPage } from './pages/TermsPage'
 import { TutorialsPage } from './pages/TutorialsPage'
-import { TutorialsTestPage } from './pages/TutorialsTestPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { VsPage } from './pages/VsPage'
 import { SolutionRoutePage } from './pages/SolutionPage'
@@ -44,7 +43,6 @@ export function AppRoutes() {
           <Route path="blog" element={<BlogIndexPage />} />
           <Route path="changelog" element={<ChangelogPage />} />
           <Route path="tutorials" element={<TutorialsPage />} />
-          <Route path="tutorials-test" element={<TutorialsTestPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
           {/* Explicit paths preserve /vs-adcreative URLs under StaticRouter + BrowserRouter. */}
           {comparisons.map((c) => (
