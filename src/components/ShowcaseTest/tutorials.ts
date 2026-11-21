@@ -38,6 +38,11 @@ export type Tutorial = {
   closer?: string
   /** Only on the admin test page (/tutorials-test) until it moves to /tutorials. */
   test?: boolean
+  /**
+   * Coded motion ad drawn on its own canvas page in /public/ads (not the app engine).
+   * The page takes ?view=desktop|phone and plays in a frame; it also renders to MP4 frame by frame.
+   */
+  motion?: { src: string; seconds: number }
 }
 
 const LIST: Tutorial[] = [
@@ -59,6 +64,51 @@ const LIST: Tutorial[] = [
       'Open Templates and add two image and two video templates to the cockpit.',
       'Choose your brand, choose a skill such as Clone, and press Render.',
       'Open the Ready tab or My Ads Library to see and download your ads.',
+    ],
+  },
+  {
+    id: 'bf-3d',
+    category: 'Black Friday',
+    title: 'Ad: Black Friday, 3D',
+    summary: 'Black Friday sale ad: 50% off your first month on every plan, one week only. Real app pieces flying through 3D space with one continuous camera.',
+    tags: ['ad', 'black friday', 'sale', 'promo', '3d', 'social'],
+    motion: { src: '/ads/bf-3d', seconds: 37 },
+    ad: true,
+    test: true,
+    learn: [
+      'Style: made with the saas-animation skill. Every shot turns into the next: logo, offer card, wall of ads, template, your version, results, offer, logo.',
+      'Built from the AdRender logo and the YourBrand example ads already on the site.',
+      'Captions are on. Ready for music.',
+    ],
+  },
+  {
+    id: 'bf-dither-lime',
+    category: 'Black Friday',
+    title: 'Ad: Black Friday, pixel dither (lime)',
+    summary: 'Black Friday sale ad: 50% off your first month on every plan, one week only. Black and lime pixel dithering with a node-graph dashboard and a bento grid.',
+    tags: ['ad', 'black friday', 'sale', 'promo', 'dither', 'pixel', 'social'],
+    motion: { src: '/ads/bf-dither-lime', seconds: 36 },
+    ad: true,
+    test: true,
+    learn: [
+      'Style: ordered (Bayer) pixel dithering in black and lime, with pixel-dissolve transitions between shots.',
+      'Influences: a node-graph AI dashboard, a bento stats grid, and procedural nature growth (a phyllotaxis spiral that forms the 50%).',
+      'Captions are on. Ready for music.',
+    ],
+  },
+  {
+    id: 'bf-dither-orbit',
+    category: 'Black Friday',
+    title: 'Ad: Black Friday, pixel dither (orbit)',
+    summary: 'Black Friday sale ad: 50% off your first month on every plan, one week only. A 3D orbit of ads, a segmented gauge, a flow chart and an AI prompt card over dithered magenta and navy.',
+    tags: ['ad', 'black friday', 'sale', 'promo', 'dither', 'pixel', 'orbit', 'social'],
+    motion: { src: '/ads/bf-dither-orbit', seconds: 37 },
+    ad: true,
+    test: true,
+    learn: [
+      'Style: ordered (Bayer) pixel dithering in navy and magenta with lime accents, opening and closing on warm paper.',
+      'Influences: a 3D orbit portfolio hero, a tilted AI platform UI kit (gauge, prompt bar, orb), and full-screen data charts (Sankey).',
+      'Captions are on. Ready for music.',
     ],
   },
   {

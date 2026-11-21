@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AdRender Black Friday: pixel dither (orbit)</title><meta name="robots" content="noindex"></head>
+<body><canvas id="c"></canvas>
+<script src="/ads/lib/gl3d.js"></script>
+<script src="/ads/lib/core.js"></script>
+<script>
+// Ad 3: Black Friday in ordered pixel dithering, navy and magenta with lime accents.
+// Motion system as Ad 2 (standard enter, exit curve, 1/3 rule). Influences: a 3D orbit of work tiles with a serif-italic
+// headline on warm grey, a tilted AI-platform UI kit (segmented gauge, prompt bar, orb), and full-screen data charts (Sankey).
+const A = AD, { PHONE, W, H, SCALE, RENDER, clamp01, lerp, prog, sine, outExpo, EASE, third, ctx, mk, begin, IMG, drawCover, words, ditherField, ditherSource, dissolve, pixelWipe, logo } = A;
+const TOTAL = 37;
+const PAPER = '#ECEAE5', PAPER2 = '#CFCAC0', INK = '#141416', NAVY = '#0B0C26', MAG = '#B8165F', LIME = '#C8F25A', CARD = '#141420', TXT = '#F3F1F6', MUTE = 'rgba(243,241,246,0.6)';
+const TILES = ['ad-01', 'ad-02', 'ad-03', 'ad-04', 'ad-05', 'ad-06', 'ad-07', 'ad-08', 'ad-09', 'ad-10', 'ad-11', 'ad-12', 'vad-01', 'vad-02', 'vad-03', 'vad-04', 'vad-05', 'vad-06', 'shoe-output'];
+const assets = { logo: '/brand/logo/adrender-logo-1024.png', yb: '/showcase/yourbrand-logo.webp', tpl: '/showcase/shoe-template.webp', out: '/showcase/shoe-output.webp' };
+TILES.forEach(k => assets[k] = `/showcase/${k}.webp`);
+let g = ctx;
+const mono = (txt, x, y, size = 18, color = MUTE, align = 'left', track = 2) => { g.save(); g.font = `500 ${size}px Inter`; g.fillStyle = color; g.textAlign = align; g.letterSpacing = `${track}px`; g.fillText(txt, x, y); g.restore(); };
+function caption(t, text, a, b, y, dark = true) {
+  const size = PHONE ? 62 : 60; y = y ?? (PHONE ? H - 200 : H - 110);
+  words(g, { text, x: W / 2, y, size, weight: 600, t, in: a, out: b, grad: dark ? ['#FFFFFF', '#C8C2D6'] : [INK, '#55525C'], shadow: dark ? 'rgba(5,5,20,0.9)' : null });
+}
+function caption2(t, l1, l2, a, b, dark = true) {
+  if (PHONE) { caption(t, l1, a, b, H - 270, dark); caption(t, l2, a + 0.2, b, H - 192, dark); } else caption(t, `${l1} ${l2}`, a, b, undefined, dark);
+}
+// two-tone dithered backdrop. f(u,v) -> amount of magenta
+function backdrop(t, f, on = MAG, off = NAVY, cell = 8) { ditherField(g, { cell, on, off, key: 'bg', field: f }); }
+const gradientField = (t, mode) => (u, v) => {
+  const w = 0.03 * Math.sin(u * 8 + t * 1.2) + 0.02 * Math.sin(u * 19 - t * 1.7);
+  if (mode === 'rise') return Math.pow(clamp01((v - 0.25 + w) / 0.85), 1.5) * 0.95;
+  if (mode === 'diag') return Math.pow(clamp01(((u * 0.6 + v * 0.7) - 0.45 + w) / 0.9), 1.3);
+  if (mode === 'right') return Math.pow(clamp01((u - 0.55 + w) / 0.5), 1.6) * 0.8 + Math.pow(clamp01((v - 0.86) / 0.14), 2) * 0.5;
+  return 0;
+};
+
+// ---------- scene 1: orbit (3D sphere of ads on warm paper) ----------
+const S3 = GL3D.create(W * SCALE, H * SCALE);
+const TS = 2, tex = {};
+function buildTex() {
+  TILES.forEach(k => { const c = document.createElement('canvas'), w = 168, h = 209; c.width = w * TS; c.height = h * TS; const x = c.getContext('2d'); x.scale(TS, TS);
+    x.save(); x.beginPath(); x.roundRect(0, 0, w, h, 14); x.fillStyle = '#ddd'; x.fill(); x.clip(); drawCover(x, IMG[k], 0, 0, w, h, 0); x.restore(); tex[k] = { tex: S3.texture(c), w, h }; });
+}
+const NT = 84, PTS = (() => { const p = []; for (let i = 0; i < NT; i++) { const y = 1 - (i + 0.5) / NT * 2, r = Math.sqrt(1 - y * y), th = i * 2.39996; if (Math.abs(y) > 0.93) continue; p.push([Math.cos(th) * r, y, Math.sin(th) * r]); } return p; })();
+const SPH = { R: PHONE ? 330 : 350, cy: PHONE ? 40 : 0, cx: PHONE ? 0 : 90 };
+function orbit(t) {
+  const fov = PHONE ? 58 : 34, eye = [0, 120 - 60 * sine(prog(t, 0, 9)), 1800], cam = { eye, target: [0, 0, 0], fov, focus: 1800, aperture: 0.25, fog: { near: 1500, far: 3200, color: [0.925, 0.918, 0.898] } };
+  const spin = -0.35 - t * 0.22, gather = EASE.inOut(prog(t, 7.3, 8.6)), P = [];
+  PTS.forEach((p, i) => {
+    const born = outExpo(prog(t, 0.1 + (i % 17) * 0.06, 1.9 + (i % 17) * 0.06)); if (born <= 0) return;
+    const c = Math.cos(spin), s = Math.sin(spin), x = p[0] * c + p[2] * s, z = -p[0] * s + p[2] * c, y = p[1];
+    const R = SPH.R * lerp(1.9, 1, born) * (1 - 0.92 * gather);
+    const pos = [x * R + SPH.cx, y * R + SPH.cy, z * R], facing = z;   // z > 0 faces the camera
+    const k = TILES[i % TILES.length];
+    P.push({ tex: tex[k].tex, w: tex[k].w, h: tex[k].h, pos, rot: [-Math.asin(y), Math.atan2(x, z), 0], scale: 1 - 0.85 * gather, alpha: born * (facing > -0.1 ? 1 : 0.55), light: lerp(0.62, 1, clamp01(facing * 0.5 + 0.5)) });
+  });
+  return { P, cam };
+}
+function sceneOrbit(t) {
+  g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
+  // dithered ground shadow under the sphere + soft corner vignette (two light tones)
+  ditherField(g, { cell: 6, on: PAPER2, off: PAPER, key: 'paper', field: (u, v) => {
+    const dx = (u - 0.5) * W / H, dy = v - (PHONE ? 0.78 : 0.90); const sh = Math.exp(-(dx * dx) / (PHONE ? 0.05 : 0.09) - (dy * dy) / 0.004) * 0.9 * (1 - prog(t, 7.0, 8.4));
+    const vg = Math.pow(Math.max(Math.abs(u - 0.5) * 2, Math.abs(v - 0.5) * 2), 6) * 0.35; return sh + vg; } });
+  const { P, cam } = orbit(t); g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(S3.render(P, cam), 0, 0); g.restore();
+  // editorial type: serif italic + sans, like a portfolio hero
+  const m = PHONE ? 70 : 96, hs = PHONE ? 104 : 100;
+  const x0 = PHONE ? W / 2 : m, al = PHONE ? 'center' : 'left', y1 = PHONE ? 250 : 210;
+  if (PHONE) { words(g, { text: 'Black Friday', x: W / 2, y: y1, size: hs, weight: 400, font: 'Newsreader', italic: true, t, in: 0.6, out: 7.4, color: INK, track: -0.02 });
+    words(g, { text: 'at AdRender.', x: W / 2, y: y1 + hs * 0.98, size: hs * 0.92, weight: 500, t, in: 0.85, out: 7.4, color: INK }); }
+  else { const w1 = A.measure('Black Friday', hs, 400, 'Newsreader', true, -0.02);
+    words(g, { text: 'Black Friday', x: m, y: y1, size: hs, weight: 400, font: 'Newsreader', italic: true, t, in: 0.6, out: 7.4, color: INK, align: 'left', track: -0.02 });
+    words(g, { text: 'at AdRender.', x: m, y: y1 + hs * 0.98, size: hs * 0.92, weight: 500, t, in: 0.85, out: 7.4, color: INK, align: 'left' }); }
+  const lk = EASE.standard(prog(t, 1.2, 2.0)) * (1 - prog(t, 7.0, 7.6));
+  if (lk > 0) { g.save(); g.globalAlpha = lk;
+    mono('00 / 07 DAYS', W - m, PHONE ? 90 : m, 20, INK, 'right'); mono('ADRENDER', PHONE ? m : m, PHONE ? 90 : m, 20, INK, 'left');
+    if (!PHONE) { g.font = '400 24px Inter'; g.fillStyle = '#55525C'; g.letterSpacing = '0px'; g.fillText('Image and video ads,', W - m - 330, 210); g.fillText('remade for your brand.', W - m - 330, 242); }
+    g.restore(); }
+  // bottom-right offer, serif italic + sans
+  const by = PHONE ? H - 210 : H - 96;
+  words(g, { text: '50% off', x: PHONE ? W / 2 : W - m, y: by - (PHONE ? 70 : 64), size: PHONE ? 84 : 76, weight: 400, font: 'Newsreader', italic: true, t, in: 2.6, out: 7.4, color: INK, align: PHONE ? 'center' : 'right', track: -0.02 });
+  words(g, { text: 'your first month', x: PHONE ? W / 2 : W - m, y: by, size: PHONE ? 60 : 54, weight: 500, t, in: 2.8, out: 7.4, color: INK, align: PHONE ? 'center' : 'right' });
+  if (!PHONE) words(g, { text: 'Every plan. One week only.', x: m, y: by, size: 28, weight: 500, t, in: 3.4, out: 7.4, color: '#55525C', align: 'left', track: 0 });
+}
+
+// ---------- scene 2: segmented gauge on a tilted card ----------
+function tilt(cx, cy, k, base = 1) {   // gentle "UI kit" tilt that keeps drifting
+  g.translate(cx, cy); g.rotate(lerp(-0.16, -0.10, k) * base); g.transform(1, 0, lerp(0.20, 0.12, k) * base, 1, 0, 0);
+}
+function sceneGauge(t) {
+  backdrop(t, gradientField(t, 'rise'));
+  const k = sine(prog(t, 8.0, 14.6)), cx = W / 2, cy = PHONE ? H * 0.42 : H * 0.46, cw = PHONE ? 820 : 760, ch = PHONE ? 820 : 640;
+  const enter = EASE.premium(prog(t, 8.1, 9.4));
+  g.save(); tilt(cx, cy + (1 - enter) * 60, k); g.globalAlpha = enter;
+  g.shadowColor = 'rgba(0,0,0,0.5)'; g.shadowBlur = 60 * SCALE; g.shadowOffsetY = 30 * SCALE; g.beginPath(); g.roundRect(-cw / 2, -ch / 2, cw, ch, 48); g.fillStyle = CARD; g.fill(); g.shadowColor = 'transparent';
+  g.strokeStyle = 'rgba(255,255,255,0.08)'; g.lineWidth = 2; g.stroke();
+  mono('BLACK FRIDAY', -cw / 2 + 50, -ch / 2 + 70, 22, MUTE, 'left', 5);
+  // 20 segments; ten light up lime one after another (1/3 rule)
+  const R = PHONE ? 300 : 230, segs = 20, gap = 0.05, ri = R * 0.78, oy = PHONE ? 0 : 20;
+  for (let i = 0; i < segs; i++) {
+    const a0 = -Math.PI / 2 + i * (Math.PI * 2 / segs) + gap, a1 = a0 + Math.PI * 2 / segs - gap * 2, born = EASE.standard(third(t, 8.5, 0.5, i * 0.35));
+    const lit = i < 10 ? EASE.standard(third(t, 9.8, 0.45, i)) : 0;
+    g.save(); g.globalAlpha = born; g.beginPath(); g.arc(0, oy, R, a0, a1); g.arc(0, oy, ri, a1, a0, true); g.closePath();
+    g.fillStyle = lit > 0 ? `rgba(200,242,90,${0.25 + 0.75 * lit})` : '#4A4A58'; if (lit > 0.6) { g.shadowColor = 'rgba(200,242,90,0.6)'; g.shadowBlur = 18 * SCALE * lit; } g.fill(); g.restore();
+  }
+  const pct = Math.round(50 * EASE.inOut(prog(t, 9.8, 12.2)));
+  g.textAlign = 'center'; g.font = `700 ${PHONE ? 170 : 140}px Inter`; g.letterSpacing = '-6px'; g.fillStyle = TXT; g.fillText(`${pct}%`, 0, oy + (PHONE ? 50 : 40));
+  g.font = `500 ${PHONE ? 34 : 30}px Inter`; g.letterSpacing = '0px'; g.fillStyle = MUTE; g.fillText('off your first month', 0, oy + (PHONE ? 110 : 92));
+  g.restore();
+  caption(t, 'On every plan.', 10.6, 14.2);
+}
+
+// ---------- scene 3: Sankey, one brand in, ads out ----------
+function sceneFlow(t) {
+  backdrop(t, gradientField(t, 'right'));
+  const k = sine(prog(t, 14.0, 21.6)), enter = EASE.premium(prog(t, 14.2, 15.4));
+  g.save(); g.translate(W / 2, H / 2 + (1 - enter) * 50); g.rotate(lerp(-0.07, -0.04, k)); g.transform(1, 0, lerp(0.10, 0.05, k), 1, 0, 0); g.scale(lerp(1, 1.04, k), lerp(1, 1.04, k)); g.globalAlpha = enter;
+  const PW = PHONE ? 980 : 1640, PH = PHONE ? 1240 : 760;
+  g.beginPath(); g.roundRect(-PW / 2, -PH / 2, PW, PH, 36); g.fillStyle = 'rgba(14,14,32,0.92)'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.08)'; g.lineWidth = 2; g.stroke();
+  g.font = '600 34px Inter'; g.fillStyle = TXT; g.letterSpacing = '-0.5px'; g.fillText('One brand in. Ads out.', -PW / 2 + 48, -PH / 2 + 74); mono('YOURBRAND · BLACK FRIDAY', PW / 2 - 48, -PH / 2 + 72, 18, MUTE, 'right', 3);
+  // nodes: [x, y, w, h, label, sub, colour]
+  const BL = ['#2E6BFF', '#4F8DF7'], PK = ['#E0287A', '#F25C8C'], PU = ['#7B3FF2', '#9B6BF2'];
+  const N = PHONE ? {
+    src: [-470 + 10, -100, 250, 150, 'YourBrand', 'brand kit', BL],
+    mid: [[-90, -330, 250, 120, 'Image', 'templates', PK], [-90, -100, 250, 120, 'Video', 'templates', PK], [-90, 130, 250, 120, 'Ad copy', 'per product', PK]],
+    out: [[220, -380, 240, 130, 'Feed ads', 'image', PU], [220, -160, 240, 130, 'Story ads', 'image + video', PU], [220, 60, 240, 130, 'Video ads', 'clone', PU], [220, 280, 240, 130, 'Captions', 'ready to post', PU]],
+  } : {
+    src: [-760, -60, 300, 170, 'YourBrand', 'brand kit', BL],
+    mid: [[-260, -250, 300, 130, 'Image templates', 'winning ads', PK], [-260, -40, 300, 130, 'Video templates', 'winning ads', PK], [-260, 170, 300, 130, 'Ad copy', 'per product', PK]],
+    out: [[330, -280, 300, 130, 'Feed ads', 'image', PU], [330, -80, 300, 130, 'Story ads', 'image + video', PU], [330, 120, 300, 130, 'Video ads', 'clone', PU]],
+  };
+  const flowK = i => EASE.inOut(third(t, 15.2, 1.1, i));
+  const ribbon = (a, b, th, k, c0, c1) => {   // a filled band between two nodes, drawn left to right
+    if (k <= 0) return; const ax = a[0] + a[2], ay = a[1] + a[3] / 2, bx = b[0], by = b[1] + b[3] / 2, mx = (ax + bx) / 2;
+    g.save(); g.beginPath(); g.rect(ax - 2, -PH, (bx - ax + 4) * k, PH * 2); g.clip();
+    const gr = g.createLinearGradient(ax, 0, bx, 0); gr.addColorStop(0, c0); gr.addColorStop(1, c1); g.fillStyle = gr; g.globalAlpha *= 0.75;
+    g.beginPath(); g.moveTo(ax, ay - th / 2); g.bezierCurveTo(mx, ay - th / 2, mx, by - th / 2, bx, by - th / 2); g.lineTo(bx, by + th / 2); g.bezierCurveTo(mx, by + th / 2, mx, ay + th / 2, ax, ay + th / 2); g.closePath(); g.fill(); g.restore();
+  };
+  N.mid.forEach((m, i) => ribbon(N.src, m, PHONE ? 34 : 44, flowK(i), BL[1], PK[0]));
+  N.out.forEach((o, i) => N.mid.forEach((m, j) => { if ((i + j) % 2 === 0 || (PHONE && j === 1)) ribbon(m, o, PHONE ? 20 : 26, flowK(3 + i * 0.6 + j * 0.3), PK[1], PU[0]); }));
+  const node = (n, k) => { if (k <= 0) return; const [x, y, w, h, lab, sub, col] = n; g.save(); g.globalAlpha *= clamp01(k * 2); g.translate(0, (1 - k) * 20);
+    const gr = g.createLinearGradient(x, y, x + w, y + h); gr.addColorStop(0, col[0]); gr.addColorStop(1, col[1]); g.beginPath(); g.roundRect(x, y, w, h, 20); g.fillStyle = gr; g.fill();
+    g.font = `600 ${PHONE ? 28 : 30}px Inter`; g.fillStyle = '#fff'; g.letterSpacing = '-0.5px'; g.fillText(lab, x + 22, y + h - 50); g.font = '500 20px Inter'; g.fillStyle = 'rgba(255,255,255,0.75)'; g.letterSpacing = '0px'; g.fillText(sub, x + 22, y + h - 20);
+    if (lab === 'YourBrand') drawCover(g, IMG.yb, x + 22, y + 20, 52, 52, 26);
+    g.restore(); };
+  node(N.src, EASE.premium(prog(t, 14.6, 15.4)));
+  N.mid.forEach((m, i) => node(m, EASE.premium(third(t, 15.6, 0.8, i))));
+  N.out.forEach((o, i) => node(o, EASE.premium(third(t, 16.8, 0.8, i))));
+  g.restore();
+  caption(t, PHONE ? 'Image and video ads.' : 'Image and video ads, from one brand kit.', 16.4, 21.6);
+}
+
+// ---------- scene 4: tilted AI prompt card ----------
+function orb(cx, cy, r, t) {   // a dithered orb with rings
+  ditherField(g, { x: cx - r, y: cy - r, w: r * 2, h: r * 2, cell: 4, on: LIME, off: null, key: 'orb', field: (u, v) => {
+    const dx = u - 0.5, dy = v - 0.5, d = Math.sqrt(dx * dx + dy * dy) * 2; if (d > 1) return 0;
+    const ring = Math.abs(Math.sin(d * 9 - t * 3 + Math.atan2(dy, dx) * 2)); return (1 - d) * 0.5 + ring * 0.5 * (1 - d * 0.6); } });
+}
+function scenePrompt(t) {
+  backdrop(t, gradientField(t, 'diag'));
+  const k = sine(prog(t, 21.6, 29.2)), enter = EASE.premium(prog(t, 21.8, 23.0));
+  const cw = PHONE ? 940 : 1180, ch = PHONE ? 1240 : 720;
+  g.save(); g.translate(W / 2, (PHONE ? H * 0.44 : H * 0.47) + (1 - enter) * 60); g.rotate(lerp(-0.12, -0.08, k)); g.transform(1, 0, lerp(0.16, 0.10, k), 1, 0, 0); g.globalAlpha = enter;
+  g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 60 * SCALE; g.shadowOffsetY = 30 * SCALE; g.beginPath(); g.roundRect(-cw / 2, -ch / 2, cw, ch, 44); g.fillStyle = 'rgba(16,16,26,0.96)'; g.fill(); g.shadowColor = 'transparent'; g.strokeStyle = 'rgba(255,255,255,0.08)'; g.lineWidth = 2; g.stroke();
+  const L = -cw / 2 + 50, T = -ch / 2 + 60;
+  // conversation
+  const b1 = EASE.premium(prog(t, 23.9, 24.6)), b2 = EASE.premium(prog(t, 25.0, 25.8)), reveal = EASE.inOut(prog(t, 25.6, 27.0));
+  const iw = PHONE ? 300 : 230, ih = iw * 522 / 420;
+  if (b1 > 0) { g.save(); g.globalAlpha *= b1; g.translate(0, (1 - b1) * 20);
+    const bx = PHONE ? cw / 2 - 50 - 560 : cw / 2 - 50 - 520; g.beginPath(); g.roundRect(bx, T, PHONE ? 560 : 520, 80, 24); g.fillStyle = 'rgba(255,255,255,0.08)'; g.fill();
+    g.font = '500 28px Inter'; g.fillStyle = TXT; g.fillText('Clone this ad for YourBrand', bx + 28, T + 50); g.restore();
+    g.save(); g.globalAlpha *= b1; drawCover(g, IMG.tpl, cw / 2 - 50 - iw * 0.62, T + 100, iw * 0.62, ih * 0.62, 16); g.restore(); }
+  if (b2 > 0) { g.save(); g.globalAlpha *= b2; g.translate(0, (1 - b2) * 20); const ty = PHONE ? T + 120 + ih * 0.62 : T + 120;
+    orb(L + 28, ty + 28, 28, t); g.font = '600 28px Inter'; g.fillStyle = TXT; g.fillText("Done. Here's your version.", L + 78, ty + 38);
+    // your version, revealed from dither to colour
+    const ix = L + 78, iy = ty + 70; g.save(); g.beginPath(); g.roundRect(ix, iy, iw, ih, 18); g.clip(); g.fillStyle = '#1a1030'; g.fillRect(ix, iy, iw, ih);
+    const c = A.small('outC', Math.ceil(iw), Math.ceil(ih)); c.g.clearRect(0, 0, c.width, c.height); drawCover(c.g, IMG.out, 0, 0, c.width, c.height, 0);
+    ditherSource(g, c, { x: ix, y: iy, w: iw, h: ih, cell: 5, on: '#F25C8C', key: 'outD', gain: 1.2 });
+    g.globalAlpha *= reveal; drawCover(g, IMG.out, ix, iy, iw, ih, 18); g.restore(); g.restore(); }
+  // prompt bar with orb, like an AI platform kit
+  const py = ch / 2 - 150, pk = EASE.premium(prog(t, 22.4, 23.4));
+  g.save(); g.globalAlpha *= pk; g.beginPath(); g.roundRect(-cw / 2 + 30, py, cw - 60, 120, 60); g.fillStyle = '#1C1C2A'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.10)'; g.stroke();
+  orb(-cw / 2 + 100, py + 60, 42, t);
+  const typed = 'Clone this ad for YourBrand', n = Math.round(typed.length * prog(t, 22.8, 23.8)), sent = t > 23.9;
+  g.font = `500 ${PHONE ? 30 : 32}px Inter`; g.fillStyle = sent || n === 0 ? 'rgba(243,241,246,0.45)' : TXT; g.letterSpacing = '0px';
+  const txt = sent ? 'Ask me anything…' : n ? typed.slice(0, n) : 'Ask me anything…'; g.fillText(txt, -cw / 2 + 162, py + 71);
+  if (!PHONE) { g.font = '500 24px Inter'; g.fillStyle = MUTE; g.textAlign = 'right'; g.fillText('Skill', cw / 2 - 210, py + 69); g.font = '600 30px Inter'; g.fillStyle = TXT; g.fillText('Clone', cw / 2 - 90, py + 71); g.textAlign = 'left'; }
+  g.restore();
+  g.restore();
+  caption2(t, 'Pick a winning ad.', 'Get your version.', 23.2, 28.6);
+}
+
+// ---------- scene 5: one week only (seven segments) ----------
+function sceneWeek(t) {
+  backdrop(t, gradientField(t, 'rise'));
+  const cx = W / 2, cy = PHONE ? H * 0.38 : H * 0.40, R = PHONE ? 270 : 220, ri = R * 0.80;
+  for (let d = 0; d < 7; d++) {
+    const a0 = -Math.PI / 2 + d * (Math.PI * 2 / 7) + 0.06, a1 = a0 + Math.PI * 2 / 7 - 0.12, born = EASE.standard(third(t, 29.2, 0.6, d * 0.5));
+    const lit = d === 0 ? 1 : 1 - EASE.inOut(prog(t, 30.6 + d * 0.2, 31.1 + d * 0.2)) * 0.8;
+    g.save(); g.globalAlpha = born; g.beginPath(); g.arc(cx, cy, R, a0, a1); g.arc(cx, cy, ri, a1, a0, true); g.closePath(); g.fillStyle = lit > 0.5 ? LIME : '#4A4A58'; g.globalAlpha = born * (0.3 + 0.7 * lit); g.fill(); g.restore();
+  }
+  words(g, { text: '7', x: cx, y: cy + (PHONE ? 64 : 52), size: PHONE ? 190 : 160, weight: 700, t, in: 29.4, out: 32.6, color: TXT, track: -0.04 });
+  words(g, { text: 'days', x: cx, y: cy + (PHONE ? 130 : 108), size: PHONE ? 38 : 32, weight: 500, t, in: 29.6, out: 32.6, color: MUTE, track: 0 });
+  words(g, { text: 'One week only.', x: W / 2, y: PHONE ? H * 0.68 : H * 0.80, size: PHONE ? 104 : 104, weight: 600, t, in: 29.8, out: 32.6, grad: ['#FFFFFF', '#C8C2D6'], shadow: 'rgba(5,5,20,0.9)' });
+}
+
+// ---------- scene 6: end card on warm paper (bookend) ----------
+function sceneEnd(t) {
+  g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
+  const k = EASE.premium(prog(t, 32.6, 34.0));
+  ditherField(g, { cell: 6, on: PAPER2, off: PAPER, key: 'paper', field: (u, v) => { const dx = (u - 0.5) * W / H, dy = v - 0.5; return Math.pow(Math.max(Math.abs(u - 0.5) * 2, Math.abs(v - 0.5) * 2), 5) * 0.5 + Math.exp(-(dx * dx + dy * dy) / 0.02) * 0.0; } });
+  const cy = PHONE ? H * 0.40 : H * 0.36, lh = PHONE ? 220 : 170;
+  logo(g, W / 2, cy + (1 - k) * 20, lh * lerp(0.8, 1, k), k);
+  const ty = cy + lh / 2 + (PHONE ? 130 : 105);
+  const w1 = A.measure('Black Friday', PHONE ? 92 : 80, 400, 'Newsreader', true, -0.02), w2 = A.measure('at AdRender.', PHONE ? 86 : 74, 500), sp = 20, tot = w1 + sp + w2;
+  if (PHONE) { words(g, { text: 'Black Friday', x: W / 2, y: ty, size: 92, weight: 400, font: 'Newsreader', italic: true, t, in: 33.0, color: INK, track: -0.02 }); words(g, { text: 'at AdRender.', x: W / 2, y: ty + 90, size: 80, weight: 500, t, in: 33.2, color: INK }); }
+  else { words(g, { text: 'Black Friday', x: W / 2 - tot / 2, y: ty, size: 80, weight: 400, font: 'Newsreader', italic: true, t, in: 33.0, color: INK, align: 'left', track: -0.02 }); words(g, { text: 'at AdRender.', x: W / 2 - tot / 2 + w1 + sp, y: ty, size: 74, weight: 500, t, in: 33.2, color: INK, align: 'left' }); }
+  const bk = EASE.standard(prog(t, 33.8, 34.6)), by = ty + (PHONE ? 150 : 60);
+  if (bk > 0) { const bw = PHONE ? 470 : 380, bh = PHONE ? 88 : 72; g.save(); g.globalAlpha = bk; g.beginPath(); g.roundRect(W / 2 - bw / 2, by + (1 - bk) * 14, bw, bh, bh / 2); g.fillStyle = INK; g.fill();
+    g.font = `500 ${PHONE ? 36 : 30}px Inter`; g.fillStyle = PAPER; g.textAlign = 'center'; g.fillText('adrender.app', W / 2, by + bh / 2 + 11 + (1 - bk) * 14); g.restore();
+    words(g, { text: '50% off your first month · Every plan · One week only', x: W / 2, y: by + bh + (PHONE ? 80 : 62), size: PHONE ? 30 : 26, weight: 500, t, in: 34.6, stagger: 0.03, color: '#55525C', track: 0 }); }
+}
+
+// ---------- compositor ----------
+const S = [mk(), mk()];
+function draw(fn, t, c) { const x = c.getContext('2d'); g = x; begin(x); x.fillStyle = NAVY; x.fillRect(0, 0, W, H); fn(t); g = ctx; return c; }
+const CUTS = [
+  [7.6, 1.0, sceneOrbit, sceneGauge, [0, -1]],
+  [13.8, 0.9, sceneGauge, sceneFlow, [1, 0.3]],
+  [21.4, 0.9, sceneFlow, scenePrompt, [-1, 0.4]],
+  [28.8, 0.9, scenePrompt, sceneWeek, [0.2, 1]],
+  [32.4, 1.0, sceneWeek, sceneEnd, [0, -1]],
+];
+let built = false;
+function render(t) {
+  if (!built) { buildTex(); built = true; }
+  let cur = sceneOrbit;
+  for (const [a, len, from, to, dir] of CUTS) {
+    if (t >= a && t < a + len) { draw(from, t, S[0]); draw(to, t, S[1]); begin(ctx); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(S[0], 0, 0); pixelWipe(ctx, S[1], EASE.inOut(prog(t, a, a + len)), { cell: 24, dir, spread: 0.6 }); return; }
+    if (t >= a + len) cur = to;
+  }
+  g = ctx; begin(ctx); ctx.fillStyle = NAVY; ctx.fillRect(0, 0, W, H); cur(t);
+}
+AD.start(TOTAL, render, assets);
+</script></body></html>

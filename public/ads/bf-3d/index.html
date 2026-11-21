@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AdRender Black Friday: 3D</title><meta name="robots" content="noindex"></head>
+<body><canvas id="c"></canvas>
+<script src="/ads/lib/gl3d.js"></script>
+<script src="/ads/lib/core.js"></script>
+<script>
+// Ad 1: Black Friday, built with the saas-animation skill (level 1, real UI in 3D space, one continuous camera).
+// Every shot turns into the next: logo -> offer card -> wall of ads -> template -> your version -> results -> offer -> logo.
+const { PHONE, W, H, SCALE, RENDER, clamp01, lerp, prog, outExpo, sine, EASE, third, ctx, mk, begin, IMG, drawCover, words, logo } = AD;
+const TOTAL = 37;
+const BG = '#0B0B0F', INK = '#F4F3F8', MUTE = 'rgba(244,243,248,0.62)';
+const GRAD = ['#4F8DF7', '#9B6BF2', '#FF8A3D'];
+const S3 = GL3D.create(W * SCALE, H * SCALE);
+const TS = 2;
+let g = ctx;
+function panel(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = w * TS; c.height = h * TS; const p = { c, w, h, tex: null, key: null };
+  p.redraw = (...a) => { const key = JSON.stringify(a); if (key === p.key && p.tex) return p; p.key = key; const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, c.width, c.height); x.setTransform(TS, 0, 0, TS, 0, 0); const keep = g; g = x; draw(...a); g = keep; if (p.tex) p.tex.update(); else p.tex = S3.texture(c); return p; };
+  return p;
+}
+const gradH = (x0, x1) => { const gr = g.createLinearGradient(x0, 0, x1, 0); gr.addColorStop(0, GRAD[0]); gr.addColorStop(0.5, GRAD[1]); gr.addColorStop(1, GRAD[2]); return gr; };
+
+// ---------- layout per view ----------
+const L = PHONE ? {
+  fov: 58, card: [660, 820], tile: [300, 373], cols: 4, rows: 4, gap: [336, 412],
+  hero: { y: 60, w: 430 }, chip: [175, -195], bar: { y: -360, w: 860 },
+  res: [[-322, -640], [-108, -640], [108, -640], [322, -640]], resW: 196, textY: 230, textSize: 66,
+} : {
+  fov: 34, card: [820, 500], tile: [300, 373], cols: 6, rows: 3, gap: [336, 412],
+  hero: { y: 52, w: 372 }, chip: [250, -150], bar: { y: -282, w: 940 },
+  res: [[-880, 30], [-480, 30], [480, 30], [880, 30]], resW: 320, textY: 1004, textSize: 60,
+};
+const ADS = ['ad-01', 'ad-02', 'ad-03', 'ad-05', 'ad-06', 'ad-07', 'ad-08', 'ad-09', 'ad-10', 'ad-11', 'ad-12', 'vad-01', 'vad-02', 'vad-03', 'vad-04', 'vad-05', 'ad-04', 'vad-06'];
+const RES = ['ad-02', 'vad-03', 'ad-08', 'ad-11'];
+const assets = { logo: '/brand/logo/adrender-logo-2048.png', yb: '/showcase/yourbrand-logo.webp', tpl: '/showcase/shoe-template.webp', out: '/showcase/shoe-output.webp' };
+ADS.concat(RES).forEach(k => assets[k] = `/showcase/${k}.webp`);
+
+// ---------- textures ----------
+const T = {};
+function cardBody(w, h, r) {   // dark glass card with a thin brand-gradient rim
+  g.save(); g.beginPath(); g.roundRect(0, 0, w, h, r); g.fillStyle = '#121218'; g.fill();
+  const gl = g.createRadialGradient(w * 0.15, -h * 0.1, 0, w * 0.15, -h * 0.1, Math.max(w, h) * 1.1); gl.addColorStop(0, 'rgba(155,107,242,0.28)'); gl.addColorStop(1, 'rgba(155,107,242,0)'); g.fillStyle = gl; g.fill();
+  g.lineWidth = 3; g.strokeStyle = gradH(0, w); g.globalAlpha = 0.9; g.beginPath(); g.roundRect(1.5, 1.5, w - 3, h - 3, r - 1.5); g.stroke(); g.restore();
+}
+function build() {
+  const [cw, ch] = L.card;
+  // hero: logo (m=0) -> offer card (m=1); offer=1 shows the 50% content, tpl=1 crossfades to the template ad
+  T.hero = panel(cw, ch, (m, offer, tpl, price) => {
+    const lw = 430, lh = lw / 1.041;
+    if (m < 1) { // logo, shrinking toward the corner badge as the card grows
+      const k = EASE.inOut(m), s = lerp(1, 0.16, k), x = lerp(cw / 2, 70, k), y = lerp(ch / 2, 62, k);
+      g.save(); g.globalAlpha = 1 - k; g.drawImage(IMG.logo, x - lw * s / 2, y - lh * s / 2, lw * s, lh * s); g.restore();
+    }
+    if (m > 0) {
+      const k = EASE.premium(m), w = lerp(lw * 0.9, cw, k), h = lerp(lh * 0.9, ch, k), r = lerp(lw * 0.45, 44, k);
+      g.save(); g.translate((cw - w) / 2, (ch - h) / 2); g.globalAlpha = clamp01(m * 3); cardBody(w, h, r); g.restore();
+      g.save(); g.globalAlpha = clamp01((m - 0.5) * 2); g.drawImage(IMG.logo, 44, 34, 58, 56); g.font = '600 28px Inter'; g.fillStyle = INK; g.letterSpacing = '-0.5px'; g.fillText('AdRender', 114, 72);
+      g.font = '500 24px Inter'; g.fillStyle = MUTE; g.textAlign = 'right'; g.fillText(price ? 'Black Friday' : 'Black Friday sale', cw - 48, 72); g.restore();
+    }
+    if (offer > 0) {
+      g.save(); const a = offer; g.globalAlpha = a; g.textAlign = 'center';
+      const big = PHONE ? 260 : 250, yb = PHONE ? ch * 0.53 : ch * 0.66;
+      g.font = `700 ${big}px Inter`; g.letterSpacing = `${-0.05 * big}px`; const tw = g.measureText('50%').width; g.fillStyle = gradH(cw / 2 - tw / 2, cw / 2 + tw / 2);
+      g.fillText('50%', cw / 2, yb + (1 - a) * 30);
+      g.font = `500 ${PHONE ? 46 : 44}px Inter`; g.letterSpacing = '-1px'; g.fillStyle = INK;
+      g.fillText('off your first month', cw / 2, yb + (PHONE ? 96 : 84) + (1 - a) * 40);
+      if (price) { // the closing offer: two small chips
+        const chips = ['Every plan', 'One week only'], cy = yb + (PHONE ? 200 : 150); g.font = '500 28px Inter'; g.letterSpacing = '0px';
+        const ws = chips.map(c => g.measureText(c).width + 48), tot = ws[0] + ws[1] + 16; let x = cw / 2 - tot / 2;
+        chips.forEach((c, i) => { g.globalAlpha = a * clamp01((price - i * 0.25) * 2); g.beginPath(); g.roundRect(x, cy - 30, ws[i], 54, 27); g.fillStyle = 'rgba(255,255,255,0.08)'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.18)'; g.lineWidth = 1.5; g.stroke(); g.fillStyle = INK; g.fillText(c, x + ws[i] / 2, cy + 6); x += ws[i] + 16; });
+      }
+      g.restore();
+    }
+    if (tpl > 0) { // the card becomes the template ad tile
+      const [tw, th] = L.tile, s = cw / tw > ch / th ? ch / th : cw / tw, w = tw * s * 0.98, h = th * s * 0.98;
+      g.save(); g.globalAlpha = tpl; drawCover(g, IMG.tpl, (cw - w) / 2, (ch - h) / 2, w, h, 28); g.restore();
+    }
+  });
+  T.tiles = ADS.map(k => panel(L.tile[0], L.tile[1], () => { drawCover(g, IMG[k], 0, 0, L.tile[0], L.tile[1], 18); g.strokeStyle = 'rgba(255,255,255,0.10)'; g.lineWidth = 2; g.beginPath(); g.roundRect(1, 1, L.tile[0] - 2, L.tile[1] - 2, 17); g.stroke(); }).redraw());
+  // the chosen template / your version (flip swaps the texture when edge-on)
+  const hw = L.hero.w, hh = Math.round(hw * 522 / 420);
+  const adCard = (key, label, tag) => panel(hw, hh + 70, () => {
+    drawCover(g, IMG[key], 0, 0, hw, hh, 26);
+    g.save(); g.beginPath(); g.roundRect(0, 0, hw, hh, 26); g.strokeStyle = 'rgba(255,255,255,0.14)'; g.lineWidth = 2; g.stroke(); g.restore();
+    g.font = '500 24px Inter'; g.fillStyle = MUTE; g.letterSpacing = '0px'; g.fillText(label, 6, hh + 44);
+    if (tag) { g.font = '600 20px Inter'; const tw = g.measureText(tag).width + 30; g.beginPath(); g.roundRect(hw - tw - 4, hh + 18, tw, 38, 19); g.fillStyle = tag === 'Ready' ? 'rgba(74,222,128,0.16)' : 'rgba(255,255,255,0.08)'; g.fill(); g.fillStyle = tag === 'Ready' ? '#7BF0A6' : INK; g.textAlign = 'center'; g.fillText(tag, hw - tw / 2 - 4, hh + 44); }
+  }).redraw();
+  T.tpl = adCard('tpl', 'Winning ad', 'Template');
+  T.out = adCard('out', 'YourBrand', 'Ready');
+  T.res = RES.map(k => { const w = L.resW, h = Math.round(w * 522 / 420); return panel(w, h + 54, () => { drawCover(g, IMG[k], 0, 0, w, h, 20); g.font = '600 18px Inter'; g.fillStyle = '#7BF0A6'; g.fillText('● Ready', 4, h + 36); g.fillStyle = MUTE; g.font = '500 18px Inter'; g.textAlign = 'right'; g.fillText(k.startsWith('vad') ? 'Video' : 'Image', w - 4, h + 36); }).redraw(); });
+  // brand chip
+  T.chip = panel(330, 104, () => { g.beginPath(); g.roundRect(0, 0, 330, 104, 52); g.fillStyle = '#16161D'; g.fill(); g.strokeStyle = gradH(0, 330); g.lineWidth = 2.5; g.stroke(); drawCover(g, IMG.yb, 16, 16, 72, 72, 36); g.font = '600 30px Inter'; g.fillStyle = INK; g.letterSpacing = '-0.5px'; g.fillText('YourBrand', 104, 50); g.font = '500 20px Inter'; g.fillStyle = MUTE; g.letterSpacing = '0px'; g.fillText('Brand kit added', 104, 78); }).redraw();
+  // prompt bar (cockpit style)
+  const bw = L.bar.w;
+  T.bar = panel(bw, 104, (press) => {
+    g.beginPath(); g.roundRect(0, 0, bw, 104, 30); g.fillStyle = '#15151B'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.12)'; g.lineWidth = 2; g.stroke();
+    const pills = PHONE ? ['Clone', 'YourBrand'] : ['Skill · Clone', 'YourBrand', 'Image + Video']; let x = 22; g.font = '500 24px Inter'; g.letterSpacing = '0px';
+    pills.forEach(p => { const w = g.measureText(p).width + 40; g.beginPath(); g.roundRect(x, 26, w, 52, 26); g.fillStyle = 'rgba(255,255,255,0.07)'; g.fill(); g.fillStyle = INK; g.fillText(p, x + 20, 60); x += w + 12; });
+    const rw = 170, rx = bw - rw - 22; g.save(); g.beginPath(); g.roundRect(rx, 22, rw, 60, 30); g.fillStyle = gradH(rx, rx + rw); g.globalAlpha = 0.85 + press * 0.15; g.fill();
+    if (press > 0) { g.globalAlpha = press * 0.5; g.lineWidth = 8 * press; g.strokeStyle = '#fff'; g.stroke(); }
+    g.globalAlpha = 1; g.fillStyle = '#fff'; g.font = '600 26px Inter'; g.textAlign = 'center'; g.fillText('Render', rx + rw / 2, 61); g.restore();
+  });
+}
+
+// ---------- camera: one continuous move, fast then slow, never reversing ----------
+function camera(t) {
+  const pull = outExpo(prog(t, 0, 3.6));
+  let D = Math.exp(lerp(Math.log(230), Math.log(1500), pull)) + 110 * sine(prog(t, 3.2, 8.2)) + 1900 * EASE.inOut(prog(t, 8.2, 14.2)) + 260 * sine(prog(t, 14, TOTAL));
+  const yaw = -0.30 * EASE.inOut(prog(t, 8.6, 15)) - 0.08 * sine(prog(t, 15, TOTAL));
+  const pitch = 0.04 + 0.10 * EASE.inOut(prog(t, 8.6, 15)) + 0.03 * sine(prog(t, 15, TOTAL));
+  const target = [0, 0, 0];
+  const dir = [Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch)];
+  const eye = [target[0] + D * dir[0], target[1] + D * dir[1], target[2] + D * dir[2]];
+  const fgk = EASE.inOut(prog(t, 13.6, 15.4));
+  return { eye, target, dir, D, yaw, pitch, fov: L.fov, focus: lerp(D, 1500, fgk), aperture: lerp(0.12, 0.9, fgk), fog: { near: 3000, far: 9000, color: [0.043, 0.043, 0.06] } };
+}
+// a point in the "foreground plane", 1500 in front of the camera, in screen-like units (x right, y up)
+function fg(cam, x, y, dz = 0) {
+  const { eye, dir } = cam, f = [-dir[0], -dir[1], -dir[2]], d = 1500 - dz;
+  const cr = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  let right = cr(f, [0, 1, 0]); const rl = Math.hypot(...right); right = right.map(v => v / rl);
+  const u = cr(right, f);
+  return [eye[0] + f[0] * d + right[0] * x + u[0] * y, eye[1] + f[1] * d + right[1] * x + u[1] * y, eye[2] + f[2] * d + right[2] * x + u[2] * y];
+}
+const faceRot = cam => [-cam.pitch, cam.yaw, 0];
+
+// ---------- scene ----------
+function scene(t, cam) {
+  const P = [], [cw, ch] = L.card, [tw, th] = L.tile;
+  // 1-2: logo -> offer card (anticipation squash before it grows)
+  const m = prog(t, 3.4, 5.4), squash = 1 - 0.08 * Math.sin(Math.PI * prog(t, 3.0, 3.6));
+  const offer = EASE.standard(prog(t, 4.55, 5.8)) * (1 - prog(t, 10.2, 10.9));
+  const tpl = EASE.inOut(prog(t, 10.0, 11.2));
+  // 3: card shrinks into the centre slot of the wall while the wall loads around it
+  const shrink = EASE.inOut(prog(t, 8.4, 11.4));
+  const s0 = 1, s1 = Math.min(tw / cw, th / ch) * 1.02;
+  const heroScale = lerp(s0, s1, shrink) * squash;
+  const leave = prog(t, 14.0, 15.2);   // hero hands over to the foreground template card
+  if (t < 15.3) {
+    T.hero.redraw(+m.toFixed(3), +offer.toFixed(3), +tpl.toFixed(3), 0);
+    P.push({ tex: T.hero.tex, w: cw, h: ch, pos: [0, 0, 0], scale: heroScale, alpha: 1 - EASE.inOut(leave), bias: 20 });
+  }
+  // wall of winning ads, cascading in from the centre outward (1/3 rule by ring)
+  const R = L.rows, C = L.cols;
+  let n = 0;
+  for (let r = -R; r <= R; r++) for (let c = -C; c <= C; c++) {
+    if (!r && !c) continue;
+    const ring = Math.max(Math.abs(r), Math.abs(c)), k = EASE.premium(third(t, 8.6, 1.6, ring - 1 + (n % 3) * 0.12)); n++;
+    if (k <= 0) continue;
+    const tex = T.tiles[(n * 7 + Math.abs(r) * 3) % T.tiles.length];
+    P.push({ tex: tex.tex, w: tw, h: th, pos: [c * L.gap[0], r * L.gap[1], lerp(-900, 0, k)], alpha: k, light: lerp(0.6, 1, k) * lerp(1, 0.34, EASE.inOut(prog(t, 13.4, 15.6))) });
+  }
+  // 4: the template comes forward, the brand docks, the card flips to your version
+  const fwd = EASE.premium(prog(t, 14.0, 16.2));
+  if (t >= 14.0 && t < 32.6) {
+    const flip = EASE.inOut(prog(t, 18.6, 19.8)), ang = flip * Math.PI;
+    const toCenter = EASE.inOut(prog(t, 27.2, 29.0));
+    const hy = lerp(L.hero.y, 0, toCenter), hs = lerp(1, 0.8, toCenter);
+    const card = ang < Math.PI / 2 ? T.tpl : T.out, rot = faceRot(cam);
+    const p0 = [0, 0, 0], p1 = fg(cam, 0, hy), pos = [lerp(p0[0], p1[0], fwd), lerp(p0[1], p1[1], fwd), lerp(p0[2], p1[2], fwd)];
+    const edge = ang < Math.PI / 2 ? ang : ang - Math.PI;
+    const shrinkOut = 1 - EASE.inOut(prog(t, 29.2, 30.4));
+    P.push({ tex: card.tex, w: card.w, h: card.h, pos, rot: [rot[0] * fwd, rot[1] * fwd + edge, 0], scale: hs * lerp(tw / card.w, 1, fwd) * Math.max(0.001, shrinkOut), alpha: clamp01(fwd * 3) * (shrinkOut > 0.02 ? 1 : 0), bias: 30, sheen: 0.25 * Math.sin(Math.PI * prog(t, 19.4, 21)), sheenPos: lerp(-0.2, 1.2, prog(t, 19.4, 21)) });
+    // brand chip flies in and docks (rides the card until it flips)
+    const dock = EASE.premium(prog(t, 15.6, 17.4)), chipOut = EASE.exit(prog(t, 18.2, 18.9));
+    if (dock > 0 && chipOut < 1) {
+      const [cx, cy] = L.chip, from = PHONE ? [700, cy - 120] : [1100, cy - 60];
+      P.push({ tex: T.chip.tex, w: T.chip.w, h: T.chip.h, pos: fg(cam, lerp(from[0], cx, dock) - chipOut * cx, lerp(from[1], cy, dock) - chipOut * (cy - L.hero.y), -60 * chipOut + 40), rot, scale: 1 - 0.6 * chipOut, alpha: dock * (1 - chipOut), bias: 60 });
+    }
+    // 5: prompt bar rises, Render is pressed, results fan out from behind the card
+    const barIn = EASE.premium(prog(t, 20.4, 21.8)), barOut = EASE.exit(prog(t, 26.6, 27.6));
+    if (barIn > 0 && barOut < 1) {
+      const press = Math.sin(Math.PI * prog(t, 22.2, 22.9));
+      T.bar.redraw(+press.toFixed(2));
+      P.push({ tex: T.bar.tex, w: T.bar.w, h: T.bar.h, pos: fg(cam, 0, lerp(L.bar.y - 140, L.bar.y, barIn) - barOut * 120), rot, alpha: barIn * (1 - barOut), bias: 50 });
+    }
+    T.res.forEach((rp, i) => {
+      const k = EASE.premium(third(t, 22.8, 1.5, i)), back = EASE.inOut(prog(t, 27.0 + i * 0.12, 28.6 + i * 0.12));
+      if (k <= 0 || back >= 1) return;
+      const [rx, ry] = L.res[i], sy = PHONE ? ry - 160 : L.hero.y, x = lerp(PHONE ? rx : 0, rx, k) * (1 - back), y = lerp(sy, ry, k) * (1 - back);
+      const turn = PHONE ? 0 : (rx < 0 ? 0.16 : -0.16) * k * (1 - back);
+      P.push({ tex: rp.tex, w: rp.w, h: rp.h, pos: fg(cam, x, y, -120 * k - 200 * back), rot: [rot[0], rot[1] + turn, 0], alpha: clamp01(k * 2) * (1 - back), bias: 10 });
+    });
+    // 6: everything gathers into the closing offer card
+    const pk = EASE.premium(prog(t, 29.0, 30.8));
+    if (pk > 0) {
+      T.hero.redraw(1, 1, 0, +clamp01((t - 30.0) / 1.2).toFixed(2));
+      const out = EASE.inOut(prog(t, 32.0, 33.0));
+      P.push({ tex: T.hero.tex, w: cw, h: ch, pos: fg(cam, 0, 0), rot, scale: lerp(0.35, PHONE ? 0.98 : 0.96, pk) * (1 - 0.75 * out), alpha: clamp01(pk * 2) * (1 - out), bias: 40 });
+    }
+  }
+  return P;
+}
+
+// ---------- 2D overlays ----------
+function caption(t, text, a, b, y = L.textY) {
+  const size = L.textSize; words(ctx, { text, x: W / 2, y, size, weight: 600, t, in: a, out: b, grad: ['#FFFFFF', '#9C9AA8'] });
+}
+function lines(t, list, a, b) {   // phone: up to two lines
+  if (PHONE && list.length > 1) { caption(t, list[0], a, b, L.textY - 40); caption(t, list[1], a + 0.15, b, L.textY + 44); }
+  else caption(t, list.join(' '), a, b);
+}
+function endCard(t) {
+  const k = EASE.premium(prog(t, 32.2, 33.8));
+  if (k <= 0) return;
+  const g2 = ctx, cy = PHONE ? H * 0.42 : H * 0.42, lh = PHONE ? 230 : 190;
+  // glow
+  g2.save(); const gl = g2.createRadialGradient(W / 2, cy, 0, W / 2, cy, lh * 2.2); gl.addColorStop(0, `rgba(155,107,242,${0.30 * k})`); gl.addColorStop(1, 'rgba(155,107,242,0)'); g2.fillStyle = gl; g2.fillRect(0, 0, W, H); g2.restore();
+  const s = lerp(0.55, 1, k); logo(g2, W / 2, cy - (1 - k) * 20, lh * s, k);
+  words(g2, { text: 'AdRender', x: W / 2, y: cy + lh * 0.5 + (PHONE ? 110 : 96), size: PHONE ? 88 : 76, weight: 600, t, in: 32.7, grad: ['#FFFFFF', '#B9B7C6'] });
+  // search box typing the URL (honest call to action)
+  const bk = EASE.standard(prog(t, 33.4, 34.2)); if (bk <= 0) return;
+  const url = 'adrender.app', chars = Math.round(url.length * prog(t, 34.0, 35.0)), bw = PHONE ? 600 : 520, bh = PHONE ? 92 : 80, by = cy + lh * 0.5 + (PHONE ? 190 : 160);
+  g2.save(); g2.globalAlpha = bk; g2.translate(0, (1 - bk) * 16); g2.beginPath(); g2.roundRect(W / 2 - bw / 2, by, bw, bh, bh / 2); g2.fillStyle = 'rgba(255,255,255,0.06)'; g2.fill(); g2.lineWidth = 2; g2.strokeStyle = 'rgba(255,255,255,0.18)'; g2.stroke();
+  g2.font = `500 ${PHONE ? 40 : 34}px Inter`; g2.fillStyle = INK; g2.textAlign = 'center'; const txt = url.slice(0, chars), tw = g2.measureText(url).width; g2.textAlign = 'left'; g2.fillText(txt, W / 2 - tw / 2, by + bh / 2 + 12);
+  const cx = W / 2 - tw / 2 + g2.measureText(txt).width + 4; if (Math.floor(t * 2.2) % 2 === 0 || chars < url.length) { g2.fillStyle = GRAD[1]; g2.fillRect(cx, by + bh / 2 - 20, 3, 36); }
+  g2.restore();
+  words(g2, { text: 'Black Friday · 50% off your first month · One week only', x: W / 2, y: by + bh + (PHONE ? 90 : 70), size: PHONE ? 34 : 28, weight: 500, t, in: 35.0, stagger: 0.03, color: MUTE, track: 0 });
+}
+
+// ---------- frame ----------
+const BGc = mk(), TMP = mk(), ACC = mk();
+const SUB = RENDER ? 6 : 1, SHUTTER = 0.5 / 25;
+let built = false;
+function render(t) {
+  if (!built) { build(); built = true; }
+  const b = BGc.getContext('2d'); b.setTransform(SCALE, 0, 0, SCALE, 0, 0); b.fillStyle = BG; b.fillRect(0, 0, W, H);
+  const vg = b.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.45, Math.max(W, H) * 0.75); vg.addColorStop(0, 'rgba(79,141,247,0.10)'); vg.addColorStop(0.5, 'rgba(155,107,242,0.05)'); vg.addColorStop(1, 'rgba(0,0,0,0)'); b.fillStyle = vg; b.fillRect(0, 0, W, H);
+  const A = ACC.getContext('2d'); A.setTransform(1, 0, 0, 1, 0, 0); A.globalAlpha = 1; A.clearRect(0, 0, ACC.width, ACC.height);
+  for (let i = 0; i < SUB; i++) {
+    const ts = SUB > 1 ? Math.max(0, Math.min(TOTAL, t + (i / (SUB - 1) - 0.5) * SHUTTER)) : t, cam = camera(ts);
+    const x = TMP.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.drawImage(BGc, 0, 0);
+    // soft glow behind the subject, drawn in screen space before the 3D layer
+    const [gx, gy] = S3.project([0, 0, 0], cam), gk = 1 - prog(ts, 8, 12);
+    if (gk > 0) { const gr = x.createRadialGradient(gx, gy, 0, gx, gy, 700 * SCALE); gr.addColorStop(0, `rgba(155,107,242,${0.35 * gk})`); gr.addColorStop(1, 'rgba(155,107,242,0)'); x.fillStyle = gr; x.fillRect(0, 0, TMP.width, TMP.height); }
+    x.drawImage(S3.render(scene(ts, cam), cam), 0, 0);
+    A.globalAlpha = 1 / (i + 1); A.drawImage(TMP, 0, 0);
+  }
+  begin(ctx); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(ACC, 0, 0); begin(ctx);
+  // fade the 3D world to the end card background
+  const endBg = EASE.inOut(prog(t, 32.0, 33.2)); if (endBg > 0) { ctx.globalAlpha = endBg; ctx.fillStyle = BG; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+  // a soft scrim keeps captions readable over the wall
+  const sk = prog(t, 8.6, 10) * (1 - prog(t, 31.5, 32.5));
+  if (sk > 0) { const y0 = PHONE ? 0 : H * 0.70, y1 = PHONE ? H * 0.26 : H; const sg = ctx.createLinearGradient(0, PHONE ? y1 : y0, 0, PHONE ? y0 : y1); sg.addColorStop(0, 'rgba(11,11,15,0)'); sg.addColorStop(1, `rgba(11,11,15,${0.88 * sk})`); ctx.fillStyle = sg; ctx.fillRect(0, Math.min(y0, y1), W, Math.abs(y1 - y0)); }
+  // captions (one beat each)
+  lines(t, ['Black Friday', 'at AdRender.'], 0.7, 3.3);
+  caption(t, 'On every plan.', 5.8, 8.2);
+  caption(t, 'Pick a winning ad.', 9.4, 14.0);
+  caption(t, 'Add your brand.', 15.6, 18.4);
+  caption(t, 'Get your version.', 19.2, 22.2);
+  lines(t, ['Image and video ads,', 'ready to post.'], 23.0, 27.0);
+  caption(t, 'One week only.', 29.4, 32.0);
+  endCard(t);
+}
+AD.start(TOTAL, render, assets);
+</script></body></html>

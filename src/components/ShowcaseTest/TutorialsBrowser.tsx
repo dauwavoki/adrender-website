@@ -59,6 +59,25 @@ const seconds = (value: number) => {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 };
 
+/** Coded motion ad: its own canvas page, shown in a frame with its own small player bar. */
+function MotionPlayer({ tutorial, view, contain }: { tutorial: Tutorial; view: View; contain: boolean }) {
+  const motion = tutorial.motion;
+  if (!motion) return null;
+  const tall = view === "phone";
+  return (
+    <iframe
+      title={`${tutorial.title}. ${tutorial.summary}`}
+      src={`${motion.src}?view=${view}&controls=1`}
+      className={cx("sc-motion-frame", tall && "is-tall", contain && "is-contain")}
+      allow="fullscreen"
+      loading="lazy"
+    />
+  );
+}
+
+/** Length shown in the list and under the player. */
+const lengthOf = (t: Tutorial, view: View) => t.motion?.seconds ?? t.stories?.[view]?.duration;
+
 function TutorialPlayer({
   tutorial,
   view,
@@ -69,6 +88,7 @@ function TutorialPlayer({
   contain: boolean;
 }) {
   const label = `${tutorial.title}. ${tutorial.summary}`;
+  if (tutorial.motion) return <MotionPlayer tutorial={tutorial} view={view} contain={contain} />;
   const stories = tutorial.stories;
   if (!stories) return null;
   if (tutorial.spot) {
@@ -204,12 +224,12 @@ function Browser({ list }: { list: Tutorial[] }) {
         : i === 0 || genre === "All" || t.category === genre,
     );
     return [
-      ...found.filter((t) => t.stories),
-      ...found.filter((t) => !t.stories),
+      ...found.filter((t) => t.stories || t.motion),
+      ...found.filter((t) => !t.stories && !t.motion),
     ];
   }, [query, genre, list]);
-  const ready = Boolean(tutorial.stories);
-  const story = tutorial.stories?.[view];
+  const ready = Boolean(tutorial.stories || tutorial.motion);
+  const length = lengthOf(tutorial, view);
 
   const update = useCallback(
     (next: { v?: string; view?: View }) => {
@@ -358,8 +378,8 @@ function Browser({ list }: { list: Tutorial[] }) {
         <div className="sc-tv-info">
           <h2 className="sc-tv-title">{tutorial.title}</h2>
           <p className="sc-tv-meta">
-            {story
-              ? `${seconds(story.duration)} · ${view === "phone" ? "Phone" : "Desktop"} view`
+            {length
+              ? `${seconds(length)} · ${view === "phone" ? "Phone" : "Desktop"} view`
               : "Coming soon"}
           </p>
           <p className="sc-tv-summary">{tutorial.summary}</p>
@@ -416,7 +436,7 @@ function Browser({ list }: { list: Tutorial[] }) {
         </label>
         <ul className="sc-tv-items">
           {results.map((item) => {
-            const itemStory = item.stories?.[view];
+            const itemLength = lengthOf(item, view);
             return (
               <li key={item.id}>
                 <button
@@ -424,15 +444,15 @@ function Browser({ list }: { list: Tutorial[] }) {
                   className={cx(
                     "sc-tv-item",
                     item.id === tutorial.id && "is-on",
-                    !item.stories && "is-soon",
+                    !item.stories && !item.motion && "is-soon",
                   )}
                   onClick={() => update({ v: item.id })}
                   aria-current={item.id === tutorial.id ? "true" : undefined}
                 >
                   <span className="sc-tv-item-title">{item.title}</span>
                   <span className="sc-tv-item-meta">
-                    {itemStory
-                      ? `${seconds(itemStory.duration)} · ${item.category}`
+                    {itemLength
+                      ? `${seconds(itemLength)} · ${item.category}`
                       : `Coming soon · ${item.category}`}
                   </span>
                 </button>
