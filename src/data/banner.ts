@@ -4,7 +4,7 @@
  */
 export const banner = {
   href: 'https://app.adrender.app/?ref=BLACKFRIDDZF',
-  endsAt: '2026-12-30',
+  endsAt: '2026-12-31',
 } as const
 
 const BANNER_TIME_ZONE = 'America/New_York'

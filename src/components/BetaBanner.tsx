@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { banner, isBannerActive } from '../data/banner'
+import { BannerDither } from './BannerDither'
 
 function subscribe() {
   return () => {}
@@ -28,10 +29,16 @@ export function BetaBanner() {
   if (!visible) return null
 
   return (
-    <div className="site-banner">
-      <a href={banner.href}>
-        <span aria-hidden>🎨 </span>
-        Render on-brand ads in minutes — 20% off your first month on monthly plans. <span className="site-inline-link">Start free</span>
+    <div className="site-banner is-promo">
+      <BannerDither />
+      <a href={banner.href} className="site-banner-promo">
+        <span className="site-banner-wide">
+          🖤 Black Friday + Cyber Monday 🔥 <strong>50% Super Discount</strong> on your first month — until Dec 31!{' '}
+          <span className="site-banner-cta">Claim it →</span>
+        </span>
+        <span className="site-banner-narrow">
+          🔥 Black Friday + Cyber Monday: <strong>50% off</strong> until Dec 31 →
+        </span>
       </a>
     </div>
   )
