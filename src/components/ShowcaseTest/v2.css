@@ -2063,3 +2063,8 @@
   aspect-ratio: auto;
   border-radius: 0;
 }
+
+/* Homepage hero wrapper: carries the .sc-v2 scope without adding a layout box. */
+.sc-home-v2 {
+  display: contents;
+}

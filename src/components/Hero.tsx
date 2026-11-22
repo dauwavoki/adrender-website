@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Globe } from '@phosphor-icons/react'
-import { HomeShowcase } from './Showcase/HomeShowcase'
+import { HomeShowcase } from './ShowcaseTest/HomeShowcase'
 import { getSignupUrl } from '../lib/appUrl'
 import { PrimaryLink, SecondaryLink } from './site/Buttons'
 import { SplitTitle } from './site/SplitTitle'

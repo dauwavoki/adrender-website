@@ -33,7 +33,7 @@ const videoPoster = (n: string) => `/showcase/vtpl-${n}.webp`
 const videoClip = (n: string) => `/app-preview/video-${n}.mp4`
 
 export const IMAGE_TEMPLATES: Media[] = [
-  { id: 'i1', src: still('01'), title: 'Stride Co', niche: 'Fashion', days: 214, tint: '#e5484d', brand: 'Stride Co', kw: 'sale sport shoes' },
+  { id: 'i1', src: still('13'), title: 'Stride Co', niche: 'Sports/Fitness', days: 214, tint: '#e5484d', brand: 'Stride Co', kw: 'running sport shoes' },
   { id: 'i2', src: still('04'), title: 'Sole Theory', niche: 'Fashion', days: 186, tint: '#d9778f', brand: 'Sole Theory', kw: 'shoes sneakers' },
   { id: 'i3', src: still('03'), title: 'Iron Form', niche: 'Sports/Fitness', days: 142, tint: '#4f8df7', brand: 'Iron Form', kw: 'gym fitness equipment' },
   { id: 'i4', src: still('02'), title: 'Pixel Forge', niche: 'Entertainment', days: 97, tint: '#9b6bf2', brand: 'Pixel Forge', kw: 'game launch' },
@@ -52,12 +52,12 @@ export const EXTRA_IMAGE_TEMPLATES: Media[] = [
 ]
 
 export const VIDEO_TEMPLATES: Media[] = [
-  { id: 'v1', src: videoPoster('01'), video: videoClip('01'), title: 'Iron Form', niche: 'Sports/Fitness', days: 158, tint: '#4f8df7', brand: 'Iron Form', secs: 9, kw: 'gym dumbbell fitness strength' },
-  { id: 'v2', src: videoPoster('02'), video: videoClip('02'), title: 'Island Oils', niche: 'Beauty', days: 131, tint: '#e5a33d', brand: 'Island Oils', secs: 12, kw: 'oil skincare beauty coconut' },
+  { id: 'v1', src: videoPoster('07'), video: videoClip('07'), title: 'Stride Co', niche: 'Sports/Fitness', days: 158, tint: '#e5484d', brand: 'Stride Co', secs: 6, kw: 'shoes running sneakers athlete' },
+  { id: 'v2', src: videoPoster('06'), video: videoClip('06'), title: 'Peak Athletics', niche: 'Sports/Fitness', days: 131, tint: '#3db8a5', brand: 'Peak Athletics', secs: 6, kw: 'running fitness sports apparel' },
   { id: 'v3', src: videoPoster('03'), video: videoClip('03'), title: 'Trail Hut', niche: 'Home/Garden', days: 120, tint: '#52ad50', brand: 'Trail Hut', secs: 15, kw: 'outdoors ugc gear' },
   { id: 'v4', src: videoPoster('04'), video: videoClip('04'), title: 'Fin & Brush', niche: 'UGC', days: 96, tint: '#9b6bf2', brand: 'Fin & Brush', secs: 8, kw: 'ugc art gift advent' },
-  { id: 'v5', src: videoPoster('06'), video: videoClip('06'), title: 'Peak Athletics', niche: 'Sports/Fitness', days: 88, tint: '#3db8a5', brand: 'Peak Athletics', secs: 14, kw: 'running fitness sports' },
-  { id: 'v6', src: videoPoster('07'), video: videoClip('07'), title: 'Stride Co', niche: 'Fashion', days: 71, tint: '#e5484d', brand: 'Stride Co', secs: 10, kw: 'shoes running sneakers' },
+  { id: 'v5', src: videoPoster('02'), video: videoClip('02'), title: 'Island Oils', niche: 'Beauty', days: 88, tint: '#e5a33d', brand: 'Island Oils', secs: 12, kw: 'oil skincare beauty coconut' },
+  { id: 'v6', src: videoPoster('01'), video: videoClip('01'), title: 'Iron Form', niche: 'Sports/Fitness', days: 71, tint: '#4f8df7', brand: 'Iron Form', secs: 9, kw: 'gym dumbbell fitness strength' },
   { id: 'v7', src: videoPoster('08'), video: videoClip('08'), title: 'Morning Root', niche: 'Food/Drink', days: 54, tint: '#f08a3d', brand: 'Morning Root', secs: 11, kw: 'coffee drink mushroom' },
   { id: 'v8', src: videoPoster('05'), video: videoClip('05'), title: 'Dew Skin', niche: 'Beauty', days: 39, tint: '#00b8d9', brand: 'Dew Skin', secs: 7, kw: 'skincare serum beauty' },
 ]
@@ -74,15 +74,16 @@ export const PICKED_IMAGE = [IMAGE_TEMPLATES[0], IMAGE_TEMPLATES[1]]
 
 /** YourBrand renders. Image: 2 templates × 2 sizes (4:5 and 1:1). Video: 2 templates. */
 export const IMAGE_RESULTS = [
-  { id: 'r1', src: '/showcase/ad-04.webp', ratio: '4:5' },
+  { id: 'r1', src: '/showcase/ad-13.webp', ratio: '4:5' },
   { id: 'r2', src: '/showcase/ad-06.webp', ratio: '4:5' },
-  { id: 'r3', src: '/showcase/ad-02.webp', ratio: '1:1' },
+  { id: 'r3', src: '/showcase/ad-14.webp', ratio: '1:1' },
   { id: 'r4', src: '/showcase/ad-05.webp', ratio: '1:1' },
 ]
 
 export const VIDEO_RESULTS = [
-  { id: 'rv1', src: '/showcase/vad-01.webp', video: '/how-it-works/video-01.mp4' },
-  { id: 'rv2', src: '/showcase/vad-03.webp', video: '/how-it-works/video-03.mp4' },
+  // Clone outputs of the two picked shoe templates (v1 → video-04, v2 → video-02).
+  { id: 'rv1', src: '/showcase/vad-04.webp', video: '/how-it-works/video-04.mp4' },
+  { id: 'rv2', src: '/showcase/vad-02.webp', video: '/how-it-works/video-02.mp4' },
 ]
 
 export const KEEP_WORKING = {
