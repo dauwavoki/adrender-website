@@ -27,7 +27,7 @@ export function FounderStory({
   return (
     <section id={id} className="site-section site-anchor">
       <div className="site-column">
-        <div className="site-feature-row is-flip">
+        <div className="site-feature-row is-flip site-founder-row">
           <div className="site-feature-copy">
             <blockquote className="site-quote">{heading}</blockquote>
             <div className="site-body">

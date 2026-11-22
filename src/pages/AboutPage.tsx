@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { CostTable } from '../components/CostTable'
 import { FounderStory } from '../components/FounderStory'
 import { PageMeta } from '../components/PageMeta'
@@ -143,7 +144,27 @@ function FeatureBlock({ section, number }: { section: FeatureSection; number: st
   )
 }
 
+/** Shares the sticky jump bar's height so the founder photo sticks just below it. */
+function useJumpBarOffset() {
+  const ref = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const bar = ref.current
+    if (!bar) return
+    const root = document.documentElement
+    const sync = () => root.style.setProperty('--sticky-extra', `${bar.offsetHeight}px`)
+    sync()
+    const observer = new ResizeObserver(sync)
+    observer.observe(bar)
+    return () => {
+      observer.disconnect()
+      root.style.removeProperty('--sticky-extra')
+    }
+  }, [])
+  return ref
+}
+
 export function AboutPage() {
+  const jumpRef = useJumpBarOffset()
   return (
     <>
       <PageMeta title={TITLE} description={DESCRIPTION} path="/about" />
@@ -152,7 +173,7 @@ export function AboutPage() {
         rest="In under 10 minutes."
         aside={<p className="site-lead">How AdRender replaces the stitched stack — and what each piece does.</p>}
       />
-      <nav className="about-jump" aria-label="On this page">
+      <nav ref={jumpRef} className="about-jump" aria-label="On this page">
         <div className="about-jump-row">
           {INDEX.map((item) => (
             <a key={item.id} href={`#${item.id}`}>

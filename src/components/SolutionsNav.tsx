@@ -1,10 +1,11 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { CaretDown, ArrowRight } from '@phosphor-icons/react'
 import { NavLink } from 'react-router-dom'
 import { blogIndexPath } from '../data/blog'
 import { comparisonPath, comparisons } from '../data/comparisons'
 import { solutionPath, solutions } from '../data/solutions'
 import { cx } from './site/cx'
+import { useMegaMenu } from './site/useMegaMenu'
 
 const mid = Math.ceil(solutions.length / 2)
 const solutionCols = [solutions.slice(0, mid), solutions.slice(mid)]
@@ -14,7 +15,7 @@ const solutionCols = [solutions.slice(0, mid), solutions.slice(mid)]
  * Links stay in the HTML when the panel is closed.
  */
 export function SolutionsNav() {
-  const [open, setOpen] = useState(false)
+  const { open, close, containerProps } = useMegaMenu()
   const wrapRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
@@ -37,11 +38,7 @@ export function SolutionsNav() {
     <div
       ref={wrapRef}
       className={cx('site-mega', open && 'is-open')}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') setOpen(false)
-      }}
+      {...containerProps}
     >
       <NavLink
         to="/solutions"
@@ -49,7 +46,7 @@ export function SolutionsNav() {
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
-        onClick={() => setOpen(false)}
+        onClick={close}
       >
         Solutions
         <CaretDown size={14} aria-hidden />
@@ -61,7 +58,7 @@ export function SolutionsNav() {
               <div key={index}>
                 {index === 0 ? <p className="site-menu-label">Solutions</p> : <p className="site-menu-label" aria-hidden>&nbsp;</p>}
                 {col.map((item) => (
-                  <NavLink key={item.slug} to={solutionPath(item.slug)} className="site-menu-simple" onClick={() => setOpen(false)}>
+                  <NavLink key={item.slug} to={solutionPath(item.slug)} className="site-menu-simple" onClick={close}>
                     {item.navLabel}
                     <ArrowRight size={14} aria-hidden />
                   </NavLink>
@@ -76,13 +73,13 @@ export function SolutionsNav() {
                     key={item.slug}
                     to={comparisonPath(item.slug)}
                     className="site-menu-simple"
-                    onClick={() => setOpen(false)}
+                    onClick={close}
                   >
                     {item.competitor}
                     <ArrowRight size={14} aria-hidden />
                   </NavLink>
                 ))}
-                <NavLink to={blogIndexPath('comparisons')} className="site-menu-simple" onClick={() => setOpen(false)}>
+                <NavLink to={blogIndexPath('comparisons')} className="site-menu-simple" onClick={close}>
                   All comparisons
                   <ArrowRight size={14} aria-hidden />
                 </NavLink>

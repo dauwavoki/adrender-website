@@ -1,10 +1,11 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { CaretDown } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { cx } from './cx'
 import { IconTile } from './IconTile'
 import { AppPreviewSection } from '../AppPreview/AppPreviewSection'
 import { PRODUCT_BRAND, PRODUCT_MAKE, type ProductLink } from './navData'
+import { useMegaMenu } from './useMegaMenu'
 
 function ProductLinks({ items, onNavigate }: { items: ProductLink[]; onNavigate: () => void }) {
   return (
@@ -40,7 +41,7 @@ function ProductLinks({ items, onNavigate }: { items: ProductLink[]; onNavigate:
 }
 
 export function ProductMenu() {
-  const [open, setOpen] = useState(false)
+  const { open, setOpen, close, containerProps } = useMegaMenu()
   const panelRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
 
@@ -60,11 +61,7 @@ export function ProductMenu() {
   return (
     <div
       className={cx('site-mega', open && 'is-open')}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') setOpen(false)
-      }}
+      {...containerProps}
     >
       <button
         type="button"
@@ -82,11 +79,11 @@ export function ProductMenu() {
           <div className="site-product-grid">
             <div>
               <p className="site-menu-label">Make ads</p>
-              <ProductLinks items={PRODUCT_MAKE} onNavigate={() => setOpen(false)} />
+              <ProductLinks items={PRODUCT_MAKE} onNavigate={close} />
             </div>
             <div>
               <p className="site-menu-label">Your brand</p>
-              <ProductLinks items={PRODUCT_BRAND} onNavigate={() => setOpen(false)} />
+              <ProductLinks items={PRODUCT_BRAND} onNavigate={close} />
             </div>
             <div className="site-featured">
               <div className="site-featured-preview" aria-hidden="true">
@@ -97,7 +94,7 @@ export function ProductMenu() {
                 to="/about"
                 className="site-featured-hit"
                 aria-label="See the full feature tour"
-                onClick={() => setOpen(false)}
+                onClick={close}
               />
             </div>
           </div>

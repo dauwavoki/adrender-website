@@ -644,6 +644,18 @@ html.dark .site-placeholder::after {
   border-radius: inherit;
 }
 
+/* Founder photo stays in view while the story scrolls past (desktop). The /about jump bar's height comes from --sticky-extra. */
+@media (min-width: 900px) {
+  .site-founder-row {
+    align-items: start;
+  }
+
+  .site-founder-row .site-founder-photo {
+    position: sticky;
+    top: calc(64px + var(--sticky-extra, 0px) + 32px);
+  }
+}
+
 /* Hero */
 .site-hero {
   padding-top: 40px;
@@ -1534,8 +1546,7 @@ html.dark .site-image-card:hover .site-image-card-media {
   content-visibility: hidden;
 }
 
-.site-mega:hover .site-mega-panel,
-.site-mega:focus-within .site-mega-panel,
+/* Open state comes only from React (hover, focus, click), so a link click can always close it. */
 .site-mega.is-open .site-mega-panel {
   visibility: visible;
   opacity: 1;
@@ -2857,6 +2868,15 @@ html.dark .site-segment.is-inline button[aria-checked='true'] {
   color: var(--text-primary);
 }
 
+/* Icon-on-top cards (affiliate perks, landing-page features): same 16px rhythm as the plan cards. */
+.site-plan > .site-tile + h3 {
+  margin-top: 16px;
+}
+
+.site-plan > h3 + .site-body {
+  margin-top: 8px;
+}
+
 .site-plan.is-popular {
   border-color: var(--text-primary);
 }
@@ -3593,90 +3613,8 @@ html.dark .blog-cover-icon {
   white-space: nowrap;
 }
 
-/* Feature-post scenes stay on the light stage in both themes. */
-.blog-feature-scene {
-  color-scheme: light;
-  --bg-page: #fafaf9;
-  --bg-sidebar: #f4f3f1;
-  --bg-surface: #ffffff;
-  --bg-raised: #ffffff;
-  --bg-inset: #f4f3f1;
-  --bg-input: #f2f1ef;
-  --bg-hover: #efeeec;
-  --bg-selected: #e9e8e5;
-  --bg-soft: #ecebe8;
-  --bg-segment: #ffffff;
-  --border: #e6e4e1;
-  --border-strong: #d6d3cf;
-  --text-primary: #1f1e1d;
-  --text-secondary: #6b6763;
-  --text-muted: #8e8a85;
-  --btn-primary-bg: #1f1e1d;
-  --btn-primary-text: #fafaf9;
-  --success: #2f8a3b;
-  --warning: #b9770e;
-  --danger: #c9353a;
-  --info: #1f5fd6;
-  --focus-ring: #6b6763;
-  --accent: #6a48d6;
-  --accent-soft: rgba(106, 72, 214, 0.1);
-  --success-soft: rgba(47, 138, 59, 0.1);
-  --warning-soft: rgba(185, 119, 14, 0.1);
-  --danger-soft: rgba(201, 53, 58, 0.1);
-  --info-soft: rgba(31, 95, 214, 0.14);
-  --brand-from: #1f5fd6;
-  --brand-via: #7340d4;
-  --brand-to: #e8650f;
-  --tile-blue: #1f5fd6;
-  --tile-violet: #7340d4;
-  --tile-orange: #e8650f;
-  --tile-green: #2f8a3b;
-  --tile-amber: #b9770e;
-  --site-bg: #fbfaf7;
-  --text-faded: rgba(31, 30, 29, 0.45);
-  --hairline: rgba(93, 88, 76, 0.14);
-  --stage-shadow: 0 24px 64px rgba(31, 30, 29, 0.14);
-  --card-glow: 0 10px 28px rgba(0, 0, 0, 0.08);
-}
-
 .blog-post .blog-feature-scene {
   margin-bottom: 28px;
-}
-
-html.dark .blog-feature-scene .scene {
-  --card-glow: 0 10px 28px rgba(0, 0, 0, 0.08);
-}
-
-html.dark .blog-feature-scene .stage-fill {
-  background:
-    radial-gradient(60% 80% at 15% 20%, #dce7fb 0%, transparent 70%),
-    radial-gradient(55% 70% at 85% 30%, #e8e0fa 0%, transparent 70%),
-    radial-gradient(60% 70% at 60% 100%, #fbe5d6 0%, transparent 70%),
-    #eef0f5;
-}
-
-html.dark .blog-feature-scene .scene::after {
-  opacity: 0.1;
-  mix-blend-mode: overlay;
-}
-
-html.dark .blog-feature-scene .scene-segment > span {
-  color: var(--text-secondary);
-}
-
-html.dark .blog-feature-scene .scene-segment > span.is-on {
-  border-color: var(--border);
-  background: #fff;
-  color: var(--text-primary);
-  text-shadow: none;
-}
-
-html.dark .blog-feature-scene .scene-segment > span.is-on svg {
-  filter: none;
-}
-
-html.dark .blog-feature-scene .scene-segment > span.scene-ready.is-on {
-  --ready-fill: #fff;
 }
 
 .blog-cover-shot {
