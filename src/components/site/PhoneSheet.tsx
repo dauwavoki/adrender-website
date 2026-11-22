@@ -1,21 +1,22 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from '@phosphor-icons/react'
 import { NavLink } from 'react-router-dom'
 import { blogIndexPath } from '../../data/blog'
 import { comparisonPath, comparisons } from '../../data/comparisons'
 import { solutionPath, solutions } from '../../data/solutions'
 import { MoreNav } from '../MoreNav'
-import { PrimaryLink, SecondaryLink } from './Buttons'
 import { PRODUCT_BRAND, PRODUCT_MAKE } from './navData'
-import { ThemeSegment } from './ThemeToggle'
+import { ThemePill } from './ThemeToggle'
 
 type PhoneSheetProps = {
   onClose: () => void
   signInHref: string
+  /** Kept for the caller; Start free stays in the phone header. */
   signupHref: string
 }
 
-export function PhoneSheet({ onClose, signInHref, signupHref }: PhoneSheetProps) {
+export function PhoneSheet({ onClose, signInHref }: PhoneSheetProps) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -32,15 +33,19 @@ export function PhoneSheet({ onClose, signInHref, signupHref }: PhoneSheetProps)
     }
   }, [onClose])
 
-  return (
+  // Portal to <body>: the header's backdrop blur would otherwise trap this fixed panel inside the 64px bar.
+  return createPortal(
     <div className="site-sheet" role="dialog" aria-modal="true" aria-label="Menu">
       <button type="button" className="site-sheet-backdrop" aria-label="Close menu" onClick={onClose} />
       <div className="site-sheet-panel">
         <div className="site-sheet-head">
           <span className="site-logo">Menu</span>
-          <button ref={closeRef} type="button" className="site-icon-btn" aria-label="Close menu" onClick={onClose}>
-            <X size={18} />
-          </button>
+          <span className="site-sheet-head-actions">
+            <ThemePill />
+            <button ref={closeRef} type="button" className="site-icon-btn" aria-label="Close menu" onClick={onClose}>
+              <X size={18} />
+            </button>
+          </span>
         </div>
         <div className="site-sheet-body">
           <p className="site-sheet-label">Product</p>
@@ -96,17 +101,12 @@ export function PhoneSheet({ onClose, signInHref, signupHref }: PhoneSheetProps)
 
           <p className="site-sheet-label">Company</p>
           <MoreNav onNavigate={onClose} />
-        </div>
-        <div className="site-sheet-foot">
-          <ThemeSegment />
-          <SecondaryLink href={signInHref} className="site-btn-block" onClick={onClose}>
+          <a className="site-sheet-link" href={signInHref} onClick={onClose}>
             Sign in
-          </SecondaryLink>
-          <PrimaryLink href={signupHref} className="site-btn-block" onClick={onClose}>
-            Start free
-          </PrimaryLink>
+          </a>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

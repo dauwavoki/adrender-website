@@ -1841,6 +1841,40 @@ html.dark .site-image-card:hover .site-image-card-media {
   border-bottom: 1px solid var(--hairline);
 }
 
+.site-sheet-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Small light/dark pill: sun and moon, the active one raised. */
+.site-theme-pill {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+}
+
+.site-theme-pill button {
+  display: inline-flex;
+  width: 32px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.site-theme-pill button[aria-pressed='true'] {
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+
 .site-sheet-body {
   flex: 1;
   overflow: auto;

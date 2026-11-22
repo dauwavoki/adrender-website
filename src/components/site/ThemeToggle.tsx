@@ -28,3 +28,19 @@ export function ThemeSegment() {
     </div>
   )
 }
+
+/** Compact light/dark pill with sun and moon icons (phone menu). */
+export function ThemePill() {
+  const { theme, setTheme } = useSiteTheme()
+
+  return (
+    <div className="site-theme-pill" role="group" aria-label="Color theme">
+      <button type="button" aria-pressed={theme === 'light'} aria-label="Light mode" onClick={() => setTheme('light')}>
+        <Sun size={16} aria-hidden />
+      </button>
+      <button type="button" aria-pressed={theme === 'dark'} aria-label="Dark mode" onClick={() => setTheme('dark')}>
+        <Moon size={16} aria-hidden />
+      </button>
+    </div>
+  )
+}
