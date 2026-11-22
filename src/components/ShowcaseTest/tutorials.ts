@@ -154,6 +154,7 @@ const LIST: Tutorial[] = [
       'One continuous scene. Cards only slide, pop or switch pixel by pixel. Nothing fades.',
       'The winning ads on top are the real image and video templates, and the videos play.',
       'Each empty card decodes through its own mix of brand colours before it turns into the finished ad.',
+      'Voiceover: press the speaker button on the player. The MP4 has it built in.',
     ],
   },
   {
