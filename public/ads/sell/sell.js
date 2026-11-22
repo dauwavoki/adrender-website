@@ -4,7 +4,14 @@
 // "You sell. We make the ads." -> end card with the site's own numbers.
 (function () {
   const A = AD, { PHONE, W, H, SCALE, clamp01, lerp, prog, bezier, ctx: g, begin, IMG, drawCover, words } = A;
-  const TOTAL = 15.4;
+  const TOTAL = 19.2;
+  // the scenes were built on a 15.4s clock; the voiceover sets the real one. warp(t) maps real time to scene time.
+  const WARP = [[0, 0], [2.6, 2.6], [5.3, 4.7], [8.9, 7.4], [11.95, 9.75], [12.9, 10.9], [15.2, 13.2], [16.15, 13.9], [19.2, 15.4]];
+  const warp = t => { for (let i = 1; i < WARP.length; i++) if (t <= WARP[i][0]) { const [a, oa] = WARP[i - 1], [b, ob] = WARP[i]; return oa + (ob - oa) * (t - a) / (b - a); } return 15.4; };
+  // mouth follows the voiceover loudness (25 values per second, 0-9)
+  const ENV = '000000000001000000000000023310122002101110012332211000000000000000000001116644455200000011356643222000000477992069999400644422100000000057797559996555111366416102320221111155742642162213332211100000000599867973110000000000000000123999996357733111000000000117989436997543341000089921154100443222211000018853221110000000000000001247920079997544200001125666552003334321110000000000000000079981134321222110000000999910004654642055300068762236433443124331013220000000000000000000000000';
+  const voice = t => { const f = t * 25, i = Math.floor(f), a = +(ENV[i] || 0), b = +(ENV[i + 1] || 0); return (a + (b - a) * (f - i)) / 9; };
+  let REAL = 0;
   const BLUE = '#3F7FF2', INK = '#0E0E10', GREY = '#6E6E76', PAPER = '#FFFFFF', LIGHT = '#F2F2F4';
   const SIG = bezier(0.2, 0, 0, 1), POP = bezier(0.34, 1.35, 0.64, 1), EXIT = bezier(0.3, 0, 1, 1), SNAP = bezier(0.1, 0.9, 0.2, 1);
   const SC = [0, 2.6, 4.7, 7.4, 10.9, 13.2, TOTAL];   // scene starts
@@ -41,12 +48,13 @@
     const b = blinkAt(t), p = { t, blinkL: b, blinkR: b, smile: 1, open: 0, yaw: 0, pitch: 0, roll: 0, brow: 0, lookX: 0, lookY: 0, bodyYaw: 0 };
     p.yaw = 0.06 * Math.sin(t * 1.3); p.roll = 0.03 * Math.sin(t * 0.9 + 1); p.pitch = 0.03 * Math.sin(t * 1.1);
     const s = scene(t);
-    if (s === 0) { p.open = talk(t, 0.35, 0.8, 12); p.yaw += lerp(0.0, 0.32, SIG(prog(t, 1.2, 1.6))); p.lookX = lerp(0, -1, SIG(prog(t, 1.2, 1.5))); p.brow = 0.5 * SIG(prog(t, 2.0, 2.2)); p.smile = 1 + 0.4 * SIG(prog(t, 2.0, 2.3)); }
+    if (s === 0) { p.yaw += lerp(0.0, 0.32, SIG(prog(t, 1.2, 1.6))); p.lookX = lerp(0, -1, SIG(prog(t, 1.2, 1.5))); p.brow = 0.5 * SIG(prog(t, 2.0, 2.2)); p.smile = 1 + 0.4 * SIG(prog(t, 2.0, 2.3)); }
     if (s === 1) { const w = Math.max(0, 1 - Math.abs(t - 3.05) / 0.28); p.blinkR = Math.max(p.blinkR, clamp01(w * 1.6)); p.smile = 1.5; p.yaw += -0.32 * SIG(prog(t, 3.3, 3.6)); p.lookX = 1; p.brow = 0.3; }
-    if (s === 2) { p.yaw += -0.28; p.lookX = 1; p.lookY = 0.2; p.smile = 1.2; p.open = talk(t, 6.7, 7.0, 10) * 0.6; }
-    if (s === 3) { p.open = talk(t, 8.0, 9.4, 9); p.smile = 1.1; }
-    if (s === 4) { p.open = talk(t, 11.1, 12.5, 9); p.yaw += 0.3; p.lookX = -1; p.smile = 1.2; }
+    if (s === 2) { p.yaw += -0.28; p.lookX = 1; p.lookY = 0.2; p.smile = 1.2; }
+    if (s === 3) { p.smile = 1.1; }
+    if (s === 4) { p.yaw += 0.3; p.lookX = -1; p.smile = 1.2; }
     if (s === 5) { p.smile = 1.4; p.brow = 0.3 * SIG(prog(t, 14.2, 14.4)); const w = Math.max(0, 1 - Math.abs(t - 14.55) / 0.3); p.blinkL = Math.max(p.blinkL, clamp01(w * 1.6)); }
+    p.open = Math.min(1, voice(REAL) * 1.1);
     return p;
   }
   function avatar(x, y, w, cell, t, o = {}) { Avatar.draw(g, { x, y: y + (o.bob === false ? 0 : Math.sin(t * 2.1) * w * 0.006), w, cell, pose: Object.assign(pose(t), o.pose || {}), paper: o.paper, ink: o.ink }); }
@@ -54,9 +62,9 @@
 
   // ---------- chrome: scene tag and timecode ----------
   const TAGS = ['// 01 — hook', '// 02 — anything', '// 03 — ads', '// 04 — handled', '// 05 — flow', '// 06 — adrender'];
-  function chrome(t, dark) {
+  function chrome(t, dark, st) {
     const s = PHONE ? 26 : 17, y = PHONE ? 76 : 46, mx = PHONE ? 60 : 40, f = Math.floor(t * 25), tc = `00:00:${String(Math.floor(t)).padStart(2, '0')}:${String(f % 25).padStart(2, '0')}`;
-    const c = dark === 'blue' ? '#DCE7FF' : dark ? '#8A8A92' : '#9A9AA2'; mono(TAGS[scene(t)], mx, y, s, c); mono('ADRENDER   ' + tc, W - mx, y, s, c, 'right');
+    const c = dark === 'blue' ? '#DCE7FF' : dark ? '#8A8A92' : '#9A9AA2'; mono(TAGS[scene(st)], mx, y, s, c); mono('ADRENDER   ' + tc, W - mx, y, s, c, 'right');
   }
 
   // ---------- scenes ----------
@@ -215,7 +223,7 @@
   }
 
   const SCENES = [s1, s2, s3, s4, s5, s6];
-  function render(t) { begin(g); const s = scene(t); SCENES[s](t); chrome(t, s === 1 ? 'blue' : s === 4); }
+  function render(rt) { begin(g); REAL = rt; const t = warp(rt), s = scene(t); SCENES[s](t); chrome(rt, s === 1 ? 'blue' : s === 4, t); }
   const assets = { yb: '/showcase/yourbrand-logo.webp', tpl: '/showcase/shoe-template.webp', 'shoe-product': '/showcase/shoe-product.webp', 'compression-vest': '/showcase/compression-vest.webp', 'recovery-slides': '/showcase/recovery-slides.webp', 'ad-05': '/showcase/ad-05.webp', 'vad-02': '/showcase/vad-02.webp', 'ad-08': '/showcase/ad-08.webp' };
   AD.start(TOTAL, render, assets);
 })();
