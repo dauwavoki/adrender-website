@@ -646,7 +646,7 @@ html.dark .site-placeholder::after {
 
 /* Founder photo stays in view while the story scrolls past (desktop). The /about jump bar's height comes from --sticky-extra. */
 @media (min-width: 900px) {
-  .site-founder-row {
+  .site-feature-row.site-founder-row {
     align-items: start;
   }
 

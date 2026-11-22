@@ -3,7 +3,7 @@
  * `endsAt` is the last calendar day the banner is visible, through end of day in America/New_York.
  */
 export const banner = {
-  href: 'https://app.adrender.app/?ref=MARKEA7N',
+  href: 'https://app.adrender.app/?ref=BLACKFRIDDZF',
   endsAt: '2026-12-30',
 } as const
 
