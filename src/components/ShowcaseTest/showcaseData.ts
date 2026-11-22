@@ -76,7 +76,7 @@ export const PICKED_IMAGE = [IMAGE_TEMPLATES[0], IMAGE_TEMPLATES[1]]
 export const IMAGE_RESULTS = [
   { id: 'r1', src: '/showcase/ad-13.webp', ratio: '4:5' },
   { id: 'r2', src: '/showcase/ad-06.webp', ratio: '4:5' },
-  { id: 'r3', src: '/showcase/ad-14.webp', ratio: '1:1' },
+  { id: 'r3', src: '/showcase/ad-02.webp', ratio: '1:1' },
   { id: 'r4', src: '/showcase/ad-05.webp', ratio: '1:1' },
 ]
 
