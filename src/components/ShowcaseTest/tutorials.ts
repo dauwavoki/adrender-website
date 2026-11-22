@@ -149,7 +149,6 @@ const LIST: Tutorial[] = [
     tags: ['ad', 'black friday', 'sale', 'promo', 'pipeline', 'dither', 'clone', 'social'],
     motion: { src: '/ads/bf-pipeline', seconds: 34 },
     ad: true,
-    test: true,
     learn: [
       'One continuous scene. Cards only slide, pop or switch pixel by pixel. Nothing fades.',
       'The winning ads on top are the real image and video templates, and the videos play.',

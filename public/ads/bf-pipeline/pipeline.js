@@ -218,9 +218,11 @@
     g.save(); g.translate(x, y); g.scale(sc, sc);
     rr(-w / 2, -h / 2, w, h, 18); g.fillStyle = CARD; g.fill(); g.lineWidth = 1.5; g.strokeStyle = hot ? ORA : LINE; g.stroke();
     g.font = `500 ${PHONE ? 20 : 17}px Mono`; g.fillStyle = INK; g.letterSpacing = '0.5px'; g.fillText(title, -w / 2 + 20, -h / 2 + 32);
-    g.fillStyle = hot ? ORA : BLUE; g.fillRect(w / 2 - 28, -h / 2 + 21, 9, 9);
     g.fillStyle = INK; g.fillText('Match the layout', -w / 2 + 20, PHONE ? 4 : 6); g.fillText('Swap in your product', -w / 2 + 20, PHONE ? 32 : 34);
-    g.fillStyle = hot ? ORA : VIO; const lx = w / 2 - 38, ly = h / 2 - 32; g.beginPath(); g.moveTo(lx + 4, ly - 12); g.lineTo(lx - 7, ly + 2); g.lineTo(lx, ly + 2); g.lineTo(lx - 3, ly + 13); g.lineTo(lx + 8, ly - 2); g.lineTo(lx + 1, ly - 2); g.closePath(); g.fill();
+    // bolt sits on the title line, right-aligned with the card's inner padding
+    const bh = PHONE ? 22 : 20, bs = bh / 26, bx = w / 2 - 20 - 14 * bs, byc = -h / 2 + 32 - (PHONE ? 7 : 6);
+    g.save(); g.translate(bx, byc); g.scale(bs, bs); g.fillStyle = hot ? ORA : VIO; g.beginPath();
+    g.moveTo(9, -13); g.lineTo(-5, 2); g.lineTo(2, 2); g.lineTo(-1, 13); g.lineTo(13, -2); g.lineTo(6, -2); g.closePath(); g.fill(); g.restore();
     g.restore();
   }
 
