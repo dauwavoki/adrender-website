@@ -142,6 +142,21 @@ const LIST: Tutorial[] = [
     ],
   },
   {
+    id: 'ad-sell',
+    category: 'Getting started',
+    title: 'Ad: Got something to sell?',
+    summary: 'A short ad hosted by a halftone 3D character: your products, hundreds of ads in minutes, everything handled, and the numbers from the site.',
+    tags: ['ad', 'promo', 'avatar', 'halftone', 'social'],
+    motion: { src: '/ads/sell', seconds: 15.4 },
+    ad: true,
+    test: true,
+    learn: [
+      'Six quick scenes with hard cuts. Words slide up, accents are written in, cards pop. Nothing fades.',
+      'The host is a 3D character drawn as halftone dots, so she blinks, winks, talks and turns her head.',
+      'Numbers come from the site: 100M+ ads benchmarked, 11 formats, $19 to start, hundreds of ads in under 10 minutes.',
+    ],
+  },
+  {
     id: 'bf-pipeline',
     category: 'Black Friday',
     title: 'Ad: Black Friday, pipeline',
