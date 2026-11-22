@@ -8,9 +8,9 @@
 // The Brand assets box never moves its contents: it changes by wiping itself to dither and rendering the new state.
 (function () {
   const A = AD, { PHONE, W, H, SCALE, clamp01, lerp, prog, bezier, ctx, begin, IMG, drawCover, words } = A;
-  const BLUE = '#4F8DF7', VIO = '#9B6BF2', ORA = '#FF8A3D', LB = '#B5D0FF', LV = '#CDB8FF', LO = '#FFD0A8';
+  const BLUE = '#4F8DF7', VIO = '#9B6BF2', ORA = '#FF8A3D', LB = '#B5D0FF', LV = '#CDB8FF', LO = '#FFD0A8', LIME = '#C6F432', LL = '#E4FF9A';
   const BG = '#09080F', CARD = '#13111D', LINE = '#2B2642', INK = '#F4F2FA', MUTE = 'rgba(244,242,250,0.62)';
-  const DK = { v: '#160F26', b: '#0A1226', o: '#1E1008' };
+  const DK = { v: '#160F26', b: '#0A1226', o: '#1E1008', l: '#121806' };
   const SIG = bezier(0.2, 0, 0, 1), EXIT = bezier(0.3, 0, 1, 1), POP = bezier(0.34, 1.25, 0.64, 1);
   const TOTAL = 34;
   let g = ctx;
@@ -56,13 +56,13 @@
     const og = out.getContext('2d'); og.imageSmoothingEnabled = false; og.drawImage(scratch, 0, 0, out.width, out.height); return out;
   }
   // a block of mixed brand-colour dither (used to wipe a box clean between states)
-  const FILLC = [BLUE, VIO, ORA, LB, LV, LO].map(hex), fillTmp = document.createElement('canvas'), fg = fillTmp.getContext('2d');
+  const FILLC = [BLUE, LIME, VIO, ORA, LIME, LB, LV, LO].map(hex), fillTmp = document.createElement('canvas'), fg = fillTmp.getContext('2d');
   function fillInto(target, tg, w, h, t, cell = 6) {
     const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell); fillTmp.width = cols; fillTmp.height = rows;
     const id = fg.createImageData(cols, rows), d = id.data, card = hex(CARD), sh = Math.floor(t * 6);
     for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
       const k = (j * cols + i) * 4, v = 0.5 + 0.32 * Math.sin(i * 0.31 + j * 0.23 + t * 2.2) + 0.14 * Math.sin(i * 0.9 - j * 0.6);
-      const c = v > th('bayer8', i, j) ? FILLC[((i >> 2) + (j >> 2) * 2 + sh) % 6] : card; d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
+      const c = v > th('bayer8', i, j) ? FILLC[((i >> 2) + (j >> 2) * 3 + sh) % 8] : card; d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
     }
     fg.putImageData(id, 0, 0); tg.save(); tg.imageSmoothingEnabled = false; tg.drawImage(fillTmp, 0, 0, cols * cell, rows * cell); tg.restore();
   }
@@ -112,7 +112,10 @@
   const botX = (i, p) => BOTBASE - i * PITCH + botOff(p) - W;
   const mod = (a, n) => ((a % n) + n) % n;
   const topName = i => i === KTOP ? 'tpl' : TPL[mod(i, TPL.length)];
-  const botName = i => i === KBOT ? 'out' : OUT[mod(i * 5, OUT.length)];
+  // either side of the first built ad: video ads, then statics, then videos, and so on (video ads play once decoded)
+  const VADS = ['vad-01', 'vad-02', 'vad-03', 'vad-04', 'vad-05', 'vad-06'], STATICS = OUT.filter(k => !VID[k]);
+  const botName = i => { const rel = i - KBOT, a = Math.abs(rel), side = rel > 0 ? 0 : 1; if (rel === 0) return 'out';
+    return a % 2 ? VADS[mod((a - 1) + side, VADS.length)] : STATICS[mod((a - 2) + side, STATICS.length)]; };
 
   // each bottom card dithers through its own mix of brand colours and patterns
   const COMBOS = [
@@ -123,6 +126,10 @@
     [[LO, DK.o, 'bayer4'], [VIO, DK.o, 'diag'], [BLUE, DK.b, 'bayer8']],
     [[VIO, DK.b, 'noise'], [LB, DK.v, 'dot'], [ORA, DK.b, 'bayer8']],
     [[BLUE, DK.v, 'dot'], [ORA, DK.b, 'bayer4'], [LV, DK.o, 'bayer8']],
+    [[LIME, DK.l, 'bayer4'], [VIO, DK.l, 'dot'], [LB, DK.b, 'bayer8']],
+    [[VIO, DK.v, 'lines'], [LIME, DK.v, 'bayer4'], [ORA, DK.l, 'bayer8']],
+    [[ORA, DK.o, 'dot'], [LL, DK.o, 'diag'], [BLUE, DK.l, 'bayer8']],
+    [[LL, DK.l, 'diag'], [BLUE, DK.l, 'dot'], [LIME, DK.v, 'bayer8']],
   ];
   const comboOf = i => COMBOS[mod(i * 3, COMBOS.length)];
   const botCache = {};
@@ -164,14 +171,21 @@
       if (j < nProducts) { x.save(); x.beginPath(); x.roundRect(x0 + 3, y0 + 3, sz - 6, sz - 6, 8); x.clip(); x.fillStyle = '#F4F2EE'; x.fillRect(x0, y0, sz, sz); drawCover(x, IMG[pr], x0 + 3, y0 + 3, sz - 6, sz - 6, 0); x.restore(); } });
     return c;
   }
+  // the offer card, reused from the lime dither ad: solid lime, dark type, dark dither rising from the bottom edge
   function offerCanvas(w, h) {
-    const c = canvas(w, h), x = c.g; x.fillStyle = CARD; x.fillRect(0, 0, w, h); x.textAlign = 'center';
-    x.font = `500 ${PHONE ? 22 : 18}px Mono`; x.letterSpacing = '3px'; x.fillStyle = MUTE; x.fillText('BLACK FRIDAY', w / 2, PHONE ? 70 : 52);
-    const big = PHONE ? 230 : 180; x.font = `700 ${big}px Inter`; x.letterSpacing = `${-0.05 * big}px`; const tw = x.measureText('50%').width;
-    const gr = x.createLinearGradient(w / 2 - tw / 2, 0, w / 2 + tw / 2, 0); gr.addColorStop(0, BLUE); gr.addColorStop(0.5, VIO); gr.addColorStop(1, ORA); x.fillStyle = gr;
-    x.fillText('50%', w / 2, PHONE ? 300 : 222);
-    x.font = `600 ${PHONE ? 44 : 36}px Inter`; x.letterSpacing = '-1px'; x.fillStyle = INK; x.fillText('off your first month', w / 2, PHONE ? 380 : 282);
-    x.font = `500 ${PHONE ? 28 : 23}px Inter`; x.letterSpacing = '0px'; x.fillStyle = MUTE; x.fillText('Every plan · One week only', w / 2, PHONE ? 432 : 322);
+    const c = canvas(w, h), x = c.g, INKD = '#0B0D06', pad = PHONE ? 44 : 34;
+    x.fillStyle = LIME; x.fillRect(0, 0, w, h); x.textAlign = 'left';
+    x.font = `500 ${PHONE ? 24 : 18}px Mono`; x.letterSpacing = '1.5px'; x.fillStyle = INKD;
+    x.fillText('BLACK FRIDAY', pad, PHONE ? 62 : 48); x.textAlign = 'right'; x.fillText('01', w - pad, PHONE ? 62 : 48); x.textAlign = 'left';
+    const big = PHONE ? 250 : 170; x.font = `700 ${big}px Inter`; x.letterSpacing = `${-0.055 * big}px`; x.fillText('50%', pad - big * 0.04, PHONE ? 290 : 212);
+    x.font = `600 ${PHONE ? 54 : 40}px Inter`; x.letterSpacing = `${PHONE ? -1.6 : -1.2}px`; x.fillText('off your first month', pad, PHONE ? 362 : 262);
+    x.font = `500 ${PHONE ? 26 : 20}px Mono`; x.letterSpacing = '0.5px'; x.fillText('Every plan · One week only', pad, PHONE ? 412 : 298);
+    const cell = PHONE ? 10 : 8, y0 = PHONE ? 430 : 306, rows = Math.ceil((h - y0) / cell), cols = Math.ceil(w / cell);
+    x.fillStyle = INKD;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const v = Math.pow((j + 0.5) / rows, 1.3) * 0.98 + 0.07 * Math.sin(i * 0.37 + j * 0.2);
+      if (v > th('bayer8', i, j)) { const s2 = cell * 0.62; x.fillRect(i * cell + (cell - s2) / 2, y0 + j * cell + (cell - s2) / 2, s2, s2); }
+    }
     return c;
   }
 
@@ -198,7 +212,7 @@
     for (let s = 0; s <= 24; s++) { const q = along(a, b, k * s / 24, horiz); s ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); } g.stroke();
     const e = along(a, b, k, horiz); g.fillStyle = color; g.fillRect(e[0] - 3, e[1] - 3, 6, 6); g.restore();
   }
-  const TRAIN = ['#FFFFFF', ORA, BLUE, VIO, ORA];
+  const TRAIN = ['#FFFFFF', LIME, ORA, BLUE, VIO];
   function energy(a, b, k, horiz = false, size = 8) {   // a train of square pixels; k runs past 1 so the tail enters the target
     if (k <= 0 || k >= 1.2) return;
     for (let n = 0; n < 5; n++) { const kk = k - n * 0.035; if (kk < 0 || kk > 1) continue; const q = along(a, b, kk, horiz), s = size - n * 1.3;
@@ -316,7 +330,7 @@
     band(scan1, S.fine, true); band(scan2, S.yours, false); band(scan3, null, true);
     [[scan1, 1], [scan2, -1], [scan3, 1]].forEach(([s, d]) => { if (s <= 0 || s >= 1) return; const ly = d > 0 ? y + h * s : y + h * (1 - s);
       g.fillStyle = '#FFFFFF'; g.fillRect(x, ly - 1.5, w, 3);
-      for (let n = 0; n < 70; n++) { g.fillStyle = TRAIN[1 + n % 3]; g.fillRect(x + ((n * 37.7 + p * 900) % w), ly + d * (4 + ((n * 13.1) % 16)), 3, 3); } });
+      for (let n = 0; n < 70; n++) { g.fillStyle = TRAIN[1 + n % 4]; g.fillRect(x + ((n * 37.7 + p * 900) % w), ly + d * (4 + ((n * 13.1) % 16)), 3, 3); } });
     g.restore();
     const active = (scan1 > 0 && scan1 < 1) || (scan2 > 0 && scan2 < 1) || (scan3 > 0 && scan3 < 1);
     rr(x + 0.5, y + 0.5, w - 1, h - 1, 12); g.strokeStyle = active ? ORA : 'rgba(255,255,255,0.14)'; g.lineWidth = active ? 2.5 : 1.5; g.stroke();
@@ -326,8 +340,8 @@
     }
     const lx = x - L.tagX, rx = x + w + L.tagX, t1 = Math.min(prog(p, 7.8, 8.3), 1 - prog(p, 9.3, 9.6)), t2 = Math.min(prog(p, 11.9, 12.4), 1 - prog(p, 15.5, 15.9));
     const o = apart * (PHONE ? 22 : 20);
-    if (t1 > 0) { tag('HEADLINE', x + w * 0.8 + o, y + h * 0.3 - o, rx, y + h * 0.16, t1, LB); tag('LEG', x + w * 0.22 - o, y + h * 0.22 - o, lx, y + h * 0.12, t1, LV); tag('SHOE', x + w * 0.45 + o * 0.6, y + h * 0.72 + o, lx, y + h * 0.86, t1, ORA); }
-    if (t2 > 0) { tag('YOUR HEADLINE', x + w * 0.8, y + h * 0.3, rx, y + h * 0.16, t2, LB); tag('YOUR SHOE', x + w * 0.45, y + h * 0.72, lx, y + h * 0.86, t2, ORA); }
+    if (t1 > 0) { tag('HEADLINE', x + w * 0.8 + o, y + h * 0.3 - o, rx, y + h * 0.16, t1, LB); tag('LEG', x + w * 0.22 - o, y + h * 0.22 - o, lx, y + h * 0.12, t1, LIME); tag('SHOE', x + w * 0.45 + o * 0.6, y + h * 0.72 + o, lx, y + h * 0.86, t1, ORA); }
+    if (t2 > 0) { tag('YOUR HEADLINE', x + w * 0.8, y + h * 0.3, rx, y + h * 0.16, t2, LB); tag('YOUR SHOE', x + w * 0.45, y + h * 0.72, lx, y + h * 0.86, t2, LIME); }
   }
 
   function box(t, p) {
@@ -348,7 +362,9 @@
     else if (p < 26.6) fillInto(null, g, w, h, t);
     else cells(fillCanvas(w, h, t), S.offer, k4, 0, 0, w, h, 8, [1, 0.3]);
     g.restore();
-    if (p > 26.6) { const gr = g.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, BLUE); gr.addColorStop(0.5, VIO); gr.addColorStop(1, ORA); g.strokeStyle = gr; g.lineWidth = 3; }
+    if (p > 26.6) { g.strokeStyle = LIME; g.lineWidth = 2;
+      const rise = prog(p, 26.9, 27.6), sh = PHONE ? 80 : 50;
+      if (rise > 0) A.ditherField(g, { x: 0, y: -sh - 6, w, h: sh, cell: PHONE ? 8 : 6, on: LIME, key: 'ofrTop', field: (u, v) => rise * (Math.pow(v, 1.6) * 0.85 + 0.08 * Math.sin(u * 14 - t * 2.4)) }); }
     else { g.strokeStyle = (k1 > 0 && k1 < 1) || (k2 > 0 && k2 < 1) || p > 25.6 ? ORA : LINE; g.lineWidth = 1.5; }
     rr(0, 0, w, h, 20); g.stroke(); g.restore();
   }
