@@ -39,7 +39,14 @@ type TokenBuysContent = {
   subline: string
   imageAds: RateTable
   videoUpscale: RateTable & { notes: string[] }
-  videoAds: RateTable & {
+  videoAds: {
+    title: string
+    accent: Accent
+    unitLabel: string
+    resolutionLabel: string
+    /** Quality columns in price order. null = not offered at that resolution. */
+    tiers: string[]
+    rows: { resolution: string; prices: (number | null)[] }[]
     duration: {
       standardMaxSeconds: number
       proMaxSeconds: number
@@ -79,15 +86,14 @@ const TOKEN_BUYS: TokenBuysContent = {
   videoAds: {
     title: 'Video ads',
     accent: { from: '#7b4fd4', to: '#e23d9b' },
-    columns: { resolution: 'Resolution', standard: 'Standard', pro: 'Pro' },
     unitLabel: 'tokens per second',
+    resolutionLabel: 'Resolution',
+    tiers: ['Standard Flash', 'Standard', 'Pro Flash', 'Pro'],
     rows: [
-      { resolution: '480p Flash', standard: 3, pro: 6 },
-      { resolution: '480p', standard: 5, pro: 7 },
-      { resolution: '720p Flash', standard: 5, pro: 9 },
-      { resolution: '720p', standard: 8, pro: 11 },
-      { resolution: '1080p', standard: 13, pro: 16 },
-      { resolution: '4K', standard: 22, pro: 27 },
+      { resolution: '480p', prices: [3, 5, 6, 7] },
+      { resolution: '720p', prices: [5, 8, 9, 11] },
+      { resolution: '1080p', prices: [null, 13, null, 16] },
+      { resolution: '4K', prices: [null, 22, null, 27] },
     ],
     duration: { standardMaxSeconds: 15, proMaxSeconds: 30, minSeconds: 4 },
   },
@@ -147,9 +153,9 @@ function formatPrice(amount: number) {
 }
 
 function durationNotes(video: TokenBuysContent['videoAds']) {
-  const { columns, duration } = video
+  const { duration } = video
   return [
-    `${columns.standard} up to ${duration.standardMaxSeconds}s, ${columns.pro} up to ${duration.proMaxSeconds}s.`,
+    `Standard up to ${duration.standardMaxSeconds}s, Pro up to ${duration.proMaxSeconds}s.`,
     `${duration.minSeconds} seconds minimum.`,
   ]
 }
@@ -261,6 +267,49 @@ function RateCard({ table, notes, signupUrl, tone, icon }: { table: RateTable; n
   )
 }
 
+function VideoRateCard({ video, notes, signupUrl }: { video: TokenBuysContent['videoAds']; notes: string[]; signupUrl: string }) {
+  return (
+    <BuyCard title={video.title} signupUrl={signupUrl} tone="violet" icon={VideoCamera}>
+      <table className="site-table site-table-tiers">
+        <caption className="sr-only">{`${video.title} by resolution and quality, ${video.unitLabel}`}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{video.resolutionLabel}</th>
+            {video.tiers.map((tier) => (
+              <th key={tier} scope="col" className="num">
+                {tier}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            <td />
+            <th scope="colgroup" colSpan={video.tiers.length} className="num">
+              {video.unitLabel}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {video.rows.map((row) => (
+            <tr key={row.resolution}>
+              <th scope="row">{row.resolution}</th>
+              {row.prices.map((price, index) => (
+                <td key={video.tiers[index]} className="num">
+                  {price === null ? <span aria-label="not offered">–</span> : <TokenFigure value={price} />}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="site-buy-notes">
+        {notes.map((note) => (
+          <p key={note}>{note}</p>
+        ))}
+      </div>
+    </BuyCard>
+  )
+}
+
 function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps']; signupUrl: string }) {
   return (
     <BuyCard title={topUps.title} signupUrl={signupUrl} tone="amber" icon={Coins}>
@@ -301,7 +350,7 @@ export function TokenBuys() {
       <p className="site-lead">{TOKEN_BUYS.subline}</p>
       <div className="site-token-grid">
         <RateCard table={TOKEN_BUYS.imageAds} signupUrl={signupUrl} tone="blue" icon={Image} />
-        <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} tone="violet" icon={VideoCamera} />
+        <VideoRateCard video={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} />
         <RateCard table={TOKEN_BUYS.videoUpscale} notes={TOKEN_BUYS.videoUpscale.notes} signupUrl={signupUrl} tone="violet" icon={ArrowsOut} />
         <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
       </div>

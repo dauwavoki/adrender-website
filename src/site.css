@@ -2949,8 +2949,13 @@ html.dark .site-segment.is-inline button[aria-checked='true'] {
 
 @media (min-width: 1280px) {
   .site-token-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.85fr);
   }
+}
+
+.site-table-tiers th[scope='col'].num {
+  white-space: normal;
+  line-height: 16px;
 }
 
 .site-plan {
