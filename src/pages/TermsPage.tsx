@@ -19,7 +19,7 @@ export function TermsPage() {
             Terms and Conditions
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Last updated: 21 October 2026 &nbsp;·&nbsp; Effective: 21 October 2026
+            Last updated: 28 November 2026 &nbsp;·&nbsp; Effective: 28 November 2026
           </p>
         </div>
 
@@ -133,7 +133,7 @@ export function TermsPage() {
               </div>
               <div id="5-3" className="scroll-mt-24">
                 <h3 className="mb-1.5 font-medium text-zinc-200">5.3 Pricing Variability</h3>
-            <p>Token pack prices and per-render token rates may change at any time without prior notice. The price applicable to any top-up purchase or render is always displayed before you confirm it. You will never be charged for a render or token pack without first seeing the applicable cost. This flexibility applies specifically to token pricing and render rates; it does not affect the 30-day notice period for overall subscription plan price changes described in Section 4.5.</p>
+            <p>Token pack prices and per-render token rates, including video prices per second and upscale prices, may change at any time without prior notice, depending on the prices charged by our AI providers. Current prices are always shown live in the app. The price applicable to any top-up purchase or render is always displayed before you confirm it. You will never be charged for a render or token pack without first seeing the applicable cost. This flexibility applies specifically to token pricing and render rates; it does not affect the 30-day notice period for overall subscription plan price changes described in Section 4.5.</p>
               </div>
               <div id="5-4" className="scroll-mt-24">
                 <h3 className="mb-1.5 font-medium text-zinc-200">5.4 Expiration and Rollover</h3>
