@@ -43,7 +43,7 @@ const VIDEO_ASPECT = item(
 
 const VIDEO_COST = item(
   'Do videos cost more tokens than images?',
-  "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you render, so there's no surprise mid-render. Flash is a cheaper, faster choice at 480p and 720p, and your template and reference files never cost extra.",
+  "Yes — video is priced per second and genuinely costs more to produce than a still, so it draws tokens down faster. Exact costs by resolution are shown before you render, so there's no surprise mid-render. Your template and reference files never cost extra.",
 )
 
 const CONNECT_SHOPIFY: FaqEntry = {

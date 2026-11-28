@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ArrowsOut, Coins, Image, VideoCamera } from '@phosphor-icons/react'
+import { ArrowsOut, Coins, Image, Sparkle, VideoCamera } from '@phosphor-icons/react'
 import { getSignupUrl } from '../lib/appUrl'
 import { IconTile, type TileTone } from './site/IconTile'
 
@@ -40,13 +40,6 @@ type TokenBuysContent = {
   imageAds: RateTable
   videoUpscale: RateTable & { notes: string[] }
   videoAds: RateTable & {
-    flashNote: string
-    includedNote: string
-    example: {
-      seconds: number
-      resolution: string
-      tier: 'standard' | 'pro'
-    }
     duration: {
       standardMaxSeconds: number
       proMaxSeconds: number
@@ -58,6 +51,13 @@ type TokenBuysContent = {
     accent: Accent
     packs: TokenPack[]
     notes: string[]
+  }
+  included: {
+    title: string
+    inputsNote: string
+    modelsNote: string
+    mainModels: string[]
+    supplementaryModels: string[]
   }
 }
 
@@ -82,16 +82,13 @@ const TOKEN_BUYS: TokenBuysContent = {
     columns: { resolution: 'Resolution', standard: 'Standard', pro: 'Pro' },
     unitLabel: 'tokens per second',
     rows: [
+      { resolution: '480p Flash', standard: 3, pro: 6 },
       { resolution: '480p', standard: 5, pro: 7 },
+      { resolution: '720p Flash', standard: 5, pro: 9 },
       { resolution: '720p', standard: 8, pro: 11 },
       { resolution: '1080p', standard: 13, pro: 16 },
       { resolution: '4K', standard: 22, pro: 27 },
-      { resolution: '480p Flash', standard: 3, pro: 6 },
-      { resolution: '720p Flash', standard: 5, pro: 9 },
     ],
-    flashNote: 'Flash is cheaper and faster, at 480p and 720p only.',
-    includedNote: "Token prices include your input templates. We don't charge extra for video templates, reskinning or references.",
-    example: { seconds: 5, resolution: '720p', tier: 'standard' },
     duration: { standardMaxSeconds: 15, proMaxSeconds: 30, minSeconds: 4 },
   },
   videoUpscale: {
@@ -124,6 +121,13 @@ const TOKEN_BUYS: TokenBuysContent = {
     ],
     notes: ['Top-up tokens never expire.', 'Failed renders are refunded.'],
   },
+  included: {
+    title: 'Included in every price',
+    inputsNote: "Token prices include your input templates. We don't charge extra for video templates, reskinning or references.",
+    modelsNote: 'We only use top-tier AI models, each picked for the job its skill does best.',
+    mainModels: ['Nano Banana 2.1', 'Gemini 3 Pro', 'GPT Image 2.6', 'Seedance 2.5', 'Seedance 2.0'],
+    supplementaryModels: ['Seedream 5.5', 'FLUX 3', 'Wan 2.6', 'Kling 4.0'],
+  },
 }
 
 /** Image rates and quality names for scenes that must match this table. */
@@ -142,20 +146,40 @@ function formatPrice(amount: number) {
   return `$${amount.toLocaleString('en-US')}`
 }
 
-function exampleNote(video: TokenBuysContent['videoAds']) {
-  const row = video.rows.find((entry) => entry.resolution === video.example.resolution)
-  const rate = row ? (video.example.tier === 'pro' ? row.pro : row.standard) : 0
-  const total = rate * video.example.seconds
-  const tierLabel = video.columns[video.example.tier]
-  const flashRow = video.rows.find((entry) => entry.resolution === `${video.example.resolution} Flash`)
-  const flashRate = flashRow ? (video.example.tier === 'pro' ? flashRow.pro : flashRow.standard) : 0
-  const flashPart = flashRate ? `, ${formatTokens(flashRate * video.example.seconds)} with Flash` : ''
-  return `Example: a ${video.example.seconds}-second ${video.example.resolution} ad = ${formatTokens(total)} tokens (${tierLabel})${flashPart}.`
+function durationNotes(video: TokenBuysContent['videoAds']) {
+  const { columns, duration } = video
+  return [
+    `${columns.standard} up to ${duration.standardMaxSeconds}s, ${columns.pro} up to ${duration.proMaxSeconds}s.`,
+    `${duration.minSeconds} seconds minimum.`,
+  ]
 }
 
-function durationNote(video: TokenBuysContent['videoAds']) {
-  const { columns, duration } = video
-  return `${columns.standard} up to ${duration.standardMaxSeconds}s, ${columns.pro} up to ${duration.proMaxSeconds}s. ${duration.minSeconds}s minimum.`
+function listNames(names: string[]) {
+  if (names.length < 2) return names.join('')
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+}
+
+function IncludedCard({ included }: { included: TokenBuysContent['included'] }) {
+  return (
+    <article className="site-plan site-token-included">
+      <div className="site-plan-head">
+        <IconTile tone="blue" size={32}>
+          <Sparkle size={16} />
+        </IconTile>
+        <h3>{included.title}</h3>
+      </div>
+      <div className="site-token-included-body">
+        <p>{included.inputsNote}</p>
+        <p>{included.modelsNote}</p>
+        <p>
+          <strong>Main models:</strong> {listNames(included.mainModels)}.
+        </p>
+        <p>
+          <strong>Supplementary models:</strong> {listNames(included.supplementaryModels)}.
+        </p>
+      </div>
+    </article>
+  )
 }
 
 function TokenFigure({ value }: { value: number }) {
@@ -246,8 +270,10 @@ function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps'];
           {topUps.packs.map((pack) => (
             <tr key={pack.price}>
               <th scope="row">
-                {formatPrice(pack.price)}
-                {pack.badge ? <span className="site-badge">{pack.badge}</span> : null}
+                <span className="site-pack-price">
+                  {formatPrice(pack.price)}
+                  {pack.badge ? <span className="site-badge">{pack.badge}</span> : null}
+                </span>
               </th>
               <td className="num">
                 <TokenFigure value={pack.tokens} /> tokens
@@ -267,12 +293,7 @@ function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps'];
 
 export function TokenBuys() {
   const signupUrl = getSignupUrl()
-  const videoNotes = [
-    exampleNote(TOKEN_BUYS.videoAds),
-    durationNote(TOKEN_BUYS.videoAds),
-    TOKEN_BUYS.videoAds.flashNote,
-    TOKEN_BUYS.videoAds.includedNote,
-  ]
+  const videoNotes = durationNotes(TOKEN_BUYS.videoAds)
 
   return (
     <div className="site-token-buys">
@@ -284,6 +305,7 @@ export function TokenBuys() {
         <RateCard table={TOKEN_BUYS.videoUpscale} notes={TOKEN_BUYS.videoUpscale.notes} signupUrl={signupUrl} tone="violet" icon={ArrowsOut} />
         <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
       </div>
+      <IncludedCard included={TOKEN_BUYS.included} />
     </div>
   )
 }

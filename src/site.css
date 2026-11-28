@@ -3076,6 +3076,39 @@ html.dark .site-segment.is-inline button[aria-checked='true'] {
   text-decoration: none;
 }
 
+.site-pack-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.site-pack-price .site-badge {
+  margin-left: 0;
+}
+
+.site-token-included {
+  margin-top: 12px;
+}
+
+.site-token-included-body {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.site-token-included-body p {
+  margin: 0;
+}
+
+.site-token-included-body strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 .site-buy-notes {
   color: var(--text-secondary);
   font-size: 14px;
