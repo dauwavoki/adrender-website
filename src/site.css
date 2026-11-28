@@ -2943,7 +2943,13 @@ html.dark .site-segment.is-inline button[aria-checked='true'] {
 
 @media (min-width: 900px) {
   .site-token-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-token-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

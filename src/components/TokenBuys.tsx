@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Coins, Image, VideoCamera } from '@phosphor-icons/react'
+import { ArrowsOut, Coins, Image, VideoCamera } from '@phosphor-icons/react'
 import { getSignupUrl } from '../lib/appUrl'
 import { IconTile, type TileTone } from './site/IconTile'
 
@@ -38,7 +38,10 @@ type TokenBuysContent = {
   heading: string
   subline: string
   imageAds: RateTable
+  videoUpscale: RateTable & { notes: string[] }
   videoAds: RateTable & {
+    flashNote: string
+    includedNote: string
     example: {
       seconds: number
       resolution: string
@@ -81,11 +84,32 @@ const TOKEN_BUYS: TokenBuysContent = {
     rows: [
       { resolution: '480p', standard: 5, pro: 7 },
       { resolution: '720p', standard: 8, pro: 11 },
-      { resolution: '1080p', standard: 10, pro: 13 },
-      { resolution: '4K', standard: 11, pro: 15 },
+      { resolution: '1080p', standard: 13, pro: 16 },
+      { resolution: '4K', standard: 22, pro: 27 },
+      { resolution: '480p Flash', standard: 3, pro: 6 },
+      { resolution: '720p Flash', standard: 5, pro: 9 },
     ],
+    flashNote: 'Flash is cheaper and faster, at 480p and 720p only.',
+    includedNote: "Token prices include your input templates. We don't charge extra for video templates, reskinning or references.",
     example: { seconds: 5, resolution: '720p', tier: 'standard' },
     duration: { standardMaxSeconds: 15, proMaxSeconds: 30, minSeconds: 4 },
+  },
+  videoUpscale: {
+    title: 'Video upscale',
+    accent: { from: '#7b4fd4', to: '#00e5ff' },
+    columns: { resolution: 'From → to', standard: 'Standard', pro: 'Pro' },
+    unitLabel: 'tokens per second',
+    rows: [
+      { resolution: '480p → 720p', standard: 3, pro: 4 },
+      { resolution: '480p → 1080p', standard: 8, pro: 9 },
+      { resolution: '720p → 1080p', standard: 5, pro: 5 },
+      { resolution: '480p → 4K', standard: 17, pro: 20 },
+      { resolution: '720p → 4K', standard: 14, pro: 16 },
+    ],
+    notes: [
+      'You only pay the difference: the price at the new resolution minus what you paid for the render.',
+      'So a render plus its upscale always costs the same as rendering at that resolution in the first place.',
+    ],
   },
   topUps: {
     title: 'Top-ups',
@@ -123,7 +147,10 @@ function exampleNote(video: TokenBuysContent['videoAds']) {
   const rate = row ? (video.example.tier === 'pro' ? row.pro : row.standard) : 0
   const total = rate * video.example.seconds
   const tierLabel = video.columns[video.example.tier]
-  return `Example: a ${video.example.seconds}-second ${video.example.resolution} ad = ${formatTokens(total)} tokens (${tierLabel}).`
+  const flashRow = video.rows.find((entry) => entry.resolution === `${video.example.resolution} Flash`)
+  const flashRate = flashRow ? (video.example.tier === 'pro' ? flashRow.pro : flashRow.standard) : 0
+  const flashPart = flashRate ? `, ${formatTokens(flashRate * video.example.seconds)} with Flash` : ''
+  return `Example: a ${video.example.seconds}-second ${video.example.resolution} ad = ${formatTokens(total)} tokens (${tierLabel})${flashPart}.`
 }
 
 function durationNote(video: TokenBuysContent['videoAds']) {
@@ -240,7 +267,12 @@ function TopUpsCard({ topUps, signupUrl }: { topUps: TokenBuysContent['topUps'];
 
 export function TokenBuys() {
   const signupUrl = getSignupUrl()
-  const videoNotes = [exampleNote(TOKEN_BUYS.videoAds), durationNote(TOKEN_BUYS.videoAds)]
+  const videoNotes = [
+    exampleNote(TOKEN_BUYS.videoAds),
+    durationNote(TOKEN_BUYS.videoAds),
+    TOKEN_BUYS.videoAds.flashNote,
+    TOKEN_BUYS.videoAds.includedNote,
+  ]
 
   return (
     <div className="site-token-buys">
@@ -249,6 +281,7 @@ export function TokenBuys() {
       <div className="site-token-grid">
         <RateCard table={TOKEN_BUYS.imageAds} signupUrl={signupUrl} tone="blue" icon={Image} />
         <RateCard table={TOKEN_BUYS.videoAds} notes={videoNotes} signupUrl={signupUrl} tone="violet" icon={VideoCamera} />
+        <RateCard table={TOKEN_BUYS.videoUpscale} notes={TOKEN_BUYS.videoUpscale.notes} signupUrl={signupUrl} tone="violet" icon={ArrowsOut} />
         <TopUpsCard topUps={TOKEN_BUYS.topUps} signupUrl={signupUrl} />
       </div>
     </div>
